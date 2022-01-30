@@ -15,7 +15,7 @@ const crypto = require("crypto");
 
 // Service: Create, Update, Delete 비즈니스 로직 처리 
 // 회원가입 API
-exports.createUser = async function (name,nickname,ID,password,phoneNumber) {
+exports.register = async function (name,nickname,ID,password,phoneNumber) {
     try {
         // ID 중복 확인
         // UserProvider에서 해당 이메일과 같은 User 목록을 받아서 IDRows에 저장한 후, 배열의 길이를 검사한다.
@@ -42,12 +42,12 @@ exports.createUser = async function (name,nickname,ID,password,phoneNumber) {
         const connection = await pool.getConnection(async (conn) => conn);
 
         const userResult = await userDao.insertUserInfo(connection, insertUserInfoParams);
-        console.log(`추가된 회원 : ${userResult[0].insertId}`)
+        console.log(`추가된 회원 : ${userResult[0].ID}`)
         connection.release();
         return response(baseResponse.SUCCESS_REGISTER);
 
     } catch (err) {
-        logger.error(`App - createUser Service error\n: ${err.message}`);
+        logger.error(`App - register Service error\n: ${err.message}`);
         return errResponse(baseResponse.DB_ERROR);
     }
 };
@@ -182,33 +182,33 @@ exports.editUser = async function (id, nickname) {
 //예시내용들
 
 
-exports.createUser = async function (name,nickname,ID,password,phoneNumber) {
-    try {
-        // 이메일 중복 확인
-        // UserProvider에서 해당 이메일과 같은 User 목록을 받아서 emailRows에 저장한 후, 배열의 길이를 검사한다.
-        // -> 길이가 0 이상이면 이미 해당 이메일을 갖고 있는 User가 조회된다는 의미
-        const emailRows = await userProvider.emailCheck(email);
-        if (emailRows.length > 0)
-            return errResponse(baseResponse.SIGNUP_REDUNDANT_EMAIL);
+// exports.createUser = async function (name,nickname,ID,password,phoneNumber) {
+//     try {
+//         // 이메일 중복 확인
+//         // UserProvider에서 해당 이메일과 같은 User 목록을 받아서 emailRows에 저장한 후, 배열의 길이를 검사한다.
+//         // -> 길이가 0 이상이면 이미 해당 이메일을 갖고 있는 User가 조회된다는 의미
+//         const emailRows = await userProvider.emailCheck(email);
+//         if (emailRows.length > 0)
+//             return errResponse(baseResponse.SIGNUP_REDUNDANT_EMAIL);
 
-        // 비밀번호 암호화
-        const hashedPassword = await crypto
-            .createHash("sha512")
-            .update(password)
-            .digest("hex");
+//         // 비밀번호 암호화
+//         const hashedPassword = await crypto
+//             .createHash("sha512")
+//             .update(password)
+//             .digest("hex");
 
-        // 쿼리문에 사용할 변수 값을 배열 형태로 전달
-        const insertUserInfoParams = [email, hashedPassword, nickname];
+//         // 쿼리문에 사용할 변수 값을 배열 형태로 전달
+//         const insertUserInfoParams = [email, hashedPassword, nickname];
 
-        const connection = await pool.getConnection(async (conn) => conn);
+//         const connection = await pool.getConnection(async (conn) => conn);
 
-        const userIdResult = await userDao.insertUserInfo(connection, insertUserInfoParams);
-        console.log(`추가된 회원 : ${userIdResult[0].insertId}`)
-        connection.release();
-        return response(baseResponse.SUCCESS);
+//         const userIdResult = await userDao.insertUserInfo(connection, insertUserInfoParams);
+//         console.log(`추가된 회원 : ${userIdResult[0].insertId}`)
+//         connection.release();
+//         return response(baseResponse.SUCCESS);
 
-    } catch (err) {
-        logger.error(`App - createUser Service error\n: ${err.message}`);
-        return errResponse(baseResponse.DB_ERROR);
-    }
-};
+//     } catch (err) {
+//         logger.error(`App - createUser Service error\n: ${err.message}`);
+//         return errResponse(baseResponse.DB_ERROR);
+//     }
+// };

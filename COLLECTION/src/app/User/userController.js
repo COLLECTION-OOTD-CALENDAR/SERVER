@@ -60,7 +60,7 @@ exports.postUsers = async function (req, res) {
         return res.send(response(baseResponse.REGISTER_PHONE_ERROR_TYPE_HYPHEN))
 
 
-    // createUser 함수 실행을 통한 결과 값을 registerResponse에 저장
+    // register 함수 실행을 통한 결과 값을 registerResponse에 저장
     const registerResponse = await userService.register(
         name,
         nickname,
