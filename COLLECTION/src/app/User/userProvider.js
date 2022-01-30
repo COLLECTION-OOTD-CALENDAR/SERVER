@@ -3,7 +3,7 @@ const { logger } = require("../../../config/winston");
 
 const userDao = require("./userDao");
 
-// Provider: Read 비즈니스 로직 처리
+// Provider: Read 비즈니스 로직 처리 -> GET 처리
 
 exports.retrieveUserList = async function (email) {
 
@@ -45,6 +45,47 @@ exports.emailCheck = async function (email) {
   return emailCheckResult;
 };
 
+
+
+// exports.passwordCheck = async function (selectUserPasswordParams) {
+//   const connection = await pool.getConnection(async (conn) => conn);
+//   // 쿼리문에 여러개의 인자를 전달할 때 selectUserPasswordParams와 같이 사용합니다.
+//   const passwordCheckResult = await userDao.selectUserPassword(
+//       connection,
+//       selectUserPasswordParams
+//   );
+//   connection.release();
+//   return passwordCheckResult[0];
+};
+
+exports.accountCheck = async function (ID) {
+  const connection = await pool.getConnection(async (conn) => conn);
+  const userAccountResult = await userDao.selectUserAccount(connection, ID);
+  connection.release();
+
+  return userAccountResult;
+};
+
+
+
+//if가만드는 로직~
+
+exports.IDCheck = async function (ID) {
+  const connection = await pool.getConnection(async (conn) => conn);
+  const IDCheckResult = await userDao.selectUserID(connection, ID);
+  connection.release();
+
+  return IDCheckResult;
+};
+
+exports.nicknameCheck = async function (nickname) {
+  const connection = await pool.getConnection(async (conn) => conn);
+  const nicknameCheckResult = await userDao.selectUsernickname(connection, nickname);
+  connection.release();
+
+  return nicknameCheckResult;
+};
+
 exports.passwordCheck = async function (selectUserPasswordParams) {
   const connection = await pool.getConnection(async (conn) => conn);
   // 쿼리문에 여러개의 인자를 전달할 때 selectUserPasswordParams와 같이 사용합니다.
@@ -56,10 +97,3 @@ exports.passwordCheck = async function (selectUserPasswordParams) {
   return passwordCheckResult[0];
 };
 
-exports.accountCheck = async function (email) {
-  const connection = await pool.getConnection(async (conn) => conn);
-  const userAccountResult = await userDao.selectUserAccount(connection, email);
-  connection.release();
-
-  return userAccountResult;
-};

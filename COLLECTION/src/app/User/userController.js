@@ -4,7 +4,7 @@ const userService = require("./userService");
 const baseResponse = require("../../../config/baseResponseStatus");
 const {response, errResponse} = require("../../../config/response");
 
-const regexEmail = require("regex-email");
+var regExp = /^[0-9]{3}-[0-9]{3,4}-[0-9]{4}/;
 
 /**
  * API No. 0
@@ -17,38 +17,135 @@ const regexEmail = require("regex-email");
 
 /**
  * API No. 1
- * API Name : 유저 생성 (회원가입) API
- * [POST] /app/users
+ * API Name : 회원가입 API
+ * [POST] /app/users/register
  */
 exports.postUsers = async function (req, res) {
 
     /**
-     * Body: email, password, nickname
+     * Body: name,nickname,ID,password,phoneNumber
      */
-    const {email, password, nickname} = req.body;
+    const {name,nickname,ID,password,phoneNumber} = req.body;
 
     // 빈 값 체크
-    if (!email)
-        return res.send(response(baseResponse.SIGNUP_EMAIL_EMPTY));
+    if (!name)
+        return res.send(response(baseResponse.REGISTER_NAME_EMPTY));
+
+    if (!nickname)
+        return res.send(response(baseResponse.REGISTER_NICKNAME_EMPTY));
+
+    if (!ID)
+        return res.send(response(baseResponse.REGISTER_ID_EMPTY));
+
+    if (!password)
+        return res.send(response(baseResponse.REGISTER_PW_EMPTY));
+
+    if (!phoneNumber)
+        return res.send(response(baseResponse.REGISTER_PHONE_EMPTY));
 
     // 길이 체크
-    if (email.length > 30)
-        return res.send(response(baseResponse.SIGNUP_EMAIL_LENGTH));
+    if (ID.length < 6 || ID.length > 15 )  
+        return res.send(response(baseResponse.REGISTER_ID_LENGTH));
+
+    if (password.length < 6 || password.length > 15 )  
+        return res.send(response(baseResponse.REGISTER_PW_LENGTH));
+
+    if (nickname.length < 2 || nickname.length > 6 )  
+        return res.send(response(baseResponse.REGISTER_NICKNAME_LENGTH));
+
 
     // 형식 체크 (by 정규표현식)
-    if (!regexEmail.test(email))
-        return res.send(response(baseResponse.SIGNUP_EMAIL_ERROR_TYPE));
 
-    // createUser 함수 실행을 통한 결과 값을 signUpResponse에 저장
-    const signUpResponse = await userService.createUser(
-        email,
+    if (!regExp.test(phoneNumber))
+        return res.send(response(baseResponse.REGISTER_PHONE_ERROR_TYPE_HYPHEN))
+
+
+    // register 함수 실행을 통한 결과 값을 registerResponse에 저장
+    const registerResponse = await userService.register(
+        name,
+        nickname,
+        ID,
         password,
-        nickname
+        phoneNumber,
     );
 
-    // signUpResponse 값을 json으로 전달
-    return res.send(signUpResponse);
+    // registerResponse 값을 json으로 전달
+    return res.send(registerResponse);
 };
+
+/**
+ * API No. 2
+ * API Name : 중복 ID 확인 
+ * [GET] /app/user/duplicate-id
+ */
+
+exports.duplicate_ID = async function (req, res) {
+
+    const ID = req.body;
+
+    //빈 값 체크
+    if (!ID)
+        return res.send(response(baseResponse.REGISTER_ID_EMPTY));
+
+    //중복 체크
+    const IDRows = await userProvider.IDCheck(ID);
+    if (IDRows.length > 0)
+        return res.send(response(baseResponse.REGISTER_ID_REDUNDANT));
+    else
+        return res.send(response(baseResponse.SUCCESS_DUPLICATE_ID));
+
+    
+};
+
+
+/**
+ * API No. 3
+ * API Name : 중복 닉네임 확인
+ * [GET] /app/user/duplicate-nickname
+ */
+
+exports.duplicate_nickname = async function(req, res) {
+
+    const nickname = req.body;
+
+    //빈 값 체크
+    if(!nickname)
+        return res.send(response(baseResponse.REGISTER_NICKNAME_EMPTY)); 
+
+    //중복 체크
+    const nicknameRows = await userProvider.nicknameCheck(ID);
+        if (nicknameRows.length > 0)
+            return res.send(response(baseResponse.REGISTER_NICKNAME_REDUNDANT));
+        else
+            return res.send(response(baseResponse.SUCCESS_DUPLICATE_NICKNAME));
+};
+
+
+/**
+ * API NO. 4
+ * API Name : 로그인
+ * [POST] /app/user/login
+ */
+
+exports.login = async function (req, res) {
+
+    const {ID, password} = req.body;
+
+    //빈 값 체크
+    if(!ID)
+        return res.send(response(baseResponse.REGISTER_ID_EMPTY)); 
+
+    if(!password)
+        return res.send(response(baseResponse.REGISTER_PW_EMPTY)); 
+
+
+    const logInResponse = await userService.postLogIn(ID,password);
+
+    return res.send(logInResponse);
+}
+
+
+
 
 /**
  * API No. 2
@@ -152,3 +249,4 @@ exports.check = async function (req, res) {
     console.log(userIdResult);
     return res.send(response(baseResponse.TOKEN_VERIFICATION_SUCCESS));
 };
+
