@@ -56,7 +56,7 @@ exports.emailCheck = async function (email) {
 //   );
 //   connection.release();
 //   return passwordCheckResult[0];
-};
+// };
 
 exports.accountCheck = async function (ID) {
   const connection = await pool.getConnection(async (conn) => conn);
