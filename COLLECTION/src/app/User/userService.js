@@ -42,7 +42,7 @@ exports.register = async function (name,nickname,ID,password,phoneNumber) {
         const connection = await pool.getConnection(async (conn) => conn);
 
         const userResult = await userDao.insertUserInfo(connection, insertUserInfoParams);
-        console.log(`추가된 회원 : ${userResult[0].ID}`)
+        console.log(`추가된 회원 : ${userResult[1].ID}`);
         connection.release();
         return response(baseResponse.SUCCESS_REGISTER);
 

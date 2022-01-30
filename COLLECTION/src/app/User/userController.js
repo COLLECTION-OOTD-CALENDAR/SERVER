@@ -5,6 +5,7 @@ const baseResponse = require("../../../config/baseResponseStatus");
 const {response, errResponse} = require("../../../config/response");
 
 var regExp = /^[0-9]{3}-[0-9]{3,4}-[0-9]{4}/;
+var regExpcheck = /^01([0|1|6|7|8|9])([0-9]{3,4})?([0-9]{4})$/;
 
 /**
  * API No. 0
@@ -56,9 +57,10 @@ exports.postUsers = async function (req, res) {
 
     // 형식 체크 (by 정규표현식)
 
-    if (!regExp.test(phoneNumber))
+    if (regExp.test(phoneNumber)) 
         return res.send(response(baseResponse.REGISTER_PHONE_ERROR_TYPE_HYPHEN))
-
+    if (!regExpcheck.test(phoneNumber))
+        return res.send(response(baseResponse.REGISTER_PHONE_INVALID_VALUE))
 
     // register 함수 실행을 통한 결과 값을 registerResponse에 저장
     const registerResponse = await userService.register(
