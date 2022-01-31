@@ -25,15 +25,15 @@ async function selectUserEmail(connection, email) {
 
 
 // userId 회원 조회
-async function selectUserId(connection, userId) {
-  const selectUserIdQuery = `
-                 SELECT id, email, nickname 
-                 FROM UserInfo 
-                 WHERE id = ?;
-                 `;
-  const [userRow] = await connection.query(selectUserIdQuery, userId);
-  return userRow;
-}
+// async function selectUserId(connection, userId) {
+//   const selectUserIdQuery = `
+//                  SELECT id, email, nickname 
+//                  FROM UserInfo 
+//                  WHERE id = ?;
+//                  `;
+//   const [userRow] = await connection.query(selectUserIdQuery, userId);
+//   return userRow;
+// }
 
 // 유저 생성
 async function insertUserInfo(connection, insertUserInfoParams) {
@@ -88,6 +88,8 @@ async function updateUserInfo(connection, id, nickname) {
 
 
 //if가 만드는 로직~
+
+//ID만 가져오는 함수
 async function selectUserID(connection,ID) {
   const selectUserIDQuery = `
                   SELECT ID
@@ -98,6 +100,8 @@ async function selectUserID(connection,ID) {
   return IDRow;
 }
 
+
+//닉네임만 가져오는 함수
 async function selectUsernickname(connection,nickname) {
   const selectUsernicknameQuery = `
                   SELECT nickname
@@ -108,6 +112,8 @@ async function selectUsernickname(connection,nickname) {
   return nicknameRow;
 }
 
+
+//ID랑 PW 가져오는 함수
 async function selectUserPassword(connection, selectUserPasswordParams) {
   const selectUserPasswordQuery = `
         SELECT ID, password
@@ -121,6 +127,8 @@ async function selectUserPassword(connection, selectUserPasswordParams) {
   return selectUserPasswordRow;
 }
 
+
+//ID로 계정의 STATUS여부 확인 함수
 async function selectUserAccount(connection, ID) {
   const selectUserAccountQuery = `
         SELECT status, ID
@@ -138,7 +146,6 @@ async function selectUserAccount(connection, ID) {
 module.exports = {
   selectUser,
   selectUserEmail,
-  selectUserId,
   insertUserInfo,
   selectUserPassword,
   selectUserAccount,

@@ -47,17 +47,6 @@ exports.emailCheck = async function (email) {
 
 
 
-// exports.passwordCheck = async function (selectUserPasswordParams) {
-//   const connection = await pool.getConnection(async (conn) => conn);
-//   // 쿼리문에 여러개의 인자를 전달할 때 selectUserPasswordParams와 같이 사용합니다.
-//   const passwordCheckResult = await userDao.selectUserPassword(
-//       connection,
-//       selectUserPasswordParams
-//   );
-//   connection.release();
-//   return passwordCheckResult[0];
-// };
-
 exports.accountCheck = async function (ID) {
   const connection = await pool.getConnection(async (conn) => conn);
   const userAccountResult = await userDao.selectUserAccount(connection, ID);
@@ -70,6 +59,7 @@ exports.accountCheck = async function (ID) {
 
 //if가만드는 로직~
 
+//ID중복검사 함수 
 exports.IDCheck = async function (ID) {
   const connection = await pool.getConnection(async (conn) => conn);
   const IDCheckResult = await userDao.selectUserID(connection, ID);
@@ -78,6 +68,7 @@ exports.IDCheck = async function (ID) {
   return IDCheckResult;
 };
 
+//닉네임중복검사 함수
 exports.nicknameCheck = async function (nickname) {
   const connection = await pool.getConnection(async (conn) => conn);
   const nicknameCheckResult = await userDao.selectUsernickname(connection, nickname);
@@ -85,6 +76,7 @@ exports.nicknameCheck = async function (nickname) {
 
   return nicknameCheckResult;
 };
+
 
 exports.passwordCheck = async function (selectUserPasswordParams) {
   const connection = await pool.getConnection(async (conn) => conn);

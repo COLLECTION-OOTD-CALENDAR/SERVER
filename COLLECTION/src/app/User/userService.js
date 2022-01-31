@@ -26,7 +26,7 @@ exports.register = async function (name,nickname,ID,password,phoneNumber) {
 
         // 닉네임 중복 확인 
         // ID 중복 확인 방법과 동일하게 진행 
-        const nicknameRows = await userProvider.nicknameCheck(ID);
+        const nicknameRows = await userProvider.nicknameCheck(nickname);
             if (nicknameRows.length > 0)
                 return errResponse(baseResponse.REGISTER_NICKNAME_REDUNDANT);
 
