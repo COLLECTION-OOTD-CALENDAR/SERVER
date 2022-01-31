@@ -185,34 +185,34 @@ exports.modiNickname = async function (req, res) {
  * body : password, phoneNumber
  */
 
-exports.modiPWPhone = async function (req, res) {
-    const IDFromJWT = req.verifiedToken.userId
+// exports.modiPWPhone = async function (req, res) {
+//     const IDFromJWT = req.verifiedToken.userId
 
-    const userIdx = req.params.userIdx;
+//     const userIdx = req.params.userIdx;
     
-    const originPassword = req.body.password
+//     const originPassword = req.body.password
 
-    const newPassword = req.body.password
+//     const newPassword = req.body.password
 
-    const phoneNumber = req.body.phoneNumber
+//     const phoneNumber = req.body.phoneNumber
 
 
-    if (IDFromJWT != userIdx) {
-        res.send(errResponse(baseResponse.))
-    } 
-    else {
-        if (!originPassword)
-            return res.send(errResponse(baseResponse.MODI_OLD_PW_EMPTY))
-        if (!newPassword)
-            return res.send(errResponse(baseResponse.MODI_NEW_PW_EMPTY))
-        if (!phoneNumber)
-            return res.send(errResponse(baseResponse.MODI_NEW_PHONE_EMPTY))
+//     if (IDFromJWT != userIdx) {
+//         res.send(errResponse(baseResponse.))
+//     } 
+//     else {
+//         if (!originPassword)
+//             return res.send(errResponse(baseResponse.MODI_OLD_PW_EMPTY))
+//         if (!newPassword)
+//             return res.send(errResponse(baseResponse.MODI_NEW_PW_EMPTY))
+//         if (!phoneNumber)
+//             return res.send(errResponse(baseResponse.MODI_NEW_PHONE_EMPTY))
 
-        const editNickname = await userService.editNickname(userIdx, nickname)
-        return res.send(editNickname)
-    }
+//         const editNickname = await userService.editNickname(userIdx, nickname)
+//         return res.send(editNickname)
+//     }
     
-}
+// }
 
 
 

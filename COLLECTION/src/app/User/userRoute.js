@@ -21,7 +21,7 @@ module.exports = function(app){
     app.patch('app/user/modi/:userIdx',jwtMiddleware, user.modiNickname);
 
     //6. 회원정보 수정 (비밀번호, 전화번호)
-    app.patch('app/user/modi/:userIdx',jwtMiddleware, user.modiPWPhone);
+    // app.patch('app/user/modi/:userIdx',jwtMiddleware, user.modiPWPhone);
 
     // // 2. 유저 조회 API (+ 검색)
     // app.get('/app/users',user.getUsers); 
