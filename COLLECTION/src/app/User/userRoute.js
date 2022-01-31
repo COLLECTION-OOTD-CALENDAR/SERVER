@@ -9,13 +9,13 @@ module.exports = function(app){
     app.post('/app/users/register', user.postUsers);
 
     // 2. 중복 ID 확인 
-    app.get('/app/users/duplicate-id',user.duplicate_ID);
+    app.get('/app/users/duplicate-id',user.duplicateID);
 
     // 3. 중복 닉네임 확인
-    app.get('/app/users/duplicate-nickname',user.duplicate_nickname);
+    app.get('/app/users/duplicate-nickname',user.duplicateNickname);
 
-    // 4. 로그인 
-    // app.post('/app/user/login',user.login);
+    //4. 로그인 
+    app.post('/app/user/login',user.login);
 
     // // 2. 유저 조회 API (+ 검색)
     // app.get('/app/users',user.getUsers); 

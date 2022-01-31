@@ -47,13 +47,7 @@ exports.emailCheck = async function (email) {
 
 
 
-exports.accountCheck = async function (ID) {
-  const connection = await pool.getConnection(async (conn) => conn);
-  const userAccountResult = await userDao.selectUserAccount(connection, ID);
-  connection.release();
 
-  return userAccountResult;
-};
 
 
 
@@ -77,7 +71,7 @@ exports.nicknameCheck = async function (nickname) {
   return nicknameCheckResult;
 };
 
-
+//PW확인 함수(WITH ID)
 exports.passwordCheck = async function (selectUserPasswordParams) {
   const connection = await pool.getConnection(async (conn) => conn);
   // 쿼리문에 여러개의 인자를 전달할 때 selectUserPasswordParams와 같이 사용합니다.
@@ -87,5 +81,14 @@ exports.passwordCheck = async function (selectUserPasswordParams) {
   );
   connection.release();
   return passwordCheckResult[0];
+};
+
+//계정확인 함수
+exports.accountCheck = async function (ID) {
+  const connection = await pool.getConnection(async (conn) => conn);
+  const userAccountResult = await userDao.selectUserAccount(connection, ID);
+  connection.release();
+
+  return userAccountResult;
 };
 

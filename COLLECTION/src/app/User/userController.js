@@ -78,10 +78,10 @@ exports.postUsers = async function (req, res) {
 /**
  * API No. 2
  * API Name : 중복 ID 확인 
- * [GET] /app/user/duplicate-id
+ * [GET] /app/users/duplicate-id
  */
 
-exports.duplicate_ID = async function (req, res) {
+exports.duplicateID = async function (req, res) {
 
     const ID = req.body;
 
@@ -95,7 +95,6 @@ exports.duplicate_ID = async function (req, res) {
         return res.send(response(baseResponse.REGISTER_ID_REDUNDANT));
     else
         return res.send(response(baseResponse.SUCCESS_DUPLICATE_ID));
-
     
 };
 
@@ -103,10 +102,10 @@ exports.duplicate_ID = async function (req, res) {
 /**
  * API No. 3
  * API Name : 중복 닉네임 확인
- * [GET] /app/user/duplicate-nickname
+ * [GET] /app/users/duplicate-nickname
  */
 
-exports.duplicate_nickname = async function(req, res) {
+exports.duplicateNickname = async function(req, res) {
 
     const nickname = req.body;
 
@@ -115,7 +114,7 @@ exports.duplicate_nickname = async function(req, res) {
         return res.send(response(baseResponse.REGISTER_NICKNAME_EMPTY)); 
 
     //중복 체크
-    const nicknameRows = await userProvider.nicknameCheck(ID);
+    const nicknameRows = await userProvider.nicknameCheck(nickname);
         if (nicknameRows.length > 0)
             return res.send(response(baseResponse.REGISTER_NICKNAME_REDUNDANT));
         else

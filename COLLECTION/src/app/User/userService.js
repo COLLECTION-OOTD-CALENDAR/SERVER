@@ -18,7 +18,7 @@ const crypto = require("crypto");
 exports.register = async function (name,nickname,ID,password,phoneNumber) {
     try {
         // ID 중복 확인
-        // UserProvider에서 해당 이메일과 같은 User 목록을 받아서 IDRows에 저장한 후, 배열의 길이를 검사한다.
+        // UserProvider에서 해당 ID와 같은 User 목록을 받아서 IDRows에 저장한 후, 배열의 길이를 검사한다.
         // -> 길이가 0 이상이면 이미 해당 ID를 갖고 있는 User가 조회된다는 의미
         const IDRows = await userProvider.IDCheck(ID);
         if (IDRows.length > 0)
@@ -78,14 +78,14 @@ exports.postLogIn = async function (ID, password) {
         // 계정 상태 확인
         const userInfoRows = await userProvider.accountCheck(ID);
 
-        // // if (userInfoRows[0].status === "INACTIVE") {
-        // //     return errResponse(baseResponse.LOGIN_ID_WRONG);
+        //  if (userInfoRows[0].status === "INACTIVE") {
+        //      return errResponse(baseResponse.LOGIN_ID_WRONG);
         // } 
         if (userInfoRows[0].status === "DELETED") {
-            return errResponse(baseResponse.LOGIN_UNREGISTER_USER);
+            return errResponse(baseResponse.LOGIN_UNREGISTER_USER); //탈퇴한 USER
         }
 
-        console.log(userInfoRows[0].ID) // DB의 userId
+        console.log(userInfoRows[0].ID) // DB의 ID 
 
         //토큰 생성 Service
         let token = await jwt.sign(
