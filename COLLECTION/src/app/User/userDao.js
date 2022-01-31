@@ -76,14 +76,7 @@ async function insertUserInfo(connection, insertUserInfoParams) {
 //   return selectUserAccountRow[0];
 // }
 
-async function updateUserInfo(connection, id, nickname) {
-  const updateUserQuery = `
-  UPDATE UserInfo 
-  SET nickname = ?
-  WHERE id = ?;`;
-  const updateUserRow = await connection.query(updateUserQuery, [nickname, id]);
-  return updateUserRow[0];
-}
+
 
 
 
@@ -139,6 +132,16 @@ async function selectUserAccount(connection, ID) {
       ID
   );
   return selectUserAccountRow[0];
+}
+
+//회원정보 수정 (닉네임) update 함수
+async function updateUserInfo(connection, userIdx, nickname) {
+  const updateUserQuery = `
+  UPDATE User 
+  SET nickname = ?
+  WHERE userIdx = ?;`;
+  const updateUserRow = await connection.query(updateUserQuery, [nickname, userIdx]);
+  return updateUserRow[0];
 }
 
 

@@ -145,7 +145,105 @@ exports.login = async function (req, res) {
     return res.send(logInResponse);
 }
 
+/**
+ * API NO.5
+ * API Name : 회원정보 수정 (닉네임)
+ * [PATCH] /app/user/modi/:userIdx
+ * path variable : userIdx
+ * body : nickname
+ */
 
+exports.modiNickname = async function (req, res) {
+
+    const IDFromJWT = req.verifiedToken.userIdx
+
+    const userIdx = req.params.userIdx;
+    
+    const nickname = req.body.nickname;
+
+
+
+    if (IDFromJWT != userIdx) {
+        res.send(errResponse(baseResponse.LOGIN_ID_WRONG))
+    } 
+    else {
+        if (!nickname) 
+            return res.send(errResponse(baseResponse.MODI_NEW_NICKNAME_EMPTY));
+
+        const editNickname = await userService.editNickname(userIdx, nickname)
+        return res.send(editNickname);
+
+    }
+
+}
+
+/**
+ * API NO.6
+ * API Name : 회원정보 수정(비밀번호, 전화번호)
+ * [PATCH] /app/user/modi/:userIdx
+ * path variable : userIdx
+ * body : password, phoneNumber
+ */
+
+exports.modiPWPhone = async function (req, res) {
+    const IDFromJWT = req.verifiedToken.userId
+
+    const userIdx = req.params.userIdx;
+    
+    const originPassword = req.body.password
+
+    const newPassword = req.body.password
+
+    const phoneNumber = req.body.phoneNumber
+
+
+    if (IDFromJWT != userIdx) {
+        res.send(errResponse(baseResponse.))
+    } 
+    else {
+        if (!originPassword)
+            return res.send(errResponse(baseResponse.MODI_OLD_PW_EMPTY))
+        if (!newPassword)
+            return res.send(errResponse(baseResponse.MODI_NEW_PW_EMPTY))
+        if (!phoneNumber)
+            return res.send(errResponse(baseResponse.MODI_NEW_PHONE_EMPTY))
+
+        const editNickname = await userService.editNickname(userIdx, nickname)
+        return res.send(editNickname)
+    }
+    
+}
+
+
+
+
+/**
+ * API No. 5
+ * API Name : 회원 정보 수정 API + JWT + Validation
+ * [PATCH] /app/users/:userId
+ * path variable : userId
+//  * body : nickname
+//  */
+// exports.patchUsers = async function (req, res) {
+
+//     // jwt - userId, path variable :userId
+
+//     const userIdFromJWT = req.verifiedToken.userId
+
+//     const userId = req.params.userId;
+//     const nickname = req.body.nickname;
+
+//     // JWT는 이 후 주차에 다룰 내용
+//     if (userIdFromJWT != userId) {
+//         res.send(errResponse(baseResponse.USER_ID_NOT_MATCH));
+//     } 
+//      else {
+//         if (!nickname) return res.send(errResponse(baseResponse.USER_NICKNAME_EMPTY));
+
+//         const editUserInfo = await userService.editUser(userId, nickname)
+//         return res.send(editUserInfo);
+//     }
+// };
 
 
 // /**
@@ -209,32 +307,7 @@ exports.login = async function (req, res) {
 // };
 
 
-/**
- * API No. 5
- * API Name : 회원 정보 수정 API + JWT + Validation
- * [PATCH] /app/users/:userId
- * path variable : userId
-//  * body : nickname
-//  */
-// exports.patchUsers = async function (req, res) {
 
-//     // jwt - userId, path variable :userId
-
-//     const userIdFromJWT = req.verifiedToken.userId
-
-//     const userId = req.params.userId;
-//     const nickname = req.body.nickname;
-
-//     // JWT는 이 후 주차에 다룰 내용
-//     if (userIdFromJWT != userId) {
-//         res.send(errResponse(baseResponse.USER_ID_NOT_MATCH));
-//     } else {
-//         if (!nickname) return res.send(errResponse(baseResponse.USER_NICKNAME_EMPTY));
-
-//         const editUserInfo = await userService.editUser(userId, nickname)
-//         return res.send(editUserInfo);
-//     }
-// };
 
 
 

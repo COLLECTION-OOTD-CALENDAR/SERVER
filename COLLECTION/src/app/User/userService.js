@@ -108,6 +108,27 @@ exports.postLogIn = async function (ID, password) {
 };
 
 
+
+//회원정보 수정(닉네임) API
+
+exports.editNickname = async function (userIdx, nickname) {
+    try {
+        const connection = await pool.getConnection(async (conn) => conn);
+        const editUserResult = await userDao.updateUserInfo(connection, userIdx, nickname)
+        connection.release();
+
+        return response(baseResponse.SUCCESS_USERS_MODI,{'nickname':editUserResult[0].nickname});
+
+    } catch (err) {
+        logger.error(`App - editNickname Service error\n: ${err.message}`);
+        return errResponse(baseResponse.DB_ERROR);
+    }
+}
+
+
+
+
+
 // // TODO: After 로그인 인증 방법 (JWT)
 // exports.postSignIn = async function (email, password) {
 //     try {
@@ -161,20 +182,7 @@ exports.postLogIn = async function (ID, password) {
 //     }
 // };
 
-exports.editUser = async function (id, nickname) {
-    try {
-        console.log(id)
-        const connection = await pool.getConnection(async (conn) => conn);
-        const editUserResult = await userDao.updateUserInfo(connection, id, nickname)
-        connection.release();
 
-        return response(baseResponse.SUCCESS);
-
-    } catch (err) {
-        logger.error(`App - editUser Service error\n: ${err.message}`);
-        return errResponse(baseResponse.DB_ERROR);
-    }
-}
 
 
 

@@ -6,16 +6,22 @@ module.exports = function(app){
     // app.get('/app/test', user.getTest)
 
     // 1. 회원가입API
-    app.post('/app/users/register', user.postUsers);
+    app.post('/app/user/register', user.postUsers);
 
     // 2. 중복 ID 확인 
-    app.get('/app/users/duplicate-id',user.duplicateID);
+    app.get('/app/user/duplicate-id',user.duplicateID);
 
     // 3. 중복 닉네임 확인
-    app.get('/app/users/duplicate-nickname',user.duplicateNickname);
+    app.get('/app/user/duplicate-nickname',user.duplicateNickname);
 
     //4. 로그인 
     app.post('/app/user/login',user.login);
+
+    //5. 회원정보 수정 (닉네임)
+    app.patch('app/user/modi/:userIdx',jwtMiddleware, user.modiNickname);
+
+    //6. 회원정보 수정 (비밀번호, 전화번호)
+    app.patch('app/user/modi/:userIdx',jwtMiddleware, user.modiPWPhone);
 
     // // 2. 유저 조회 API (+ 검색)
     // app.get('/app/users',user.getUsers); 
