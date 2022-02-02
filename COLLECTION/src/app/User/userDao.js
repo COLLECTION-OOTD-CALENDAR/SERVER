@@ -116,7 +116,8 @@ async function selectUserPassword(connection, selectUserPasswordParams) {
       selectUserPasswordQuery,
       selectUserPasswordParams
   );
-  console.log(selectUserPasswordRow);
+  console.log(`userdao :  ${selectUserPasswordRow[0]}\n`);
+  console.log(`userdao,전체버전 :  ${selectUserPasswordRow}\n`);
   return selectUserPasswordRow[0];
   
 }

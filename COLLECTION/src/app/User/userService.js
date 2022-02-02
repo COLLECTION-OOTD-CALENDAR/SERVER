@@ -72,9 +72,13 @@ exports.postLogIn = async function (ID, password) {
         const selectUserPasswordParams = [selectID, hashedPassword];
         const passwordRows = await userProvider.passwordCheck(selectUserPasswordParams);
 
-        if (passwordRows[0].password !== hashedPassword) {
-            return errResponse(baseResponse.LOGIN_PW_WRONG);
-        }
+        console.log(`passwordRows_userservice_0만 : ${passwordRows[0]}\n`);
+
+        console.log(`passwordRows_userservice_0과pw도 : ${passwordRows[0].password}\n`);
+
+            if (passwordRows[0].password !== hashedPassword) {
+                return errResponse(baseResponse.LOGIN_PW_WRONG);
+            }
 
         // 계정 상태 확인
         const userInfoRows = await userProvider.accountCheck(ID);
@@ -86,7 +90,7 @@ exports.postLogIn = async function (ID, password) {
             return errResponse(baseResponse.LOGIN_UNREGISTER_USER); //탈퇴한 USER
         }
 
-        console.log(userInfoRows[0].ID) // DB의 ID 
+        console.log(`db의 id(userservice) : ${userInfoRows[0].ID}`); // DB의 ID 
 
         //토큰 생성 Service
         let token = await jwt.sign(
