@@ -89,16 +89,8 @@ exports.duplicateID = async function (req, res) {
     if (!ID)
         return res.send(response(baseResponse.REGISTER_ID_EMPTY));
 
-    //중복 체크
-    const IDRows = await userProvider.IDCheck(ID);
-    console.log(IDRows);
-    if (IDRows.length > 0){
-        return res.send(response(baseResponse.REGISTER_ID_REDUNDANT));
-    }
-    else{
-        return res.send(response(baseResponse.SUCCESS_DUPLICATE_ID));
-    }
-
+    const dupliIDResponse = await userService.dupliID(ID);
+    return res.send(dupliIDResponse);
     
 };
 
@@ -117,14 +109,8 @@ exports.duplicateNickname = async function(req, res) {
     if(!nickname)
         return res.send(response(baseResponse.REGISTER_NICKNAME_EMPTY)); 
 
-    //중복 체크
-    const nicknameRows = await userProvider.nicknameCheck(nickname);
-        if (nicknameRows.length > 0){
-            return res.send(response(baseResponse.REGISTER_NICKNAME_REDUNDANT));
-        }
-        else{
-            return res.send(response(baseResponse.SUCCESS_DUPLICATE_NICKNAME));
-        }
+    const dupliNicknameResponse = await userService.dupliNickname(nickname);
+    return res.send(dupliNicknameResponse);
 };
 
 
