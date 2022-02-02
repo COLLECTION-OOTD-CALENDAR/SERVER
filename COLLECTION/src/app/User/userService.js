@@ -109,37 +109,37 @@ exports.postLogIn = async function (ID, password) {
 };
 
 //중복 ID 확인 API 
-exports.dupliID = async function(ID){
-    try{
-        const IDRows = await userProvider.IDCheck(ID);
-        console.log(`뭐가문제일까 : ${IDRows}`);
-        if (IDRows.length > 0){
-            return errResponse(baseResponse.REGISTER_ID_REDUNDANT);
-        }
-        else{
-            return errResponse(baseResponse.SUCCESS_DUPLICATE_ID);
-        }
-    } catch (err) {
-        logger.error(`App - dupliID Service error\n: ${err.message} \n${JSON.stringify(err)}`);
-        return errResponse(baseResponse.DB_ERROR);
-    }
-};
+// exports.dupliID = async function(ID){
+//     try{
+//         const IDRows = await userProvider.IDCheck(ID);
+//         console.log(`뭐가문제일까 : ${IDRows}`);
+//         if (IDRows.length > 0){
+//             return errResponse(baseResponse.REGISTER_ID_REDUNDANT);
+//         }
+//         else{
+//             return errResponse(baseResponse.SUCCESS_DUPLICATE_ID);
+//         }
+//     } catch (err) {
+//         logger.error(`App - dupliID Service error\n: ${err.message} \n${JSON.stringify(err)}`);
+//         return errResponse(baseResponse.DB_ERROR);
+//     }
+// };
 
 //중복 닉네임 확인 API
-exports.dupliNickname = async function(nickname){
-    try{
-        const nicknameRows = await userProvider.nicknameCheck(nickname);
-        if (nicknameRows.length > 0){
-            return errResponse(baseResponse.REGISTER_NICKNAME_REDUNDANT);
-        }
-        else{
-            return errResponse(baseResponse.SUCCESS_DUPLICATE_NICKNAME);
-        }
-    } catch (err) {
-        logger.error(`App - dupliNickname Service error\n: ${err.message} \n${JSON.stringify(err)}`);
-        return errResponse(baseResponse.DB_ERROR);
-    }
-};
+// exports.dupliNickname = async function(nickname){
+//     try{
+//         const nicknameRows = await userProvider.nicknameCheck(nickname);
+//         if (nicknameRows.length > 0){
+//             return errResponse(baseResponse.REGISTER_NICKNAME_REDUNDANT);
+//         }
+//         else{
+//             return errResponse(baseResponse.SUCCESS_DUPLICATE_NICKNAME);
+//         }
+//     } catch (err) {
+//         logger.error(`App - dupliNickname Service error\n: ${err.message} \n${JSON.stringify(err)}`);
+//         return errResponse(baseResponse.DB_ERROR);
+//     }
+// };
 
 
 //회원정보 수정(닉네임) API

@@ -9,10 +9,10 @@ module.exports = function(app){
     app.post('/app/user/register', user.postUsers);
 
     // 2. 중복 ID 확인 
-    app.get('/app/user/duplicate-id?ID=',user.duplicateID);
+    app.get('/app/user/duplicate-id',user.duplicateID);
 
     // 3. 중복 닉네임 확인
-    app.get('/app/user/duplicate-nickname?nickname=',user.duplicateNickname);
+    app.get('/app/user/duplicate-nickname',user.duplicateNickname);
 
     //4. 로그인 
     app.post('/app/user/login',user.login);

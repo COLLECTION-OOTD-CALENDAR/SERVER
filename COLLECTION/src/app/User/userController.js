@@ -89,8 +89,20 @@ exports.duplicateID = async function (req, res) {
     if (!ID)
         return res.send(response(baseResponse.REGISTER_ID_EMPTY));
 
-    const dupliIDResponse = await userService.dupliID(ID);
-    return res.send(dupliIDResponse);
+    try{
+        const IDRows = await userProvider.IDCheck(ID);
+        console.log(`뭐가문제일까 : ${IDRows}`);
+        if (IDRows.length > 0){
+            return res.send(response(baseResponse.REGISTER_ID_REDUNDANT));
+        }
+        else{
+            return res.send(response(baseResponse.SUCCESS_DUPLICATE_ID));
+        }
+    } catch (err) {
+        logger.error(`App - dupliID Service error\n: ${err.message} \n${JSON.stringify(err)}`);
+        return res.send(response(baseResponse.DB_ERROR));
+    }
+
     
 };
 
@@ -109,8 +121,20 @@ exports.duplicateNickname = async function(req, res) {
     if(!nickname)
         return res.send(response(baseResponse.REGISTER_NICKNAME_EMPTY)); 
 
-    const dupliNicknameResponse = await userService.dupliNickname(nickname);
-    return res.send(dupliNicknameResponse);
+    try{
+        const nicknameRows = await userProvider.nicknameCheck(nickname);
+        if (nicknameRows.length > 0){
+            return res.send(response(baseResponse.REGISTER_NICKNAME_REDUNDANT));
+        }
+        else{
+            return res.send(response(baseResponse.SUCCESS_DUPLICATE_NICKNAME));
+        }
+    } catch (err) {
+        logger.error(`App - dupliNickname Service error\n: ${err.message} \n${JSON.stringify(err)}`);
+        return res.send(response(baseResponse.DB_ERROR));
+    }
+
+
 };
 
 
