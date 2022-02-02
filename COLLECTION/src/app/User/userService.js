@@ -78,7 +78,7 @@ exports.postLogIn = async function (ID, password) {
         
         console.log(`hashedPw : ${hashedPassword}\n`)
 
-        if (passwordRows[0].password !== hashedPassword) {
+        if (passwordRows.password !== hashedPassword) {
             return errResponse(baseResponse.LOGIN_PW_WRONG);
         }
 
