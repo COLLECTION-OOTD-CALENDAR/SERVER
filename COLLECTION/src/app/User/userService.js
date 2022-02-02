@@ -111,6 +111,7 @@ exports.postLogIn = async function (ID, password) {
 exports.dupliID = async function(ID){
     try{
         const IDRows = await userProvider.IDCheck(ID);
+        console.log(`뭐가문제일까 : ${IDRows}`);
         if (IDRows.length > 0){
             return errResponse(baseResponse.REGISTER_ID_REDUNDANT);
         }
