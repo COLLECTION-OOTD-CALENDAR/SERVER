@@ -21,6 +21,7 @@ exports.register = async function (name,nickname,ID,password,phoneNumber) {
         // UserProvider에서 해당 ID와 같은 User 목록을 받아서 IDRows에 저장한 후, 배열의 길이를 검사한다.
         // -> 길이가 0 이상이면 이미 해당 ID를 갖고 있는 User가 조회된다는 의미
         const IDRows = await userProvider.IDCheck(ID);
+        console.log(`뭐가문제일까 : ${IDRows}`);
         if (IDRows.length > 0)
             return errResponse(baseResponse.REGISTER_ID_REDUNDANT);
 
