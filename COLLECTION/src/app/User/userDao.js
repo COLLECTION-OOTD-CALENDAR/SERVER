@@ -107,20 +107,33 @@ async function selectUsernickname(connection,nickname) {
 
 
 //ID랑 PW 가져오는 함수
-async function selectUserPassword(connection, selectUserPasswordParams) {
+async function selectUserPassword(connection, selectID) {
   const selectUserPasswordQuery = `
         SELECT ID, password
         FROM User 
-        WHERE ID = ? AND password = ?;`;
-  const selectUserPasswordRow = await connection.query(
-      selectUserPasswordQuery,
-      selectUserPasswordParams
-  );
+        WHERE ID = ?`;
+  const selectUserPasswordRow = await connection.query(selectUserPasswordQuery,selectID);
   console.log(`userdao :  ${selectUserPasswordRow[0]}\n`);
   console.log(`userdao,전체버전 :  ${selectUserPasswordRow}\n`);
   return selectUserPasswordRow[0];
   
 }
+
+//ID랑 PW 가져오는 함수
+// async function selectUserPassword(connection, selectUserPasswordParams) {
+//   const selectUserPasswordQuery = `
+//         SELECT ID, password
+//         FROM User 
+//         WHERE ID = ?`;
+//   const selectUserPasswordRow = await connection.query(
+//       selectUserPasswordQuery,
+//       selectUserPasswordParams
+//   );
+//   console.log(`userdao :  ${selectUserPasswordRow[0]}\n`);
+//   console.log(`userdao,전체버전 :  ${selectUserPasswordRow}\n`);
+//   return selectUserPasswordRow[0];
+  
+// }
 
 
 //ID로 계정의 STATUS여부 확인 함수
