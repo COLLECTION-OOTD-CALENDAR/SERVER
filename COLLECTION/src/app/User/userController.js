@@ -83,7 +83,7 @@ exports.postUsers = async function (req, res) {
 
 exports.duplicateID = async function (req, res) {
 
-    const ID = req.body;
+    const ID = req.query.ID;
 
     //빈 값 체크
     if (!ID)
@@ -103,7 +103,7 @@ exports.duplicateID = async function (req, res) {
 
 exports.duplicateNickname = async function(req, res) {
 
-    const nickname = req.body;
+    const nickname = req.query.nickname;
 
     //빈 값 체크
     if(!nickname)
