@@ -75,10 +75,12 @@ exports.postLogIn = async function (ID, password) {
         console.log(`passwordRows_userservice_0만 : ${passwordRows[0]}\n`);
 
         console.log(`passwordRows_userservice_0과pw도 : ${passwordRows[0].password}\n`);
+        
+        console.log(`hashedPw : ${hashedPassword}\n`)
 
-            if (passwordRows[0].password !== hashedPassword) {
-                return errResponse(baseResponse.LOGIN_PW_WRONG);
-            }
+        if (passwordRows[0].password !== hashedPassword) {
+            return errResponse(baseResponse.LOGIN_PW_WRONG);
+        }
 
         // 계정 상태 확인
         const userInfoRows = await userProvider.accountCheck(ID);

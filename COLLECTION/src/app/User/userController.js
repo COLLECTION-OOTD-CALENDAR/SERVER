@@ -145,7 +145,8 @@ exports.duplicateNickname = async function(req, res) {
 
 exports.login = async function (req, res) {
 
-    const {ID, password} = req.body;
+    const ID = req.body.ID;
+    const password = req.body.password;
 
     //빈 값 체크
     if(!ID)
