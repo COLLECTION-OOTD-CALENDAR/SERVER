@@ -91,10 +91,14 @@ exports.duplicateID = async function (req, res) {
 
     //중복 체크
     const IDRows = await userProvider.IDCheck(ID);
-    if (IDRows.length > 0)
+    console.log(IDRows);
+    if (IDRows.length > 0){
         return res.send(response(baseResponse.REGISTER_ID_REDUNDANT));
-    else
+    }
+    else{
         return res.send(response(baseResponse.SUCCESS_DUPLICATE_ID));
+    }
+
     
 };
 
@@ -115,10 +119,12 @@ exports.duplicateNickname = async function(req, res) {
 
     //중복 체크
     const nicknameRows = await userProvider.nicknameCheck(nickname);
-        if (nicknameRows.length > 0)
+        if (nicknameRows.length > 0){
             return res.send(response(baseResponse.REGISTER_NICKNAME_REDUNDANT));
-        else
+        }
+        else{
             return res.send(response(baseResponse.SUCCESS_DUPLICATE_NICKNAME));
+        }
 };
 
 
