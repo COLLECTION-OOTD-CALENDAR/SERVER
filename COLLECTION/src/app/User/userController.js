@@ -19,7 +19,7 @@ var regExpcheck = /^01([0|1|6|7|8|9])([0-9]{3,4})?([0-9]{4})$/;
 /**
  * API No. 1
  * API Name : 회원가입 API
- * [POST] /app/users/register
+ * [POST] /app/user/register
  */
 exports.postUsers = async function (req, res) {
 
@@ -78,7 +78,7 @@ exports.postUsers = async function (req, res) {
 /**
  * API No. 2
  * API Name : 중복 ID 확인 
- * [GET] /app/users/duplicate-id
+ * [GET] /app/user/duplicate-id
  */
 
 exports.duplicateID = async function (req, res) {
@@ -98,7 +98,7 @@ exports.duplicateID = async function (req, res) {
 /**
  * API No. 3
  * API Name : 중복 닉네임 확인
- * [GET] /app/users/duplicate-nickname
+ * [GET] /app/user/duplicate-nickname
  */
 
 exports.duplicateNickname = async function(req, res) {
