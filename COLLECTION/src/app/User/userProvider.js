@@ -80,7 +80,7 @@ exports.passwordCheck = async function (selectUserPasswordParams) {
       selectUserPasswordParams
   );
   connection.release();
-  return passwordCheckResult[0];
+  return passwordCheckResult;
 };
 
 //계정확인 함수

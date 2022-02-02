@@ -71,7 +71,7 @@ exports.postLogIn = async function (ID, password) {
         const selectUserPasswordParams = [selectID, hashedPassword];
         const passwordRows = await userProvider.passwordCheck(selectUserPasswordParams);
 
-        if (passwordRows[0].password !== hashedPassword) {
+        if (passwordRows.password !== hashedPassword) {
             return errResponse(baseResponse.LOGIN_PW_WRONG);
         }
 
