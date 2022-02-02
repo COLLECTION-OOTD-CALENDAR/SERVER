@@ -116,8 +116,9 @@ async function selectUserPassword(connection, selectUserPasswordParams) {
       selectUserPasswordQuery,
       selectUserPasswordParams
   );
-
-  return selectUserPasswordRow;
+  console.log(selectUserPasswordRow);
+  return selectUserPasswordRow[0];
+  
 }
 
 

@@ -91,7 +91,6 @@ exports.duplicateID = async function (req, res) {
 
     try{
         const IDRows = await userProvider.IDCheck(ID);
-        console.log(`뭐가문제일까 : ${IDRows}`);
         if (IDRows.length > 0){
             return res.send(response(baseResponse.REGISTER_ID_REDUNDANT));
         }
