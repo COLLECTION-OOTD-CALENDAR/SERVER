@@ -128,8 +128,8 @@ exports.editNickname = async function (nickname, userIdx) {
         connection.release();
         console.log(`userservice의 ${editUserResult}`);
         console.log(`userservice의 ${editUserResult[0]}`);
-        console.log(`userservice의 ${editUserResult[0].nickname}`);
-        return response(baseResponse.SUCCESS_USERS_MODI,{'nickname':editUserResult[0].nickname});
+        console.log(`userservice의 ${editUserResult.nickname}`);
+        return response(baseResponse.SUCCESS_USERS_MODI,{'nickname':editUserResult.nickname});
 
     } catch (err) {
         logger.error(`App - editNickname Service error\n: ${err.message}`);
