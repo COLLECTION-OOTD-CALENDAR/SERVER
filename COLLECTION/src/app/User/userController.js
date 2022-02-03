@@ -177,7 +177,8 @@ exports.modiNickname = async function (req, res) {
     
     const nickname = req.body.nickname;
 
-
+    console.log(`IDFromJWT : ${IDFromJWT}`)
+    console.log(`userIdx : ${userIdx}`)
 
     if (IDFromJWT != userIdx) {
         res.send(errResponse(baseResponse.LOGIN_ID_WRONG))
