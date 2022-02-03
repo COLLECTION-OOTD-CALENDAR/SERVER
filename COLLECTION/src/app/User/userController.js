@@ -187,6 +187,15 @@ exports.modiNickname = async function (req, res) {
         if (!nickname) 
             return res.send(errResponse(baseResponse.MODI_NEW_NICKNAME_EMPTY));
 
+        const nicknameRows = await userProvider.nicknameCheck(nickname);
+        if (nicknameRows.length > 0)
+            return res.send(response(baseResponse.REGISTER_NICKNAME_REDUNDANT));
+        
+        else if (nickname.length < 2 || nickname.length > 6 )  
+            return res.send(response(baseResponse.REGISTER_NICKNAME_LENGTH));
+
+ 
+
         const editNickname = await userService.editNickname(nickname, userIdx);
         console.log(`userContorller의 nickname : ${nickname}`);
         return res.send(editNickname);
