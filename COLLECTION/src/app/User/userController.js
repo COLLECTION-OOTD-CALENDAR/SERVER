@@ -171,7 +171,7 @@ exports.login = async function (req, res) {
 
 exports.modiNickname = async function (req, res) {
 
-    const IDFromJWT = req.verifiedToken.userIdx
+    const IDFromJWT = req.verifiedToken.userId
 
     const userIdx = req.params.userIdx;
     
