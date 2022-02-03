@@ -121,12 +121,14 @@ exports.postLogIn = async function (ID, password) {
 
 //회원정보 수정(닉네임) API
 
-exports.editNickname = async function (userIdx, nickname) {
+exports.editNickname = async function (nickname, userIdx) {
     try {
         const connection = await pool.getConnection(async (conn) => conn);
-        const editUserResult = await userDao.updateUserInfo(connection, userIdx, nickname)
+        const editUserResult = await userDao.updateUserInfo(connection, nickname, userIdx)
         connection.release();
-
+        console.log(`userservice의 ${editUserResult}`);
+        console.log(`userservice의 ${editUserResult[0]}`);
+        console.log(`userservice의 ${editUserResult[0].nickname}`);
         return response(baseResponse.SUCCESS_USERS_MODI,{'nickname':editUserResult[0].nickname});
 
     } catch (err) {
