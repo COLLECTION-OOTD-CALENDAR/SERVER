@@ -164,7 +164,7 @@ exports.login = async function (req, res) {
 /**
  * API NO.5
  * API Name : 회원정보 수정 (닉네임)
- * [PATCH] /app/user/modi/:userIdx
+ * [PATCH] /app/user/modi-nickname/:userIdx
  * path variable : userIdx
  * body : nickname
  */
@@ -206,39 +206,96 @@ exports.modiNickname = async function (req, res) {
 
 /**
  * API NO.6
- * API Name : 회원정보 수정(비밀번호, 전화번호)
- * [PATCH] /app/user/modi/:userIdx
+ * API Name : 회원정보 수정(비밀번호)
+ * [PATCH] /app/user/modi-password/:userIdx
  * path variable : userIdx
- * body : password, phoneNumber
+ * body : password
  */
 
-exports.modiPWPhone = async function (req, res) {
+exports.modiPW = async function (req, res) {
     const IDFromJWT = req.verifiedToken.userIdx;
 
     const userIdx = req.params.userIdx;
     
-    const originPassword = req.body.password;
+    const originPassword = req.body.originPassword;
 
-    const newPassword = req.body.password;
+    const newPassword = req.body.newPassword;
 
-    const phoneNumber = req.body.phoneNumber;
+    const checkPassword = req.body.checkPassword;
+
+    
 
 
     if (IDFromJWT != userIdx) {
         res.send(errResponse(baseResponse.LOGIN_ID_WRONG))
     } 
     else {
+        //빈값
         if (!originPassword)
             return res.send(errResponse(baseResponse.MODI_OLD_PW_EMPTY))
         if (!newPassword)
             return res.send(errResponse(baseResponse.MODI_NEW_PW_EMPTY))
-        if (!phoneNumber)
-            return res.send(errResponse(baseResponse.MODI_NEW_PHONE_EMPTY))
+        if(!checkPassword)
+            return res.send(errResponse(baseResponse.MODI_CHECK_PW_EMPTY))
 
-        const editNickname = await userService.editNickname(userIdx, nickname)
-        return res.send(editNickname)
+
+        //길이
+        if (originPassword.length < 6 || originPassword.length > 15 )  
+            return res.send(response(baseResponse.REGISTER_PW_LENGTH));
+        if (newPassword.length < 6 || newPassword.length > 15 )  
+            return res.send(response(baseResponse.REGISTER_PW_LENGTH));
+        if (checkPassword.length < 6 || checkPassword.length > 15 )  
+            return res.send(response(baseResponse.REGISTER_PW_LENGTH));
+
+        if(newPassword != checkPassword)
+            return res.send(errResponse)
+
+
+
+        const editPW = await userService.editPW(
+            userIdx, 
+            originPassword,
+            newPassword,
+            checkPassword,
+        );
+
+        return res.send(editPW)
     }
     
+}
+
+/**
+ * API NO. 7
+ * API Name : 회원정보 수정 (전화번호)
+ * [PATCH] /app/user/modi-phone/:userIdx
+ * path variable : userIdx
+ * body : phoneNumber
+ */
+
+exports.modiPhone = async function (req, res) {
+    const IDFromJWT = req.verifiedToken.userIdx;
+
+    const userIdx = req.params.userIdx;
+
+    const phoneNumber = req.body.phoneNumber;
+
+    if (IDFromJWT != userIdx) {
+        res.send(errResponse(baseResponse.LOGIN_ID_WRONG))
+    } 
+    else {
+        if (!phoneNumber)
+            return res.send(errResponse(baseResponse.MODI_NEW_PHONE_EMPTY));
+
+        else if (regExp.test(phoneNumber)) 
+            return res.send(response(baseResponse.REGISTER_PHONE_ERROR_TYPE_HYPHEN));
+
+        else if (!regExpcheck.test(phoneNumber))
+            return res.send(response(baseResponse.REGISTER_PHONE_INVALID_VALUE));
+        
+    }
+
+    const editPhone = await userService.editPhone(phoneNumber, userIdx);
+    return res.send(editPhone);
 }
 
 

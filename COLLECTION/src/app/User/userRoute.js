@@ -18,10 +18,13 @@ module.exports = function(app){
     app.post('/app/user/login',user.login);
 
     //5. 회원정보 수정 (닉네임)
-    app.patch('/app/user/modi/:userIdx',jwtMiddleware, user.modiNickname);
+    app.patch('/app/user/modi-nickname/:userIdx',jwtMiddleware, user.modiNickname);
 
-    //6. 회원정보 수정 (비밀번호, 전화번호)
-    // app.patch('/app/user/modi/:userIdx',jwtMiddleware, user.modiPWPhone);
+    //6. 회원정보 수정 (비밀번호)
+    // app.patch('/app/user/modi-password/:userIdx',jwtMiddleware, user.modiPWPhone);
+
+    //7. 회원정보 수정 (전화번호)
+    app.patch('/app/user/modi-phone/:userIdx',jwtMiddleware, user.modiPhone);
 
     // // 2. 유저 조회 API (+ 검색)
     // app.get('/app/users',user.getUsers); 

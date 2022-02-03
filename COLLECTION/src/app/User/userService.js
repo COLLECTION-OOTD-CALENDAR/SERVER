@@ -124,19 +124,61 @@ exports.postLogIn = async function (ID, password) {
 exports.editNickname = async function (nickname, userIdx) {
     try {
         const connection = await pool.getConnection(async (conn) => conn);
-        const editUserResult = await userDao.updateUserInfo(connection, nickname, userIdx)
+        const editUserResult = await userDao.updateNicknameInfo(connection, nickname, userIdx)
         connection.release();
         console.log(`userservice의 ${editUserResult}`);
         console.log(`userservice의 ${editUserResult[0]}`);
         console.log(`userservice의 ${editUserResult.nickname}`);
         console.log(`userservice의 ${editUserResult[0].nickname}`);
-        return response(baseResponse.SUCCESS_USERS_MODI,{'nickname': editUserResult});
+        return response(baseResponse.SUCCESS_USERS_MODI,{'nickname': nickname});
 
     } catch (err) {
         logger.error(`App - editNickname Service error\n: ${err.message}`);
         return errResponse(baseResponse.DB_ERROR);
     }
 }
+
+//회원정보 수정(비밀번호) API
+
+exports.editPW = async function (userIdx,originPassword,newPassword,checkPassword) {
+    try {
+        const connection = await pool.getConnection(async (conn) => conn);
+        
+
+        const insertUserResultParams = [newPassword, userIdx]
+
+        const editUserResult = await userDao.updatePWInfo(connection, insertUserResultParams)
+        connection.release();
+
+        return response(baseResponse.SUCCESS_USERS_MODI,{'password': newPassword});
+
+    } catch (err) {
+        logger.error(`App - editPW Service error\n: ${err.message}`);
+        return errResponse(baseResponse.DB_ERROR);
+    }
+}
+
+//회원정보 수정(전화번호) API
+
+exports.editPhone = async function (phoneNumber, userIdx) {
+    try {
+        const connection = await pool.getConnection(async (conn) => conn);
+        
+
+        const insertUserResultParams = [phoneNumber, userIdx]
+
+        const editUserResult = await userDao.updatePhoneInfo(connection, insertUserResultParams)
+        connection.release();
+
+        return response(baseResponse.SUCCESS_USERS_MODI,{'phoneNumber': phoneNumber});
+
+    } catch (err) {
+        logger.error(`App - editPhone Service error\n: ${err.message}`);
+        return errResponse(baseResponse.DB_ERROR);
+    }
+}
+
+
 
 
 

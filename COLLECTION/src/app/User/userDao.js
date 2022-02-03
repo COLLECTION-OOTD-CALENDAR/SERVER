@@ -135,7 +135,7 @@ async function selectUserAccount(connection, ID) {
 }
 
 //회원정보 수정 (닉네임) update 함수
-async function updateUserInfo(connection, nickname, userIdx) {
+async function updateNicknameInfo(connection, nickname, userIdx) {
   const updateUserQuery = `
     UPDATE User 
     SET nickname = ?
@@ -147,6 +147,27 @@ async function updateUserInfo(connection, nickname, userIdx) {
 }
 
 
+//회원정보 수정 (비밀번호) update 함수
+async function updatePWInfo(connection, insertUserResultParams) {
+  const updateUserQuery = `
+    UPDATE User 
+    SET password = ?
+    WHERE userIdx = ?;`;
+  const updateUserRow = await connection.query(updateUserQuery, insertUserResultParams);
+  return updateUserRow;
+}
+
+
+//회원정보 수정 (전화번호) update 함수
+async function updatePhoneInfo(connection, insertUserResultParams) {
+  const updateUserQuery = `
+    UPDATE User 
+    SET phoneNumber = ?
+    WHERE userIdx = ?;`;
+  const updateUserRow = await connection.query(updateUserQuery, insertUserResultParams);
+  return updateUserRow;
+}
+
 
 module.exports = {
   selectUser,
@@ -154,7 +175,9 @@ module.exports = {
   insertUserInfo,
   selectUserPassword,
   selectUserAccount,
-  updateUserInfo,
+  updateNicknameInfo,
+  updatePWInfo,
+  updatePhoneInfo,
   selectUserID,
   selectUsernickname,
 
