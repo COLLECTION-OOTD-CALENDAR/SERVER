@@ -141,6 +141,8 @@ async function updateUserInfo(connection, userIdx, nickname) {
   SET nickname = ?
   WHERE userIdx = ?;`;
   const updateUserRow = await connection.query(updateUserQuery, [nickname, userIdx]);
+  console.log(`userdao :  ${updateUserRow[0]}\n`);
+  console.log(`userdao,전체버전 :  ${updateUserRow}\n`);
   return updateUserRow[0];
 }
 

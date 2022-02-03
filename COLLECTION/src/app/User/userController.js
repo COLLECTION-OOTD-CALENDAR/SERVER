@@ -187,7 +187,8 @@ exports.modiNickname = async function (req, res) {
         if (!nickname) 
             return res.send(errResponse(baseResponse.MODI_NEW_NICKNAME_EMPTY));
 
-        const editNickname = await userService.editNickname(userIdx, nickname)
+        const editNickname = await userService.editNickname(userIdx, nickname);
+        console.log(`userContorller의 nickname : ${nickname}`);
         return res.send(editNickname);
 
     }
