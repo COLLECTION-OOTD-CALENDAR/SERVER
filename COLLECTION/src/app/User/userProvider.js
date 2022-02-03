@@ -91,3 +91,11 @@ exports.accountCheck = async function (ID) {
   return userAccountResult;
 };
 
+//계정확인 함수(복사본)
+// exports.accountCheck = async function (ID) {
+//   const connection = await pool.getConnection(async (conn) => conn);
+//   const userAccountResult = await userDao.selectUserAccount(connection, ID);
+//   connection.release();
+
+//   return userAccountResult;
+// };
