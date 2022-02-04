@@ -178,6 +178,16 @@ async function updatePhoneInfo(connection, insertUserResultParams) {
   return updateUserRow;
 }
 
+//회원탈퇴 함수 
+async function unregisterUser(connection, userIdx) {
+  const updateUserQuery = `
+    UPDATE User 
+    SET status = inactive
+    WHERE userIdx = ?;`;
+  const unregisterUserRow = await connection.query(updateUserQuery, userIdx);
+  return unregisterUserRow;
+}
+
 
 module.exports = {
   selectUser,
@@ -190,6 +200,7 @@ module.exports = {
   updatePhoneInfo,
   selectUserID,
   selectUsernickname,
-  selectUserPW
+  selectUserPW,
+  unregisterUser
 
 };

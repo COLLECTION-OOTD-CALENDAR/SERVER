@@ -82,14 +82,14 @@ exports.postLogIn = async function (ID, password) {
             return errResponse(baseResponse.LOGIN_PW_WRONG);
         }
 
-        // 계정 상태 확인
+        // 계정 상태 확인 
 
         const userInfoRows = await userProvider.accountCheck(ID);
 
         //  if (userInfoRows[0].status === "INACTIVE") {
         //      return errResponse(baseResponse.LOGIN_ID_WRONG);
         // } 
-        if (userInfoRows[0].status === "DELETED") {
+        if (userInfoRows[0].status === "inactive") {
             return errResponse(baseResponse.LOGIN_UNREGISTER_USER); //탈퇴한 USER
         }
 
@@ -193,7 +193,34 @@ exports.editPhone = async function (phoneNumber, userIdx) {
     }
 }
 
+//회원탈퇴 API
 
+exports.unregister = async function (password, userIdx) {
+    try{
+        const connection = await pool.getConnection(async (conn) => conn);
+
+        // 비밀번호 확인 (입력한 비밀번호를 암호화한 것과 DB에 저장된 비밀번호가 일치하는 지 확인함)
+        const hashedPassword = await crypto
+            .createHash("sha512")
+            .update(password)
+            .digest("hex");
+
+        const passwordRows = await userProvider.passwordCheckUserIdx(userIdx); 
+
+        if(passwordRows[0].password !== hashedPassword) {
+            return errResponse(baseResponse.UNREGISTER_PW_WRONG);
+        }
+ 
+        const unregisterUser = await userDao.unregisterUser(connection, userIdx)
+        connection.release();
+
+        return response(baseResponse.SUCCESS_UNREGISTER);
+
+    } catch (err) {
+        logger.error(`App - unregister Service error\n: ${err.message}`);
+        return errResponse(baseResponse.DB_ERROR);
+    }
+}
 
 
 

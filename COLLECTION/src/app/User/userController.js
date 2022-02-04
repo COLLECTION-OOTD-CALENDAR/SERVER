@@ -294,6 +294,34 @@ exports.modiPhone = async function (req, res) {
     return res.send(editPhone);
 }
 
+/**
+ * API No. 8
+ * API Name : 회원탈퇴 
+ * [DELETE] /app/user/unregister:userIdx
+ * path variable : userIdx
+ * body : password
+ */
+
+exports.unregister = async function (req, res) {
+
+    const IDFromJWT = req.verifiedToken.userIdx;
+
+    const userIdx = req.params.userIdx;
+
+    const password = req.body.password;
+
+    if (IDFromJWT != userIdx) {
+        res.send(errResponse(baseResponse.LOGIN_ID_WRONG))
+    } 
+    else {
+        if (!password)
+            res.send(errResponse(baseResponse.UNREGISTER_PW_EMPTY));
+    }
+
+    const unregister = await userService.unregister(password, userIdx);
+    return res.send(unregister);
+
+}
 
 
 

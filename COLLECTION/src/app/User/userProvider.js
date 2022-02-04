@@ -61,7 +61,7 @@ exports.IDCheck = async function (ID) {
 
   return IDCheckResult;
 };
-
+ 
 //닉네임중복검사 함수
 exports.nicknameCheck = async function (nickname) {
   const connection = await pool.getConnection(async (conn) => conn);
