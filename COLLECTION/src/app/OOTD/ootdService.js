@@ -41,12 +41,20 @@ exports.createNewBlock = async function (userIdx, Clothes, PWW, Content) {
         
         const connection = await pool.getConnection(async (conn) => conn);
 
-        if(PWW==-1){
-            var flag;
-            if(Clothes == 0) {  flag = "Top";}
-            else if(Clothes == 1) {  flag = "Bottom";}
-            else if(Clothes == 2) { flag = "Shoes";}
-            else if(Clothes == 3) { flag = "Etc"; }
+        if(PWW == -1){
+            var flag;//undefined
+            if(Clothes == 0) 
+                flag = "Top";
+            
+            else if(Clothes == 1) 
+                flag = "Bottom";
+
+            else if(Clothes == 2) 
+                flag = "Shoes";
+            else if(Clothes == 3) 
+                flag = "Etc"; 
+
+            console.log(`service flag : ${flag}`);
             const insertNewBlockParams = [userIdx, flag, Content];
             const clothesResult = await ootdDao.insertAddedClothes(connection, insertNewBlockParams);
             connection.release();
