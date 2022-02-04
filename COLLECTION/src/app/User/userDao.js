@@ -119,6 +119,16 @@ async function selectUserPassword(connection, selectID) {
   
 }
 
+//PW확인 함수(WITH USERIDX)
+async function selectUserPW(connection, userIdx) {
+  const selectUserPasswordQuery = `
+        SELECT userIdx, password
+        FROM User 
+        WHERE userIdx = ?`;
+  const selectUserPasswordRow = await connection.query(selectUserPasswordQuery,userIdx);
+  return selectUserPasswordRow[0];
+}
+
 
 
 //ID로 계정의 STATUS여부 확인 함수
@@ -180,6 +190,6 @@ module.exports = {
   updatePhoneInfo,
   selectUserID,
   selectUsernickname,
+  selectUserPW
 
 };
-

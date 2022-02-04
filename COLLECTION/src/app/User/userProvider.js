@@ -80,6 +80,13 @@ exports.passwordCheck = async function (selectID) {
   return passwordCheckResult;
 };
 
+//PW확인 함수(WITH USERIDX)
+exports.passwordCheckUserIdx = async function(userIdx) {
+  const connection = await pool.getConnection(async (conn) => conn); 
+  const passwordCheckResult = await userDao.selectUserPW(connection, userIdx);
+  connection.release();
+  return passwordCheckResult;
+}
 
 
 //계정확인 함수

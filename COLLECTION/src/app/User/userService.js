@@ -140,10 +140,20 @@ exports.editNickname = async function (nickname, userIdx) {
 
 //회원정보 수정(비밀번호) API
 
-exports.editPW = async function (userIdx,originPassword,newPassword,checkPassword) {
+exports.editPW = async function (userIdx,originPassword,newPassword) {
     try {
         const connection = await pool.getConnection(async (conn) => conn);
         
+        const hashedPassword = await crypto
+            .createHash("sha512")
+            .update(originPassword)
+            .digest("hex");
+
+        const passwordRows = await userProvider.passwordCheckUserIdx(userIdx);
+
+        if(passwordRows[0].password !== hashedPassword) {
+            return errResponse(baseResponse.LOGIN_PW_WRONG);
+        }
 
         const insertUserResultParams = [newPassword, userIdx]
 

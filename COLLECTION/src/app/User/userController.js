@@ -247,11 +247,7 @@ exports.modiPW = async function (req, res) {
         if (checkPassword.length < 6 || checkPassword.length > 15 )  
             return res.send(response(baseResponse.REGISTER_PW_LENGTH));
 
-        if(newPassword != checkPassword)
-            return res.send(errResponse)
-
-
-
+        
         const editPW = await userService.editPW(
             userIdx, 
             originPassword,
