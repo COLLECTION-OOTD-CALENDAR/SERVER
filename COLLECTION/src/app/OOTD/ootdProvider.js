@@ -18,18 +18,17 @@ exports.tagRedundantCheck = async function(userIdx, flag, content){
     const Clothes = ["Top", "Bottom", "Shoes", "Etc"];
     //const PWW = ["Place", "Weather", "Who"];
 
-    const selectTagParams = [userIdx, flag, content, "active"];// (userAdded)
 
     const connection = await pool.getConnection(async (conn) => conn);
-    console.log(`flag : ${selectTagParams[1]}`);
+    console.log(`flag : ${flag}`);
     if(Clothes.includes(flag)){
-      const clothesRedundantListResult = await ootdDao.selectClothesTag(connection, selectTagParams);
+      const clothesRedundantListResult = await ootdDao.selectClothesTag(connection, userIdx, flag, content);
       connection.release();
 
       return clothesRedundantListResult;
     }
     else{
-      const pwwRedundantListResult = await ootdDao.selectPwwTag(connection, selectTagParams);
+      const pwwRedundantListResult = await ootdDao.selectPwwTag(connection, userIdx, flag, content);
       connection.release();
 
       return pwwRedundantListResult;
@@ -49,18 +48,16 @@ exports.tagNumberCheck = async function(userIdx, flag){
     const Clothes = ["Top", "Bottom", "Shoes", "Etc"];
     //const PWW = ["Place", "Weather", "Who"];
 
-    const selectTagNumParams = [userIdx, flag, "active"];// (userAdded)
-
     const connection = await pool.getConnection(async (conn) => conn);
 
     if(Clothes.includes(flag)){
-      const clothesNumberListResult = await ootdDao.selectClothesNumber(connection, selectTagNumParams);
+      const clothesNumberListResult = await ootdDao.selectClothesNumber(connection, userIdx, flag);
       connection.release();
 
       return clothesNumberListResult;
     }
     else{
-      const pwwNumberListResult = await ootdDao.selectPwwNumber(connection, selectTagNumParams);
+      const pwwNumberListResult = await ootdDao.selectPwwNumber(connection, userIdx, flag);
       connection.release();
 
       return pwwNumberListResult;

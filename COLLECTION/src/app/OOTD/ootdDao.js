@@ -2,7 +2,9 @@
 // 새롭게 추가한 함수를 아래 부분에서 export 해줘야 외부의 Provider, Service 등에서 사용가능합니다.
 
 // AddedClothes 중복 체크
-async function selectClothesTag(connection, selectTagParams) {
+async function selectClothesTag(connection, userIdx, flag, content) {
+  const selectTagParams = [userIdx, flag, content, "active"];// (userAdded)
+
   const selectClothesTagListQuery = `
         SELECT smallClass 
         FROM AddedClothes
@@ -16,9 +18,9 @@ async function selectClothesTag(connection, selectTagParams) {
 };
 
 // PWW 중복 체크
-async function selectPwwTag(connection, selectTagParams) {
+async function selectPwwTag(connection, userIdx, flag, content) {
   const selectPwwTagListQuery =``;
-  if(selectTagParams[1] == "Place"){
+  if(flag == "Place"){
       selectPwwTagListQuery = `
         SELECT place 
         FROM AddedPlace
@@ -26,14 +28,14 @@ async function selectPwwTag(connection, selectTagParams) {
     `;
 
   }
-  if(selectTagParams[1] == "Weather"){
+  if(flag == "Weather"){
     selectPwwTagListQuery = `
       SELECT weather 
       FROM AddedWeather
       WHERE userIdx = ? AND weather = ? AND status = ?;
     `; 
   }
-  if(selectTagParams[1] == "Who"){
+  if(flag == "Who"){
     selectPwwTagListQuery = `
       SELECT who 
       FROM AddedWho
@@ -41,7 +43,7 @@ async function selectPwwTag(connection, selectTagParams) {
     `; 
   }
 
-  selectTagParams.splice(1,1); // selectTagParmas = [userIdx, flag, content, "active"] =>[userIdx, content, "active"]
+  const selectTagParams = [userIdx, content, "active"];// (userAdded)
 
    const [tagRows] = await connection.query(
         selectPwwTagListQuery, 
@@ -52,7 +54,10 @@ async function selectPwwTag(connection, selectTagParams) {
 
 
 
-async function selectClothesNumber(connection, selectTagNumParams) {
+async function selectClothesNumber(connection, userIdx, flag) {  
+
+  const selectTagNumParams = [userIdx, flag, "active"];// (userAdded)
+
   const selectClothesNumberListQuery = `
       SELECT smallClass 
       FROM AddedClothes
@@ -67,9 +72,9 @@ async function selectClothesNumber(connection, selectTagNumParams) {
 
 
 
-async function selectPwwNumber(connection, selectTagNumParams) {
+async function selectPwwNumber(connection, userIdx, flag) {
   const selectPwwTagListQuery =``;
-  if(selectTagParams[1] == "Place"){
+  if(flag == "Place"){
       selectPwwTagListQuery = `
         SELECT place 
         FROM AddedPlace
@@ -77,14 +82,14 @@ async function selectPwwNumber(connection, selectTagNumParams) {
       `;
 
   }
-  if(selectTagParams[1] == "Weather"){
+  if(flag == "Weather"){
       selectPwwTagListQuery = `
         SELECT weather 
         FROM AddedWeather
         WHERE userIdx = ? AND status = ?;
       `; 
   }
-  if(selectTagParams[1] == "Who"){
+  if(flag == "Who"){
       selectPwwTagListQuery = `
         SELECT who 
         FROM AddedWho
@@ -92,7 +97,7 @@ async function selectPwwNumber(connection, selectTagNumParams) {
       `; 
   }
 
-  selectTagNumParams.splice(1,1); // selectTagParmas = [userIdx, flag, "active"] =>[userIdx, "active"]
+  const selectTagNumParams = [userIdx, "active"];// (userAdded)
 
    const [tagNumRows] = await connection.query(
         selectPwwTagListQuery, 
