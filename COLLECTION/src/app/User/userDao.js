@@ -25,15 +25,15 @@ async function selectUserEmail(connection, email) {
 
 
 // userId 회원 조회
-async function selectUserId(connection, userId) {
-  const selectUserIdQuery = `
-                 SELECT id, email, nickname 
-                 FROM UserInfo 
-                 WHERE id = ?;
-                 `;
-  const [userRow] = await connection.query(selectUserIdQuery, userId);
-  return userRow;
-}
+// async function selectUserId(connection, userId) {
+//   const selectUserIdQuery = `
+//                  SELECT id, email, nickname 
+//                  FROM UserInfo 
+//                  WHERE id = ?;
+//                  `;
+//   const [userRow] = await connection.query(selectUserIdQuery, userId);
+//   return userRow;
+// }
 
 // 유저 생성
 async function insertUserInfo(connection, insertUserInfoParams) {
@@ -76,18 +76,13 @@ async function insertUserInfo(connection, insertUserInfoParams) {
 //   return selectUserAccountRow[0];
 // }
 
-async function updateUserInfo(connection, id, nickname) {
-  const updateUserQuery = `
-  UPDATE UserInfo 
-  SET nickname = ?
-  WHERE id = ?;`;
-  const updateUserRow = await connection.query(updateUserQuery, [nickname, id]);
-  return updateUserRow[0];
-}
+
 
 
 
 //if가 만드는 로직~
+
+//ID만 가져오는 함수
 async function selectUserID(connection,ID) {
   const selectUserIDQuery = `
                   SELECT ID
@@ -98,6 +93,8 @@ async function selectUserID(connection,ID) {
   return IDRow;
 }
 
+
+//닉네임만 가져오는 함수
 async function selectUsernickname(connection,nickname) {
   const selectUsernicknameQuery = `
                   SELECT nickname
@@ -108,22 +105,36 @@ async function selectUsernickname(connection,nickname) {
   return nicknameRow;
 }
 
-async function selectUserPassword(connection, selectUserPasswordParams) {
+
+//PW확인 함수(WITH ID)
+async function selectUserPassword(connection, selectID) {
   const selectUserPasswordQuery = `
         SELECT ID, password
         FROM User 
-        WHERE ID = ? AND password = ?;`;
-  const selectUserPasswordRow = await connection.query(
-      selectUserPasswordQuery,
-      selectUserPasswordParams
-  );
-
-  return selectUserPasswordRow;
+        WHERE ID = ?`;
+  const selectUserPasswordRow = await connection.query(selectUserPasswordQuery,selectID);
+  console.log(`userdao :  ${selectUserPasswordRow[0]}\n`);
+  console.log(`userdao,전체버전 :  ${selectUserPasswordRow}\n`);
+  return selectUserPasswordRow[0];
+  
 }
 
+//PW확인 함수(WITH USERIDX)
+async function selectUserPW(connection, userIdx) {
+  const selectUserPasswordQuery = `
+        SELECT userIdx, password
+        FROM User 
+        WHERE userIdx = ?`;
+  const selectUserPasswordRow = await connection.query(selectUserPasswordQuery,userIdx);
+  return selectUserPasswordRow[0];
+}
+
+
+
+//ID로 계정의 STATUS여부 확인 함수
 async function selectUserAccount(connection, ID) {
   const selectUserAccountQuery = `
-        SELECT status, ID
+        SELECT status, ID, userIdx
         FROM User
         WHERE ID = ?;`;
   const selectUserAccountRow = await connection.query(
@@ -133,18 +144,52 @@ async function selectUserAccount(connection, ID) {
   return selectUserAccountRow[0];
 }
 
+//회원정보 수정 (닉네임) update 함수
+async function updateNicknameInfo(connection, nickname, userIdx) {
+  const updateUserQuery = `
+    UPDATE User 
+    SET nickname = ?
+    WHERE userIdx = ?;`;
+  const updateUserRow = await connection.query(updateUserQuery, [nickname, userIdx]);
+  console.log(`userdao :  ${updateUserRow[0]}\n`);
+  console.log(`userdao,전체버전 :  ${updateUserRow}\n`);
+  return updateUserRow;
+}
+
+
+//회원정보 수정 (비밀번호) update 함수
+async function updatePWInfo(connection, insertUserResultParams) {
+  const updateUserQuery = `
+    UPDATE User 
+    SET password = ?
+    WHERE userIdx = ?;`;
+  const updateUserRow = await connection.query(updateUserQuery, insertUserResultParams);
+  return updateUserRow;
+}
+
+
+//회원정보 수정 (전화번호) update 함수
+async function updatePhoneInfo(connection, insertUserResultParams) {
+  const updateUserQuery = `
+    UPDATE User 
+    SET phoneNumber = ?
+    WHERE userIdx = ?;`;
+  const updateUserRow = await connection.query(updateUserQuery, insertUserResultParams);
+  return updateUserRow;
+}
 
 
 module.exports = {
   selectUser,
   selectUserEmail,
-  selectUserId,
   insertUserInfo,
   selectUserPassword,
   selectUserAccount,
-  updateUserInfo,
+  updateNicknameInfo,
+  updatePWInfo,
+  updatePhoneInfo,
   selectUserID,
   selectUsernickname,
+  selectUserPW
 
 };
-
