@@ -76,10 +76,11 @@ exports.getMonth = async function (req, res) {
  */
 exports.getWeek = async function (req, res) {
 
+    console.log("calendarController : 처음 오류발생");
     const userIdxFromJWT = req.verifiedToken.userIdx;
-
+    
     const userIdx = req.params.userIdx;
-
+    console.log("calendarController : 변수 받기 성공");
      // 비어있는 userIdx 입력
     if(!userIdx){
         return res.send(errResponse(baseResponse.USERID_EMPTY));
@@ -89,12 +90,12 @@ exports.getWeek = async function (req, res) {
     if(userIdxFromJWT != userIdx) { 
         return res.send(errResponse(baseResponse.USERID_NOT_MATCH));
     }
-    
-    else {
+    console.log("calendarController : request error check complete");
+    //else {
         // userId를 통한 Weekly 달력 OOTD 검색 함수 및 결과 저장
-        const callWeekCalOotd = await calendarProvider.retrieveWeekhlyList(userIdx);
-        return res.send(response(baseResponse.SUCCESS_WEEKLY_CALENDAR, callWeekCalOotd));
-    }
+    const callWeekCalOotd = await calendarProvider.retrieveWeekhlyList(userIdx);
+    return res.send(response(baseResponse.SUCCESS_WEEKLY_CALENDAR, callWeekCalOotd));
+    //}
 };
 
 

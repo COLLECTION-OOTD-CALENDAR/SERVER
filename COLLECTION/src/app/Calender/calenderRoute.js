@@ -3,7 +3,7 @@ module.exports = function(app){
     const jwtMiddleware = require('../../../config/jwtMiddleware');
 
     // 1. Monthly 달력 OOTD 부르기 API
-    app.get('/app/calendar/monthly/:userIdx', jwtMiddleware, calendar.getMonth)
+    app.get('/app/calendar/monthly/:userIdx', jwtMiddleware, calendar.getMonth);
 
     // 1. 유저 생성 (회원가입) API
     //app.post('/app/users', calendar.postUsers);
