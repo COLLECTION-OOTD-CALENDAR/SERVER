@@ -60,7 +60,7 @@ exports.createNewBlock = async function (userIdx, Clothes, PWW, Content) {
             connection.release();
             
             console.log(`추가된 블럭 : ${Content}`);
-            return response(baseResponse.SUCCESS, {'added Clothes' : Content});
+            return response(baseResponse.SUCCESS_LAST_REGISTER, {'added Clothes' : Content});
         }        
         else if(PWW == 0){
             insertNewBlockParams = [userIdx, Content];
@@ -68,7 +68,7 @@ exports.createNewBlock = async function (userIdx, Clothes, PWW, Content) {
             connection.release();
             
             console.log(`추가된 블럭 : ${Content}`);
-            return response(baseResponse.SUCCESS, {'added Place' : Content});
+            return response(baseResponse.SUCCESS_LAST_REGISTER, {'added Place' : Content});
         }
         else if(PWW == 1){
             insertNewBlockParams = [userIdx, Content];
@@ -76,7 +76,7 @@ exports.createNewBlock = async function (userIdx, Clothes, PWW, Content) {
             connection.release();
       
             console.log(`추가된 블럭 : ${Content}`);
-            return response(baseResponse.SUCCESS, {'added Weather' : Content});
+            return response(baseResponse.SUCCESS_LAST_REGISTER, {'added Weather' : Content});
         }
         else if(PWW == 2){
             insertNewBlockParams = [userIdx, Content];
@@ -85,7 +85,7 @@ exports.createNewBlock = async function (userIdx, Clothes, PWW, Content) {
       
             
             console.log(`추가된 블럭 : ${Content}`);
-            return response(baseResponse.SUCCESS, {'added Place' : Content});
+            return response(baseResponse.SUCCESS_LAST_REGISTER, {'added Place' : Content});
         }
 
 
