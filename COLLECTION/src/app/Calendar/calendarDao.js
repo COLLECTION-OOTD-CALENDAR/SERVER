@@ -189,10 +189,10 @@ async function selectWeeklyPlaceName3(connection, userIdx, placeJoinTable) {
 
 async function selectWeeklyOotdList(connection, userIdx){
   const selectWeeklyOotdListQuery = `
-                  SELECT O.ootdIdx, O.date, O.lookpoint, TMPH.imageUrl, group_concat( distinct TMPL.fpName) AS pl1, group_concat( distinct TMPL.apName) AS pl2,
-                  group_concat( distinct TMWE.fwName) AS we1, group_concat( distinct TMWE.awName) AS we2,
-                  group_concat( distinct TMWH.fwhName) AS wh1, group_concat( distinct TMWH.awhName) AS wh2,
-                  group_concat( distinct TMCL.fixedBig) AS big1, group_concat( distinct TMCL.fixedSmall) AS small1, group_concat( distinct TMCL.addedBig) AS big2, group_concat( distinct TMCL.addedSmall) AS small2
+                  SELECT O.ootdIdx, O.date, O.lookpoint, TMPH.imageUrl, group_concat( distinct TMPL.fpName) AS fPlace, group_concat( distinct TMPL.apName) AS aPlace,
+                  group_concat( distinct TMWE.fwName) AS fWeather, group_concat( distinct TMWE.awName) AS aWeather,
+                  group_concat( distinct TMWH.fwhName) AS fWho, group_concat( distinct TMWH.awhName) AS aWho,
+                  group_concat( distinct TMCL.fixedBig) AS fBig, group_concat( distinct TMCL.fixedSmall) AS fSmall, group_concat( distinct TMCL.addedBig) AS aBig, group_concat( distinct TMCL.addedSmall) AS aSmall
                   
                   FROM OOTD AS O
 
@@ -244,84 +244,7 @@ return weeklyOotdRows;
 }
 
 
-/* *************************** */
-
-async function selectWeekly(connection, userIdx) {
-  const selectWeeklyListQuery = `
-                SELECT 
-                FROM 
-                WHERE ;
-                `;
-  const [weeklyRows] = await connection.query(selectWeeklyListQuery, userIdx);
-  return weeklyRows;
-}
-
-/*
-// userId 회원 조회
-async function selectUserId(connection, userId) {
-  const selectUserIdQuery = `
-                SELECT id, email, nickname 
-                FROM UserInfo 
-                WHERE id = ?;
-                `;
-  const [userRow] = await connection.query(selectUserIdQuery, userId);
-  return userRow;
-}
-
-// 유저 생성
-async function insertUserInfo(connection, insertUserInfoParams) {
-  const insertUserInfoQuery = `
-        INSERT INTO UserInfo(email, password, nickname)
-        VALUES (?, ?, ?);
-    `;
-  const insertUserInfoRow = await connection.query(
-    insertUserInfoQuery,
-    insertUserInfoParams
-  );
-
-  return insertUserInfoRow;
-}
-
-// 패스워드 체크
-async function selectUserPassword(connection, selectUserPasswordParams) {
-  const selectUserPasswordQuery = `
-        SELECT email, nickname, password
-        FROM UserInfo 
-        WHERE email = ? AND password = ?;`;
-  const selectUserPasswordRow = await connection.query(
-      selectUserPasswordQuery,
-      selectUserPasswordParams
-  );
-
-  return selectUserPasswordRow;
-}
-
-// 유저 계정 상태 체크 (jwt 생성 위해 id 값도 가져온다.)
-async function selectUserAccount(connection, email) {
-  const selectUserAccountQuery = `
-        SELECT status, id
-        FROM UserInfo 
-        WHERE email = ?;`;
-  const selectUserAccountRow = await connection.query(
-      selectUserAccountQuery,
-      email
-  );
-  return selectUserAccountRow[0];
-}
-
-async function updateUserInfo(connection, id, nickname) {
-  const updateUserQuery = `
-  UPDATE UserInfo 
-  SET nickname = ?
-  WHERE id = ?;`;
-  const updateUserRow = await connection.query(updateUserQuery, [nickname, id]);
-  return updateUserRow[0];
-}
-
-*/
-
 module.exports = {
   selectMonthly,
-  selectWeeklyOotdList,
-  selectWeekly,
+  selectWeeklyOotdList
 };
