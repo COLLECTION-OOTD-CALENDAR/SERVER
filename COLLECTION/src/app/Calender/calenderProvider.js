@@ -10,7 +10,7 @@ exports.retrieveMonthlyList = async function (userIdx) {
 
   // connection 은 db와의 연결을 도와줌
   const connection = await pool.getConnection(async (conn) => conn);
-  console.log("calendarProvider : connect complete");
+  console.log('calendarProvider : connect complete');
   // Dao 쿼리문의 결과를 호출
   const monthlyListResult = await calendarDao.selectMonthly(connection, userIdx);
   
@@ -62,7 +62,7 @@ exports.retrieveWeeklyList = async function (userIdx) {
   //const fixedAddedPlaceResult3 = await calendarDao.selectWeeklyPlaceName3(connection, userIdx, placeJoinTable);
 
   /*******다 같이 JOIN & UNION*******/
-  console.log("calendarProvider : connect complete");
+  console.log('calendarProvider : connect complete');
   const ootdWeeklyListResult = await calendarDao.selectWeeklyOotdList(connection, userIdx);
   console.log('calendarProvider return: ', ootdWeeklyListResult);
   // const weeklyListResult = await calendarDao.selectWeekly(connection, userIdx);
