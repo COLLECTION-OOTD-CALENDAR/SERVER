@@ -34,7 +34,7 @@ exports.postNewBlock = async function (req, res) {
         
         const content = req.body;
 
-        var Content = content;
+        var Content = content.toString();
         var blank_pattern = /^\s+|\s+$/g;
 
         if(Content.replace(blank_pattern, '' ) == "" ){
