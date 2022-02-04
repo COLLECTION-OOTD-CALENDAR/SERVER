@@ -112,7 +112,7 @@ exports.postNewBlock = async function (req, res) {
         //             break;
         //     }            
         // }
-        console.log(`controller Content : ${Contet}`);
+        console.log(`controller Content : ${Content}`);
         const newBlockResponse = await ootdService.createNewBlock(
             userIdx,
             Clothes,
