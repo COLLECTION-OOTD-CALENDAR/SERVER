@@ -116,7 +116,7 @@ async function insertAddedClothes(connection, insertNewBlockParams) {
       insertNewBlockParams
   );
 
-  return insertClothesQueryRow;
+  return insertClothesQueryRow[0];
 }
 
 async function insertAddedPlace(connection, insertNewBlockParams) {
@@ -129,7 +129,7 @@ async function insertAddedPlace(connection, insertNewBlockParams) {
       insertNewBlockParams
   );
 
-  return insertPlaceQueryRow;
+  return insertPlaceQueryRow[0];
 }
 
 async function insertAddedWeather(connection, insertNewBlockParams) {
@@ -142,7 +142,7 @@ async function insertAddedWeather(connection, insertNewBlockParams) {
       insertNewBlockParams
   );
 
-  return insertWeatherQueryRow;
+  return insertWeatherQueryRow[0];
 }
 
 async function insertAddedWho(connection, insertNewBlockParams) {
@@ -155,7 +155,7 @@ async function insertAddedWho(connection, insertNewBlockParams) {
       insertNewBlockParams
   );
 
-  return insertWhoQueryRow;
+  return insertWhoQueryRow[0];
 }
 
 module.exports = {
