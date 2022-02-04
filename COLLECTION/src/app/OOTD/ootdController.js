@@ -53,7 +53,7 @@ exports.postNewBlock = async function (req, res) {
         const Clothes = req.query.Clothes;  //0: Top, 1: Bottom, 2: Shoes, 3: etc
         const PWW = req.query.PWW;          //0: Place, 1: Weather, 2: Who
 
-        if(!isNaN(Clothes) || !isNaN(PWW) ){ //둘 중 하나가 숫자가 아님
+        if(isNaN(Clothes) || isNaN(PWW) ){ //둘 중 하나가 숫자가 아님
             console.log(`Clothes : ${Clothes}, PWW : ${PWW}`);
             return res.send(errResponse(baseResponse.QUERY_STRING_ERROR_TYPE));
         }
