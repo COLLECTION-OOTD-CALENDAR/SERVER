@@ -22,14 +22,14 @@ const crypto = require("crypto");
 exports.createNewBlock = async function (userIdx, Clothes, PWW, Content) {
     try {    
         //1. 블럭 Content 중복 확인  
-        const ContentRows = await ootdProvider.tagRedundantCheck(userIdx, flag, Content);
+        const ContentRows = await ootdProvider.tagRedundantCheck(userIdx, Clothes, PWW, Content);
         if(ContentRows.length > 0)
             return errResponse(baseResponse.TAG_REDUNDANT);
 
 
             
         //  2. 추가하는 블럭 20개 넘는지 체크, 20개 미만이면 추가
-        const numberRows = await ootdProvider.tagNumberCheck(userIdx, flag);
+        const numberRows = await ootdProvider.tagNumberCheck(userIdx, Clothes, PWW);
         if (numberRows.length >= 20)
             return errResponse(baseResponse.TAG_OVERFLOW);
 
