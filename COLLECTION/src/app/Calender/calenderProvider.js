@@ -58,6 +58,7 @@ exports.retrieveWeeklyList = async function (userIdx) {
   //const fixedAddedPlaceResult3 = await calendarDao.selectWeeklyPlaceName3(connection, userIdx, placeJoinTable);
 
   /*******다 같이 JOIN & UNION*******/
+  console.log("calendarProvider : connect complete");
   const ootdWeeklyListResult = await calendarDao.selectWeeklyOotdList(connection, userIdx);
   console.log('calendarProvider return: ', ootdWeeklyListResult);
   // const weeklyListResult = await calendarDao.selectWeekly(connection, userIdx);
