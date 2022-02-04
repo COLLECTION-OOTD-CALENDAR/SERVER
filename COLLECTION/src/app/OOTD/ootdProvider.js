@@ -1,65 +1,68 @@
 const { pool } = require("../../../config/database");
 const { logger } = require("../../../config/winston");
 
-const userDao = require("./userDao");
+const ootdDao = require("./ootdDao");
 
 // Provider: Read 비즈니스 로직 처리
 
-exports.retrieveUserList = async function (email) {
+exports.tagRedundantCheck = async function(userIdx, flag, content){
+  /*    
 
-  //email을 인자로 받는 경우와 받지 않는 경우를 구분하여 하나의 함수에서 두 가지 기능을 처리함
+   1) Clothes일 경우 AddedClothes에서 userId와 flag (bigClass)가 일치하는 열 중
+      content가 smallClass와 같은 것을 배열에 저장한 후 반환
 
-  if (!email) {
-    // connection 은 db와의 연결을 도와줌
+    2) PWW일 경우 flag에 해당하는 각 Place/Weather/Who에서 userId와 일치하는 열 중
+       content가 place/weather/who와 같은 것을 배열에 저장한 후 반환
+   */
+
+    const Clothes = ["Top", "Bottom", "Shoes", "Etc"];
+    //const PWW = ["Place", "Weather", "Who"];
+
+
     const connection = await pool.getConnection(async (conn) => conn);
-    // Dao 쿼리문의 결과를 호출
-    const userListResult = await userDao.selectUser(connection);
-    // connection 해제
-    connection.release();
+    console.log(`flag : ${flag}`);
+    if(Clothes.includes(flag)){
+      const clothesRedundantListResult = await ootdDao.selectClothesTag(connection, userIdx, flag, content);
+      connection.release();
 
-    return userListResult;
+      return clothesRedundantListResult;
+    }
+    else{
+      const pwwRedundantListResult = await ootdDao.selectPwwTag(connection, userIdx, flag, content);
+      connection.release();
 
-  } else {
+      return pwwRedundantListResult;
+    }
+
+};
+
+exports.tagNumberCheck = async function(userIdx, flag){
+  /*
+   1) Clothes일 경우 AddedClothes에서 userId와 flag (bigClass)가 일치하는 열 중
+      active인 것들을 배열에 저장한 후 반환
+
+    2) PWW일 경우 flag에 해당하는 각 Place/Weather/Who에서 userId와 일치하는 열 중
+       active인 것들을 pwwRows에 저장한 후 배열을 반환
+   */
+
+    const Clothes = ["Top", "Bottom", "Shoes", "Etc"];
+    //const PWW = ["Place", "Weather", "Who"];
+
     const connection = await pool.getConnection(async (conn) => conn);
-    const userListResult = await userDao.selectUserEmail(connection, email);
-    connection.release();
 
-    return userListResult;
-  }
+    if(Clothes.includes(flag)){
+      const clothesNumberListResult = await ootdDao.selectClothesNumber(connection, userIdx, flag);
+      connection.release();
+
+      return clothesNumberListResult;
+    }
+    else{
+      const pwwNumberListResult = await ootdDao.selectPwwNumber(connection, userIdx, flag);
+      connection.release();
+
+      return pwwNumberListResult;
+    }
+
 };
 
-exports.retrieveUser = async function (userId) {
-  const connection = await pool.getConnection(async (conn) => conn);
-  const userResult = await userDao.selectUserId(connection, userId);
 
-  connection.release();
-
-  return userResult[0]; // 한 명의 유저 정보만을 불러오므로 배열 타입을 리턴하는 게 아닌 0번 인덱스를 파싱해서 오브젝트 타입 리턴
-};
-
-exports.emailCheck = async function (email) {
-  const connection = await pool.getConnection(async (conn) => conn);
-  const emailCheckResult = await userDao.selectUserEmail(connection, email);
-  connection.release();
-
-  return emailCheckResult;
-};
-
-exports.passwordCheck = async function (selectUserPasswordParams) {
-  const connection = await pool.getConnection(async (conn) => conn);
-  // 쿼리문에 여러개의 인자를 전달할 때 selectUserPasswordParams와 같이 사용합니다.
-  const passwordCheckResult = await userDao.selectUserPassword(
-      connection,
-      selectUserPasswordParams
-  );
-  connection.release();
-  return passwordCheckResult[0];
-};
-
-exports.accountCheck = async function (email) {
-  const connection = await pool.getConnection(async (conn) => conn);
-  const userAccountResult = await userDao.selectUserAccount(connection, email);
-  connection.release();
-
-  return userAccountResult;
-};

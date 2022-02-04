@@ -1,154 +1,131 @@
 const jwtMiddleware = require("../../../config/jwtMiddleware");
-const userProvider = require("./userProvider");
-const userService = require("./userService");
+const ootdProvider = require("./ootdProvider");
+const ootdService = require("./ootdService");
 const baseResponse = require("../../../config/baseResponseStatus");
 const {response, errResponse} = require("../../../config/response");
 
 const regexEmail = require("regex-email");
 
 /**
- * API No. 0
- * API Name : 테스트 API
- * [GET] /app/test
- */
-// exports.getTest = async function (req, res) {
-//     return res.send(response(baseResponse.SUCCESS))
-// }
-
-/**
  * API No. 1
- * API Name : 유저 생성 (회원가입) API
- * [POST] /app/users
+ * API Name : 사용자 추가 블럭 API
+ * [POST] /app/ootd/new-block/:userIdx?Clothes=?&PWW=?
  */
-exports.postUsers = async function (req, res) {
+exports.postNewBlock = async function (req, res) {
 
-    /**
-     * Body: email, password, nickname
-     */
-    const {email, password, nickname} = req.body;
+      // 1. jwt token 검증 
 
-    // 빈 값 체크
-    if (!email)
-        return res.send(response(baseResponse.SIGNUP_EMAIL_EMPTY));
+      const IDFromJWT = req.verifiedToken.userIdx;
 
-    // 길이 체크
-    if (email.length > 30)
-        return res.send(response(baseResponse.SIGNUP_EMAIL_LENGTH));
+      const userIdx = req.params.userIdx;
 
-    // 형식 체크 (by 정규표현식)
-    if (!regexEmail.test(email))
-        return res.send(response(baseResponse.SIGNUP_EMAIL_ERROR_TYPE));
+    if (IDFromJWT != userIdx) {
+        console.log(`userIdx : ${IDFromJWT}`)
+        res.send(errResponse(baseResponse.USERID_NOT_MATCH))
+    } 
+    else {
+        /**jwt token 검증 성공한 다음*/
 
-    // createUser 함수 실행을 통한 결과 값을 signUpResponse에 저장
-    const signUpResponse = await userService.createUser(
-        email,
-        password,
-        nickname
-    );
+        // 2. content - 형식 체크 
+        /** 
+         * 2-1) 공백문자로만 이루어져 있는지 => 3029
+         * 2-2) 6글자가 안넘는지 길이 체크  => 3049
+         */ 
+        
+        const content = req.body.content;
 
-    // signUpResponse 값을 json으로 전달
-    return res.send(signUpResponse);
-};
+        var Content = content.toString();
+        var blank_pattern = /^\s+|\s+$/g;
 
-/**
- * API No. 2
- * API Name : 유저 조회 API (+ 이메일로 검색 조회)
- * [GET] /app/users
- */
-exports.getUsers = async function (req, res) {
+        if(Content.replace(blank_pattern, '' ) == "" ){
+            return res.send(errResponse(baseResponse.PWWC_BLANK_TEXT));  
+        }
 
-    /**
-     * Query String: email
-     */
-    const email = req.query.email;
+        Content = content.toString();
+        Content.trim(); //앞과 뒤의 공백 제거
 
-    if (!email) {
-        // 유저 전체 조회
-        const userListResult = await userProvider.retrieveUserList();
-        // SUCCESS : { "isSuccess": true, "code": 1000, "message":"성공" }, 메세지와 함께 userListResult 호출
-        return res.send(response(baseResponse.SUCCESS, userListResult));
-    } else {
-        // 아메일을 통한 유저 검색 조회
-        const userListByEmail = await userProvider.retrieveUserList(email);
-        return res.send(response(baseResponse.SUCCESS, userListByEmail));
+        if(Content.length > 6){            
+            return res.send(errResponse(baseResponse.TAG_LENGTH));
+        }
+
+
+        // 3. Clothes, PWW flag Null number형 형식 체크 
+        const Clothes = req.query.Clothes;  //0: Top, 1: Bottom, 2: Shoes, 3: etc
+        const PWW = req.query.PWW;          //0: Place, 1: Weather, 2: Who
+
+        if(isNaN(Clothes) || isNaN(PWW) ){ //둘 중 하나가 숫자가 아님            
+            return res.send(errResponse(baseResponse.QUERY_STRING_ERROR_TYPE));
+        }
+
+        
+        // 4. Clothes, PWW flag 값 체크 
+        /**     Clothes PWW
+         *  4-0) 유효한 값의 범위인지 체크 => PWWC_INVALID_VALUE
+         *  4-1) -1   -1   => 3028 (QUERY_STRING_EMPTY) 
+         *  4-2) number number    => 3042 (QUERY_STRING_OVERFLOW)
+         *  4-3) number    -1   => clothes 블럭 추가
+         *  4-4) -1   number    => PWW 블럭 추가
+        */
+
+        if( (Clothes < -1) || (3 < Clothes) || (PWW < -1) || (2 < PWW) ) {  //유효하지 않은 값
+            return res.send(errResponse(baseResponse.PWWC_INVALID_VALUE)); 
+        }
+
+        if((Clothes == -1) && (PWW == -1)){
+            return res.send(errResponse(baseResponse.FLAG_EMPTY));
+        }
+        if((Clothes != -1) && (PWW != -1)){
+            return res.send(errResponse(baseResponse.QUERY_STRING_OVERFLOW));
+        }
+                
+
+        // var flag = "";
+
+        // if(PWW == -1){
+        //     switch (Clothes) {
+        //         case 0:
+        //             flag = "Top"
+        //             break;
+        //         case 1:
+        //             flag = "Bottom"
+        //             break;
+        //         case 2:
+        //             flag = "Shoes"
+        //             break;
+        //         case 3:
+        //             flag = "Etc"
+        //             break;
+        //     }
+
+
+        // }
+        // else if(Clothes == -1){
+        //     switch (PWW) {
+        //         case 0:
+        //             flag = "Place"
+        //             break;
+        //         case 1:
+        //             flag = "Weather"
+        //             break;
+        //         case 2:
+        //             flag= "Who"
+        //             break;
+        //     }            
+        // }
+        console.log(`controller Content : ${Contet}`);
+        const newBlockResponse = await ootdService.createNewBlock(
+            userIdx,
+            Clothes,
+            PWW,
+            Content
+        );
+        
+        //Service : 중복확인 -> 20개 개수 확인 -> post
+        
+
+        // newBlockResponse 값을 json으로 전달
+        return res.send(newBlockResponse);
     }
+
 };
 
-/**
- * API No. 3
- * API Name : 특정 유저 조회 API
- * [GET] /app/users/{userId}
- */
-exports.getUserById = async function (req, res) {
-
-    /**
-     * Path Variable: userId
-     */
-    const userId = req.params.userId;
-    // errResponse 전달
-    if (!userId) return res.send(errResponse(baseResponse.USER_USERID_EMPTY));
-
-    // userId를 통한 유저 검색 함수 호출 및 결과 저장
-    const userByUserId = await userProvider.retrieveUser(userId);
-    return res.send(response(baseResponse.SUCCESS, userByUserId));
-};
-
-
-// TODO: After 로그인 인증 방법 (JWT)
-/**
- * API No. 4
- * API Name : 로그인 API
- * [POST] /app/login
- * body : email, passsword
- */
-exports.login = async function (req, res) {
-
-    const {email, password} = req.body;
-
-    const signInResponse = await userService.postSignIn(email, password);
-
-    return res.send(signInResponse);
-};
-
-
-/**
- * API No. 5
- * API Name : 회원 정보 수정 API + JWT + Validation
- * [PATCH] /app/users/:userId
- * path variable : userId
- * body : nickname
- */
-exports.patchUsers = async function (req, res) {
-
-    // jwt - userId, path variable :userId
-
-    const userIdFromJWT = req.verifiedToken.userId
-
-    const userId = req.params.userId;
-    const nickname = req.body.nickname;
-
-    // JWT는 이 후 주차에 다룰 내용
-    if (userIdFromJWT != userId) {
-        res.send(errResponse(baseResponse.USER_ID_NOT_MATCH));
-    } else {
-        if (!nickname) return res.send(errResponse(baseResponse.USER_NICKNAME_EMPTY));
-
-        const editUserInfo = await userService.editUser(userId, nickname)
-        return res.send(editUserInfo);
-    }
-};
-
-
-
-
-
-
-// JWT 이 후 주차에 다룰 내용
-/** JWT 토큰 검증 API
- * [GET] /app/auto-login
- */
-exports.check = async function (req, res) {
-    const userIdResult = req.verifiedToken.userId;
-    console.log(userIdResult);
-    return res.send(response(baseResponse.TOKEN_VERIFICATION_SUCCESS));
-};
