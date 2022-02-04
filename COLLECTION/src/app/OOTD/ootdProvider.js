@@ -21,7 +21,7 @@ exports.tagRedundantCheck = async function(userIdx, flag, content){
     const selectTagParams = [userIdx, flag, content, "active"];// (userAdded)
 
     const connection = await pool.getConnection(async (conn) => conn);
-
+    console.log(`flag : ${selectTagParams[1]}`);
     if(Clothes.includes(flag)){
       const clothesRedundantListResult = await ootdDao.selectClothesTag(connection, selectTagParams);
       connection.release();
