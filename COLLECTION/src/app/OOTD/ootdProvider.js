@@ -5,7 +5,7 @@ const ootdDao = require("./ootdDao");
 
 // Provider: Read 비즈니스 로직 처리
 
-exports.tagRedundantCheck = async function(userId, flag, content){
+exports.tagRedundantCheck = async function(userIdx, flag, content){
   /*    
 
    1) Clothes일 경우 AddedClothes에서 userId와 flag (bigClass)가 일치하는 열 중
@@ -18,7 +18,7 @@ exports.tagRedundantCheck = async function(userId, flag, content){
     const Clothes = ["Top", "Bottom", "Shoes", "Etc"];
     //const PWW = ["Place", "Weather", "Who"];
 
-    const selectTagParams = [userId, flag, content, "active"];// (userAdded)
+    const selectTagParams = [userIdx, flag, content, "active"];// (userAdded)
 
     const connection = await pool.getConnection(async (conn) => conn);
 
@@ -37,7 +37,7 @@ exports.tagRedundantCheck = async function(userId, flag, content){
 
 };
 
-exports.tagNumberCheck = async function(userId, flag){
+exports.tagNumberCheck = async function(userIdx, flag){
   /*
    1) Clothes일 경우 AddedClothes에서 userId와 flag (bigClass)가 일치하는 열 중
       active인 것들을 배열에 저장한 후 반환
@@ -49,7 +49,7 @@ exports.tagNumberCheck = async function(userId, flag){
     const Clothes = ["Top", "Bottom", "Shoes", "Etc"];
     //const PWW = ["Place", "Weather", "Who"];
 
-    const selectTagNumParams = [userId, flag, "active"];// (userAdded)
+    const selectTagNumParams = [userIdx, flag, "active"];// (userAdded)
 
     const connection = await pool.getConnection(async (conn) => conn);
 

@@ -9,19 +9,20 @@ const regexEmail = require("regex-email");
 /**
  * API No. 1
  * API Name : 사용자 추가 블럭 API
- * [POST] /app/ootd/new-block/:userId?Clothes=?&PWW=?
+ * [POST] /app/ootd/new-block/:userIdx?Clothes=?&PWW=?
  */
 exports.postNewBlock = async function (req, res) {
 
       // 1. jwt token 검증 
 
-    const userIdFromJWT = req.verifiedToken.userId
+      const IDFromJWT = req.verifiedToken.userIdx;
 
-    const userId = req.params.userId;
+      const userIdx = req.params.userIdx;
 
-    if (userIdFromJWT != userId) {
-        res.send(errResponse(baseResponse.USERID_NOT_MATCH));
-    } else {
+    if (IDFromJWT != userIdx) {
+        res.send(errResponse(baseResponse.USERID_NOT_MATCH))
+    } 
+    else {
         /**jwt token 검증 성공한 다음*/
 
         // 2. content - 형식 체크 
@@ -108,7 +109,7 @@ exports.postNewBlock = async function (req, res) {
         }
 
         const newBlockResponse = await ootdService.createNewBlock(
-            userId,
+            userIdx,
             flag,
             content
         );

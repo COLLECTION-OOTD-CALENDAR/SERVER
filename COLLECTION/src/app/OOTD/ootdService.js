@@ -19,17 +19,17 @@ const crypto = require("crypto");
 
 
 
-exports.createNewBlock = async function (userId, flag, content) {
+exports.createNewBlock = async function (userIdx, flag, content) {
     try {    
         //1. 블럭 content 중복 확인  
-        const contentRows = await ootdProvider.tagRedundantCheck(userId, flag, content);
+        const contentRows = await ootdProvider.tagRedundantCheck(userIdx, flag, content);
         if(contentRows.length > 0)
             return errResponse(baseResponse.TAG_REDUNDANT);
 
 
             
         //  2. 추가하는 블럭 20개 넘는지 체크, 20개 미만이면 추가
-        const numberRows = await ootdProvider.tagNumberCheck(userId, flag);
+        const numberRows = await ootdProvider.tagNumberCheck(userIdx, flag);
         if (numberRows.length >= 20)
             return errResponse(baseResponse.TAG_OVERFLOW);
 
@@ -37,7 +37,7 @@ exports.createNewBlock = async function (userId, flag, content) {
 
         // 3. POST 쿼리문에 사용할 변수 값을 배열 형태로 전달
         
-        const insertNewBlockParams = [userId, flag, content];
+        const insertNewBlockParams = [userIdx, flag, content];
 
         
         const connection = await pool.getConnection(async (conn) => conn);
@@ -50,7 +50,7 @@ exports.createNewBlock = async function (userId, flag, content) {
             return response(baseResponse.SUCCESS, clothesResult);
         }        
         else if(flag == "Place"){
-            insertNewBlockParams = [userId, content];
+            insertNewBlockParams = [userIdx, content];
             const placeResult = await ootdDao.insertAddedPlace(connection, insertNewBlockParams);
             connection.release();
             
@@ -58,7 +58,7 @@ exports.createNewBlock = async function (userId, flag, content) {
             return response(baseResponse.SUCCESS, placeResult);
         }
         else if(flag == "Weather"){
-            insertNewBlockParams = [userId, content];
+            insertNewBlockParams = [userIdx, content];
             const weatherResult = await ootdDao.insertAddedWeather(connection, insertNewBlockParams);
             connection.release();
       
@@ -66,7 +66,7 @@ exports.createNewBlock = async function (userId, flag, content) {
             return response(baseResponse.SUCCESS, weatherResult);
         }
         else if(flag == "Who"){
-            insertNewBlockParams = [userId, content];
+            insertNewBlockParams = [userIdx, content];
             const whoResult = await ootdDao.insertAddedWho(connection, insertNewBlockParams);
             connection.release();
       

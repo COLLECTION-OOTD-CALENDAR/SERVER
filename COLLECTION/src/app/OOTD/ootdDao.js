@@ -41,7 +41,7 @@ async function selectPwwTag(connection, selectTagParams) {
     `; 
   }
 
-  selectTagParams.splice(1,1); // selectTagParmas = [userId, flag, content, "active"] =>[userId, content, "active"]
+  selectTagParams.splice(1,1); // selectTagParmas = [userIdx, flag, content, "active"] =>[userIdx, content, "active"]
 
    const [tagRows] = await connection.query(
         selectPwwTagListQuery, 
@@ -92,7 +92,7 @@ async function selectPwwNumber(connection, selectTagNumParams) {
       `; 
   }
 
-  selectTagNumParams.splice(1,1); // selectTagParmas = [userId, flag, "active"] =>[userId, "active"]
+  selectTagNumParams.splice(1,1); // selectTagParmas = [userIdx, flag, "active"] =>[userIdx, "active"]
 
    const [tagNumRows] = await connection.query(
         selectPwwTagListQuery, 
