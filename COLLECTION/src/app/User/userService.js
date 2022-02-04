@@ -155,12 +155,17 @@ exports.editPW = async function (userIdx,originPassword,newPassword) {
             return errResponse(baseResponse.LOGIN_PW_WRONG);
         }
 
-        const insertUserResultParams = [newPassword, userIdx]
+        const hashedNewPassword = await crypto
+            .createHash("sha512")
+            .update(newPassword)
+            .digest("hex");
+
+        const insertUserResultParams = [hashedNewPassword, userIdx]
 
         const editUserResult = await userDao.updatePWInfo(connection, insertUserResultParams)
         connection.release();
 
-        return response(baseResponse.SUCCESS_USERS_MODI,{'password': newPassword});
+        return response(baseResponse.SUCCESS_USERS_MODI,{'password': hashedNewPassword});
 
     } catch (err) {
         logger.error(`App - editPW Service error\n: ${err.message}`);
