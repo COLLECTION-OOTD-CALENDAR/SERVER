@@ -7,7 +7,7 @@ const {response, errResponse} = require("../../../config/response");
 const regexEmail = require("regex-email");
 
 // var datePattern = /^(19|20)\d{2}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[0-1])$/; 
-
+var lookpointPattern = /^[1-5]$/;
 /**
  * API No. 5
  * API Name : 회원 정보 수정 API + JWT + Validation
@@ -65,8 +65,11 @@ exports.getMonth = async function (req, res) {
     //else {
         // userIdx를 통한 Monthly 달력 OOTD 검색 함수 및 결과 저장
         const callMonthCalOotd = await calendarProvider.retrieveMonthlyList(userIdx);
-        console.log('calendarController : callMonthCalOotd[0] 값 - ', callMonthCalOotd[0]);
-        console.log('calendarController : callMonthCalOotd[0].lookpoint 값 - ', callMonthCalOotd[0].lookpoint);
+        
+        //lookpoint 값 추출 확인
+        if(!lookpointPattern.test(callMonthCalOotd[0].lookpoint)){
+            return res.send(errResponse(baseResponse.LOOKPOINT_RESPONSE_ERROR));
+        }
         return res.send(response(baseResponse.SUCCESS_MONTHLY_CALENDAR, callMonthCalOotd));
     //}
 
@@ -98,11 +101,14 @@ exports.getWeek = async function (req, res) {
     console.log('calendarController : request error check complete');
     //else {
         // userId를 통한 Weekly 달력 OOTD 검색 함수 및 결과 저장
-    const callWeekCalOotd = await calendarProvider.retrieveWeeklyList(userIdx);
-    console.log('calendarController : callWeekCalOotd[0] 값 - ', callWeekCalOotd[0]);
-    console.log('calendarController : callWeekCalOotd[0].lookpoint 값 - ', callWeekCalOotd[0].lookpoint);
+        const callWeekCalOotd = await calendarProvider.retrieveWeeklyList(userIdx);
+    
+        // lookpoint 값 추출 확인
+        if(!lookpointPattern.test(callWeekCalOotd[0].lookpoint)){
+            return res.send(errResponse(baseResponse.LOOKPOINT_RESPONSE_ERROR));
+        }
 
-    return res.send(response(baseResponse.SUCCESS_WEEKLY_CALENDAR, callWeekCalOotd));
+        return res.send(response(baseResponse.SUCCESS_WEEKLY_CALENDAR, callWeekCalOotd));
     //}
 };
 
