@@ -1,95 +1,165 @@
 
 // 새롭게 추가한 함수를 아래 부분에서 export 해줘야 외부의 Provider, Service 등에서 사용가능합니다.
 
-// 모든 유저 조회
-async function selectUser(connection) {
-  const selectUserListQuery = `
-                SELECT email, nickname 
-                FROM UserInfo;
+// AddedClothes 중복 체크
+async function selectClothesTag(connection, selectTagParams) {
+  const selectClothesTagListQuery = `
+        SELECT smallClass 
+        FROM AddedClothes
+        WHERE userIdx = ? AND bigClass = ? AND smallClass = ? AND status = ?;
                 `;
-  const [userRows] = await connection.query(selectUserListQuery);
-  return userRows;
-}
+  const [tagRows] = await connection.query(
+        selectClothesTagListQuery, 
+        selectTagParams);
 
-// 이메일로 회원 조회
-async function selectUserEmail(connection, email) {
-  const selectUserEmailQuery = `
-                SELECT email, nickname 
-                FROM UserInfo 
-                WHERE email = ?;
-                `;
-  const [emailRows] = await connection.query(selectUserEmailQuery, email);
-  return emailRows;
-}
+  return tagRows;
+};
 
-// userId 회원 조회
-async function selectUserId(connection, userId) {
-  const selectUserIdQuery = `
-                 SELECT id, email, nickname 
-                 FROM UserInfo 
-                 WHERE id = ?;
-                 `;
-  const [userRow] = await connection.query(selectUserIdQuery, userId);
-  return userRow;
-}
-
-// 유저 생성
-async function insertUserInfo(connection, insertUserInfoParams) {
-  const insertUserInfoQuery = `
-        INSERT INTO UserInfo(email, password, nickname)
-        VALUES (?, ?, ?);
+// PWW 중복 체크
+async function selectPwwTag(connection, selectTagParams) {
+  const selectPwwTagListQuery;
+  if(selectTagParams[1] == "Place"){
+      selectPwwTagListQuery = `
+        SELECT place 
+        FROM AddedPlace
+        WHERE userIdx = ? AND place = ? AND status = ?;
     `;
-  const insertUserInfoRow = await connection.query(
-    insertUserInfoQuery,
-    insertUserInfoParams
+
+  }
+  if(selectTagParams[1] == "Weather"){
+    selectPwwTagListQuery = `
+      SELECT weather 
+      FROM AddedWeather
+      WHERE userIdx = ? AND weather = ? AND status = ?;
+    `; 
+  }
+  if(selectTagParams[1] == "Who"){
+    selectPwwTagListQuery = `
+      SELECT who 
+      FROM AddedWho
+      WHERE userIdx = ? AND who = ? AND status = ?;
+    `; 
+  }
+
+  selectTagParams.splice(1,1); // selectTagParmas = [userId, flag, content, "active"] =>[userId, content, "active"]
+
+   const [tagRows] = await connection.query(
+        selectPwwTagListQuery, 
+        selectTagParams);
+
+  return tagRows;
+};
+
+
+
+async function selectClothesNumber(connection, selectTagNumParams) {
+  const selectClothesNumberListQuery = `
+      SELECT smallClass 
+      FROM AddedClothes
+      WHERE userIdx = ? AND bigClass = ? AND status = ?;
+                `;
+  const [tagNumRows] = await connection.query(
+        selectClothesNumberListQuery, 
+        selectTagNumParams);
+
+  return tagNumRows;
+};
+
+
+
+async function selectPwwNumber(connection, selectTagNumParams) {
+  const selectPwwTagListQuery;
+  if(selectTagParams[1] == "Place"){
+      selectPwwTagListQuery = `
+        SELECT place 
+        FROM AddedPlace
+        WHERE userIdx = ? AND status = ?;
+      `;
+
+  }
+  if(selectTagParams[1] == "Weather"){
+      selectPwwTagListQuery = `
+        SELECT weather 
+        FROM AddedWeather
+        WHERE userIdx = ? AND status = ?;
+      `; 
+  }
+  if(selectTagParams[1] == "Who"){
+      selectPwwTagListQuery = `
+        SELECT who 
+        FROM AddedWho
+        WHERE userIdx = ? AND status = ?;
+      `; 
+  }
+
+  selectTagNumParams.splice(1,1); // selectTagParmas = [userId, flag, "active"] =>[userId, "active"]
+
+   const [tagNumRows] = await connection.query(
+        selectPwwTagListQuery, 
+        selectTagNumParams);
+
+  return tagNumRows;
+};
+
+async function insertAddedClothes(connection, insertNewBlockParams) {
+  const insertClothesQuery = `
+      INSERT INTO AddedClothes(userIdx, bigClass, smallClass)
+      VALUES (?, ?, ?);
+  `;
+  const insertClothesQueryRow = await connection.query(
+      insertClothesQuery,
+      insertNewBlockParams
   );
 
-  return insertUserInfoRow;
+  return insertClothesQueryRow;
 }
 
-// 패스워드 체크
-async function selectUserPassword(connection, selectUserPasswordParams) {
-  const selectUserPasswordQuery = `
-        SELECT email, nickname, password
-        FROM UserInfo 
-        WHERE email = ? AND password = ?;`;
-  const selectUserPasswordRow = await connection.query(
-      selectUserPasswordQuery,
-      selectUserPasswordParams
+async function insertAddedPlace(connection, insertNewBlockParams) {
+  const insertPlaceQuery = `
+      INSERT INTO AddedPlace(userIdx, place)
+      VALUES (?, ?);
+  `;
+  const insertPlaceQueryRow = await connection.query(
+      insertPlaceQuery,
+      insertNewBlockParams
   );
 
-  return selectUserPasswordRow;
+  return insertPlaceQueryRow;
 }
 
-// 유저 계정 상태 체크 (jwt 생성 위해 id 값도 가져온다.)
-async function selectUserAccount(connection, email) {
-  const selectUserAccountQuery = `
-        SELECT status, id
-        FROM UserInfo 
-        WHERE email = ?;`;
-  const selectUserAccountRow = await connection.query(
-      selectUserAccountQuery,
-      email
+async function insertAddedWeather(connection, insertNewBlockParams) {
+  const insertWeatherQuery = `
+      INSERT INTO AddedWeather(userIdx, weather)
+      VALUES (?, ?);
+  `;
+  const insertWeatherQueryRow = await connection.query(
+      insertWeatherQuery,
+      insertNewBlockParams
   );
-  return selectUserAccountRow[0];
+
+  return insertWeatherQueryRow;
 }
 
-async function updateUserInfo(connection, id, nickname) {
-  const updateUserQuery = `
-  UPDATE UserInfo 
-  SET nickname = ?
-  WHERE id = ?;`;
-  const updateUserRow = await connection.query(updateUserQuery, [nickname, id]);
-  return updateUserRow[0];
-}
+async function insertAddedWho(connection, insertNewBlockParams) {
+  const insertWhoQuery = `
+      INSERT INTO AddedWho(userIdx, who)
+      VALUES (?, ?);
+  `;
+  const insertWhoQueryRow = await connection.query(
+      insertWhoQuery,
+      insertNewBlockParams
+  );
 
+  return insertWhoQueryRow;
+}
 
 module.exports = {
-  selectUser,
-  selectUserEmail,
-  selectUserId,
-  insertUserInfo,
-  selectUserPassword,
-  selectUserAccount,
-  updateUserInfo,
+  selectClothesTag,
+  selectPwwTag,
+  selectClothesNumber,
+  selectPwwNumber,
+  insertAddedClothes,
+  insertAddedPlace,
+  insertAddedWeather,
+  insertAddedWho
 };

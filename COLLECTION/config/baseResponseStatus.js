@@ -75,7 +75,7 @@ module.exports = {
     
     QUERY_STRING_EMPTY : { "isSuccess": false, "code": 3028, "message": "Query String을 입력해야 합니다." },
     PWWC_BLANK_TEXT : { "isSuccess": false, "code": 3029, "message": "공백문자만으로는 새로운 태그를 추가할 수 없습니다." },
-    BIGCLASS_INVALID_VALUE : { "isSuccess": false, "code": 3030, "message": "유효하지 않은 bigClass가 입력되었습니다." },//값        
+    CLOTHES_INVALID_VALUE : { "isSuccess": false, "code": 3030, "message": "유효하지 않은 CLothes가 입력되었습니다." },//값        
     
     
     LOOKPOINT_INVALID_VALUE : { "isSuccess": false, "code": 3031, "message": "lookpoint 범위 내의 값이 아닙니다." }, //값
@@ -99,18 +99,21 @@ module.exports = {
     QUERY_STRING_ERROR_TYPE : { "isSuccess": false, "code": 3043, "message": "유효하지 않은 Query String 값이 입력되었습니다." },
     DATE_ERROR_TYPE : { "isSuccess": false, "code": 3044, "message": "올바르지 않는 날짜형식입니다." }, //형식
     PWW_ERROR_TYPE : { "isSuccess": false, "code": 3045, "message": "올바르지 않은 PWW flag형식이 입력되었습니다." }, //형식
-    BIGCLASS_ERROR_TYPE : { "isSuccess": false, "code": 3046, "message": "올바르지 않은 bigClass형식이 입력되었습니다." }, //형식
+    CLOTHES_ERROR_TYPE : { "isSuccess": false, "code": 3046, "message": "올바르지 않은 Clothes형식이 입력되었습니다." }, //형식
     LOOKPOINT_ERROR_TYPE : { "isSuccess": false, "code": 3047, "message": "올바르지 않은 lookpoint 형식이 입력되었습니다." }, //형식
     PWWC_ERROR_TYPE : { "isSuccess": false, "code": 3048, "message": "올바르지 않은 PWWC flag형식이 입력되었습니다." }, //형식
-    
+    TAG_LENGTH : { "isSuccess": false, "code": 3049, "message": "태그의 내용은 6글자까지만 입력할 수 있습니다." }, //형식
+   
+
+
 
     
     //Response Error
     LOOKPOINT_RESPONSE_ERROR : { "isSuccess": false, "code": 4000, "message": "LOOKPOINT 값 추출에 실패했습니다."},
     SEARCH_DATE_OOTD_EMPTY : { "isSuccess": false, "code": 4001, "message": "선택하신 날짜에 해당하는 OOTD가 존재하지 않습니다." },
     LOGIN_UNREGISTER_USER : { "isSuccess": false, "code": 4002, "message": "탈퇴된 계정입니다. 문의해주세요." },
-    
-
+    TAG_OVERFLOW : { "isSuccess": false, "code": 4003, "message": "태그는 최대 20개까지 추가할 수 있습니다. 새로운 태그를 추가하기 위해 기존의 태그를 삭제해주세요." },
+    TAG_REDUNDANT : { "isSuccess": false, "code": 3050, "message": "이미 존재하는 태그입니다." }, //형식
 
     //Connection Error
     DB_ERROR : { "isSuccess": false, "code": 5000, "message": "DB 접속 에러"},
