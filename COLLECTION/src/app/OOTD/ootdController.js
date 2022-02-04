@@ -20,7 +20,7 @@ exports.postNewBlock = async function (req, res) {
     const userId = req.params.userId;
 
     if (userIdFromJWT != userId) {
-        res.send(errResponse(baseResponse.USER_ID_NOT_MATCH));
+        res.send(errResponse(baseResponse.USERID_NOT_MATCH));
     } else {
         /**jwt token 검증 성공한 다음*/
 
