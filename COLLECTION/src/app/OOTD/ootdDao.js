@@ -17,7 +17,7 @@ async function selectClothesTag(connection, selectTagParams) {
 
 // PWW 중복 체크
 async function selectPwwTag(connection, selectTagParams) {
-  const selectPwwTagListQuery;
+  const selectPwwTagListQuery =``;
   if(selectTagParams[1] == "Place"){
       selectPwwTagListQuery = `
         SELECT place 
@@ -68,7 +68,7 @@ async function selectClothesNumber(connection, selectTagNumParams) {
 
 
 async function selectPwwNumber(connection, selectTagNumParams) {
-  const selectPwwTagListQuery;
+  const selectPwwTagListQuery =``;
   if(selectTagParams[1] == "Place"){
       selectPwwTagListQuery = `
         SELECT place 
