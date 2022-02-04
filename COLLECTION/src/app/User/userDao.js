@@ -178,7 +178,7 @@ async function updatePhoneInfo(connection, insertUserResultParams) {
   return updateUserRow;
 }
 
-//회원탈퇴 함수
+//회원탈퇴 함수 
 async function unregisterUser(connection, userIdx) {
   const updateUserQuery = `
     UPDATE User 

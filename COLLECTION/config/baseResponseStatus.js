@@ -109,6 +109,9 @@ module.exports = {
     LOOKPOINT_RESPONSE_ERROR : { "isSuccess": false, "code": 4000, "message": "LOOKPOINT 값 추출에 실패했습니다."},
     SEARCH_DATE_OOTD_EMPTY : { "isSuccess": false, "code": 4001, "message": "선택하신 날짜에 해당하는 OOTD가 존재하지 않습니다." },
     LOGIN_UNREGISTER_USER : { "isSuccess": false, "code": 4002, "message": "탈퇴된 계정입니다. 문의해주세요." },
+    //MODI_OLD_PW_WRONG 
+    //MODI_OLD_NEW_SAME
+    //MODI_OLD_CHECK_WRONG
     
 
 

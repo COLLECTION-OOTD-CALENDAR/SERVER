@@ -82,7 +82,7 @@ exports.postLogIn = async function (ID, password) {
             return errResponse(baseResponse.LOGIN_PW_WRONG);
         }
 
-        // 계정 상태 확인
+        // 계정 상태 확인 
 
         const userInfoRows = await userProvider.accountCheck(ID);
 
