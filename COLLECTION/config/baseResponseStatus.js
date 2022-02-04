@@ -118,3 +118,4 @@ module.exports = {
     //Connection Error
     DB_ERROR : { "isSuccess": false, "code": 5000, "message": "DB 접속 에러"},
     SERVER_ERROR : { "isSuccess": false, "code": 6000, "message": "SERVER 에러"},
+}
