@@ -19,7 +19,7 @@ const crypto = require("crypto");
 
 
 
-exports.createNewBlock = async function (userIdx, flag, content) {
+exports.createNewBlock = async function (userIdx, Clothes, PWW, content) {
     try {    
         //1. 블럭 content 중복 확인  
         const contentRows = await ootdProvider.tagRedundantCheck(userIdx, flag, content);
@@ -37,19 +37,23 @@ exports.createNewBlock = async function (userIdx, flag, content) {
 
         // 3. POST 쿼리문에 사용할 변수 값을 배열 형태로 전달
         
-        const insertNewBlockParams = [userIdx, flag, content];
 
         
         const connection = await pool.getConnection(async (conn) => conn);
 
-        if(Clothes.includes(flag)){
+        if(PWW==-1){
+            if(Clothes == 0) const flag = "Top";
+            else if(Clothes == 1) const flag = "Bottom";
+            else if(Clothes == 2) const flag = "Shoes";
+            else if(Clothes == 3) const flag = "Etc";
+            const insertNewBlockParams = [userIdx, flag, content];
             const clothesResult = await ootdDao.insertAddedClothes(connection, insertNewBlockParams);
             connection.release();
             
             console.log(`추가된 블럭 : ${content}`);
             return response(baseResponse.SUCCESS, clothesResult);
         }        
-        else if(flag == "Place"){
+        else if(PWW == 0){
             insertNewBlockParams = [userIdx, content];
             const placeResult = await ootdDao.insertAddedPlace(connection, insertNewBlockParams);
             connection.release();
@@ -57,7 +61,7 @@ exports.createNewBlock = async function (userIdx, flag, content) {
             console.log(`추가된 블럭 : ${content}`);
             return response(baseResponse.SUCCESS, placeResult);
         }
-        else if(flag == "Weather"){
+        else if(PWW == 1){
             insertNewBlockParams = [userIdx, content];
             const weatherResult = await ootdDao.insertAddedWeather(connection, insertNewBlockParams);
             connection.release();
@@ -65,7 +69,7 @@ exports.createNewBlock = async function (userIdx, flag, content) {
             console.log(`추가된 블럭 : ${content}`);
             return response(baseResponse.SUCCESS, weatherResult);
         }
-        else if(flag == "Who"){
+        else if(PWW == 2){
             insertNewBlockParams = [userIdx, content];
             const whoResult = await ootdDao.insertAddedWho(connection, insertNewBlockParams);
             connection.release();

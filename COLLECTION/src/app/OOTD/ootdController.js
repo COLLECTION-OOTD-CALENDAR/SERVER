@@ -79,43 +79,44 @@ exports.postNewBlock = async function (req, res) {
         }
                 
 
-        var flag = "";
+        // var flag = "";
 
-        if(PWW == -1){
-            switch (Clothes) {
-                case 0:
-                    flag = "Top"
-                    break;
-                case 1:
-                    flag = "Bottom"
-                    break;
-                case 2:
-                    flag = "Shoes"
-                    break;
-                case 3:
-                    flag = "Etc"
-                    break;
-            }
+        // if(PWW == -1){
+        //     switch (Clothes) {
+        //         case 0:
+        //             flag = "Top"
+        //             break;
+        //         case 1:
+        //             flag = "Bottom"
+        //             break;
+        //         case 2:
+        //             flag = "Shoes"
+        //             break;
+        //         case 3:
+        //             flag = "Etc"
+        //             break;
+        //     }
 
 
-        }
-        else if(Clothes == -1){
-            switch (PWW) {
-                case 0:
-                    flag = "Place"
-                    break;
-                case 1:
-                    flag = "Weather"
-                    break;
-                case 2:
-                    flag= "Who"
-                    break;
-            }            
-        }
-        console.log(`controller flag : ${flag}`);
+        // }
+        // else if(Clothes == -1){
+        //     switch (PWW) {
+        //         case 0:
+        //             flag = "Place"
+        //             break;
+        //         case 1:
+        //             flag = "Weather"
+        //             break;
+        //         case 2:
+        //             flag= "Who"
+        //             break;
+        //     }            
+        // }
+        console.log(`controller Content : ${Contet}`);
         const newBlockResponse = await ootdService.createNewBlock(
             userIdx,
-            flag,
+            Clothes,
+            PWW,
             Content
         );
         
