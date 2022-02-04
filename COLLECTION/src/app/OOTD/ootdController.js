@@ -45,8 +45,6 @@ exports.postNewBlock = async function (req, res) {
         Content.trim(); //앞과 뒤의 공백 제거
 
         if(Content.length > 6){            
-            console.log(`content string : ${Content}`)
-            console.log(`content : ${content.toString()}`)
             return res.send(errResponse(baseResponse.TAG_LENGTH));
         }
 
@@ -56,6 +54,7 @@ exports.postNewBlock = async function (req, res) {
         const PWW = req.query.PWW;          //0: Place, 1: Weather, 2: Who
 
         if(!isNaN(Clothes) || !isNaN(PWW) ){ //둘 중 하나가 숫자가 아님
+            console.log(`Clothes : ${Clothes}, PWW : ${PWW}`);
             return res.send(errResponse(baseResponse.QUERY_STRING_ERROR_TYPE));
         }
 
