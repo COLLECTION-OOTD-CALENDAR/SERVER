@@ -1,33 +1,74 @@
 const { pool } = require("../../../config/database");
 const { logger } = require("../../../config/winston");
 
-const userDao = require("./userDao");
+const calendarDao = require("./calendarDao");
 
 // Provider: Read 비즈니스 로직 처리
 
-exports.retrieveUserList = async function (email) {
+// Monthly 달력 OOTD 부르기
+exports.retrieveMonthlyList = async function (userIdx) {
 
-  //email을 인자로 받는 경우와 받지 않는 경우를 구분하여 하나의 함수에서 두 가지 기능을 처리함
+  // connection 은 db와의 연결을 도와줌
+  const connection = await pool.getConnection(async (conn) => conn);
+  // Dao 쿼리문의 결과를 호출
+  const monthlyListResult = await calendarDao.selectMonthly(connection, userIdx);
+  // connection 해제
+  connection.release();
 
-  if (!email) {
-    // connection 은 db와의 연결을 도와줌
-    const connection = await pool.getConnection(async (conn) => conn);
-    // Dao 쿼리문의 결과를 호출
-    const userListResult = await userDao.selectUser(connection);
-    // connection 해제
-    connection.release();
+  return monthlyListResult;
 
-    return userListResult;
-
-  } else {
-    const connection = await pool.getConnection(async (conn) => conn);
-    const userListResult = await userDao.selectUserEmail(connection, email);
-    connection.release();
-
-    return userListResult;
-  }
 };
 
+// Weekly 달력 OOTD 부르기
+exports.retrieveWeeklyList = async function (userIdx) {
+
+  // connection 은 db와의 연결을 도와줌
+  const connection = await pool.getConnection(async (conn) => conn);
+  // Dao 쿼리문의 결과를 호출
+  //const placeFixedOrAdded = await calendarDao.selectWhatPlace(connection, userIdx);
+  //if(placeFixedOrAdded)
+
+  //자체적으로 android에서 필요한 정보들을 뽑아 쓰는 것이라고 가정
+
+  // date, lookpoint
+  //const ootdListResult = await calendarDao.selectWeeklyOotd(connection, userIdx);
+  //console.log('ootdListResult(date, lookpoint) : ', ootdListResult);
+  // ootdIdx
+  //const ootdIdxListResult = await calendarDao.selectWeeklyOotdIdx(connection, userIdx);
+  //console.log('ootdIdxListResult(ootdIdx) : ', ootdIdxListResult);
+
+  // ootd & place로 fixedPlace, addedPlace 리스트 (userIdx 사용)
+  //const placeListResult1 = await calendarDao.selectWeeklyPlace1(connection, userIdx);
+  //console.log('placeListResult1(fixedPlace, addedPlace) by userIdx : ', placeListResult1);
+
+  // ootd & place로 fixedPlace, addedPlace 리스트 (ootdIdx 사용)
+  //const placeListResult2 = await calendarDao.selectWeeklyPlace2(connection, ootdIdxListResult);
+  //console.log('placeListResult2(fixedPlace, addedPlace) by ootdIdx : ', placeListResult2);
+
+  // FixedPlace & AddedPlace 테이블 내 값 가져오기
+  //const fixedAddedPlaceResult1 = await calendarDao.selectWeeklyPlaceName(connection, placeListResult1);
+  //const fixedAddedPlaceResult2 = await calendarDao.selectWeeklyPlaceName2(connection, placeListResult2);
+
+  /********또 다른 방법******* */
+
+  // Place & FixedPlace & AddedPlace 테이블 join
+  //const placeJoinTable = await calendarDao.selectWeeklyPlaceJoin(connection);
+
+  // OOTD & Place Join 테이블 join하여 place 
+  //const fixedAddedPlaceResult3 = await calendarDao.selectWeeklyPlaceName3(connection, userIdx, placeJoinTable);
+
+  /*******다 같이 JOIN & UNION*******/
+  const ootdWeeklyListResult = await calendarDao.selectWeeklyOotdList(connection, userIdx);
+  console.log('calendarProvider return: ', ootdWeeklyListResult);
+  // const weeklyListResult = await calendarDao.selectWeekly(connection, userIdx);
+  // connection 해제
+  connection.release();
+
+  return ootdWeeklyListResult;
+
+};
+
+/*
 exports.retrieveUser = async function (userId) {
   const connection = await pool.getConnection(async (conn) => conn);
   const userResult = await userDao.selectUserId(connection, userId);
@@ -63,3 +104,4 @@ exports.accountCheck = async function (email) {
 
   return userAccountResult;
 };
+*/
