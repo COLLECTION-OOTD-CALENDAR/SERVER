@@ -27,7 +27,7 @@ module.exports = function(app){
     app.patch('/app/user/modi-phone/:userIdx',jwtMiddleware, user.modiPhone);
 
     //8. 회원탈퇴
-    app.patch('/app/user/unregister:userIdx',jwtMiddleware,user.unregister);
+    app.patch('/app/user/unregister/:userIdx',jwtMiddleware,user.unregister);
 
     // // 2. 유저 조회 API (+ 검색)
     // app.get('/app/users',user.getUsers);  
