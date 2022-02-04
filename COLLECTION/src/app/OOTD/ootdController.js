@@ -20,6 +20,7 @@ exports.postNewBlock = async function (req, res) {
       const userIdx = req.params.userIdx;
 
     if (IDFromJWT != userIdx) {
+        console.log(`userIdx : ${IDFromJWT}`)
         res.send(errResponse(baseResponse.USERID_NOT_MATCH))
     } 
     else {
