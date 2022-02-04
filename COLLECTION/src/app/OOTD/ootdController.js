@@ -32,7 +32,7 @@ exports.postNewBlock = async function (req, res) {
          * 2-2) 6글자가 안넘는지 길이 체크  => 3049
          */ 
         
-        const content = req.body;
+        var content = req.body;
         var blank_pattern = /^\s+|\s+$/g;
 
         if(content.replace(blank_pattern, '' ) == "" ){
