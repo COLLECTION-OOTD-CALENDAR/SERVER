@@ -37,6 +37,7 @@ exports.tagRedundantCheck = async function(userIdx, Clothes, PWW, Content){
 
       return clothesRedundantListResult;
     }
+    
     else if (Clothes == -1){
       var flag;
       if(PWW == 0)

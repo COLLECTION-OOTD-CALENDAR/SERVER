@@ -19,7 +19,7 @@ async function selectClothesTag(connection, userIdx, flag, Content) {
 
 // PWW 중복 체크
 async function selectPwwTag(connection, userIdx, flag, Content) {
-  const selectPwwTagListQuery =``;
+  var selectPwwTagListQuery =``;
   if(flag == "Place"){
       selectPwwTagListQuery = `
         SELECT place 
@@ -73,7 +73,7 @@ async function selectClothesNumber(connection, userIdx, flag) {
 
 
 async function selectPwwNumber(connection, userIdx, flag) {
-  const selectPwwTagListQuery =``;
+  var selectPwwTagListQuery =``;
   if(flag == "Place"){
       selectPwwTagListQuery = `
         SELECT place 
