@@ -40,6 +40,8 @@ exports.postNewBlock = async function (req, res) {
         if(Content.replace(blank_pattern, '' ) == "" ){
             return res.send(errResponse(baseResponse.PWWC_BLANK_TEXT));  
         }
+        
+        Content = content.toString();
         Content.trim(); //앞과 뒤의 공백 제거
 
         if(Content.length > 6){
