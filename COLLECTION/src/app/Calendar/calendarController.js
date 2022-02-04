@@ -65,6 +65,8 @@ exports.getMonth = async function (req, res) {
     //else {
         // userIdx를 통한 Monthly 달력 OOTD 검색 함수 및 결과 저장
         const callMonthCalOotd = await calendarProvider.retrieveMonthlyList(userIdx);
+        console.log('calendarController : callMonthCalOotd[0] 값 - ', callMonthCalOotd[0]);
+        console.log('calendarController : callMonthCalOotd[0][1] 값 - ', callMonthCalOotd[0][1]);
         return res.send(response(baseResponse.SUCCESS_MONTHLY_CALENDAR, callMonthCalOotd));
     //}
 
@@ -97,6 +99,9 @@ exports.getWeek = async function (req, res) {
     //else {
         // userId를 통한 Weekly 달력 OOTD 검색 함수 및 결과 저장
     const callWeekCalOotd = await calendarProvider.retrieveWeeklyList(userIdx);
+    console.log('calendarController : callWeekCalOotd[0] 값 - ', callWeekCalOotd[0]);
+    console.log('calendarController : callWeekCalOotd[0][2] 값 - ', callWeekCalOotd[0][2]);
+
     return res.send(response(baseResponse.SUCCESS_WEEKLY_CALENDAR, callWeekCalOotd));
     //}
 };
