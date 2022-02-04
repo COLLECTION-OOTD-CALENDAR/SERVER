@@ -77,7 +77,7 @@ exports.createNewBlock = async function (userId, flag, content) {
 
 
     } catch (err) {
-        logger.error(`App - createUser Service error\n: ${err.message}`);
+        logger.error(`App - createNewBlock Service error\n: ${err.message}`);
         return errResponse(baseResponse.DB_ERROR);
     }
 };

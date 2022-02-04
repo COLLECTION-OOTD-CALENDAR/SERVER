@@ -20,8 +20,7 @@ exports.postNewBlock = async function (req, res) {
     const userId = req.params.userId;
 
     if (userIdFromJWT != userId) {
-        
-        return res.send(response(baseResponse.USER_ID_NOT_MATCH));
+        res.send(errResponse(baseResponse.USER_ID_NOT_MATCH));
     } else {
         /**jwt token 검증 성공한 다음*/
 
@@ -35,12 +34,12 @@ exports.postNewBlock = async function (req, res) {
         var blank_pattern = /^\s+|\s+$/g;
 
         if(content.replace(blank_pattern, '' ) == "" ){
-            return res.send(response(baseResponse.PWWC_BLANK_TEXT));  
+            return res.send(errResponse(baseResponse.PWWC_BLANK_TEXT));  
         }
         content.trim(); //앞과 뒤의 공백 제거
 
         if(content.length > 6){
-            return res.send(response(baseResponse.TAG_LENGTH));
+            return res.send(errResponse(baseResponse.TAG_LENGTH));
         }
 
 
@@ -49,7 +48,7 @@ exports.postNewBlock = async function (req, res) {
         const PWW = req.query.PWW;          //0: Place, 1: Weather, 2: Who
 
         if(!isNaN(Clothes) || !isNaN(PWW) ){ //둘 중 하나가 숫자가 아님
-            return res.send(response(baseResponse.QUERY_STRING_ERROR_TYPE));
+            return res.send(errResponse(baseResponse.QUERY_STRING_ERROR_TYPE));
         }
 
         
@@ -63,14 +62,14 @@ exports.postNewBlock = async function (req, res) {
         */
 
         if( (Clothes < -1) || (3 < Clothes) || (PWW < -1) || (2 < PWW) ) {  //유효하지 않은 값
-            return res.send(response(baseResponse.PWWC_INVALID_VALUE)); 
+            return res.send(errResponse(baseResponse.PWWC_INVALID_VALUE)); 
         }
 
         if((Clothes == -1) && (PWW == -1)){
-            return res.send(response(baseResponse.FLAG_EMPTY));
+            return res.send(errResponse(baseResponse.FLAG_EMPTY));
         }
         if((Clothes != -1) && (PWW != -1)){
-            return res.send(response(baseResponse.QUERY_STRING_OVERFLOW));
+            return res.send(errResponse(baseResponse.QUERY_STRING_OVERFLOW));
         }
                 
 
@@ -115,11 +114,11 @@ exports.postNewBlock = async function (req, res) {
         );
         
         //Service : 중복확인 -> 20개 개수 확인 -> post
+        
+
+        // newBlockResponse 값을 json으로 전달
+        return res.send(newBlockResponse);
     }
 
-
-
-    // newBlockResponse 값을 json으로 전달
-    return res.send(newBlockResponse);
 };
 
