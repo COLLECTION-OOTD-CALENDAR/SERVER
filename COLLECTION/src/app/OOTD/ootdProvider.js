@@ -5,14 +5,14 @@ const ootdDao = require("./ootdDao");
 
 // Provider: Read 비즈니스 로직 처리
 
-exports.tagRedundantCheck = async function(userIdx, flag, content){
+exports.tagRedundantCheck = async function(userIdx, flag, Content){
   /*    
 
    1) Clothes일 경우 AddedClothes에서 userId와 flag (bigClass)가 일치하는 열 중
-      content가 smallClass와 같은 것을 배열에 저장한 후 반환
+      Content가 smallClass와 같은 것을 배열에 저장한 후 반환
 
     2) PWW일 경우 flag에 해당하는 각 Place/Weather/Who에서 userId와 일치하는 열 중
-       content가 place/weather/who와 같은 것을 배열에 저장한 후 반환
+       Content가 place/weather/who와 같은 것을 배열에 저장한 후 반환
    */
 
     const Clothes = ["Top", "Bottom", "Shoes", "Etc"];
@@ -22,13 +22,13 @@ exports.tagRedundantCheck = async function(userIdx, flag, content){
     const connection = await pool.getConnection(async (conn) => conn);
     console.log(`flag : ${flag}`);
     if(Clothes.includes(flag)){
-      const clothesRedundantListResult = await ootdDao.selectClothesTag(connection, userIdx, flag, content);
+      const clothesRedundantListResult = await ootdDao.selectClothesTag(connection, userIdx, flag, Content);
       connection.release();
 
       return clothesRedundantListResult;
     }
     else{
-      const pwwRedundantListResult = await ootdDao.selectPwwTag(connection, userIdx, flag, content);
+      const pwwRedundantListResult = await ootdDao.selectPwwTag(connection, userIdx, flag, Content);
       connection.release();
 
       return pwwRedundantListResult;

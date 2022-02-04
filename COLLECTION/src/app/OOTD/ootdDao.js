@@ -2,8 +2,8 @@
 // 새롭게 추가한 함수를 아래 부분에서 export 해줘야 외부의 Provider, Service 등에서 사용가능합니다.
 
 // AddedClothes 중복 체크
-async function selectClothesTag(connection, userIdx, flag, content) {
-  const selectTagParams = [userIdx, flag, content, "active"];// (userAdded)
+async function selectClothesTag(connection, userIdx, flag, Content) {
+  const selectTagParams = [userIdx, flag, Content, "active"];// (userAdded)
 
   const selectClothesTagListQuery = `
         SELECT smallClass 
@@ -18,7 +18,7 @@ async function selectClothesTag(connection, userIdx, flag, content) {
 };
 
 // PWW 중복 체크
-async function selectPwwTag(connection, userIdx, flag, content) {
+async function selectPwwTag(connection, userIdx, flag, Content) {
   const selectPwwTagListQuery =``;
   if(flag == "Place"){
       selectPwwTagListQuery = `
@@ -43,7 +43,7 @@ async function selectPwwTag(connection, userIdx, flag, content) {
     `; 
   }
 
-  const selectTagParams = [userIdx, content, "active"];// (userAdded)
+  const selectTagParams = [userIdx, Content, "active"];// (userAdded)
 
    const [tagRows] = await connection.query(
         selectPwwTagListQuery, 

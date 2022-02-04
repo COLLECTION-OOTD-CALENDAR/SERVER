@@ -19,11 +19,11 @@ const crypto = require("crypto");
 
 
 
-exports.createNewBlock = async function (userIdx, Clothes, PWW, content) {
+exports.createNewBlock = async function (userIdx, Clothes, PWW, Content) {
     try {    
-        //1. 블럭 content 중복 확인  
-        const contentRows = await ootdProvider.tagRedundantCheck(userIdx, flag, content);
-        if(contentRows.length > 0)
+        //1. 블럭 Content 중복 확인  
+        const ContentRows = await ootdProvider.tagRedundantCheck(userIdx, flag, Content);
+        if(ContentRows.length > 0)
             return errResponse(baseResponse.TAG_REDUNDANT);
 
 
@@ -42,40 +42,41 @@ exports.createNewBlock = async function (userIdx, Clothes, PWW, content) {
         const connection = await pool.getConnection(async (conn) => conn);
 
         if(PWW==-1){
-            if(Clothes == 0) const flag = "Top";
-            else if(Clothes == 1) const flag = "Bottom";
-            else if(Clothes == 2) const flag = "Shoes";
-            else if(Clothes == 3) const flag = "Etc";
-            const insertNewBlockParams = [userIdx, flag, content];
+            var flag;
+            if(Clothes == 0) {  flag = "Top";}
+            else if(Clothes == 1) {  flag = "Bottom";}
+            else if(Clothes == 2) { flag = "Shoes";}
+            else if(Clothes == 3) { flag = "Etc"; }
+            const insertNewBlockParams = [userIdx, flag, Content];
             const clothesResult = await ootdDao.insertAddedClothes(connection, insertNewBlockParams);
             connection.release();
             
-            console.log(`추가된 블럭 : ${content}`);
+            console.log(`추가된 블럭 : ${Content}`);
             return response(baseResponse.SUCCESS, clothesResult);
         }        
         else if(PWW == 0){
-            insertNewBlockParams = [userIdx, content];
+            insertNewBlockParams = [userIdx, Content];
             const placeResult = await ootdDao.insertAddedPlace(connection, insertNewBlockParams);
             connection.release();
             
-            console.log(`추가된 블럭 : ${content}`);
+            console.log(`추가된 블럭 : ${Content}`);
             return response(baseResponse.SUCCESS, placeResult);
         }
         else if(PWW == 1){
-            insertNewBlockParams = [userIdx, content];
+            insertNewBlockParams = [userIdx, Content];
             const weatherResult = await ootdDao.insertAddedWeather(connection, insertNewBlockParams);
             connection.release();
       
-            console.log(`추가된 블럭 : ${content}`);
+            console.log(`추가된 블럭 : ${Content}`);
             return response(baseResponse.SUCCESS, weatherResult);
         }
         else if(PWW == 2){
-            insertNewBlockParams = [userIdx, content];
+            insertNewBlockParams = [userIdx, Content];
             const whoResult = await ootdDao.insertAddedWho(connection, insertNewBlockParams);
             connection.release();
       
             
-            console.log(`추가된 블럭 : ${content}`);
+            console.log(`추가된 블럭 : ${Content}`);
             return response(baseResponse.SUCCESS, whoResult);
         }
 
