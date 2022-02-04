@@ -81,7 +81,7 @@ exports.postNewBlock = async function (req, res) {
 
         var flag = "";
 
-        if(PWW==-1){
+        if(PWW == -1){
             switch (Clothes) {
                 case 0:
                     flag = "Top"
@@ -99,7 +99,7 @@ exports.postNewBlock = async function (req, res) {
 
 
         }
-        else if(Clothes==-1){
+        else if(Clothes == -1){
             switch (PWW) {
                 case 0:
                     flag = "Place"
@@ -112,7 +112,7 @@ exports.postNewBlock = async function (req, res) {
                     break;
             }            
         }
-
+        console.log(`controller flag : ${flag}`);
         const newBlockResponse = await ootdService.createNewBlock(
             userIdx,
             flag,
