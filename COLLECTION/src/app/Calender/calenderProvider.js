@@ -10,8 +10,12 @@ exports.retrieveMonthlyList = async function (userIdx) {
 
   // connection 은 db와의 연결을 도와줌
   const connection = await pool.getConnection(async (conn) => conn);
+  console.log("calendarProvider : connect complete");
   // Dao 쿼리문의 결과를 호출
   const monthlyListResult = await calendarDao.selectMonthly(connection, userIdx);
+  
+  console.log('calendarProvider return: ', monthlyListResult);
+
   // connection 해제
   connection.release();
 
