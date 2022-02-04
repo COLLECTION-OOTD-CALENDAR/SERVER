@@ -32,15 +32,17 @@ exports.postNewBlock = async function (req, res) {
          * 2-2) 6글자가 안넘는지 길이 체크  => 3049
          */ 
         
-        var content = req.body;
+        const content = req.body;
+
+        var Content = content;
         var blank_pattern = /^\s+|\s+$/g;
 
-        if(content.replace(blank_pattern, '' ) == "" ){
+        if(Content.replace(blank_pattern, '' ) == "" ){
             return res.send(errResponse(baseResponse.PWWC_BLANK_TEXT));  
         }
-        content.trim(); //앞과 뒤의 공백 제거
+        Content.trim(); //앞과 뒤의 공백 제거
 
-        if(content.length > 6){
+        if(Content.length > 6){
             return res.send(errResponse(baseResponse.TAG_LENGTH));
         }
 
@@ -112,7 +114,7 @@ exports.postNewBlock = async function (req, res) {
         const newBlockResponse = await ootdService.createNewBlock(
             userIdx,
             flag,
-            content
+            Content
         );
         
         //Service : 중복확인 -> 20개 개수 확인 -> post
