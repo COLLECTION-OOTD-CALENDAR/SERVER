@@ -96,7 +96,7 @@ exports.getWeek = async function (req, res) {
     console.log('calendarController : request error check complete');
     //else {
         // userId를 통한 Weekly 달력 OOTD 검색 함수 및 결과 저장
-    const callWeekCalOotd = await calendarProvider.retrieveWeekhlyList(userIdx);
+    const callWeekCalOotd = await calendarProvider.retrieveWeeklyList(userIdx);
     return res.send(response(baseResponse.SUCCESS_WEEKLY_CALENDAR, callWeekCalOotd));
     //}
 };
