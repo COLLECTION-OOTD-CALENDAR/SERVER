@@ -45,7 +45,8 @@ exports.postNewBlock = async function (req, res) {
         Content.trim(); //앞과 뒤의 공백 제거
 
         if(Content.length > 6){            
-            console.log(`content : ${content}`)
+            console.log(`content string : ${Content}`)
+            console.log(`content : ${content.toString()}`)
             return res.send(errResponse(baseResponse.TAG_LENGTH));
         }
 
