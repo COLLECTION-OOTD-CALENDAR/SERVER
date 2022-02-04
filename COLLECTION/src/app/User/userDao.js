@@ -182,7 +182,7 @@ async function updatePhoneInfo(connection, insertUserResultParams) {
 async function unregisterUser(connection, userIdx) {
   const updateUserQuery = `
     UPDATE User 
-    SET status = inactive
+    SET status = "inactive"
     WHERE userIdx = ?;`;
   const unregisterUserRow = await connection.query(updateUserQuery, userIdx);
   return unregisterUserRow;
