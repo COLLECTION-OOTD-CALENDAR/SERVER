@@ -19,7 +19,7 @@ async function selectClothesTag(connection, userIdx, flag, Content) {
 
 // PWW 중복 체크
 async function selectPwwTag(connection, userIdx, flag, Content) {
-  const selectPwwTagListQuery =``;
+  var selectPwwTagListQuery =``;
   if(flag == "Place"){
       selectPwwTagListQuery = `
         SELECT place 
@@ -73,7 +73,7 @@ async function selectClothesNumber(connection, userIdx, flag) {
 
 
 async function selectPwwNumber(connection, userIdx, flag) {
-  const selectPwwTagListQuery =``;
+  var selectPwwTagListQuery =``;
   if(flag == "Place"){
       selectPwwTagListQuery = `
         SELECT place 
@@ -116,7 +116,7 @@ async function insertAddedClothes(connection, insertNewBlockParams) {
       insertNewBlockParams
   );
 
-  return insertClothesQueryRow;
+  return insertClothesQueryRow[0];
 }
 
 async function insertAddedPlace(connection, insertNewBlockParams) {
@@ -129,7 +129,7 @@ async function insertAddedPlace(connection, insertNewBlockParams) {
       insertNewBlockParams
   );
 
-  return insertPlaceQueryRow;
+  return insertPlaceQueryRow[0];
 }
 
 async function insertAddedWeather(connection, insertNewBlockParams) {
@@ -142,7 +142,7 @@ async function insertAddedWeather(connection, insertNewBlockParams) {
       insertNewBlockParams
   );
 
-  return insertWeatherQueryRow;
+  return insertWeatherQueryRow[0];
 }
 
 async function insertAddedWho(connection, insertNewBlockParams) {
@@ -155,7 +155,7 @@ async function insertAddedWho(connection, insertNewBlockParams) {
       insertNewBlockParams
   );
 
-  return insertWhoQueryRow;
+  return insertWhoQueryRow[0];
 }
 
 module.exports = {

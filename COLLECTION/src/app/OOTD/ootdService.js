@@ -22,14 +22,14 @@ const crypto = require("crypto");
 exports.createNewBlock = async function (userIdx, Clothes, PWW, Content) {
     try {    
         //1. 블럭 Content 중복 확인  
-        const ContentRows = await ootdProvider.tagRedundantCheck(userIdx, flag, Content);
+        const ContentRows = await ootdProvider.tagRedundantCheck(userIdx, Clothes, PWW, Content);
         if(ContentRows.length > 0)
             return errResponse(baseResponse.TAG_REDUNDANT);
 
 
             
         //  2. 추가하는 블럭 20개 넘는지 체크, 20개 미만이면 추가
-        const numberRows = await ootdProvider.tagNumberCheck(userIdx, flag);
+        const numberRows = await ootdProvider.tagNumberCheck(userIdx, Clothes, PWW);
         if (numberRows.length >= 20)
             return errResponse(baseResponse.TAG_OVERFLOW);
 
@@ -41,18 +41,26 @@ exports.createNewBlock = async function (userIdx, Clothes, PWW, Content) {
         
         const connection = await pool.getConnection(async (conn) => conn);
 
-        if(PWW==-1){
-            var flag;
-            if(Clothes == 0) {  flag = "Top";}
-            else if(Clothes == 1) {  flag = "Bottom";}
-            else if(Clothes == 2) { flag = "Shoes";}
-            else if(Clothes == 3) { flag = "Etc"; }
+        if(PWW == -1){
+            var flag;//undefined
+            if(Clothes == 0) 
+                flag = "Top";
+            
+            else if(Clothes == 1) 
+                flag = "Bottom";
+
+            else if(Clothes == 2) 
+                flag = "Shoes";
+            else if(Clothes == 3) 
+                flag = "Etc"; 
+
+            console.log(`service flag : ${flag}`);
             const insertNewBlockParams = [userIdx, flag, Content];
             const clothesResult = await ootdDao.insertAddedClothes(connection, insertNewBlockParams);
             connection.release();
             
             console.log(`추가된 블럭 : ${Content}`);
-            return response(baseResponse.SUCCESS, clothesResult);
+            return response(baseResponse.SUCCESS_LAST_REGISTER, {'added Clothes' : Content});
         }        
         else if(PWW == 0){
             insertNewBlockParams = [userIdx, Content];
@@ -60,7 +68,7 @@ exports.createNewBlock = async function (userIdx, Clothes, PWW, Content) {
             connection.release();
             
             console.log(`추가된 블럭 : ${Content}`);
-            return response(baseResponse.SUCCESS, placeResult);
+            return response(baseResponse.SUCCESS_LAST_REGISTER, {'added Place' : Content});
         }
         else if(PWW == 1){
             insertNewBlockParams = [userIdx, Content];
@@ -68,7 +76,7 @@ exports.createNewBlock = async function (userIdx, Clothes, PWW, Content) {
             connection.release();
       
             console.log(`추가된 블럭 : ${Content}`);
-            return response(baseResponse.SUCCESS, weatherResult);
+            return response(baseResponse.SUCCESS_LAST_REGISTER, {'added Weather' : Content});
         }
         else if(PWW == 2){
             insertNewBlockParams = [userIdx, Content];
@@ -77,7 +85,7 @@ exports.createNewBlock = async function (userIdx, Clothes, PWW, Content) {
       
             
             console.log(`추가된 블럭 : ${Content}`);
-            return response(baseResponse.SUCCESS, whoResult);
+            return response(baseResponse.SUCCESS_LAST_REGISTER, {'added Place' : Content});
         }
 
 

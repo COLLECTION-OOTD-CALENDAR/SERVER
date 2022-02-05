@@ -5,7 +5,7 @@ const ootdDao = require("./ootdDao");
 
 // Provider: Read 비즈니스 로직 처리
 
-exports.tagRedundantCheck = async function(userIdx, flag, Content){
+exports.tagRedundantCheck = async function(userIdx, Clothes, PWW, Content){
   /*    
 
    1) Clothes일 경우 AddedClothes에서 userId와 flag (bigClass)가 일치하는 열 중
@@ -15,28 +15,50 @@ exports.tagRedundantCheck = async function(userIdx, flag, Content){
        Content가 place/weather/who와 같은 것을 배열에 저장한 후 반환
    */
 
-    const Clothes = ["Top", "Bottom", "Shoes", "Etc"];
-    //const PWW = ["Place", "Weather", "Who"];
-
-
     const connection = await pool.getConnection(async (conn) => conn);
-    console.log(`flag : ${flag}`);
-    if(Clothes.includes(flag)){
+
+    if(PWW == -1){
+      var flag;//undefined
+      if(Clothes == 0) 
+          flag = "Top";
+      
+      else if(Clothes == 1) 
+          flag = "Bottom";
+
+      else if(Clothes == 2) 
+          flag = "Shoes";
+      else if(Clothes == 3) 
+          flag = "Etc"; 
+      
+      
+      console.log(`providerTRC flag : ${flag}`);
       const clothesRedundantListResult = await ootdDao.selectClothesTag(connection, userIdx, flag, Content);
       connection.release();
 
       return clothesRedundantListResult;
     }
-    else{
+    
+    else if (Clothes == -1){
+      var flag;
+      if(PWW == 0)
+        flag = "Place";
+      if (PWW == 1)
+        flag = "Weather";
+      if (PWW == 2)
+        flag = "Who";
+
+
+      console.log(`providerTRC flag : ${flag}`);
       const pwwRedundantListResult = await ootdDao.selectPwwTag(connection, userIdx, flag, Content);
       connection.release();
 
       return pwwRedundantListResult;
-    }
+    } 
+
 
 };
 
-exports.tagNumberCheck = async function(userIdx, flag){
+exports.tagNumberCheck = async function(userIdx, Clothes, PWW){
   /*
    1) Clothes일 경우 AddedClothes에서 userId와 flag (bigClass)가 일치하는 열 중
       active인 것들을 배열에 저장한 후 반환
@@ -45,18 +67,40 @@ exports.tagNumberCheck = async function(userIdx, flag){
        active인 것들을 pwwRows에 저장한 후 배열을 반환
    */
 
-    const Clothes = ["Top", "Bottom", "Shoes", "Etc"];
-    //const PWW = ["Place", "Weather", "Who"];
 
     const connection = await pool.getConnection(async (conn) => conn);
-
-    if(Clothes.includes(flag)){
+    
+    if(PWW == -1){
+      var flag;//undefined
+      if(Clothes == 0) 
+          flag = "Top";
+      
+      else if(Clothes == 1) 
+          flag = "Bottom";
+  
+      else if(Clothes == 2) 
+          flag = "Shoes";
+      else if(Clothes == 3) 
+          flag = "Etc"; 
+      
+      console.log(`providerTNC flag : ${flag}`);
       const clothesNumberListResult = await ootdDao.selectClothesNumber(connection, userIdx, flag);
       connection.release();
-
+      
       return clothesNumberListResult;
     }
-    else{
+
+    else if (Clothes == -1){
+      var flag;
+      if(PWW == 0)
+        flag = "Place";
+      if (PWW == 1)
+        flag = "Weather";
+      if (PWW == 2)
+        flag = "Who";
+
+      
+      console.log(`providerTNC flag : ${flag}`);
       const pwwNumberListResult = await ootdDao.selectPwwNumber(connection, userIdx, flag);
       connection.release();
 
