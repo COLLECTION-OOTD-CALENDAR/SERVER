@@ -103,7 +103,8 @@ exports.retrieveWeeklyList = async function (userIdx) {
 
   let ootds = [];
   
-  for (row in ootdWeeklyListResult) {
+  for (let row in ootdWeeklyListResult) {
+    console.log('ootdWeeklyListResult[0] : ', ootdWeeklyListResult[0]);
     console.log('row : ', row);
     let ootd = getOotd(row.ootdIdx, ootds);
 
