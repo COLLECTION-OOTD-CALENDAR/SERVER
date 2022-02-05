@@ -14,29 +14,25 @@ exports.getMyLookMain = async function (lookpoint, userIdx){
     const getOOTDResultParams = [lookpoint, userIdx];
 
     const getOOTDResult = await mylookDao.getOOTD(connection, getOOTDResultParams);
-    console.log('getOOTDResult 값 : ', getOOTDResult);
-    console.log('getOOTDResult 길이 :', getOOTDResult.length);
+
     // console.log(`getOOTDResult 값 : ${lastOOTDResult}`)
     
     //const lastOOTDResult = (getOOTDResult.thumbnail == 0 || getOOTDResult.thumbnail == null);
-    console.log('getOOTDResult 1번 :', getOOTDResult[0]);
-    console.log('getOOTDResult 1번 :', getOOTDResult[0].thumbnail);
+
     
     const lastOOTDArr = new Array();
     for (var i=0 ; i<getOOTDResult.length; i++){
-      console.log('getOOTDResult 1번 :', getOOTDResult[i]);
-      console.log('getOOTDResult 1번 :', getOOTDResult[i].thumbnail);
-
       if(getOOTDResult[i].thumbnail == 0 || getOOTDResult[i].thumbnail == null){
+        var moment = require('moment');
+        getOOTDResult[i].date = moment(getOOTDResult[i].date).format('YYYY-MM-DD');
         lastOOTDArr.push(getOOTDResult[i]);
       }
     };
-  
 
 
     connection.release();
 
-    return response(baseResponse.SUCCESS_MYLOOK_MAIN, {'lookpoint': lastOOTDArr});
+    return response(baseResponse.SUCCESS_MYLOOK_MAIN, {'lookpoint': lookpoint, lastOOTDArr});
     
   } catch (err) {
     logger.error(`App - getMyLookMain Service error\n: ${err.message}`);
