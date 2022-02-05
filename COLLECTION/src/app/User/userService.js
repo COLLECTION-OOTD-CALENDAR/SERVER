@@ -72,12 +72,6 @@ exports.postLogIn = async function (ID, password) {
         
         const passwordRows = await userProvider.passwordCheck(selectID);
 
-        console.log(`passwordRows_userservice_0만 : ${passwordRows[0]}\n`);
-
-        console.log(`passwordRows_userservice_0과pw도 : ${passwordRows[0].password}\n`);
-        
-        console.log(`hashedPw : ${hashedPassword}\n`)
-
         if (passwordRows[0].password !== hashedPassword) {
             return errResponse(baseResponse.LOGIN_PW_WRONG);
         }
@@ -86,15 +80,9 @@ exports.postLogIn = async function (ID, password) {
 
         const userInfoRows = await userProvider.accountCheck(ID);
 
-        //  if (userInfoRows[0].status === "INACTIVE") {
-        //      return errResponse(baseResponse.LOGIN_ID_WRONG);
-        // } 
         if (userInfoRows[0].status === "inactive") {
             return errResponse(baseResponse.LOGIN_UNREGISTER_USER); //탈퇴한 USER
         }
-
-        console.log(`db의 id(userservice) : ${userInfoRows[0].ID}`); // DB의 ID 
-        console.log(`db의 USERIDX(userservice) : ${userInfoRows[0].userIdx}`); // DB의 ID 
 
         //토큰 생성 Service
         let token = await jwt.sign(
@@ -126,10 +114,6 @@ exports.editNickname = async function (nickname, userIdx) {
         const connection = await pool.getConnection(async (conn) => conn);
         const editUserResult = await userDao.updateNicknameInfo(connection, nickname, userIdx)
         connection.release();
-        console.log(`userservice의 ${editUserResult}`);
-        console.log(`userservice의 ${editUserResult[0]}`);
-        console.log(`userservice의 ${editUserResult.nickname}`);
-        console.log(`userservice의 ${editUserResult[0].nickname}`);
         return response(baseResponse.SUCCESS_USERS_MODI,{'nickname': nickname});
 
     } catch (err) {
