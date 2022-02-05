@@ -8,22 +8,27 @@ const calendarDao = require("./calendarDao");
 // Monthly 달력 OOTD 부르기
 exports.retrieveMonthlyList = async function (userIdx) {
 
-  // connection 은 db와의 연결을 도와줌
-  const connection = await pool.getConnection(async (conn) => conn);
-  console.log('calendarProvider : connect complete');
-  // Dao 쿼리문의 결과를 호출
-  const monthlyListResult = await calendarDao.selectMonthly(connection, userIdx);
-  for ( i in monthlyListResult ) {
-    var moment = require('moment');
-    monthlyListResult[i].date = moment(monthlyListResult[i].date).format('YYYY-MM-DD');
-    console.log(monthlyListResult[i].date);
+  try {
+    // connection 은 db와의 연결을 도와줌
+    const connection = await pool.getConnection(async (conn) => conn);
+    console.log('calendarProvider : connect complete');
+    // Dao 쿼리문의 결과를 호출
+    const monthlyListResult = await calendarDao.selectMonthly(connection, userIdx);
+    for ( i in monthlyListResult ) {
+      var moment = require('moment');
+      monthlyListResult[i].date = moment(monthlyListResult[i].date).format('YYYY-MM-DD');
+      console.log(monthlyListResult[i].date);
+    }
+    console.log('calendarProvider return: ', monthlyListResult);
+
+    // connection 해제
+    connection.release();
+    return monthlyListResult;
+
+  } catch(err) {
+    logger.error(`App - getMonthly Provider error\n: ${err.message}`);
+    return errResponse(baseResponse.DB_ERROR);
   }
-  console.log('calendarProvider return: ', monthlyListResult);
-
-  // connection 해제
-  connection.release();
-
-  return monthlyListResult;
 
 };
 
@@ -67,19 +72,24 @@ exports.retrieveWeeklyList = async function (userIdx) {
   //const fixedAddedPlaceResult3 = await calendarDao.selectWeeklyPlaceName3(connection, userIdx, placeJoinTable);
 
   /*******다 같이 JOIN & UNION*******/
-  console.log('calendarProvider : connect complete');
-  const ootdWeeklyListResult = await calendarDao.selectWeeklyOotdList(connection, userIdx);
-  for ( i in ootdWeeklyListResult ) {
-    var moment = require('moment');
-    ootdWeeklyListResult[i].date = moment(ootdWeeklyListResult[i].date).format('YYYY-MM-DD');
-    console.log(ootdWeeklyListResult[i].date);
-  }
-  console.log('calendarProvider return: ', ootdWeeklyListResult);
-  // const weeklyListResult = await calendarDao.selectWeekly(connection, userIdx);
-  // connection 해제
-  connection.release();
+  try {
+    console.log('calendarProvider : connect complete');
+    const ootdWeeklyListResult = await calendarDao.selectWeeklyOotdList(connection, userIdx);
+    for ( i in ootdWeeklyListResult ) {
+      var moment = require('moment');
+      ootdWeeklyListResult[i].date = moment(ootdWeeklyListResult[i].date).format('YYYY-MM-DD');
+      console.log(ootdWeeklyListResult[i].date);
+    }
+    console.log('calendarProvider return: ', ootdWeeklyListResult);
+    // const weeklyListResult = await calendarDao.selectWeekly(connection, userIdx);
+    // connection 해제
+    connection.release();
 
-  return ootdWeeklyListResult;
+    return ootdWeeklyListResult;
+  } catch(err) {
+    logger.error(`App - getWeekly Provider error\n: ${err.message}`);
+    return errResponse(baseResponse.DB_ERROR);
+  }
 
 };
 
