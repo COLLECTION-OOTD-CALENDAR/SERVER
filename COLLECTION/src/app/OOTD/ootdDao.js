@@ -174,7 +174,7 @@ async function selectClothesExist(connection, userIdx, flag, Content) {
         selectTagParams);
 
   return tagRows;
-};
+}
 
 // PWW 존재 체크
 async function selectPwwExist(connection, userIdx, flag, Content) {
@@ -209,7 +209,7 @@ async function selectPwwExist(connection, userIdx, flag, Content) {
         selectTagParams);
 
   return tagRows;
-};
+}
 
 //
 
@@ -221,7 +221,7 @@ async function deleteAddedClothes(connection, deleteNewBlockParams){  //deleteNe
         `;
     const updateBlockRow = await connection.query(updateBlockQuery, deleteNewBlockParams);
     return updateBlockRow;
-};
+}
 
 async function deleteAddedPlace(connection, deleteNewBlockParams){  //deleteNewBlockParams = [userIdx, Content];
   const updateBlockQuery = `
@@ -231,7 +231,7 @@ async function deleteAddedPlace(connection, deleteNewBlockParams){  //deleteNewB
       `;
   const updateBlockRow = await connection.query(updateBlockQuery, deleteNewBlockParams);
   return updateBlockRow;
-};
+}
 
 async function deleteAddedWeather(connection, deleteNewBlockParams){  //deleteNewBlockParams = [userIdx, Content];
   const updateBlockQuery = `
@@ -241,7 +241,7 @@ async function deleteAddedWeather(connection, deleteNewBlockParams){  //deleteNe
       `;
   const updateBlockRow = await connection.query(updateBlockQuery, deleteNewBlockParams);
   return updateBlockRow;
-};
+}
 
 async function deleteAddedWho(connection, deleteNewBlockParams){  //deleteNewBlockParams = [userIdx, Content];
   const updateBlockQuery = `
@@ -251,7 +251,7 @@ async function deleteAddedWho(connection, deleteNewBlockParams){  //deleteNewBlo
       `;
   const updateBlockRow = await connection.query(updateBlockQuery, deleteNewBlockParams);
   return updateBlockRow;
-};
+}
 
 
 module.exports = {
