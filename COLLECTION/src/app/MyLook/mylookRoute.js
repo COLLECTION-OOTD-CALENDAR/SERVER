@@ -6,7 +6,7 @@ module.exports = function(app){
     // app.get('/app/test', user.getTest)
 
     // 1. myLook 메인페이지 API
-    app.post('/app/mylook/mainpage/:userIdx/:lookpoint', jwtMiddleware , user.getMyLookMain);
+    app.get('/app/mylook/mainpage/:userIdx/:lookpoint', jwtMiddleware , user.getMyLookMain);
 
     // 2. 유저 조회 API (+ 검색)
     //app.get('/app/users',user.getUsers); 
