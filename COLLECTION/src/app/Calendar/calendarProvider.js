@@ -103,7 +103,7 @@ exports.retrieveWeeklyList = async function (userIdx) {
 
   let ootds = [];
   
-  for (let row in ootdWeeklyListResult) {
+  for (var row of ootdWeeklyListResult) {
     console.log('ootdWeeklyListResult[0] : ', ootdWeeklyListResult[0]);
     console.log('row : ', row);
     let ootd = getOotd(row.ootdIdx, ootds);
@@ -144,7 +144,7 @@ exports.retrieveWeeklyList = async function (userIdx) {
 };
 
 function getOotd(ootdIdx, ootds) {
-  for (each in ootds){
+  for (var each in ootds){
     if(each.ootdIdx == ootdIdx) return each;
   }
 
@@ -152,7 +152,7 @@ function getOotd(ootdIdx, ootds) {
 };
 
 function getBigClass(ootdIdx, ootds, ootd){
-  for (each in ootds){
+  for (var each in ootds){
     if(each.ootdIdx == ootdIdx) return ootd;
   }
 
@@ -201,7 +201,7 @@ function getPWWs(row, tmp) {
 };
 
 function hasClothes(list, data) {
-  for(each in list) {
+  for(var each in list) {
       if(each.smallClass == data.smallClass && each.color == data.color) return true;
   }
 
