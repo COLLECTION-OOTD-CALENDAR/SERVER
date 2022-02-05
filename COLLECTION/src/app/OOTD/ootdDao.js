@@ -171,7 +171,7 @@ async function selectClothesExist(connection, userIdx, flag, Content) {
         selectClothesTagListQuery, 
         selectTagParams);
 
-  return tagRows[0];
+  return tagRows;
 };
 
 // PWW 존재 체크
@@ -206,7 +206,7 @@ async function selectPwwExist(connection, userIdx, flag, Content) {
         selectPwwTagListQuery, 
         selectTagParams);
 
-  return tagRows[0];
+  return tagRows;
 };
 
 
