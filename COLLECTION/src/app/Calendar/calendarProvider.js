@@ -69,6 +69,11 @@ exports.retrieveWeeklyList = async function (userIdx) {
   /*******다 같이 JOIN & UNION*******/
   console.log('calendarProvider : connect complete');
   const ootdWeeklyListResult = await calendarDao.selectWeeklyOotdList(connection, userIdx);
+  for ( i in ootdWeeklyListResult ) {
+    var moment = require('moment');
+    ootdWeeklyListResult[i].date = moment(ootdWeeklyListResult[i].date).format('YYYY-MM-DD');
+    console.log(ootdWeeklyListResult[i].date);
+  }
   console.log('calendarProvider return: ', ootdWeeklyListResult);
   // const weeklyListResult = await calendarDao.selectWeekly(connection, userIdx);
   // connection 해제
