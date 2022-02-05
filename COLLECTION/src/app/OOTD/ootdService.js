@@ -103,14 +103,14 @@ exports.deleteBlock = async function (userIdx, Clothes, PWW, Content) {
         //TAG_ALREADY_DELETED
         //TAG_NEVER_EXISTED
 
-        const ContentRows = await ootdProvider.tagExistCheck(userIdx, Clothes, PWW, Content);
-        console.log(`exist 검사 - status : ${ContentRows}`);
+        // const ContentRows = await ootdProvider.tagExistCheck(userIdx, Clothes, PWW, Content);
+        // console.log(`exist 검사 - status : ${ContentRows}`);
 
-        if(ContentRows.length == 0)
-            return errResponse(baseResponse.TAG_NEVER_EXISTED);
+        // if(ContentRows.length == 0)
+        //     return errResponse(baseResponse.TAG_NEVER_EXISTED);
         
-        else if(ContentRows == "inactive")
-            return errResponse(baseResponse.TAG_ALREADY_DELETED);
+        // else if(ContentRows == "inactive")
+        //     return errResponse(baseResponse.TAG_ALREADY_DELETED);
 
 
 
