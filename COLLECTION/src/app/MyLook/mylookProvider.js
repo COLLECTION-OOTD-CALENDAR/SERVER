@@ -14,9 +14,16 @@ exports.getMyLookMain = async function (lookpoint, userIdx){
 
     const getOOTDResult = await mylookDao.getOOTD(connection, getOOTDResultParams);
     console.log(`getOOTDResult 값 : ${getOOTDResult}`)
+    console.log(`getOOTDResult 길이 : ${getOOTDResult.length}`)
     console.log(`getOOTDResult 값 : ${lastOOTDResult}`)
     
     const lastOOTDResult = (getOOTDResult.thumbnail == 0 || getOOTDResult.thumbnail == null);
+
+    const lastOOTDArr = new Array();
+    for (var i; 0<i<getOOTDResult.length; i++)
+    if(getOOTDResult[i].thumbnail == 0 || getOOTDResult[i].thumbnail == null){
+      lastOOTDArr.push(getOOTDResult[i])
+    }
 
 
     connection.release();
