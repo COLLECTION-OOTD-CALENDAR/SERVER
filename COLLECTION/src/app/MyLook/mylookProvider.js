@@ -3,6 +3,7 @@ const { response } = require("../../../config/response");
 const { logger } = require("../../../config/winston");
 const baseResponse = require("../../../config/baseResponseStatus");
 const mylookDao = require("./mylookDao");
+const {errResponse} = require("../../../config/response");
 
 // Provider: Read 비즈니스 로직 처리
 
@@ -20,10 +21,12 @@ exports.getMyLookMain = async function (lookpoint, userIdx){
     //const lastOOTDResult = (getOOTDResult.thumbnail == 0 || getOOTDResult.thumbnail == null);
 
     const lastOOTDArr = new Array();
-    for (var i; 0<i<getOOTDResult.length; i++)
-    if(getOOTDResult[i].thumbnail == 0 || getOOTDResult[i].thumbnail == null){
-      lastOOTDArr.push(getOOTDResult[i])
-    }
+    for (var i; 0<i<getOOTDResult.length; i++){
+      if(getOOTDResult[i].thumbnail == 0 || getOOTDResult[i].thumbnail == null){
+        lastOOTDArr.push(getOOTDResult[i]);
+      }
+    };
+  
 
 
     connection.release();
