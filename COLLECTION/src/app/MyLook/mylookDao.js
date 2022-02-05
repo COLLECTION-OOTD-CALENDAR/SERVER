@@ -83,6 +83,17 @@ async function updateUserInfo(connection, id, nickname) {
   return updateUserRow[0];
 }
 
+//if가 만드는 로직 ~
+async function getOOTD(connection,getOOTDResultParams) {
+  const getOOTDQuery = `
+  SELECT date, photoIs, imageUrl
+  FROM Photo,OOTD
+  WHERE Photo.ootdIdx = OOTD.ootdIdx AND thumbnail =0 AND lookpoint=? AND userIdx=?;`
+  const getOOTDRow = await connection.query(getOOTDQuery,getOOTDResultParams);
+  return getOOTDRow;
+  
+}
+
 
 module.exports = {
   selectUser,
@@ -92,4 +103,5 @@ module.exports = {
   selectUserPassword,
   selectUserAccount,
   updateUserInfo,
+  getOOTD,
 };
