@@ -13,10 +13,10 @@ exports.retrieveMonthlyList = async function (userIdx) {
   console.log('calendarProvider : connect complete');
   // Dao 쿼리문의 결과를 호출
   const monthlyListResult = await calendarDao.selectMonthly(connection, userIdx);
-  for ( i in monthlyListResult ) {
-    monthlyListResult[i].date.format('YYYY-MM-DD');
-    console.log(monthlyListResult[i].date);
-  }
+  //for ( i in monthlyListResult ) {
+  //  monthlyListResult[i].date.format('YYYY-MM-DD');
+  //  console.log(monthlyListResult[i].date);
+  //}
   console.log('calendarProvider return: ', monthlyListResult);
 
   // connection 해제
