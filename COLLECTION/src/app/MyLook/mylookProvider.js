@@ -15,21 +15,17 @@ exports.getMyLookMain = async function (lookpoint, userIdx){
 
     const getOOTDResult = await mylookDao.getOOTD(connection, getOOTDResultParams);
 
-    // console.log(`getOOTDResult 값 : ${lastOOTDResult}`)
-    
-    //const lastOOTDResult = (getOOTDResult.thumbnail == 0 || getOOTDResult.thumbnail == null);
-
-    
     const lastOOTDArr = new Array();
-    for (var i=0 ; i<10; i++){
-      if(getOOTDResult[i].thumbnail == 0 || getOOTDResult[i].thumbnail == null){
+    for (var i=0 ; i<getOOTDResult.length; i++){
+      if(i>9){
+        break;
+      } 
+      if (getOOTDResult[i].thumbnail == 0 || getOOTDResult[i].thumbnail == null){
         var moment = require('moment');
         getOOTDResult[i].date = moment(getOOTDResult[i].date).format('YYYY-MM-DD');
         lastOOTDArr.push(getOOTDResult[i]);
       }
-    };
-
-   
+  };
 
     connection.release();
 
