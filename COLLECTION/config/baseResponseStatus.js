@@ -116,7 +116,7 @@ module.exports = {
     LOGIN_UNREGISTER_USER : { "isSuccess": false, "code": 4002, "message": "탈퇴된 계정입니다. 문의해주세요." },
     TAG_OVERFLOW : { "isSuccess": false, "code": 4003, "message": "태그는 최대 20개까지 추가할 수 있습니다. 새로운 태그를 추가하기 위해 기존의 태그를 삭제해주세요." },
     TAG_REDUNDANT : { "isSuccess": false, "code": 3050, "message": "이미 존재하는 태그입니다." }, //형식
-
+    DATE_RESPONSE_ERROR : { "isSuccess":false, "code":4005, "message": "DATE 값 추출에 실패했습니다."},
     //Connection Error
     DB_ERROR : { "isSuccess": false, "code": 5000, "message": "DB 접속 에러"},
     SERVER_ERROR : { "isSuccess": false, "code": 6000, "message": "SERVER 에러"},
