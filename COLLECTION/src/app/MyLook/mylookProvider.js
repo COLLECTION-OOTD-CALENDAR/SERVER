@@ -19,9 +19,14 @@ exports.getMyLookMain = async function (lookpoint, userIdx){
     // console.log(`getOOTDResult 값 : ${lastOOTDResult}`)
     
     //const lastOOTDResult = (getOOTDResult.thumbnail == 0 || getOOTDResult.thumbnail == null);
-
+    console.log('getOOTDResult 1번 :', getOOTDResult[0]);
+    console.log('getOOTDResult 1번 :', getOOTDResult[0].thumbnail);
+    
     const lastOOTDArr = new Array();
-    for (var i; 0<i<getOOTDResult.length; i++){
+    for (var i=0 ; i<getOOTDResult.length; i++){
+      console.log('getOOTDResult 1번 :', getOOTDResult[i]);
+      console.log('getOOTDResult 1번 :', getOOTDResult[i].thumbnail);
+
       if(getOOTDResult[i].thumbnail == 0 || getOOTDResult[i].thumbnail == null){
         lastOOTDArr.push(getOOTDResult[i]);
       }
