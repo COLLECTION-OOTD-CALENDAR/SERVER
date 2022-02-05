@@ -44,6 +44,8 @@ exports.postNewBlock = async function (req, res) {
         Content = content.toString();
         Content.trim(); //앞과 뒤의 공백 제거
 
+        console.log(`trimmed content : ${Content}`);
+
         if(Content.length > 6){            
             return res.send(errResponse(baseResponse.TAG_LENGTH));
         }
@@ -79,39 +81,6 @@ exports.postNewBlock = async function (req, res) {
         }
                 
 
-        // var flag = "";
-
-        // if(PWW == -1){
-        //     switch (Clothes) {
-        //         case 0:
-        //             flag = "Top"
-        //             break;
-        //         case 1:
-        //             flag = "Bottom"
-        //             break;
-        //         case 2:
-        //             flag = "Shoes"
-        //             break;
-        //         case 3:
-        //             flag = "Etc"
-        //             break;
-        //     }
-
-
-        // }
-        // else if(Clothes == -1){
-        //     switch (PWW) {
-        //         case 0:
-        //             flag = "Place"
-        //             break;
-        //         case 1:
-        //             flag = "Weather"
-        //             break;
-        //         case 2:
-        //             flag= "Who"
-        //             break;
-        //     }            
-        // }
         console.log(`controller Content : ${Content}`);
         const newBlockResponse = await ootdService.createNewBlock(
             userIdx,
@@ -127,5 +96,23 @@ exports.postNewBlock = async function (req, res) {
         return res.send(newBlockResponse);
     }
 
+    // exports.patchBlock = async function (req, res) {
+
+    //     // 1. jwt token 검증 
+  
+    //     const IDFromJWT = req.verifiedToken.userIdx;
+  
+    //     const userIdx = req.params.userIdx;
+  
+    //   if (IDFromJWT != userIdx) {
+    //       console.log(`userIdx : ${IDFromJWT}`)
+    //       res.send(errResponse(baseResponse.USERID_NOT_MATCH))
+    //   } 
+    //   else {
+        
+
+    //   }
+
+    // }
 };
 
