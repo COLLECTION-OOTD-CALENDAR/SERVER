@@ -86,10 +86,12 @@ async function updateUserInfo(connection, id, nickname) {
 //if가 만드는 로직 ~
 async function getOOTD(connection,getOOTDResultParams) {
   const getOOTDQuery = `
-  SELECT date, photoIs, imageUrl
-  FROM Photo,OOTD
-  WHERE Photo.ootdIdx = OOTD.ootdIdx AND thumbnail =0 AND lookpoint=? AND userIdx=?;`
+  SELECT distinct O.ootdIdx, O.date, O.photoIs, P.imageUrl, P.thumbnail
+  FROM OOTD AS O
+      LEFT OUTER JOIN Photo P on O.ootdIdx = P.ootdIdx
+  WHERE O.userIdx = ? AND O.lookpoint= ?;`
   const getOOTDRow = await connection.query(getOOTDQuery,getOOTDResultParams);
+  
   return getOOTDRow;
   
 }
