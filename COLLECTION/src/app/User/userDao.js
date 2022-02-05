@@ -35,19 +35,7 @@ async function selectUserEmail(connection, email) {
 //   return userRow;
 // }
 
-// 유저 생성
-async function insertUserInfo(connection, insertUserInfoParams) {
-  const insertUserInfoQuery = `
-        INSERT INTO User(name,nickname,ID,password,phoneNumber)
-        VALUES (?, ?, ?, ?, ?);
-    `;
-  const insertUserInfoRow = await connection.query(
-    insertUserInfoQuery,
-    insertUserInfoParams
-  );
 
-  return insertUserInfoRow;
-}
 
 // 패스워드 체크
 // async function selectUserPassword(connection, selectUserPasswordParams) {
@@ -82,6 +70,20 @@ async function insertUserInfo(connection, insertUserInfoParams) {
 
 //if가 만드는 로직~
 
+// 유저 생성
+async function insertUserInfo(connection, insertUserInfoParams) {
+  const insertUserInfoQuery = `
+        INSERT INTO User(name,nickname,ID,password,phoneNumber)
+        VALUES (?, ?, ?, ?, ?);
+    `;
+  const insertUserInfoRow = await connection.query(
+    insertUserInfoQuery,
+    insertUserInfoParams
+  );
+
+  return insertUserInfoRow;
+}
+
 //ID만 가져오는 함수
 async function selectUserID(connection,ID) {
   const selectUserIDQuery = `
@@ -113,8 +115,6 @@ async function selectUserPassword(connection, selectID) {
         FROM User 
         WHERE ID = ?`;
   const selectUserPasswordRow = await connection.query(selectUserPasswordQuery,selectID);
-  console.log(`userdao :  ${selectUserPasswordRow[0]}\n`);
-  console.log(`userdao,전체버전 :  ${selectUserPasswordRow}\n`);
   return selectUserPasswordRow[0];
   
 }
@@ -151,8 +151,6 @@ async function updateNicknameInfo(connection, nickname, userIdx) {
     SET nickname = ?
     WHERE userIdx = ?;`;
   const updateUserRow = await connection.query(updateUserQuery, [nickname, userIdx]);
-  console.log(`userdao :  ${updateUserRow[0]}\n`);
-  console.log(`userdao,전체버전 :  ${updateUserRow}\n`);
   return updateUserRow;
 }
 

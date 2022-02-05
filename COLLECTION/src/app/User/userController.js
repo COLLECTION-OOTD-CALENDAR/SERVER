@@ -81,7 +81,7 @@ exports.postUsers = async function (req, res) {
  * [GET] /app/user/duplicate-id
  */
 
-exports.duplicateID = async function (req, res) {
+exports.getDuplicateID = async function (req, res) {
 
     const ID = req.query.ID;
 
@@ -98,7 +98,7 @@ exports.duplicateID = async function (req, res) {
             return res.send(response(baseResponse.SUCCESS_DUPLICATE_ID));
         }
     } catch (err) {
-        logger.error(`App - dupliID Service error\n: ${err.message} \n${JSON.stringify(err)}`);
+        logger.error(`App - getDuplicateID Service error\n: ${err.message} \n${JSON.stringify(err)}`);
         return res.send(response(baseResponse.DB_ERROR));
     }
 
@@ -108,17 +108,20 @@ exports.duplicateID = async function (req, res) {
 
 /**
  * API No. 3
- * API Name : 중복 닉네임 확인
- * [GET] /app/user/duplicate-nickname
+ * API Name : 닉네임 확인
+ * [GET] /app/user/check-nickname
  */
 
-exports.duplicateNickname = async function(req, res) {
+exports.getNickname = async function(req, res) {
 
     const nickname = req.query.nickname;
 
     //빈 값 체크
     if(!nickname)
         return res.send(response(baseResponse.REGISTER_NICKNAME_EMPTY)); 
+
+    if (nickname.length < 2 || nickname.length > 6 )  
+        return res.send(response(baseResponse.REGISTER_NICKNAME_LENGTH));
 
     try{
         const nicknameRows = await userProvider.nicknameCheck(nickname);
@@ -129,7 +132,7 @@ exports.duplicateNickname = async function(req, res) {
             return res.send(response(baseResponse.SUCCESS_DUPLICATE_NICKNAME));
         }
     } catch (err) {
-        logger.error(`App - dupliNickname Service error\n: ${err.message} \n${JSON.stringify(err)}`);
+        logger.error(`App - getNickname Service error\n: ${err.message} \n${JSON.stringify(err)}`);
         return res.send(response(baseResponse.DB_ERROR));
     }
 
@@ -143,7 +146,7 @@ exports.duplicateNickname = async function(req, res) {
  * [POST] /app/user/login
  */
 
-exports.login = async function (req, res) {
+exports.postLogin = async function (req, res) {
 
     const ID = req.body.ID;
     const password = req.body.password;
@@ -169,7 +172,7 @@ exports.login = async function (req, res) {
  * body : nickname
  */
 
-exports.modiNickname = async function (req, res) {
+exports.patchModiNickname = async function (req, res) {
 
     const IDFromJWT = req.verifiedToken.userIdx;
 
@@ -212,7 +215,7 @@ exports.modiNickname = async function (req, res) {
  * body : password
  */
 
-exports.modiPW = async function (req, res) {
+exports.patchModiPW = async function (req, res) {
     const IDFromJWT = req.verifiedToken.userIdx;
 
     const userIdx = req.params.userIdx;
@@ -222,8 +225,6 @@ exports.modiPW = async function (req, res) {
     const newPassword = req.body.newPassword;
 
     const checkPassword = req.body.checkPassword;
-
-    
 
 
     if (IDFromJWT != userIdx) {
@@ -268,7 +269,7 @@ exports.modiPW = async function (req, res) {
  * body : phoneNumber
  */
 
-exports.modiPhone = async function (req, res) {
+exports.patchModiPhone = async function (req, res) {
     const IDFromJWT = req.verifiedToken.userIdx;
 
     const userIdx = req.params.userIdx;
@@ -302,7 +303,7 @@ exports.modiPhone = async function (req, res) {
  * body : password
  */
 
-exports.unregister = async function (req, res) {
+exports.deleteUnregister = async function (req, res) {
 
     const IDFromJWT = req.verifiedToken.userIdx;
 
