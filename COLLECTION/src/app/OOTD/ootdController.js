@@ -41,9 +41,9 @@ exports.postNewBlock = async function (req, res) {
             return res.send(errResponse(baseResponse.PWWC_BLANK_TEXT));  
         }
 
-        Content = content.toString();
-        Content.replace(/^\s+|\s+$/gm,''); //앞과 뒤의 공백 제거
-
+        Content = content.toString().trim();
+      //  Content.replace(/^\s+|\s+$/gm,''); //앞과 뒤의 공백 제거
+                
         console.log(`trimmed content : ${Content}`);
 
         if(Content.length > 6){            
