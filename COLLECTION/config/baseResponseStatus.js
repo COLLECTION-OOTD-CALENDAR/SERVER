@@ -67,7 +67,7 @@ module.exports = {
     DATE_INVALID_VALUE : { "isSuccess": false, "code": 3021, "message": "유효하지 않는 날짜입니다." }, //값
     USERID_NOT_MATCH : { "isSuccess": false, "code": 3022, "message": "유효하지 않은 userIdx가 입력되었습니다." },
     USERID_EMPTY : { "isSuccess": false, "code": 3023, "message": "userIdx가 입력되어야 합니다." },
-    WEEKLY_OOTD_EMPTY : { "isSuccess": false, "code": 3024, "message": "근 일주일간 OOTD가 존재하지 않습니다." },
+    // WEEKLY_OOTD_EMPTY : { "isSuccess": false, "code": 3024, "message": "근 일주일간 OOTD가 존재하지 않습니다." },
     DATE_OOTD_EMPTY : { "isSuccess": false, "code": 3025, "message": "입력된 Date의 OOTD가 존재하지 않습니다." },
 
 
