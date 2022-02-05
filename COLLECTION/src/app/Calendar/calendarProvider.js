@@ -15,7 +15,7 @@ exports.retrieveMonthlyList = async function (userIdx) {
   const monthlyListResult = await calendarDao.selectMonthly(connection, userIdx);
   for ( i in monthlyListResult ) {
     var moment = require('moment');
-    moment(monthlyListResult[i].date).format('YYYY-MM-DD');
+    monthlyListResult[i].date = moment(monthlyListResult[i].date).format('YYYY-MM-DD');
     console.log(monthlyListResult[i].date);
   }
   console.log('calendarProvider return: ', monthlyListResult);
