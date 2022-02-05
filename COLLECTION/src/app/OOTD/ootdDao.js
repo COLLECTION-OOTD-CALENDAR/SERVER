@@ -158,6 +158,102 @@ async function insertAddedWho(connection, insertNewBlockParams) {
   return insertWhoQueryRow[0];
 }
 
+
+
+//Clothes 존재 체크 
+async function selectClothesExist(connection, userIdx, flag, Content) {
+  const selectTagParams = [userIdx, flag, Content];// (userAdded)
+
+  const selectClothesTagListQuery = `
+        SELECT status 
+        FROM AddedClothes
+        WHERE userIdx = ? AND bigClass = ? AND smallClass = ?;
+                `;
+  const [tagRows] = await connection.query(
+        selectClothesTagListQuery, 
+        selectTagParams);
+
+  return tagRows;
+}
+
+// PWW 존재 체크
+async function selectPwwExist(connection, userIdx, flag, Content) {
+  var selectPwwTagListQuery =``;
+  if(flag == "Place"){
+      selectPwwTagListQuery = `
+        SELECT status 
+        FROM AddedPlace
+        WHERE userIdx = ? AND place = ? AND status = ?;
+    `;
+
+  }
+  if(flag == "Weather"){
+    selectPwwTagListQuery = `
+      SELECT status 
+      FROM AddedWeather
+      WHERE userIdx = ? AND weather = ? AND status = ?;
+    `; 
+  }
+  if(flag == "Who"){
+    selectPwwTagListQuery = `
+      SELECT status 
+      FROM AddedWho
+      WHERE userIdx = ? AND who = ? AND status = ?;
+    `; 
+  }
+
+  const selectTagParams = [userIdx, Content];// (userAdded)
+
+   const [tagRows] = await connection.query(
+        selectPwwTagListQuery, 
+        selectTagParams);
+
+  return tagRows;
+}
+
+//
+
+async function deleteAddedClothes(connection, deleteNewBlockParams){  //deleteNewBlockParams = [userIdx, flag, Content];
+    const updateBlockQuery = `
+        UPDATE AddedClothes 
+        SET status = "inactive"
+        WHERE userIdx = ? AND bigClass = ? AND smallClass = ?;
+        `;
+    const updateBlockRow = await connection.query(updateBlockQuery, deleteNewBlockParams);
+    return updateBlockRow;
+}
+
+async function deleteAddedPlace(connection, deleteNewBlockParams){  //deleteNewBlockParams = [userIdx, Content];
+  const updateBlockQuery = `
+      UPDATE AddedPlace
+      SET status = "inactive"
+      WHERE userIdx = ? AND place = ?;
+      `;
+  const updateBlockRow = await connection.query(updateBlockQuery, deleteNewBlockParams);
+  return updateBlockRow;
+}
+
+async function deleteAddedWeather(connection, deleteNewBlockParams){  //deleteNewBlockParams = [userIdx, Content];
+  const updateBlockQuery = `
+      UPDATE AddedWeather 
+      SET status = "inactive"
+      WHERE userIdx = ? AND weather = ?;
+      `;
+  const updateBlockRow = await connection.query(updateBlockQuery, deleteNewBlockParams);
+  return updateBlockRow;
+}
+
+async function deleteAddedWho(connection, deleteNewBlockParams){  //deleteNewBlockParams = [userIdx, Content];
+  const updateBlockQuery = `
+      UPDATE AddedWho
+      SET status = "inactive"
+      WHERE userIdx = ? AND who = ?;
+      `;
+  const updateBlockRow = await connection.query(updateBlockQuery, deleteNewBlockParams);
+  return updateBlockRow;
+}
+
+
 module.exports = {
   selectClothesTag,
   selectPwwTag,
@@ -166,5 +262,11 @@ module.exports = {
   insertAddedClothes,
   insertAddedPlace,
   insertAddedWeather,
-  insertAddedWho
+  insertAddedWho,
+  selectClothesExist,
+  selectPwwExist,
+  deleteAddedClothes,
+  deleteAddedPlace,
+  deleteAddedWeather,
+  deleteAddedWho
 };

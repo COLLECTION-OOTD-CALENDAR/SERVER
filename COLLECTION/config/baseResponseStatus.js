@@ -11,7 +11,8 @@ module.exports = {
     SUCCESS_UNREGISTER : { "isSuccess": true, "code": 1003, "message":"회원탈퇴 성공" },
     SUCCESS_MONTHLY_CALENDAR : { "isSuccess": true, "code": 1004, "message":"Monthly OOTD 불러오기 성공" },
     SUCCESS_WEEKLY_CALENDAR : { "isSuccess": true, "code": 1005, "message":"Weekly OOTD 불러오기 성공" },
-    SUCCESS_LAST_REGISTER : { "isSuccess": true, "code": 1008, "message":"사용자 블럭 추가 성공" },
+    SUCCESS_NEW_BLOCK : { "isSuccess": true, "code": 1007, "message":"사용자 블럭 추가 성공" },
+    SUCCESS_LAST_REGISTER : { "isSuccess": true, "code": 1008, "message":"OOTD 최종 등록 성공" },
     SUCCESS_OOTD_MODI : { "isSuccess": true, "code": 1012, "message":"지난 작성 화면 보여주기 성공" },
     SUCCESS_OOTD_DELETION : { "isSuccess": true, "code": 1013, "message":"OOTD 삭제 성공" },
     SUCCESS_OOTD_COMPLETE : { "isSuccess": true, "code": 1014, "message":"OOTD 완료 페이지 불러오기 성공" },
@@ -22,6 +23,7 @@ module.exports = {
     SUCCESS_SEARCH_ADDITION : { "isSuccess": true, "code": 1019, "message":"History 추가 성공" },
     SUCCESS_MATCH : { "isSuccess": true, "code": 1020, "message":"매칭 페이지 검색 결과 불러오기 성공" },
     SUCCESS_MATCH_DATE : { "isSuccess": true, "code": 1023, "message":"날짜 기반 매칭 페이지 검색 결과 불러오기 성공" },
+    SUCCESS_DELETE_BLOCK : { "isSuccess": true, "code": 1024, "message":"사용자 블럭 삭제 성공" },
 
 
 
@@ -65,7 +67,7 @@ module.exports = {
     DATE_INVALID_VALUE : { "isSuccess": false, "code": 3021, "message": "유효하지 않는 날짜입니다." }, //값
     USERID_NOT_MATCH : { "isSuccess": false, "code": 3022, "message": "유효하지 않은 userIdx가 입력되었습니다." },
     USERID_EMPTY : { "isSuccess": false, "code": 3023, "message": "userIdx가 입력되어야 합니다." },
-    WEEKLY_OOTD_EMPTY : { "isSuccess": false, "code": 3024, "message": "근 일주일간 OOTD가 존재하지 않습니다." },
+    // WEEKLY_OOTD_EMPTY : { "isSuccess": false, "code": 3024, "message": "근 일주일간 OOTD가 존재하지 않습니다." },
     DATE_OOTD_EMPTY : { "isSuccess": false, "code": 3025, "message": "입력된 Date의 OOTD가 존재하지 않습니다." },
 
 
@@ -113,7 +115,12 @@ module.exports = {
     SEARCH_DATE_OOTD_EMPTY : { "isSuccess": false, "code": 4001, "message": "선택하신 날짜에 해당하는 OOTD가 존재하지 않습니다." },
     LOGIN_UNREGISTER_USER : { "isSuccess": false, "code": 4002, "message": "탈퇴된 계정입니다. 문의해주세요." },
     TAG_OVERFLOW : { "isSuccess": false, "code": 4003, "message": "태그는 최대 20개까지 추가할 수 있습니다. 새로운 태그를 추가하기 위해 기존의 태그를 삭제해주세요." },
-    TAG_REDUNDANT : { "isSuccess": false, "code": 3050, "message": "이미 존재하는 태그입니다." }, //형식
+    TAG_REDUNDANT : { "isSuccess": false, "code": 4004, "message": "이미 존재하는 태그입니다." }, //형식
+    DATE_RESPONSE_ERROR : { "isSuccess":false, "code":4005, "message": "DATE 값 추출에 실패했습니다."},    
+    TAG_ALREADY_DELETED : { "isSuccess":false, "code":4006, "message": "이미 삭제된 태그입니다."},
+    TAG_NEVER_EXISTED : { "isSuccess":false, "code":4007, "message": "추가된 적이 없는 태그입니다."},
+
+
 
     //Connection Error
     DB_ERROR : { "isSuccess": false, "code": 5000, "message": "DB 접속 에러"},
