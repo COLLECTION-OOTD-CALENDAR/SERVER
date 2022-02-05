@@ -2,7 +2,7 @@ const { pool } = require("../../../config/database");
 const { response } = require("../../../config/response");
 const { logger } = require("../../../config/winston");
 
-const userDao = require("./userDao");
+const mylookDao = require("./mylookDao");
 
 // Provider: Read 비즈니스 로직 처리
 
@@ -10,9 +10,9 @@ const userDao = require("./userDao");
 exports.getMyLookMain = async function (lookpoint, userIdx){
   const connection = await pool.getConnection(async (conn) => conn);
   try {
-    const getOOTDResultParams = [lookpoint, userIdx]
+    const getOOTDResultParams = [lookpoint, userIdx];
 
-    const getOOTDResult = await mylookDao.getOOTD(connection, getOOTDResultParams)
+    const getOOTDResult = await mylookDao.getOOTD(connection, getOOTDResultParams);
     
 
     connection.release();

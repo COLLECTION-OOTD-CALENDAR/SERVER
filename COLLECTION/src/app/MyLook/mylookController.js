@@ -1,10 +1,9 @@
 const jwtMiddleware = require("../../../config/jwtMiddleware");
-const userProvider = require("./userProvider");
-const userService = require("./userService");
+const mylookProvider = require("./mylookProvider");
+const mylookService = require("./mylookService");
 const baseResponse = require("../../../config/baseResponseStatus");
 const {response, errResponse} = require("../../../config/response");
 
-const regexEmail = require("regex-email");
 
 
 /**

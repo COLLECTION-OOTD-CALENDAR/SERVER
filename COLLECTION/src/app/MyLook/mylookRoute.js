@@ -1,12 +1,12 @@
 module.exports = function(app){
-    const user = require('./userController');
+    const mylook = require('./mylookController');
     const jwtMiddleware = require('../../../config/jwtMiddleware');
 
     // 0. 테스트 API
     // app.get('/app/test', user.getTest)
 
     // 1. myLook 메인페이지 API
-    app.get('/app/mylook/mainpage/:userIdx/:lookpoint', jwtMiddleware , user.getMyLookMain);
+    app.get('/app/mylook/mainpage/:userIdx/:lookpoint', jwtMiddleware , mylook.getMyLookMain);
 
     // 2. 유저 조회 API (+ 검색)
     //app.get('/app/users',user.getUsers); 
