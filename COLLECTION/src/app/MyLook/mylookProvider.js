@@ -13,11 +13,15 @@ exports.getMyLookMain = async function (lookpoint, userIdx){
     const getOOTDResultParams = [lookpoint, userIdx];
 
     const getOOTDResult = await mylookDao.getOOTD(connection, getOOTDResultParams);
+    console.log(`getOOTDResult 값 : ${getOOTDResult}`)
+    console.log(`getOOTDResult 값 : ${lastOOTDResult}`)
     
+    const lastOOTDResult = (getOOTDResult.thumbnail == 0 || getOOTDResult.thumbnail == null);
+
 
     connection.release();
 
-    return response(baseResponse.SUCCESS_MYLOOK_MAIN, {'lookpoint': lookpoint [getOOTDResult]});
+    return response(baseResponse.SUCCESS_MYLOOK_MAIN, {'lookpoint': lastOOTDResult});
     
   } catch (err) {
     logger.error(`App - getMyLookMain Service error\n: ${err.message}`);
