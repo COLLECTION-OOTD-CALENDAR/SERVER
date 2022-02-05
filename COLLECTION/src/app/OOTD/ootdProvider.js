@@ -111,7 +111,6 @@ exports.tagNumberCheck = async function(userIdx, Clothes, PWW){
 
 exports.tagExistCheck = async function(userIdx, Clothes, PWW, Content){
   const connection = await pool.getConnection(async (conn) => conn);
-  const connection = await pool.getConnection(async (conn) => conn);
 
   if(PWW == -1){
     var flag;//undefined
