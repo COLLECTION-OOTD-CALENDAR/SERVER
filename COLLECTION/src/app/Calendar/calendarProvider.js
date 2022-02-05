@@ -173,27 +173,27 @@ function getPWWs(row, tmp) {
     tags = tmp;
   }
 
-  if(row.fpName != null && row.indexOf(row.fpName) < 0){
+  if(row.fpName != null && tags.indexOf(row.fpName) < 0){
     tags.push(row.fpName);
   }
 
-  if(row.apName != null && row.indexOf(row.apName) < 0){
+  if(row.apName != null && tags.indexOf(row.apName) < 0){
     tags.push(row.apName);
   }
 
-  if(row.fwName != null && row.indexOf(row.fwName) < 0){
+  if(row.fwName != null && tags.indexOf(row.fwName) < 0){
     tags.push(row.fwName);
   }
 
-  if(row.awName != null && row.indexOf(row.awName) < 0){
+  if(row.awName != null && tags.indexOf(row.awName) < 0){
     tags.push(row.awName);
   }
 
-  if(row.fwhName != null && row.indexOf(row.fwhName) < 0){
+  if(row.fwhName != null && tags.indexOf(row.fwhName) < 0){
     tags.push(row.fwhName);
   }
 
-  if(row.fpName != null && row.indexOf(row.fpName) < 0){
+  if(row.fpName != null && tags.indexOf(row.fpName) < 0){
     tags.push(row.awhName);
   }
 
