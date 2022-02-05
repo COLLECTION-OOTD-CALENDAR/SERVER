@@ -116,8 +116,6 @@ exports.deleteBlock = async function (userIdx, Clothes, PWW, Content) {
 
         const connection = await pool.getConnection(async (conn) => conn);
 
-
-
         if(PWW == -1){
             var flag;//undefined
             if(Clothes == 0) 
