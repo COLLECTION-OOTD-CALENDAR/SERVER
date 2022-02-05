@@ -92,7 +92,7 @@ async function getOOTD(connection,getOOTDResultParams) {
   WHERE O.lookpoint = ? AND O.userIdx= ?;`;
   const getOOTDRow = await connection.query(getOOTDQuery,getOOTDResultParams);
   
-  return getOOTDRow;
+  return getOOTDRow[0];
   
 }
 
