@@ -159,6 +159,8 @@ async function insertAddedWho(connection, insertNewBlockParams) {
 }
 
 
+
+//Clothes 존재 체크 
 async function selectClothesExist(connection, userIdx, flag, Content) {
   const selectTagParams = [userIdx, flag, Content];// (userAdded)
 
