@@ -1,7 +1,7 @@
 const { pool } = require("../../../config/database");
 const { response } = require("../../../config/response");
 const { logger } = require("../../../config/winston");
-
+const baseResponse = require("../../../config/baseResponseStatus");
 const mylookDao = require("./mylookDao");
 
 // Provider: Read 비즈니스 로직 처리

@@ -32,9 +32,11 @@ exports.getMyLookMain = async function (req, res) {
         if(lookpoint < 0 || lookpoint > 5){
             return res.send(errResponse(baseResponse.LOOKPOINT_INVALID_VALUE));
         }
+
+        const getMyLook = await mylookProvider.getMyLookMain(lookpoint, userIdx);
+        return res.send(getMyLook);
     }
-    const getMyLook = await mylookProvider.getMyLookMain(lookpoint, userIdx)
-    return res.send(getMyLook)
+
 };
 
 /**
