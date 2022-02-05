@@ -11,7 +11,8 @@ module.exports = {
     SUCCESS_UNREGISTER : { "isSuccess": true, "code": 1003, "message":"회원탈퇴 성공" },
     SUCCESS_MONTHLY_CALENDAR : { "isSuccess": true, "code": 1004, "message":"Monthly OOTD 불러오기 성공" },
     SUCCESS_WEEKLY_CALENDAR : { "isSuccess": true, "code": 1005, "message":"Weekly OOTD 불러오기 성공" },
-    SUCCESS_LAST_REGISTER : { "isSuccess": true, "code": 1008, "message":"사용자 블럭 추가 성공" },
+    SUCCESS_NEW_BLOCK : { "isSuccess": true, "code": 1007, "message":"사용자 블럭 추가 성공" },
+    SUCCESS_LAST_REGISTER : { "isSuccess": true, "code": 1008, "message":"OOTD 최종 등록 성공" },
     SUCCESS_OOTD_MODI : { "isSuccess": true, "code": 1012, "message":"지난 작성 화면 보여주기 성공" },
     SUCCESS_OOTD_DELETION : { "isSuccess": true, "code": 1013, "message":"OOTD 삭제 성공" },
     SUCCESS_OOTD_COMPLETE : { "isSuccess": true, "code": 1014, "message":"OOTD 완료 페이지 불러오기 성공" },
@@ -22,6 +23,7 @@ module.exports = {
     SUCCESS_SEARCH_ADDITION : { "isSuccess": true, "code": 1019, "message":"History 추가 성공" },
     SUCCESS_MATCH : { "isSuccess": true, "code": 1020, "message":"매칭 페이지 검색 결과 불러오기 성공" },
     SUCCESS_MATCH_DATE : { "isSuccess": true, "code": 1023, "message":"날짜 기반 매칭 페이지 검색 결과 불러오기 성공" },
+    SUCCESS_DELETE_BLOCK : { "isSuccess": true, "code": 1024, "message":"사용자 블럭 삭제 성공" },
 
 
 
