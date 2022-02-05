@@ -9,25 +9,25 @@ module.exports = function(app){
     app.post('/app/user/register', user.postUsers);
 
     // 2. 중복 ID 확인 
-    app.get('/app/user/duplicate-id',user.duplicateID);
+    app.get('/app/user/duplicate-id',user.getDuplicateID);
 
-    // 3. 중복 닉네임 확인
-    app.get('/app/user/duplicate-nickname',user.duplicateNickname);
+    // 3. 닉네임 확인
+    app.get('/app/user/check-nickname',user.getNickname);
 
     //4. 로그인 
-    app.post('/app/user/login',user.login);
+    app.post('/app/user/login',user.postLogin);
 
     //5. 회원정보 수정 (닉네임)
-    app.patch('/app/user/modi-nickname/:userIdx',jwtMiddleware, user.modiNickname);
+    app.patch('/app/user/modi-nickname/:userIdx',jwtMiddleware, user.patchModiNickname);
 
     //6. 회원정보 수정 (비밀번호)
-    app.patch('/app/user/modi-password/:userIdx',jwtMiddleware, user.modiPW);
+    app.patch('/app/user/modi-password/:userIdx',jwtMiddleware, user.patchModiPW);
 
     //7. 회원정보 수정 (전화번호)
-    app.patch('/app/user/modi-phone/:userIdx',jwtMiddleware, user.modiPhone);
+    app.patch('/app/user/modi-phone/:userIdx',jwtMiddleware, user.patchModiPhone);
 
     //8. 회원탈퇴
-    app.patch('/app/user/unregister/:userIdx',jwtMiddleware,user.unregister);
+    app.patch('/app/user/unregister/:userIdx',jwtMiddleware,user.deleteUnregister);
 
     // // 2. 유저 조회 API (+ 검색)
     // app.get('/app/users',user.getUsers);  
