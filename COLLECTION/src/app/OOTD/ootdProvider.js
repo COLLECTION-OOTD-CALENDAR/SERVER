@@ -109,4 +109,47 @@ exports.tagNumberCheck = async function(userIdx, Clothes, PWW){
 
 };
 
+exports.tagExistCheck = async function(userIdx, Clothes, PWW, Content){
+  const connection = await pool.getConnection(async (conn) => conn);
+  const connection = await pool.getConnection(async (conn) => conn);
 
+  if(PWW == -1){
+    var flag;//undefined
+    if(Clothes == 0) 
+        flag = "Top";
+    
+    else if(Clothes == 1) 
+        flag = "Bottom";
+
+    else if(Clothes == 2) 
+        flag = "Shoes";
+    else if(Clothes == 3) 
+        flag = "Etc"; 
+    
+    
+    console.log(`providerTEC flag : ${flag}`);
+    const clothesExistListResult = await ootdDao.selectClothesExist(connection, userIdx, flag, Content);
+    connection.release();
+
+    return clothesExistListResult;
+  }
+  
+  else if (Clothes == -1){
+    var flag;
+    if(PWW == 0)
+      flag = "Place";
+    if (PWW == 1)
+      flag = "Weather";
+    if (PWW == 2)
+      flag = "Who";
+
+
+    console.log(`providerTEC flag : ${flag}`);
+    const pwwExistListResult = await ootdDao.selectPwwExist(connection, userIdx, flag, Content);
+    connection.release();
+
+    return pwwExistListResult;
+  } 
+
+
+}

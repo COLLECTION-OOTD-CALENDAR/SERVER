@@ -115,8 +115,13 @@ module.exports = {
     SEARCH_DATE_OOTD_EMPTY : { "isSuccess": false, "code": 4001, "message": "선택하신 날짜에 해당하는 OOTD가 존재하지 않습니다." },
     LOGIN_UNREGISTER_USER : { "isSuccess": false, "code": 4002, "message": "탈퇴된 계정입니다. 문의해주세요." },
     TAG_OVERFLOW : { "isSuccess": false, "code": 4003, "message": "태그는 최대 20개까지 추가할 수 있습니다. 새로운 태그를 추가하기 위해 기존의 태그를 삭제해주세요." },
-    TAG_REDUNDANT : { "isSuccess": false, "code": 3050, "message": "이미 존재하는 태그입니다." }, //형식
-    DATE_RESPONSE_ERROR : { "isSuccess":false, "code":4005, "message": "DATE 값 추출에 실패했습니다."},
+    TAG_REDUNDANT : { "isSuccess": false, "code": 4004, "message": "이미 존재하는 태그입니다." }, //형식
+    DATE_RESPONSE_ERROR : { "isSuccess":false, "code":4005, "message": "DATE 값 추출에 실패했습니다."},    
+    TAG_ALREADY_DELETED : { "isSuccess":false, "code":4006, "message": "이미 삭제된 태그입니다."},
+    TAG_NEVER_EXISTED : { "isSuccess":false, "code":4007, "message": "추가된 적이 없는 태그입니다."},
+
+
+
     //Connection Error
     DB_ERROR : { "isSuccess": false, "code": 5000, "message": "DB 접속 에러"},
     SERVER_ERROR : { "isSuccess": false, "code": 6000, "message": "SERVER 에러"},
