@@ -138,7 +138,7 @@ exports.deleteBlock = async function (userIdx, Clothes, PWW, Content) {
             return response(baseResponse.SUCCESS_DELETE_BLOCK, {'deleted Clothes' : Content});
         }        
         else if(PWW == 0){
-            deleteNewBlockParams = [userIdx, Content];
+            const deleteNewBlockParams = [userIdx, Content];
             const placeResult = await ootdDao.deleteAddedPlace(connection, deleteNewBlockParams);
             connection.release();
             
@@ -146,7 +146,7 @@ exports.deleteBlock = async function (userIdx, Clothes, PWW, Content) {
             return response(baseResponse.SUCCESS_DELETE_BLOCK, {'deleted Place' : Content});
         }
         else if(PWW == 1){
-            deleteNewBlockParams = [userIdx, Content];
+            const deleteNewBlockParams = [userIdx, Content];
             const weatherResult = await ootdDao.deleteAddedWeather(connection, deleteNewBlockParams);
             connection.release();
       
@@ -154,7 +154,7 @@ exports.deleteBlock = async function (userIdx, Clothes, PWW, Content) {
             return response(baseResponse.SUCCESS_DELETE_BLOCK, {'deleted Weather' : Content});
         }
         else if(PWW == 2){
-            deleteNewBlockParams = [userIdx, Content];
+            const deleteNewBlockParams = [userIdx, Content];
             const whoResult = await ootdDao.deleteAddedWho(connection, deleteNewBlockParams);
             connection.release();
       
