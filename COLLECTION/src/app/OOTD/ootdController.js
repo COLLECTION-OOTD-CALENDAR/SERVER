@@ -95,6 +95,9 @@ exports.postNewBlock = async function (req, res) {
         return res.send(newBlockResponse);
     }
 }
+
+
+
 exports.patchBlock = async function (req, res) {
 
     // 1. jwt token 검증 
