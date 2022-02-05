@@ -72,7 +72,7 @@ exports.getMonth = async function (req, res) {
         }
         //date 값 추출 확인
         if(!datePattern.test(callMonthCalOotd[i].date)){
-            return res.send(rrResponse(baseResponse.DATE_RESPONSE_ERROR));
+            return res.send(errResponse(baseResponse.DATE_RESPONSE_ERROR));
         }
     }
     return res.send(response(baseResponse.SUCCESS_MONTHLY_CALENDAR, callMonthCalOotd));
