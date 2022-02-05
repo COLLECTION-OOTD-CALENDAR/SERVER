@@ -215,7 +215,8 @@ async function deleteAddedClothes(connection, deleteNewBlockParams){  //deleteNe
     const updateBlockQuery = `
         UPDATE AddedClothes 
         SET status = "inactive"
-        WHERE userIdx = ? AND bigClass = ? AND smallClass = ?;`;
+        WHERE userIdx = ? AND bigClass = ? AND smallClass = ?;
+        `;
     const updateBlockRow = await connection.query(updateBlockQuery, deleteNewBlockParams);
     return updateBlockRow;
 };
@@ -224,7 +225,8 @@ async function deleteAddedPlace(connection, deleteNewBlockParams){  //deleteNewB
   const updateBlockQuery = `
       UPDATE AddedPlace
       SET status = "inactive"
-      WHERE userIdx = ? AND place = ?;`;
+      WHERE userIdx = ? AND place = ?;
+      `;
   const updateBlockRow = await connection.query(updateBlockQuery, deleteNewBlockParams);
   return updateBlockRow;
 };
@@ -233,7 +235,8 @@ async function deleteAddedWeather(connection, deleteNewBlockParams){  //deleteNe
   const updateBlockQuery = `
       UPDATE AddedWeather 
       SET status = "inactive"
-      WHERE userIdx = ? AND weather = ?;`;
+      WHERE userIdx = ? AND weather = ?;
+      `;
   const updateBlockRow = await connection.query(updateBlockQuery, deleteNewBlockParams);
   return updateBlockRow;
 };
@@ -242,7 +245,8 @@ async function deleteAddedWho(connection, deleteNewBlockParams){  //deleteNewBlo
   const updateBlockQuery = `
       UPDATE AddedWho
       SET status = "inactive"
-      WHERE userIdx = ? AND who = ?;`;
+      WHERE userIdx = ? AND who = ?;
+      `;
   const updateBlockRow = await connection.query(updateBlockQuery, deleteNewBlockParams);
   return updateBlockRow;
 };
