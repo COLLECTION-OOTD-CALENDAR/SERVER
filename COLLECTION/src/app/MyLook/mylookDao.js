@@ -89,7 +89,7 @@ async function getOOTD(connection,getOOTDResultParams) {
   SELECT distinct O.ootdIdx, O.date, O.photoIs, P.imageUrl, P.thumbnail
   FROM OOTD AS O
       LEFT OUTER JOIN Photo P on O.ootdIdx = P.ootdIdx
-  WHERE O.userIdx = ? AND O.lookpoint= ?;`
+  WHERE O.lookpoint = ? AND O.userIdx= ?;`;
   const getOOTDRow = await connection.query(getOOTDQuery,getOOTDResultParams);
   
   return getOOTDRow;
