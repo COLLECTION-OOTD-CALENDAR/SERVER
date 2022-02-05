@@ -6,7 +6,8 @@ async function selectMonthly(connection, userIdx) {
   const selectMonthlyListQuery = `
                 SELECT date, lookpoint
                 FROM OOTD
-                WHERE userIdx = ?;
+                WHERE userIdx = ?
+                ORDER BY date;
                 `;
   const [monthlyRows] = await connection.query(selectMonthlyListQuery, userIdx);
   return monthlyRows;
@@ -238,7 +239,7 @@ async function selectWeeklyOotdList(connection, userIdx){
                   WHERE O.userIdx = ?
                   
                   GROUP BY O.ootdIdx;
-                  `;
+                  `; // order by에서 오류 발생
 const [weeklyOotdRows] = await connection.query(selectWeeklyOotdListQuery, userIdx);
 return weeklyOotdRows;
 }
