@@ -21,7 +21,7 @@ exports.getMyLookMain = async function (lookpoint, userIdx){
 
     
     const lastOOTDArr = new Array();
-    for (var i=0 ; i<getOOTDResult.length; i++){
+    for (var i=0 ; i<10; i++){
       if(getOOTDResult[i].thumbnail == 0 || getOOTDResult[i].thumbnail == null){
         var moment = require('moment');
         getOOTDResult[i].date = moment(getOOTDResult[i].date).format('YYYY-MM-DD');
@@ -29,6 +29,7 @@ exports.getMyLookMain = async function (lookpoint, userIdx){
       }
     };
 
+   
 
     connection.release();
 
