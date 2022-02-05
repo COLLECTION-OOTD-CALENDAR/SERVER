@@ -105,7 +105,7 @@ exports.deleteBlock = async function (userIdx, Clothes, PWW, Content) {
 
         const ContentRows = await ootdProvider.tagExistCheck(userIdx, Clothes, PWW, Content);
         console.log(`exist 검사 - status : ${ContentRows}`);
-        
+
         if(ContentRows.length == 0)
             return errResponse(baseResponse.TAG_NEVER_EXISTED);
         
@@ -137,7 +137,7 @@ exports.deleteBlock = async function (userIdx, Clothes, PWW, Content) {
             connection.release();
             
             console.log(`삭제된 블럭 : ${Content}`);
-            return response(baseResponse.SUCCESS_NEW_BLOCK, {'deleted Clothes' : Content});
+            return response(baseResponse.SUCCESS_DELETE_BLOCK, {'deleted Clothes' : Content});
         }        
         else if(PWW == 0){
             deleteNewBlockParams = [userIdx, Content];
@@ -145,7 +145,7 @@ exports.deleteBlock = async function (userIdx, Clothes, PWW, Content) {
             connection.release();
             
             console.log(`삭제된 블럭 : ${Content}`);
-            return response(baseResponse.SUCCESS_NEW_BLOCK, {'deleted Place' : Content});
+            return response(baseResponse.SUCCESS_DELETE_BLOCK, {'deleted Place' : Content});
         }
         else if(PWW == 1){
             deleteNewBlockParams = [userIdx, Content];
@@ -153,7 +153,7 @@ exports.deleteBlock = async function (userIdx, Clothes, PWW, Content) {
             connection.release();
       
             console.log(`삭제된 블럭 : ${Content}`);
-            return response(baseResponse.SUCCESS_NEW_BLOCK, {'deleted Weather' : Content});
+            return response(baseResponse.SUCCESS_DELETE_BLOCK, {'deleted Weather' : Content});
         }
         else if(PWW == 2){
             deleteNewBlockParams = [userIdx, Content];
@@ -162,7 +162,7 @@ exports.deleteBlock = async function (userIdx, Clothes, PWW, Content) {
       
             
             console.log(`삭제된 블럭 : ${Content}`);
-            return response(baseResponse.SUCCESS_NEW_BLOCK, {'deleted Place' : Content});
+            return response(baseResponse.SUCCESS_DELETE_BLOCK, {'deleted Place' : Content});
         }
 
 
