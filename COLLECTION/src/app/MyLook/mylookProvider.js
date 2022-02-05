@@ -18,8 +18,11 @@ exports.getMyLookMain = async function (lookpoint, userIdx){
     connection.release();
 
     return response(baseResponse.SUCCESS_MYLOOK_MAIN, {'lookpoint': lookpoint [getOOTDResult]});
-  }
-  
+    
+  } catch (err) {
+    logger.error(`App - getMyLookMain Service error\n: ${err.message}`);
+    return errResponse(baseResponse.DB_ERROR);
+ }
 }
 
 
