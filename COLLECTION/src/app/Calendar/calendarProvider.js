@@ -104,21 +104,25 @@ exports.retrieveWeeklyList = async function (userIdx) {
   let ootds = [];
   
   for (row in ootdWeeklyListResult) {
+    console.log('row : ', row);
     let ootd = getOotd(row.ootdIdx, ootds);
 
     ootd["ootdIdx"] = row.ootdIdx;
     ootd["date"] = row.date;
     ootd["lookpoint"] = row.lookpoint;
     ootd["imageUrl"] = row.imageUrl;
+    console.log('ootd(ootdIdx, date, lookpoint, imageUrl) : ', ootd);
 
     ootd["PWW"] = getPWWs(row, ootd["PWW"]);
     ootd = getBigClass(row.ootdIdx, ootds, ootd);
+    console.log('ootd(+ PWW, Top, Bottom, Shoes, Etc)', ootd);
 
     if(row.fixedBig != null) {
       let data = { smallClass : row.fixedSmall, color : row.color};
 
       if(!hasClothes(ootd[row.fixedBig], data)){
         ootd[row.fixedBig].push(data);
+        console.log('ootd(+ clothes) : ', ootd);
       }
     }
     else {
@@ -126,11 +130,14 @@ exports.retrieveWeeklyList = async function (userIdx) {
 
       if(!hasClothes(ootd[row.addedBig], data)){
         ootd[row.addedBig].push(data);
+        console.log('ootd(+ clothes) : ', ootd);
       }
     }
+    console.log('final ootd : ', ootd);
     ootds.push(ootd);
   }
 
+  console.log(ootds);
   return ootds;
 
 };
