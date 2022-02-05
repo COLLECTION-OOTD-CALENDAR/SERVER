@@ -6,48 +6,42 @@ const {response, errResponse} = require("../../../config/response");
 
 const regexEmail = require("regex-email");
 
-/**
- * API No. 0
- * API Name : 테스트 API
- * [GET] /app/test
- */
-// exports.getTest = async function (req, res) {
-//     return res.send(response(baseResponse.SUCCESS))
-// }
 
 /**
  * API No. 1
- * API Name : 유저 생성 (회원가입) API
- * [POST] /app/users
+ * API Name : myLook 메인페이지 API
+ * [GET] /app/mylook/mainpage/:userIdx/:lookpoint
+ * path variable : userIdx , lookpoint
  */
-exports.postUsers = async function (req, res) {
+exports.getMyLookMain = async function (req, res) {
 
-    /**
-     * Body: email, password, nickname
-     */
-    const {email, password, nickname} = req.body;
+    const IDFromJWT = req.verifiedToken.userIdx;
 
-    // 빈 값 체크
-    if (!email)
-        return res.send(response(baseResponse.SIGNUP_EMAIL_EMPTY));
+    const userIdx = req.params.userIdx;
+    const lookpoint = req.params.lookpoint;
 
-    // 길이 체크
-    if (email.length > 30)
-        return res.send(response(baseResponse.SIGNUP_EMAIL_LENGTH));
+    if (IDFromJWT != userIdx) {
+        return res.send(errResponse(baseResponse.USERID_NOT_MATCH));
+    } 
+    else {
+        if(!userIdx){
+            return res.send(errResponse(baseResponse.USERID_EMPTY));
+        }
+        if(!lookpoint){
+            return res.send(errResponse(baseResponse.LOOKPOTNT_EMPTY));
+        }
+        if(lookpoint < 0 || lookpoint > 5){
+            return res.send(errResponse(baseResponse.LOOKPOINT_INVALID_VALUE));
+        }
+    }
+    const getMyLook = await mylookProvider.getMyLookMain(lookpoint, userIdx)
+    return res.send(getMyLook)
 
-    // 형식 체크 (by 정규표현식)
-    if (!regexEmail.test(email))
-        return res.send(response(baseResponse.SIGNUP_EMAIL_ERROR_TYPE));
 
-    // createUser 함수 실행을 통한 결과 값을 signUpResponse에 저장
-    const signUpResponse = await userService.createUser(
-        email,
-        password,
-        nickname
-    );
 
-    // signUpResponse 값을 json으로 전달
-    return res.send(signUpResponse);
+
+
+
 };
 
 /**
