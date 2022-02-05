@@ -42,7 +42,6 @@ exports.postNewBlock = async function (req, res) {
         }
 
         Content = content.toString().trim();
-      //  Content.replace(/^\s+|\s+$/gm,''); //앞과 뒤의 공백 제거
                 
         console.log(`trimmed content : ${Content}`);
 
@@ -88,7 +87,7 @@ exports.postNewBlock = async function (req, res) {
             PWW,
             Content
         );
-        
+         
         //Service : 중복확인 -> 20개 개수 확인 -> post
         
 
@@ -96,23 +95,69 @@ exports.postNewBlock = async function (req, res) {
         return res.send(newBlockResponse);
     }
 
-    // exports.patchBlock = async function (req, res) {
+    exports.patchBlock = async function (req, res) {
 
-    //     // 1. jwt token 검증 
+        // 1. jwt token 검증 
   
-    //     const IDFromJWT = req.verifiedToken.userIdx;
+        const IDFromJWT = req.verifiedToken.userIdx;
   
-    //     const userIdx = req.params.userIdx;
+        const userIdx = req.params.userIdx;
   
-    //   if (IDFromJWT != userIdx) {
-    //       console.log(`userIdx : ${IDFromJWT}`)
-    //       res.send(errResponse(baseResponse.USERID_NOT_MATCH))
-    //   } 
-    //   else {
+        if (IDFromJWT != userIdx) {
+            console.log(`userIdx : ${IDFromJWT}`)
+            res.send(errResponse(baseResponse.USERID_NOT_MATCH))
+        } 
+        else {
+        const content = req.body.content;
+
+        var Content = content.toString();
+        var blank_pattern = /^\s+|\s+$/g;
+
+        if(Content.replace(blank_pattern, '' ) == "" ){
+            return res.send(errResponse(baseResponse.PWWC_BLANK_TEXT));  
+        }
+
+        Content = content.toString().trim();
+                
+        console.log(`trimmed content : ${Content}`);
+
+        if(Content.length > 6){            
+            return res.send(errResponse(baseResponse.TAG_LENGTH));
+        }
+
+
+        // 3. Clothes, PWW flag Null number형 형식 체크 
+        const Clothes = req.query.Clothes;  //0: Top, 1: Bottom, 2: Shoes, 3: etc
+        const PWW = req.query.PWW;          //0: Place, 1: Weather, 2: Who
+
+        if(isNaN(Clothes) || isNaN(PWW) ){ //둘 중 하나가 숫자가 아님            
+            return res.send(errResponse(baseResponse.QUERY_STRING_ERROR_TYPE));
+        }
+
         
+        if( (Clothes < -1) || (3 < Clothes) || (PWW < -1) || (2 < PWW) ) {  //유효하지 않은 값
+            return res.send(errResponse(baseResponse.PWWC_INVALID_VALUE)); 
+        }
 
-    //   }
+        if((Clothes == -1) && (PWW == -1)){
+            return res.send(errResponse(baseResponse.FLAG_EMPTY));
+        }
+        if((Clothes != -1) && (PWW != -1)){
+            return res.send(errResponse(baseResponse.QUERY_STRING_OVERFLOW));
+        }
 
-    // }
+
+        console.log(`controller Content : ${Content}`);
+
+
+        const newBlockResponse = await ootdService.deleteBlock(
+            userIdx,
+            Clothes,
+            PWW,
+            Content
+        );
+
+      }
+
+    }
 };
-

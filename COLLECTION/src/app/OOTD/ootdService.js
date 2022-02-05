@@ -94,3 +94,82 @@ exports.createNewBlock = async function (userIdx, Clothes, PWW, Content) {
         return errResponse(baseResponse.DB_ERROR);
     }
 };
+
+
+exports.deleteBlock = async function (userIdx, Clothes, PWW, Content) {
+    try {    
+        //1. 블럭 Content 존재 확인  
+        // 해당하는 블럭의 status를 블러와서 길이가 0이면 아예 존재하지 않는 경우, 내용이 inactive이면 이미 삭제된 경우
+        //TAG_ALREADY_DELETED
+        //TAG_NEVER_EXISTED
+
+        const ContentRows = await ootdProvider.tagExistCheck(userIdx, Clothes, PWW, Content);
+        console.log(`exist 검사 - status : ${ContentRows}`);
+        
+        if(ContentRows.length == 0)
+            return errResponse(baseResponse.TAG_NEVER_EXISTED);
+        
+        else if(ContentRows[0] == "inactive")
+            return errResponse(baseResponse.TAG_ALREADY_DELETED);
+
+
+
+        const connection = await pool.getConnection(async (conn) => conn);
+
+
+
+        if(PWW == -1){
+            var flag;//undefined
+            if(Clothes == 0) 
+                flag = "Top";
+            
+            else if(Clothes == 1) 
+                flag = "Bottom";
+
+            else if(Clothes == 2) 
+                flag = "Shoes";
+            else if(Clothes == 3) 
+                flag = "Etc"; 
+
+            console.log(`service flag : ${flag}`);
+            const deleteNewBlockParams = [userIdx, flag, Content];
+            const clothesResult = await ootdDao.deleteAddedClothes(connection, deleteNewBlockParams);
+            connection.release();
+            
+            console.log(`삭제된 블럭 : ${Content}`);
+            return response(baseResponse.SUCCESS_NEW_BLOCK, {'deleted Clothes' : Content});
+        }        
+        else if(PWW == 0){
+            deleteNewBlockParams = [userIdx, Content];
+            const placeResult = await ootdDao.deleteAddedPlace(connection, deleteNewBlockParams);
+            connection.release();
+            
+            console.log(`삭제된 블럭 : ${Content}`);
+            return response(baseResponse.SUCCESS_NEW_BLOCK, {'deleted Place' : Content});
+        }
+        else if(PWW == 1){
+            deleteNewBlockParams = [userIdx, Content];
+            const weatherResult = await ootdDao.deleteAddedWeather(connection, deleteNewBlockParams);
+            connection.release();
+      
+            console.log(`삭제된 블럭 : ${Content}`);
+            return response(baseResponse.SUCCESS_NEW_BLOCK, {'deleted Weather' : Content});
+        }
+        else if(PWW == 2){
+            deleteNewBlockParams = [userIdx, Content];
+            const whoResult = await ootdDao.deleteAddedWho(connection, deleteNewBlockParams);
+            connection.release();
+      
+            
+            console.log(`삭제된 블럭 : ${Content}`);
+            return response(baseResponse.SUCCESS_NEW_BLOCK, {'deleted Place' : Content});
+        }
+
+
+
+    }catch (err) {
+        logger.error(`App - deleteBlock Service error\n: ${err.message}`);
+        return errResponse(baseResponse.DB_ERROR);
+    }
+
+};
