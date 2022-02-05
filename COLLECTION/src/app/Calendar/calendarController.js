@@ -114,7 +114,7 @@ exports.getWeek = async function (req, res) {
         }
         //date 값 추출 확인
         if(!datePattern.test(callWeekCalOotd[i].date)){
-            return res.send(rrResponse(baseResponse.DATE_RESPONSE_ERROR));
+            return res.send(errResponse(baseResponse.DATE_RESPONSE_ERROR));
         }
     }
 
