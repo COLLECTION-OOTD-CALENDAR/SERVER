@@ -35,12 +35,6 @@ exports.getMyLookMain = async function (req, res) {
     }
     const getMyLook = await mylookProvider.getMyLookMain(lookpoint, userIdx)
     return res.send(getMyLook)
-
-
-
-
-
-
 };
 
 /**
