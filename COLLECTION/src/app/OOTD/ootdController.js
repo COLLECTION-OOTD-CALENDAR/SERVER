@@ -42,7 +42,7 @@ exports.postNewBlock = async function (req, res) {
         }
 
         Content = content.toString();
-        Content.trim(); //앞과 뒤의 공백 제거
+        Content.replace(/^\s+|\s+$/gm,''); //앞과 뒤의 공백 제거
 
         console.log(`trimmed content : ${Content}`);
 
