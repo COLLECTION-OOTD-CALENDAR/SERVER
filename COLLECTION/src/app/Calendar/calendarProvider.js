@@ -109,24 +109,26 @@ exports.retrieveWeeklyList = async function (userIdx) {
     //console.log('ootdWeeklyListResult[0] : ', ootdWeeklyListResult[0]);
     console.log('row : ', row);
     let ootd = getOotd(row.ootdIdx, ootds);
-    console.log('처음 ootd 상태 : ', ootd);
+    //console.log('처음 ootd 상태 : ', ootd);
 
     ootd["ootdIdx"] = row.ootdIdx;
     ootd["date"] = moment(row.date).format('YYYY-MM-DD');
     ootd["lookpoint"] = row.lookpoint;
     ootd["imageUrl"] = row.imageUrl;
-    console.log('ootd(ootdIdx, date, lookpoint, imageUrl) : ', ootd);
+    //console.log('ootd(ootdIdx, date, lookpoint, imageUrl) : ', ootd);
 
-    ootd["PWW"] = getPWWs(row, ootd["PWW"]);
+    ootd["place"] = getPlaces(row, ootd["place"]);
+    ootd["weather"] = getWeathers(row, ootd["weather"]);
+    ootd["who"] = getWhos(row, ootd["who"]);
     ootd = getBigClass(row.ootdIdx, ootds, ootd);
-    console.log('ootd(+ PWW, Top, Bottom, Shoes, Etc)', ootd);
+    //console.log('ootd(+ PWW, Top, Bottom, Shoes, Etc)', ootd);
 
     if(row.fixedBig != null) {
       let data = { smallClass : row.fixedSmall, color : row.color};
 
       if(!hasClothes(ootd[row.fixedBig], data)){
         ootd[row.fixedBig].push(data);
-        console.log('ootd(+ clothes) : ', ootd);
+        //console.log('ootd(+ clothes) : ', ootd);
       }
     }
     else {
@@ -134,7 +136,7 @@ exports.retrieveWeeklyList = async function (userIdx) {
 
       if(!hasClothes(ootd[row.addedBig], data)){
         ootd[row.addedBig].push(data);
-        console.log('ootd(+ clothes) : ', ootd);
+        //console.log('ootd(+ clothes) : ', ootd);
       }
     }
     console.log('final ootd : ', ootd);
@@ -142,6 +144,7 @@ exports.retrieveWeeklyList = async function (userIdx) {
     console.log('****** 현재 ootds ******', ootds);
   }
 
+  console.log('++++++++최종 return ootds++++++++');
   console.log(ootds);
   return ootds;
 
@@ -168,6 +171,7 @@ function getBigClass(ootdIdx, ootds, ootd){
   return ootd;
 };
 
+/*
 function getPWWs(row, tmp) {
   //console.log('[getPWWs func] row : ', row);
   //console.log('[getPWWs func] tmp : ', tmp);
@@ -205,6 +209,64 @@ function getPWWs(row, tmp) {
 
   return tags;
 };
+*/
+
+function getPlaces(row, tmp){
+  let tags;
+
+  if(tmp === undefined || tmp === null) {
+    tags = [];
+  } else {
+    tags = tmp;
+  }
+
+  if(row.fpName != null && tags.indexOf(row.fpName) < 0){
+    tags.push(row.fpName);
+  }
+
+  if(row.apName != null && tags.indexOf(row.apName) < 0){
+    tags.push(row.apName);
+  }
+  return tags;
+}
+
+function getWeathers(row, tmp){
+  let tags;
+
+  if(tmp === undefined || tmp === null) {
+    tags = [];
+  } else {
+    tags = tmp;
+  }
+
+  if(row.fwName != null && tags.indexOf(row.fwName) < 0){
+    tags.push(row.fwName);
+  }
+
+  if(row.awName != null && tags.indexOf(row.awName) < 0){
+    tags.push(row.awName);
+  }
+  return tags;
+}
+
+function getWhos(row, tmp){
+  let tags;
+
+  if(tmp === undefined || tmp === null) {
+    tags = [];
+  } else {
+    tags = tmp;
+  }
+
+  if(row.fwhName != null && tags.indexOf(row.fwhName) < 0){
+    tags.push(row.fwhName);
+  }
+
+  if(row.awhName != null && tags.indexOf(row.awhName) < 0){
+    tags.push(row.awhName);
+  }
+  return tags;
+}
 
 function hasClothes(list, data) {
   for(let each of list) {
