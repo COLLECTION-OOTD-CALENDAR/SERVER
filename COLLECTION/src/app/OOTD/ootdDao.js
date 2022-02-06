@@ -283,26 +283,26 @@ async function deleteOotdData(connection, userIdx, ootdIdx){  //
       console.log(`ootd deleted :`, ootdIdx);
 
 
-    // const updateClothesQuery= `
-    //     UPDATE Clothes
-    //     SET status = "inactive"
-    //     WHERE Clothes.ootdIdx = ?;
-    //     `;
-    // const updateClothesRow = await connection.query(updateClothesQuery, ootdIdx);
-    // console.log(`clothes deleted :`, ootdIdx);
+    const updateClothesQuery= `
+        UPDATE Clothes
+        SET status = "inactive"
+        WHERE Clothes.ootdIdx = ?;
+        `;
+    const updateClothesRow = await connection.query(updateClothesQuery, ootdIdx);
+    console.log(`clothes deleted :`, ootdIdx);
 
-    // const updatePhotoQuery= `
-    //     UPDATE Photo, OOTD
-    //     SET Photo.status = "inactive"
-    //     WHERE OOTD.photoIs = 0 AND Photo.ootdIdx = ? ;
-    //     `;
-    // const updatePhotoRow = await connection.query(updatePhotoQuery, ootdIdx);
-    // console.log(`photo deleted :`, ootdIdx);
+    const updatePhotoQuery= `
+        UPDATE Photo, OOTD
+        SET Photo.status = "inactive"
+        WHERE OOTD.photoIs = 0 AND Photo.ootdIdx = ? ;
+        `;
+    const updatePhotoRow = await connection.query(updatePhotoQuery, ootdIdx);
+    console.log(`photo deleted :`, ootdIdx);
 
-    (await connection).commit();
+    await connection.commit();
   }
   catch(err){
-    (await connection).rollback();
+    await connection.rollback();
   }
   finally{
     return updateOotdRow[0];
