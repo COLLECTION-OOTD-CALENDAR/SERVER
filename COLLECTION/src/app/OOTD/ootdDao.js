@@ -270,7 +270,7 @@ async function selectOotdExist(connection, selectOotdExistParams) {
 }
 
 
-async function deleteOotd(connection, userIdx, ootdIdx){  //
+async function deleteOotdData(connection, userIdx, ootdIdx){  //
   
   try{
     const deleteOotdParams = [userIdx, ootdIdx];
@@ -324,5 +324,5 @@ module.exports = {
   deleteAddedWeather,
   deleteAddedWho,
   selectOotdExist,
-  deleteOotd
+  deleteOotdData
 };
