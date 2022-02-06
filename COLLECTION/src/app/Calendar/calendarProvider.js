@@ -165,6 +165,8 @@ function getBigClass(ootdIdx, ootds, ootd){
 };
 
 function getPWWs(row, tmp) {
+  console.log('[getPWWs func] row : ', row);
+  console.log('[getPWWs func] row : ', tmp);
   let tags;
 
   if(tmp === "undefined" || tmp === null) {
