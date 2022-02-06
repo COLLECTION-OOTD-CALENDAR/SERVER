@@ -153,13 +153,13 @@ exports.patchBlock = async function (req, res) {
         console.log(`controller Content : ${Content}`);
 
 
-        const newBlockResponse = await ootdService.deleteBlock(
+        const deleteBlockResponse = await ootdService.deleteBlock(
             userIdx,
             Clothes,
             PWW,
             Content
         );
-
+        return res.send(deleteBlockResponse);
     }
 
 };
