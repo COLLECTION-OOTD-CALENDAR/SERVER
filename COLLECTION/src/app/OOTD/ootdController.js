@@ -163,3 +163,41 @@ exports.patchBlock = async function (req, res) {
     }
 
 };
+
+
+exports.patchOotd = async function (req, res) {
+
+    // 1. jwt token 검증 
+
+    const IDFromJWT = req.verifiedToken.userIdx;
+
+    const userIdx = req.params.userIdx;
+
+    if (IDFromJWT != userIdx) {
+        console.log(`userIdx : ${IDFromJWT}`)
+        res.send(errResponse(baseResponse.USERID_NOT_MATCH))
+    } 
+    else {
+        const date = req.query.date; 
+        let pattern = /^(19|20)\d{2}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[0-1])$/;
+
+        if(pattern.test(date)){     //yyyy-MM-dd 형식 검사
+            return res.send(errResponse(baseResponse.DATE_ERROR_TYPE));  
+        }
+
+        var date_start = new Date('2010-01-01');
+        var date_end = new Date('2100-12-31');
+
+        if( (date < date_start) || (date > date_end) ){     //기준 날짜 범위 외의 날짜 검사
+            return res.send(errResponse(baseResponse.DATE_INVALID_VALUE));
+        }
+
+        
+        const deleteOotdResponse = await ootdService.deleteOotd(
+            userIdx,
+            date
+        );
+        return res.send(deleteOotdResponse);
+    }
+
+};
