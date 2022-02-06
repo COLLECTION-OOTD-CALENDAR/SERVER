@@ -138,7 +138,7 @@ exports.retrieveWeeklyList = async function (userIdx) {
       }
     }
     console.log('final ootd : ', ootd);
-    ootds.push(ootd);
+    ootds = pushOotd(ootds, ootd);
   }
 
   console.log(ootds);
@@ -211,6 +211,14 @@ function hasClothes(list, data) {
   }
 
   return false;
+};
+
+function pushOotd(list, data){
+  for (let each of list){
+    if(each.ootdIdx == data.ootdIdx) return list;
+  }
+
+  return list.push(data);
 };
 
 /*
