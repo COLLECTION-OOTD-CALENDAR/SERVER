@@ -7,11 +7,8 @@ const {response, errResponse} = require("../../../config/response");
 var regExp = /^[0-9]{3}-[0-9]{3,4}-[0-9]{4}/;
 var regExpcheck = /^01([0|1|6|7|8|9])([0-9]{3,4})?([0-9]{4})$/;
 var blank_pattern = /^\s+|\s+$/g;
-var Name = name.toString();
-var Nickname = nickname.toString();
-var id = ID.toString();
-var Password = password.toString();
-var PhoneNumber = phoneNumber.toString();
+var blank_all = /[\s]/g;
+
 
 /**
  * API No. 1
@@ -42,6 +39,12 @@ exports.postUsers = async function (req, res) {
         return res.send(response(baseResponse.REGISTER_PHONE_EMPTY));
 
     //공백문자만 입력됐는지 체크
+    var Name = name.toString();
+    var Nickname = nickname.toString();
+    var id = ID.toString();
+    var Password = password.toString();
+    var PhoneNumber = phoneNumber.toString();
+
     if(Name.replace(blank_pattern, '' ) == "" ){
         return res.send(response(baseResponse.REGISTER_BLANK_ALL));
     }
@@ -59,7 +62,7 @@ exports.postUsers = async function (req, res) {
     }
     
     //문자열에 공백이 있는 경우
-    var blank_all = /[\s]/g;
+    
     if(blank_all.test(Name) == true || blank_all.test(Nickname) == true || blank_all.test(id) == true || blank_all.test(Password) == true || blank_all.test(PhoneNumber) == true){
         return res.send(response(baseResponse.REGISTER_BLANK_TEXT)); 
     }
@@ -85,9 +88,9 @@ exports.postUsers = async function (req, res) {
 
     // 형식 체크 (by 정규표현식)
 
-    if (regExp.test(PhoneNumberTrim)) 
+    if (regExp.test(phoneNumber)) 
         return res.send(response(baseResponse.REGISTER_PHONE_ERROR_TYPE_HYPHEN))
-    if (!regExpcheck.test(PhoneNumberTrim))
+    if (!regExpcheck.test(phoneNumber))
         return res.send(response(baseResponse.REGISTER_PHONE_INVALID_VALUE))
 
     // register 함수 실행을 통한 결과 값을 registerResponse에 저장
