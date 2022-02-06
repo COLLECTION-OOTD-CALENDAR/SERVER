@@ -109,7 +109,7 @@ exports.deleteBlock = async function (userIdx, Clothes, PWW, Content) {
         if(ContentRows.length == 0)
             return errResponse(baseResponse.TAG_NEVER_EXISTED);
         
-        else if(ContentRows.status == "inactive")
+        else if(ContentRows[0].status == "inactive")
             return errResponse(baseResponse.TAG_ALREADY_DELETED);
 
 
