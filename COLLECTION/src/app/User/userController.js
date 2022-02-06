@@ -66,11 +66,11 @@ exports.postUsers = async function (req, res) {
 
 
     // 길이 체크
-    var name = name.toString().trim();
-    var nickname = nickname.toString().trim();
-    var ID = ID.toString().trim();
-    var password = password.toString().trim();
-    var phoneNumber = phoneNumber.toString().trim();
+    // var nameTrim = name.toString().trim();
+    // var nicknameTrim = nickname.toString().trim();
+    // var IDTrim = ID.toString().trim();
+    // var passwordTrim = password.toString().trim();
+    // var phoneNumberTrim = phoneNumber.toString().trim();
     
 
     if (ID.length < 6 || ID.length > 15 )  
