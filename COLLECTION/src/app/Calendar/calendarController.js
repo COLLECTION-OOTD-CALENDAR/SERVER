@@ -77,7 +77,7 @@ exports.getMonth = async function (req, res) {
     }
 
     const monthCalFinalResult = {};
-    monthCalFinalResult["weekly"] = callMonthCalOotd;
+    monthCalFinalResult["monthly"] = callMonthCalOotd;
     return res.send(response(baseResponse.SUCCESS_MONTHLY_CALENDAR, monthCalFinalResult));
 
 }
