@@ -271,7 +271,7 @@ async function selectOotdExist(connection, selectOotdExistParams) {
 
 
 async function deleteOotdData(connection, userIdx, ootdIdx){  //
-  
+  var updateOotdRow={};
   try{
     const deleteOotdParams = [userIdx, ootdIdx];
     const updateOotdQuery = `
@@ -279,7 +279,7 @@ async function deleteOotdData(connection, userIdx, ootdIdx){  //
         SET status = "inactive"
         WHERE userIdx = ? AND ootdIdx = ?;
         `;
-      var updateOotdRow = await connection.query(updateOotdQuery, deleteOotdParams);
+      updateOotdRow = await connection.query(updateOotdQuery, deleteOotdParams);
 
 
     const updateClothesQuery= `
