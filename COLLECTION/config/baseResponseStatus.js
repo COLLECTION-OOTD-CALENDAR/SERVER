@@ -105,7 +105,8 @@ module.exports = {
     LOOKPOINT_ERROR_TYPE : { "isSuccess": false, "code": 3047, "message": "올바르지 않은 lookpoint 형식이 입력되었습니다." }, //형식
     PWWC_ERROR_TYPE : { "isSuccess": false, "code": 3048, "message": "올바르지 않은 PWWC flag형식이 입력되었습니다." }, //형식
     TAG_LENGTH : { "isSuccess": false, "code": 3049, "message": "태그의 내용은 6글자까지만 입력할 수 있습니다." }, //형식
-    REGISTER_BLANK_TEXT : { "isSuccess": false, "code": 3050, "message": "공백문자로는 회원가입이 불가합니다." },
+    REGISTER_BLANK_ALL : { "isSuccess": false, "code": 3050, "message": "공백만 입력되었습니다." },
+    REGISTER_BLANK_TEXT : { "isSuccess": false, "code": 3051, "message": "공백이 입력되었습니다." },
 
 
 
