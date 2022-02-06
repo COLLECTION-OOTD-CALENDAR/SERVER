@@ -61,7 +61,7 @@ exports.postUsers = async function (req, res) {
         return res.send(response(baseResponse.REGISTER_BLANK_ALL));
     }
     
-    //문자열에 공백이 있는 경우
+    //문자열에 공백이 있는 경우 
     
     if(blank_all.test(Name) == true || blank_all.test(Nickname) == true || blank_all.test(id) == true || blank_all.test(Password) == true || blank_all.test(PhoneNumber) == true){
         return res.send(response(baseResponse.REGISTER_BLANK_TEXT)); 
@@ -69,13 +69,6 @@ exports.postUsers = async function (req, res) {
 
 
     // 길이 체크
-    // var nameTrim = name.toString().trim();
-    // var nicknameTrim = nickname.toString().trim();
-    // var IDTrim = ID.toString().trim();
-    // var passwordTrim = password.toString().trim();
-    // var phoneNumberTrim = phoneNumber.toString().trim();
-    
-
     if (ID.length < 6 || ID.length > 15 )  
         return res.send(response(baseResponse.REGISTER_ID_LENGTH));
 
@@ -115,11 +108,23 @@ exports.postUsers = async function (req, res) {
 exports.getDuplicateID = async function (req, res) {
 
     const ID = req.query.ID;
+    var id = ID.toString();
 
     //빈 값 체크
     if (!ID)
         return res.send(response(baseResponse.REGISTER_ID_EMPTY));
 
+    //공백문자만 입력됐는지 체크
+    if(id.replace(blank_pattern, '' ) == "" ){
+        return res.send(response(baseResponse.REGISTER_BLANK_ALL));
+    }
+
+    //문자열에 공백이 있는 경우
+    if(blank_all.test(id) == true){
+        return res.send(response(baseResponse.REGISTER_BLANK_TEXT)); 
+    }
+    
+    //중복 체크
     try{
         const IDRows = await userProvider.IDCheck(ID);
         if (IDRows.length > 0){
@@ -146,14 +151,28 @@ exports.getDuplicateID = async function (req, res) {
 exports.getNickname = async function(req, res) {
 
     const nickname = req.query.nickname;
+    var Nickname = nickname.toString();
+
 
     //빈 값 체크
     if(!nickname)
         return res.send(response(baseResponse.REGISTER_NICKNAME_EMPTY)); 
 
+    //공백문자만 입력됐는지 체크
+    if(Nickname.replace(blank_pattern, '' ) == "" ){
+        return res.send(response(baseResponse.REGISTER_BLANK_ALL));
+    }
+
+    //문자열에 공백이 있는 경우
+    if(blank_all.test(Nickname) == true){
+        return res.send(response(baseResponse.REGISTER_BLANK_TEXT)); 
+    }
+
+    //길이 체크
     if (nickname.length < 2 || nickname.length > 6 )  
         return res.send(response(baseResponse.REGISTER_NICKNAME_LENGTH));
 
+    //중복 체크    
     try{
         const nicknameRows = await userProvider.nicknameCheck(nickname);
         if (nicknameRows.length > 0){
