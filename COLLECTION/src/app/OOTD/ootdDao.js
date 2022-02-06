@@ -220,7 +220,7 @@ async function deleteAddedClothes(connection, deleteNewBlockParams){  //deleteNe
         WHERE userIdx = ? AND bigClass = ? AND smallClass = ?;
         `;
     const updateBlockRow = await connection.query(updateBlockQuery, deleteNewBlockParams);
-    return updateBlockRow;
+    return updateBlockRow[0];
 }
 
 async function deleteAddedPlace(connection, deleteNewBlockParams){  //deleteNewBlockParams = [userIdx, Content];
@@ -230,7 +230,7 @@ async function deleteAddedPlace(connection, deleteNewBlockParams){  //deleteNewB
       WHERE userIdx = ? AND place = ?;
       `;
   const updateBlockRow = await connection.query(updateBlockQuery, deleteNewBlockParams);
-  return updateBlockRow;
+  return updateBlockRow[0];
 }
 
 async function deleteAddedWeather(connection, deleteNewBlockParams){  //deleteNewBlockParams = [userIdx, Content];
@@ -240,7 +240,7 @@ async function deleteAddedWeather(connection, deleteNewBlockParams){  //deleteNe
       WHERE userIdx = ? AND weather = ?;
       `;
   const updateBlockRow = await connection.query(updateBlockQuery, deleteNewBlockParams);
-  return updateBlockRow;
+  return updateBlockRow[0];
 }
 
 async function deleteAddedWho(connection, deleteNewBlockParams){  //deleteNewBlockParams = [userIdx, Content];
@@ -250,7 +250,7 @@ async function deleteAddedWho(connection, deleteNewBlockParams){  //deleteNewBlo
       WHERE userIdx = ? AND who = ?;
       `;
   const updateBlockRow = await connection.query(updateBlockQuery, deleteNewBlockParams);
-  return updateBlockRow;
+  return updateBlockRow[0];
 }
 
 
