@@ -139,6 +139,7 @@ exports.retrieveWeeklyList = async function (userIdx) {
     }
     console.log('final ootd : ', ootd);
     ootds = pushOotd(ootds, ootd);
+    console.log('****** 현재 ootds ******', ootds);
   }
 
   console.log(ootds);
@@ -218,7 +219,8 @@ function pushOotd(list, data){
     if(each.ootdIdx == data.ootdIdx) return list;
   }
 
-  return list.push(data);
+  list.push(data);
+  return list;
 };
 
 /*
