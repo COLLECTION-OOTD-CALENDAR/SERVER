@@ -12,5 +12,5 @@ module.exports = function(app){
 
 
     //3. OOTD 삭제 API
-    app.patch('/app/ootd/deletion/:userIdx',jwtMiddleware, ootd.patchOotD);
+    app.patch('/app/ootd/deletion/:userIdx',jwtMiddleware, ootd.patchOotd);
 };
