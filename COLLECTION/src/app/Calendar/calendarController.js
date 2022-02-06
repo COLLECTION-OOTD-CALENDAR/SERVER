@@ -117,8 +117,11 @@ exports.getWeek = async function (req, res) {
             return res.send(errResponse(baseResponse.DATE_RESPONSE_ERROR));
         }
     }
-
-    return res.send(response(baseResponse.SUCCESS_WEEKLY_CALENDAR, callWeekCalOotd));
+    
+    const finalResult = {};
+    finalResult["weekly"] = callWeekCalOotd;
+    console.log('[ calendarController ] finalResult : ', finalResult);
+    return res.send(response(baseResponse.SUCCESS_WEEKLY_CALENDAR, finalResult));
 
 };
 
