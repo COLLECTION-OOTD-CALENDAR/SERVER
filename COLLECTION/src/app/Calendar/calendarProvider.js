@@ -109,6 +109,7 @@ exports.retrieveWeeklyList = async function (userIdx) {
     //console.log('ootdWeeklyListResult[0] : ', ootdWeeklyListResult[0]);
     console.log('row : ', row);
     let ootd = getOotd(row.ootdIdx, ootds);
+    console.log('처음 ootd 상태 : ', ootd);
 
     ootd["ootdIdx"] = row.ootdIdx;
     ootd["date"] = moment(row.date).format('YYYY-MM-DD');
