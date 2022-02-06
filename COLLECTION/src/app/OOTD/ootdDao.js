@@ -280,6 +280,7 @@ async function deleteOotdData(connection, userIdx, ootdIdx){  //
         WHERE userIdx = ? AND ootdIdx = ?;
         `;
       updateOotdRow = await connection.query(updateOotdQuery, deleteOotdParams);
+      console.log(`ootd deleted :`, ootdIdx);
 
 
     const updateClothesQuery= `
@@ -288,6 +289,7 @@ async function deleteOotdData(connection, userIdx, ootdIdx){  //
         WHERE ootdIdx = ?;
         `;
     const updateClothesRow = await connection.query(updateClothesQuery, ootdIdx);
+    console.log(`clothes deleted :`, ootdIdx);
 
     const updatePhotoQuery= `
         UPDATE Photo, OOTD
@@ -295,7 +297,8 @@ async function deleteOotdData(connection, userIdx, ootdIdx){  //
         WHERE OOTD.photoIs = 0 AND Photo.ootdIdx = ? ;
         `;
     const updatePhotoRow = await connection.query(updatePhotoQuery, ootdIdx);
-
+    console.log(`photo deleted :`, ootdIdx);
+    
     (await connection).commit();
   }
   catch(err){
