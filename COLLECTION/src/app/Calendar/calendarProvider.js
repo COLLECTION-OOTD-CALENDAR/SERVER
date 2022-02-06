@@ -152,7 +152,7 @@ exports.retrieveWeeklyList = async function (userIdx) {
     console.log(ootds);
 
     finalOotd = {};
-    finalOotd["weekly"] = push(ootds);
+    finalOotd["weekly"] = ootds;
     return finalOotd;
 
   }catch(err){
