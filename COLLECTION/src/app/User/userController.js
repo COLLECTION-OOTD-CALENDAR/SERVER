@@ -7,6 +7,11 @@ const {response, errResponse} = require("../../../config/response");
 var regExp = /^[0-9]{3}-[0-9]{3,4}-[0-9]{4}/;
 var regExpcheck = /^01([0|1|6|7|8|9])([0-9]{3,4})?([0-9]{4})$/;
 var blank_pattern = /^\s+|\s+$/g;
+var Name = name.toString();
+var Nickname = nickname.toString();
+var id = ID.toString();
+var Password = password.toString();
+var PhoneNumber = phoneNumber.toString();
 
 /**
  * API No. 1
@@ -36,49 +41,53 @@ exports.postUsers = async function (req, res) {
     if (!phoneNumber)
         return res.send(response(baseResponse.REGISTER_PHONE_EMPTY));
 
-    //공백문자 체크
-    var Name = name.toString();
-    var Nickname = nickname.toString();
-    var id = ID.toString();
-    var Password = password.toString();
-    var PhoneNumber = phoneNumber.toString();
-
+    //공백문자만 입력됐는지 체크
     if(Name.replace(blank_pattern, '' ) == "" ){
-        return res.send(response(baseResponse.REGISTER_BLANK_TEXT));
+        return res.send(response(baseResponse.REGISTER_BLANK_ALL));
     }
     if(Nickname.replace(blank_pattern, '' ) == "" ){
-        return res.send(response(baseResponse.REGISTER_BLANK_TEXT));
+        return res.send(response(baseResponse.REGISTER_BLANK_ALL));
     }
     if(id.replace(blank_pattern, '' ) == "" ){
-        return res.send(response(baseResponse.REGISTER_BLANK_TEXT));
+        return res.send(response(baseResponse.REGISTER_BLANK_ALL));
     }
     if(Password.replace(blank_pattern, '' ) == "" ){
-        return res.send(response(baseResponse.REGISTER_BLANK_TEXT));
+        return res.send(response(baseResponse.REGISTER_BLANK_ALL));
     }
     if(PhoneNumber.replace(blank_pattern, '' ) == "" ){
-        return res.send(response(baseResponse.REGISTER_BLANK_TEXT));
+        return res.send(response(baseResponse.REGISTER_BLANK_ALL));
+    }
+    
+    //문자열에 공백이 있는 경우
+    var blank_all = /[\s]/g;
+    if(blank_all.test(Name) == true || blank_all.test(Nickname) == true || blank_all.test(id) == true || blank_all.test(Password) == true || blank_all.test(PhoneNumber) == true){
+        return res.send(response(baseResponse.REGISTER_BLANK_TEXT)); 
     }
 
-    // 길이 체크
-    var IDTrim = ID.toString().trim();
-    var PasswordTrim = password.toString().trim();
-    var NicknameTrim = nickname.toString().trim();
 
-    if (IDTrim.length < 6 || IDTrim.length > 15 )  
+    // 길이 체크
+    var name = name.toString().trim();
+    var nickname = nickname.toString().trim();
+    var ID = ID.toString().trim();
+    var password = password.toString().trim();
+    var phoneNumber = phoneNumber.toString().trim();
+    
+
+    if (ID.length < 6 || ID.length > 15 )  
         return res.send(response(baseResponse.REGISTER_ID_LENGTH));
 
-    if (PasswordTrim.length < 6 || PasswordTrim.length > 15 )  
+    if (password.length < 6 || password.length > 15 )  
         return res.send(response(baseResponse.REGISTER_PW_LENGTH));
 
-    if (NicknameTrim.length < 2 || NicknameTrim.length > 6 )  
+    if (nickname.length < 2 || nickname.length > 6 )  
         return res.send(response(baseResponse.REGISTER_NICKNAME_LENGTH));
 
 
     // 형식 체크 (by 정규표현식)
 
-    if (regExp.test(phoneNumber)) 
+    if (regExp.test(PhoneNumberTrim)) 
         return res.send(response(baseResponse.REGISTER_PHONE_ERROR_TYPE_HYPHEN))
-    if (!regExpcheck.test(phoneNumber))
+    if (!regExpcheck.test(PhoneNumberTrim))
         return res.send(response(baseResponse.REGISTER_PHONE_INVALID_VALUE))
 
     // register 함수 실행을 통한 결과 값을 registerResponse에 저장
