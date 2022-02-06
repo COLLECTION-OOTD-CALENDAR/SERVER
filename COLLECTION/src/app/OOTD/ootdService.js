@@ -170,3 +170,25 @@ exports.deleteBlock = async function (userIdx, Clothes, PWW, Content) {
     }
 
 };
+
+
+exports.deleteOotd = async function (userIdx, date) {
+    try {    
+        //1. 해당 userIdx에 해당 date에 OOTD가 존재하는지 검증
+        const ootdIdx = await ootdProvider.ootdExistCheck(userIdx, date);
+        console.log(`ootd exist 검사 - ootdIdx :`, ootdIdx);
+
+        if(ootdIdx.length == 0)
+            return errResponse(baseResponse.DATE_OOTD_EMPTY);
+
+        //2. ootdIdx == OOTD.ootdIdx인 OOTD.status = "inactive"로 patch
+        const deleteOotdResult = await ootdDao.deleteOotd(connection, userIdx, ootdIdx);
+
+        return response(baseResponse.SUCCESS_OOTD_DELETION); //, {'deleted ootd' : Content});
+
+    }catch (err) {
+        logger.error(`App - deleteOotd Service error\n: ${err.message}`);
+        return errResponse(baseResponse.DB_ERROR);
+    }
+
+};
