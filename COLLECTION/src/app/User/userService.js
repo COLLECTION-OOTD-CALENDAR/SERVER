@@ -43,12 +43,9 @@ exports.register = async function (name,nickname,ID,password,phoneNumber) {
 
         const userResult = await userDao.insertUserInfo(connection, insertUserInfoParams);
         connection.release();
-        
-        console.log('userResult:',userResult[0]);
-        console.log('userResult:',userResult.name);
-        console.log('userResult:',userResult[0].name);
 
-        return response(baseResponse.SUCCESS_REGISTER,userResult);
+        return response(baseResponse.SUCCESS_REGISTER,
+            {'name': name, 'nickname' : nickname ,'ID' : ID, 'password' : hashedPassword, 'phoneNumber' : phoneNumber});
 
     } catch (err) {
         logger.error(`App - register Service error\n: ${err.message}`);

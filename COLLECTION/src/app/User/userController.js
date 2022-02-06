@@ -43,26 +43,26 @@ exports.postUsers = async function (req, res) {
     var Password = password.toString();
     var PhoneNumber = phoneNumber.toString();
 
-    if(Name.replace(blank_pattern, '' ) ==""){
+    if(Name.replace(blank_pattern, '' ) == "" ){
         return res.send(response(baseResponse.REGISTER_BLANK_TEXT));
     }
-    if(Nickname.replace(blank_pattern, '' ) ==""){
+    if(Nickname.replace(blank_pattern, '' ) == "" ){
         return res.send(response(baseResponse.REGISTER_BLANK_TEXT));
     }
-    if(id.replace(blank_pattern, '' ) ==""){
+    if(id.replace(blank_pattern, '' ) == "" ){
         return res.send(response(baseResponse.REGISTER_BLANK_TEXT));
     }
-    if(Password.replace(blank_pattern, '' ) ==""){
+    if(Password.replace(blank_pattern, '' ) == "" ){
         return res.send(response(baseResponse.REGISTER_BLANK_TEXT));
     }
-    if(PhoneNumber.replace(blank_pattern, '' ) ==""){
+    if(PhoneNumber.replace(blank_pattern, '' ) == "" ){
         return res.send(response(baseResponse.REGISTER_BLANK_TEXT));
     }
 
     // 길이 체크
-    var IDTrim = id.trim();
-    var PasswordTrim = Password.trim();
-    var NicknameTrim = Nickname.trim();
+    var IDTrim = ID.toString().trim();
+    var PasswordTrim = password.toString().trim();
+    var NicknameTrim = nickname.toString().trim();
 
     if (IDTrim.length < 6 || IDTrim.length > 15 )  
         return res.send(response(baseResponse.REGISTER_ID_LENGTH));
