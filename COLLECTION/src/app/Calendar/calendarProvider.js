@@ -152,9 +152,9 @@ exports.retrieveWeeklyList = async function (userIdx) {
     console.log(ootds);
 
     finalOotd = {};
-    finalOotd["weekly"].push(ootds);
+    finalOotd["weekly"] = push(ootds);
     return finalOotd;
-    
+
   }catch(err){
     logger.error(`App - getMonthly Provider error\n: ${err.message}`);
     return errResponse(baseResponse.DB_ERROR);
