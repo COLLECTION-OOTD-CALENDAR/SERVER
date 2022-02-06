@@ -72,6 +72,8 @@ exports.retrieveWeeklyList = async function (userIdx) {
   //const fixedAddedPlaceResult3 = await calendarDao.selectWeeklyPlaceName3(connection, userIdx, placeJoinTable);
 
   /*******다 같이 JOIN & UNION*******/
+  // group concat 사용
+  /*
   try {
     console.log('calendarProvider : connect complete');
     const ootdWeeklyListResult = await calendarDao.selectWeeklyOotdList(connection, userIdx);
@@ -90,7 +92,122 @@ exports.retrieveWeeklyList = async function (userIdx) {
     logger.error(`App - getWeekly Provider error\n: ${err.message}`);
     return errResponse(baseResponse.DB_ERROR);
   }
+  */
 
+  // object merge 및 assgin 사용
+  console.log('calendarProvider : connect complete');
+  const ootdWeeklyListResult = await calendarDao.selectWeeklyOotdList(connection, userIdx);
+  console.log('ootdWeeklyListResult length : ', ootdWeeklyListResult.length);
+  console.log('ootdWeeklyListResult : ', ootdWeeklyListResult);
+  connection.release();
+
+  let ootds = [];
+  
+  for (let row of ootdWeeklyListResult) {
+    console.log('ootdWeeklyListResult[0] : ', ootdWeeklyListResult[0]);
+    console.log('row : ', row);
+    let ootd = getOotd(row.ootdIdx, ootds);
+
+    ootd["ootdIdx"] = row.ootdIdx;
+    ootd["date"] = row.date;
+    ootd["lookpoint"] = row.lookpoint;
+    ootd["imageUrl"] = row.imageUrl;
+    console.log('ootd(ootdIdx, date, lookpoint, imageUrl) : ', ootd);
+
+    ootd["PWW"] = getPWWs(row, ootd["PWW"]);
+    ootd = getBigClass(row.ootdIdx, ootds, ootd);
+    console.log('ootd(+ PWW, Top, Bottom, Shoes, Etc)', ootd);
+
+    if(row.fixedBig != null) {
+      let data = { smallClass : row.fixedSmall, color : row.color};
+
+      if(!hasClothes(ootd[row.fixedBig], data)){
+        ootd[row.fixedBig].push(data);
+        console.log('ootd(+ clothes) : ', ootd);
+      }
+    }
+    else {
+      let data = {smallClass : row.addedSmall, color : row.color};
+
+      if(!hasClothes(ootd[row.addedBig], data)){
+        ootd[row.addedBig].push(data);
+        console.log('ootd(+ clothes) : ', ootd);
+      }
+    }
+    console.log('final ootd : ', ootd);
+    ootds.push(ootd);
+  }
+
+  console.log(ootds);
+  return ootds;
+
+};
+
+function getOotd(ootdIdx, ootds) {
+  for (let each in ootds){
+    if(each.ootdIdx == ootdIdx) return each;
+  }
+
+  return {};
+};
+
+function getBigClass(ootdIdx, ootds, ootd){
+  for (let each in ootds){
+    if(each.ootdIdx == ootdIdx) return ootd;
+  }
+
+  ootd["Top"] = [];
+  ootd["Bottom"] = [];
+  ootd["Shoes"] = [];
+  ootd["Etc"] = [];
+
+  return ootd;
+};
+
+function getPWWs(row, tmp) {
+  console.log('[getPWWs func] row : ', row);
+  console.log('[getPWWs func] tmp : ', tmp);
+  let tags;
+
+  if(tmp === undefined || tmp === null) {
+    tags = [];
+  } else {
+    tags = tmp;
+  }
+
+  if(row.fpName != null && tags.indexOf(row.fpName) < 0){
+    tags.push(row.fpName);
+  }
+
+  if(row.apName != null && tags.indexOf(row.apName) < 0){
+    tags.push(row.apName);
+  }
+
+  if(row.fwName != null && tags.indexOf(row.fwName) < 0){
+    tags.push(row.fwName);
+  }
+
+  if(row.awName != null && tags.indexOf(row.awName) < 0){
+    tags.push(row.awName);
+  }
+
+  if(row.fwhName != null && tags.indexOf(row.fwhName) < 0){
+    tags.push(row.fwhName);
+  }
+
+  if(row.fpName != null && tags.indexOf(row.fpName) < 0){
+    tags.push(row.awhName);
+  }
+
+  return tags;
+};
+
+function hasClothes(list, data) {
+  for(let each in list) {
+      if(each.smallClass == data.smallClass && each.color == data.color) return true;
+  }
+
+  return false;
 };
 
 /*
