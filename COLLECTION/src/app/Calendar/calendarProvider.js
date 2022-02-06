@@ -102,14 +102,16 @@ exports.retrieveWeeklyList = async function (userIdx) {
   connection.release();
 
   let ootds = [];
-  
+  var moment = require('moment');
+
   for (let row of ootdWeeklyListResult) {
+    console.log('=============for start===============');
     console.log('ootdWeeklyListResult[0] : ', ootdWeeklyListResult[0]);
     console.log('row : ', row);
     let ootd = getOotd(row.ootdIdx, ootds);
 
     ootd["ootdIdx"] = row.ootdIdx;
-    ootd["date"] = row.date;
+    ootd["date"] = moment(row.date).format('YYYY-MM-DD');
     ootd["lookpoint"] = row.lookpoint;
     ootd["imageUrl"] = row.imageUrl;
     console.log('ootd(ootdIdx, date, lookpoint, imageUrl) : ', ootd);
