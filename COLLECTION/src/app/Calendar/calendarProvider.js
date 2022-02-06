@@ -102,14 +102,17 @@ exports.retrieveWeeklyList = async function (userIdx) {
   connection.release();
 
   let ootds = [];
-  
+  var moment = require('moment');
+
   for (let row of ootdWeeklyListResult) {
-    console.log('ootdWeeklyListResult[0] : ', ootdWeeklyListResult[0]);
+    console.log('=============for start===============');
+    //console.log('ootdWeeklyListResult[0] : ', ootdWeeklyListResult[0]);
     console.log('row : ', row);
     let ootd = getOotd(row.ootdIdx, ootds);
+    console.log('처음 ootd 상태 : ', ootd);
 
     ootd["ootdIdx"] = row.ootdIdx;
-    ootd["date"] = row.date;
+    ootd["date"] = moment(row.date).format('YYYY-MM-DD');
     ootd["lookpoint"] = row.lookpoint;
     ootd["imageUrl"] = row.imageUrl;
     console.log('ootd(ootdIdx, date, lookpoint, imageUrl) : ', ootd);
@@ -144,7 +147,7 @@ exports.retrieveWeeklyList = async function (userIdx) {
 };
 
 function getOotd(ootdIdx, ootds) {
-  for (let each in ootds){
+  for (let each of ootds){
     if(each.ootdIdx == ootdIdx) return each;
   }
 
@@ -152,7 +155,7 @@ function getOotd(ootdIdx, ootds) {
 };
 
 function getBigClass(ootdIdx, ootds, ootd){
-  for (let each in ootds){
+  for (let each of ootds){
     if(each.ootdIdx == ootdIdx) return ootd;
   }
 
@@ -165,8 +168,8 @@ function getBigClass(ootdIdx, ootds, ootd){
 };
 
 function getPWWs(row, tmp) {
-  console.log('[getPWWs func] row : ', row);
-  console.log('[getPWWs func] tmp : ', tmp);
+  //console.log('[getPWWs func] row : ', row);
+  //console.log('[getPWWs func] tmp : ', tmp);
   let tags;
 
   if(tmp === undefined || tmp === null) {
@@ -203,7 +206,7 @@ function getPWWs(row, tmp) {
 };
 
 function hasClothes(list, data) {
-  for(let each in list) {
+  for(let each of list) {
       if(each.smallClass == data.smallClass && each.color == data.color) return true;
   }
 
