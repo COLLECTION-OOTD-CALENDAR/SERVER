@@ -146,7 +146,7 @@ exports.retrieveWeeklyList = async function (userIdx) {
 };
 
 function getOotd(ootdIdx, ootds) {
-  for (let each in ootds){
+  for (let each of ootds){
     if(each.ootdIdx == ootdIdx) return each;
   }
 
