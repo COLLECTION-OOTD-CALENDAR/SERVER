@@ -98,19 +98,19 @@ exports.createNewBlock = async function (userIdx, Clothes, PWW, Content) {
 
 exports.deleteBlock = async function (userIdx, Clothes, PWW, Content) {
     try {    
-        //1. 블럭 Content 존재 확인  
+        // 1. 블럭 Content 존재 확인  
         // 해당하는 블럭의 status를 블러와서 길이가 0이면 아예 존재하지 않는 경우, 내용이 inactive이면 이미 삭제된 경우
-        //TAG_ALREADY_DELETED
-        //TAG_NEVER_EXISTED
+        // TAG_ALREADY_DELETED
+        // TAG_NEVER_EXISTED
 
-        // const ContentRows = await ootdProvider.tagExistCheck(userIdx, Clothes, PWW, Content);
-        // console.log(`exist 검사 - status : ${ContentRows}`);
+        const ContentRows = await ootdProvider.tagExistCheck(userIdx, Clothes, PWW, Content);
+        console.log(`exist 검사 - status :`, ContentRows);
 
-        // if(ContentRows.length == 0)
-        //     return errResponse(baseResponse.TAG_NEVER_EXISTED);
+        if(ContentRows.length == 0)
+            return errResponse(baseResponse.TAG_NEVER_EXISTED);
         
-        // else if(ContentRows == "inactive")
-        //     return errResponse(baseResponse.TAG_ALREADY_DELETED);
+        else if(ContentRows[0].status == "inactive")
+            return errResponse(baseResponse.TAG_ALREADY_DELETED);
 
 
 
@@ -135,7 +135,6 @@ exports.deleteBlock = async function (userIdx, Clothes, PWW, Content) {
             connection.release();
         
             console.log(`삭제된 블럭 :`, clothesResult );            
-            return response(baseResponse.SUCCESS_DELETE_BLOCK);//, {'deleted Place' : Content});
             
         }        
         else if(PWW == 0){
@@ -144,7 +143,6 @@ exports.deleteBlock = async function (userIdx, Clothes, PWW, Content) {
             connection.release();
         
             console.log(`삭제된 블럭 :`, placeResult );            
-            return response(baseResponse.SUCCESS_DELETE_BLOCK); //, {'deleted Place' : Content});
         }
         else if(PWW == 1){
             const deleteNewBlockParams = [userIdx, Content];
@@ -153,7 +151,6 @@ exports.deleteBlock = async function (userIdx, Clothes, PWW, Content) {
             
         
             console.log(`삭제된 블럭 :`, weatherResult );            
-            return response(baseResponse.SUCCESS_DELETE_BLOCK);//, {'deleted Place' : Content});
       
         }
         else if(PWW == 2){
@@ -163,9 +160,9 @@ exports.deleteBlock = async function (userIdx, Clothes, PWW, Content) {
             
         
             console.log(`삭제된 블럭 :`, whoResult );            
-            return response(baseResponse.SUCCESS_DELETE_BLOCK);//, {'deleted Place' : Content});
         }
-
+        
+        return response(baseResponse.SUCCESS_DELETE_BLOCK, {'deleted block' : Content});
 
     }catch (err) {
         logger.error(`App - deleteBlock Service error\n: ${err.message}`);

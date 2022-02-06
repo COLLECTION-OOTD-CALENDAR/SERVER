@@ -178,34 +178,34 @@ async function selectClothesExist(connection, userIdx, flag, Content) {
 
 // PWW 존재 체크
 async function selectPwwExist(connection, userIdx, flag, Content) {
-  var selectPwwTagListQuery =``;
+  var selectPwwExistListQuery =``;
   if(flag == "Place"){
-      selectPwwTagListQuery = `
+    selectPwwExistListQuery = `
         SELECT status 
         FROM AddedPlace
-        WHERE userIdx = ? AND place = ? AND status = ?;
+        WHERE userIdx = ? AND place = ?
     `;
 
   }
   if(flag == "Weather"){
-    selectPwwTagListQuery = `
+    selectPwwExistListQuery = `
       SELECT status 
       FROM AddedWeather
-      WHERE userIdx = ? AND weather = ? AND status = ?;
+      WHERE userIdx = ? AND weather = ?
     `; 
   }
   if(flag == "Who"){
-    selectPwwTagListQuery = `
+    selectPwwExistListQuery = `
       SELECT status 
       FROM AddedWho
-      WHERE userIdx = ? AND who = ? AND status = ?;
+      WHERE userIdx = ? AND who = ?
     `; 
   }
 
   const selectTagParams = [userIdx, Content];// (userAdded)
 
    const [tagRows] = await connection.query(
-        selectPwwTagListQuery, 
+        selectPwwExistListQuery, 
         selectTagParams);
 
   return tagRows;
