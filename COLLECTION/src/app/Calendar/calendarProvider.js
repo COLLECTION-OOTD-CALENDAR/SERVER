@@ -94,59 +94,64 @@ exports.retrieveWeeklyList = async function (userIdx) {
   }
   */
 
-  // object merge 및 assgin 사용
-  console.log('calendarProvider : connect complete');
-  const ootdWeeklyListResult = await calendarDao.selectWeeklyOotdList(connection, userIdx);
-  console.log('ootdWeeklyListResult length : ', ootdWeeklyListResult.length);
-  console.log('ootdWeeklyListResult : ', ootdWeeklyListResult);
-  connection.release();
+  try{
+    // object merge 및 assgin 사용
+    console.log('calendarProvider : connect complete');
+    const ootdWeeklyListResult = await calendarDao.selectWeeklyOotdList(connection, userIdx);
+    console.log('ootdWeeklyListResult length : ', ootdWeeklyListResult.length);
+    console.log('ootdWeeklyListResult : ', ootdWeeklyListResult);
+    connection.release();
 
-  let ootds = [];
-  var moment = require('moment');
+    let ootds = [];
+    var moment = require('moment');
 
-  for (let row of ootdWeeklyListResult) {
-    console.log('=============for start===============');
-    //console.log('ootdWeeklyListResult[0] : ', ootdWeeklyListResult[0]);
-    console.log('row : ', row);
-    let ootd = getOotd(row.ootdIdx, ootds);
-    //console.log('처음 ootd 상태 : ', ootd);
+    for (let row of ootdWeeklyListResult) {
+      //console.log('=============for start===============');
+      //console.log('ootdWeeklyListResult[0] : ', ootdWeeklyListResult[0]);
+      console.log('row : ', row);
+      let ootd = getOotd(row.ootdIdx, ootds);
+      //console.log('처음 ootd 상태 : ', ootd);
 
-    ootd["ootdIdx"] = row.ootdIdx;
-    ootd["date"] = moment(row.date).format('YYYY-MM-DD');
-    ootd["lookpoint"] = row.lookpoint;
-    ootd["imageUrl"] = row.imageUrl;
-    //console.log('ootd(ootdIdx, date, lookpoint, imageUrl) : ', ootd);
+      ootd["ootdIdx"] = row.ootdIdx;
+      ootd["date"] = moment(row.date).format('YYYY-MM-DD');
+      ootd["lookpoint"] = row.lookpoint;
+      ootd["imageUrl"] = row.imageUrl;
+      //console.log('ootd(ootdIdx, date, lookpoint, imageUrl) : ', ootd);
 
-    ootd["place"] = getPlaces(row, ootd["place"]);
-    ootd["weather"] = getWeathers(row, ootd["weather"]);
-    ootd["who"] = getWhos(row, ootd["who"]);
-    ootd = getBigClass(row.ootdIdx, ootds, ootd);
-    //console.log('ootd(+ PWW, Top, Bottom, Shoes, Etc)', ootd);
+      ootd["place"] = getPlaces(row, ootd["place"]);
+      ootd["weather"] = getWeathers(row, ootd["weather"]);
+      ootd["who"] = getWhos(row, ootd["who"]);
+      ootd = getBigClass(row.ootdIdx, ootds, ootd);
+      //console.log('ootd(+ PWW, Top, Bottom, Shoes, Etc)', ootd);
 
-    if(row.fixedBig != null) {
-      let data = { smallClass : row.fixedSmall, color : row.color};
+      if(row.fixedBig != null) {
+        let data = { smallClass : row.fixedSmall, color : row.color};
 
-      if(!hasClothes(ootd[row.fixedBig], data)){
-        ootd[row.fixedBig].push(data);
-        //console.log('ootd(+ clothes) : ', ootd);
+        if(!hasClothes(ootd[row.fixedBig], data)){
+          ootd[row.fixedBig].push(data);
+          //console.log('ootd(+ clothes) : ', ootd);
+        }
       }
-    }
-    else {
-      let data = {smallClass : row.addedSmall, color : row.color};
+      else {
+        let data = {smallClass : row.addedSmall, color : row.color};
 
-      if(!hasClothes(ootd[row.addedBig], data)){
-        ootd[row.addedBig].push(data);
-        //console.log('ootd(+ clothes) : ', ootd);
+        if(!hasClothes(ootd[row.addedBig], data)){
+          ootd[row.addedBig].push(data);
+          //console.log('ootd(+ clothes) : ', ootd);
+        }
       }
+      //console.log('final ootd : ', ootd);
+      ootds = pushOotd(ootds, ootd);
+      //console.log('****** 현재 ootds ******', ootds);
     }
-    console.log('final ootd : ', ootd);
-    ootds = pushOotd(ootds, ootd);
-    console.log('****** 현재 ootds ******', ootds);
+
+    console.log('++++++++최종 return ootds++++++++');
+    console.log(ootds);
+    return ootds;
+  }catch(err){
+    logger.error(`App - getMonthly Provider error\n: ${err.message}`);
+    return errResponse(baseResponse.DB_ERROR);
   }
-
-  console.log('++++++++최종 return ootds++++++++');
-  console.log(ootds);
-  return ootds;
 
 };
 
@@ -170,46 +175,6 @@ function getBigClass(ootdIdx, ootds, ootd){
 
   return ootd;
 };
-
-/*
-function getPWWs(row, tmp) {
-  //console.log('[getPWWs func] row : ', row);
-  //console.log('[getPWWs func] tmp : ', tmp);
-  let tags;
-
-  if(tmp === undefined || tmp === null) {
-    tags = [];
-  } else {
-    tags = tmp;
-  }
-
-  if(row.fpName != null && tags.indexOf(row.fpName) < 0){
-    tags.push(row.fpName);
-  }
-
-  if(row.apName != null && tags.indexOf(row.apName) < 0){
-    tags.push(row.apName);
-  }
-
-  if(row.fwName != null && tags.indexOf(row.fwName) < 0){
-    tags.push(row.fwName);
-  }
-
-  if(row.awName != null && tags.indexOf(row.awName) < 0){
-    tags.push(row.awName);
-  }
-
-  if(row.fwhName != null && tags.indexOf(row.fwhName) < 0){
-    tags.push(row.fwhName);
-  }
-
-  if(row.fpName != null && tags.indexOf(row.fpName) < 0){
-    tags.push(row.awhName);
-  }
-
-  return tags;
-};
-*/
 
 function getPlaces(row, tmp){
   let tags;
@@ -284,41 +249,3 @@ function pushOotd(list, data){
   list.push(data);
   return list;
 };
-
-/*
-exports.retrieveUser = async function (userId) {
-  const connection = await pool.getConnection(async (conn) => conn);
-  const userResult = await userDao.selectUserId(connection, userId);
-
-  connection.release();
-
-  return userResult[0]; // 한 명의 유저 정보만을 불러오므로 배열 타입을 리턴하는 게 아닌 0번 인덱스를 파싱해서 오브젝트 타입 리턴
-};
-
-exports.emailCheck = async function (email) {
-  const connection = await pool.getConnection(async (conn) => conn);
-  const emailCheckResult = await userDao.selectUserEmail(connection, email);
-  connection.release();
-
-  return emailCheckResult;
-};
-
-exports.passwordCheck = async function (selectUserPasswordParams) {
-  const connection = await pool.getConnection(async (conn) => conn);
-  // 쿼리문에 여러개의 인자를 전달할 때 selectUserPasswordParams와 같이 사용합니다.
-  const passwordCheckResult = await userDao.selectUserPassword(
-      connection,
-      selectUserPasswordParams
-  );
-  connection.release();
-  return passwordCheckResult[0];
-};
-
-exports.accountCheck = async function (email) {
-  const connection = await pool.getConnection(async (conn) => conn);
-  const userAccountResult = await userDao.selectUserAccount(connection, email);
-  connection.release();
-
-  return userAccountResult;
-};
-*/
