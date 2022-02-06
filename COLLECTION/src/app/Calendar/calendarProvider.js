@@ -121,6 +121,9 @@ exports.retrieveWeeklyList = async function (userIdx) {
       ootd["place"] = getPlaces(row, ootd["place"]);
       ootd["weather"] = getWeathers(row, ootd["weather"]);
       ootd["who"] = getWhos(row, ootd["who"]);
+
+      // ootd["PWW"] 새로 추가해서 place, weather, who 배열을 모두 병합하는 방법도 추후 고려해야 
+      
       ootd = getBigClass(row.ootdIdx, ootds, ootd);
       //console.log('ootd(+ PWW, Top, Bottom, Shoes, Etc)', ootd);
 
@@ -147,7 +150,11 @@ exports.retrieveWeeklyList = async function (userIdx) {
 
     console.log('++++++++최종 return ootds++++++++');
     console.log(ootds);
-    return ootds;
+
+    finalOotd = {};
+    finalOotd["weekly"].push(ootds);
+    return finalOotd;
+    
   }catch(err){
     logger.error(`App - getMonthly Provider error\n: ${err.message}`);
     return errResponse(baseResponse.DB_ERROR);
