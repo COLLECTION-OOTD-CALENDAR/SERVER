@@ -187,7 +187,8 @@ exports.deleteOotd = async function (userIdx, date) {
         //2. ootdIdx == OOTD.ootdIdx인 OOTD.status = "inactive"로 patch
         const deleteOotdResult = await ootdDao.deleteOotdData(connection, userIdx, ootdIdx);
 
-
+        console.log(`ootd deleted :`, ootdIdx);
+        
         connection.release();
         return response(baseResponse.SUCCESS_OOTD_DELETION); //, {'deleted ootd' : Content});
 

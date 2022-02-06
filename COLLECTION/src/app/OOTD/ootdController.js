@@ -194,7 +194,7 @@ exports.patchOotd = async function (req, res) {
         if( (date < date_start) || (date > date_end) ){     //기준 날짜 범위 외의 날짜 검사
             return res.send(errResponse(baseResponse.DATE_INVALID_VALUE));
         }
-
+        
         
         const deleteOotdResponse = await ootdService.deleteOotd(
             userIdx,
