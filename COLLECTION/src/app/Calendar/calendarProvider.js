@@ -169,7 +169,7 @@ function getPWWs(row, tmp) {
   console.log('[getPWWs func] tmp : ', tmp);
   let tags;
 
-  if(tmp === "undefined" || tmp === null) {
+  if(tmp === undefined || tmp === null) {
     tags = [];
   } else {
     tags = tmp;
