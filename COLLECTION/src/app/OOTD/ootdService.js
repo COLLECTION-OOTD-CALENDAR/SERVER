@@ -135,7 +135,7 @@ exports.deleteBlock = async function (userIdx, Clothes, PWW, Content) {
             connection.release();
         
             console.log(`삭제된 블럭 :`, clothesResult );            
-            return response(baseResponse.SUCCESS_DELETE_BLOCK, {'deleted Place' : Content});
+            return response(baseResponse.SUCCESS_DELETE_BLOCK);//, {'deleted Place' : Content});
             
         }        
         else if(PWW == 0){
@@ -144,7 +144,7 @@ exports.deleteBlock = async function (userIdx, Clothes, PWW, Content) {
             connection.release();
         
             console.log(`삭제된 블럭 :`, placeResult );            
-            return response(baseResponse.SUCCESS_DELETE_BLOCK, {'deleted Place' : Content});
+            return response(baseResponse.SUCCESS_DELETE_BLOCK); //, {'deleted Place' : Content});
         }
         else if(PWW == 1){
             const deleteNewBlockParams = [userIdx, Content];
@@ -153,7 +153,7 @@ exports.deleteBlock = async function (userIdx, Clothes, PWW, Content) {
             
         
             console.log(`삭제된 블럭 :`, weatherResult );            
-            return response(baseResponse.SUCCESS_DELETE_BLOCK, {'deleted Place' : Content});
+            return response(baseResponse.SUCCESS_DELETE_BLOCK);//, {'deleted Place' : Content});
       
         }
         else if(PWW == 2){
@@ -163,7 +163,7 @@ exports.deleteBlock = async function (userIdx, Clothes, PWW, Content) {
             
         
             console.log(`삭제된 블럭 :`, whoResult );            
-            return response(baseResponse.SUCCESS_DELETE_BLOCK, {'deleted Place' : Content});
+            return response(baseResponse.SUCCESS_DELETE_BLOCK);//, {'deleted Place' : Content});
         }
 
 
