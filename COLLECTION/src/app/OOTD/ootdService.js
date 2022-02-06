@@ -174,6 +174,9 @@ exports.deleteBlock = async function (userIdx, Clothes, PWW, Content) {
 
 exports.deleteOotd = async function (userIdx, date) {
     try {    
+        
+        const connection = await pool.getConnection(async (conn) => conn);
+
         //1. 해당 userIdx에 해당 date에 OOTD가 존재하는지 검증
         const ootdIdx = await ootdProvider.ootdExistCheck(userIdx, date);
         console.log(`ootd exist 검사 - ootdIdx :`, ootdIdx);
@@ -184,6 +187,8 @@ exports.deleteOotd = async function (userIdx, date) {
         //2. ootdIdx == OOTD.ootdIdx인 OOTD.status = "inactive"로 patch
         const deleteOotdResult = await ootdDao.deleteOotdData(connection, userIdx, ootdIdx);
 
+
+        connection.release();
         return response(baseResponse.SUCCESS_OOTD_DELETION); //, {'deleted ootd' : Content});
 
     }catch (err) {
