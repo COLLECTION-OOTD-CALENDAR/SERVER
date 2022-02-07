@@ -276,7 +276,7 @@ async function deleteOotdData(connection, userIdx, ootdIdx){  //
   const updateOotdQuery = `
       UPDATE OOTD
       SET OOTD.status = "inactive"
-      WHERE userIdx = ? AND ootdIdx = ?;
+      WHERE OOTD.userIdx = ? AND OOTD.ootdIdx = ?;
       `;
     const updateOotdRow = await connection.query(updateOotdQuery, deleteOotdParams);
     console.log(`ootd deleted :`, ootdIdx);
@@ -284,7 +284,7 @@ async function deleteOotdData(connection, userIdx, ootdIdx){  //
 
   const updateClothesQuery= `
       UPDATE Clothes
-      SET status = "inactive"
+      SET Clothes.status = "inactive"
       WHERE Clothes.ootdIdx = ?;
       `;
   const updateClothesRow = await connection.query(updateClothesQuery, ootdIdx);
