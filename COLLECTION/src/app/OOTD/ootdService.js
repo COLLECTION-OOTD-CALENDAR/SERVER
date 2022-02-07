@@ -191,9 +191,13 @@ exports.deleteOotd = async function (userIdx, date) {
             
             //2. ootdIdx == OOTD.ootdIdx인 OOTD.status = "inactive"로 patch
             const deleteOotdResult = await ootdDao.deleteOotdData(connection, userIdx, ootdIdx);
+            console.log(`Service.ootd deleted :`, ootdIdx);
 
-            console.log(`ootd deleted :`, ootdIdx);
+            const deleteClothesResult = await ootdDao.deleteClothesData(connection, ootdIdx);
+            console.log(`Service.ootd deleted :`, ootdIdx);
 
+            const deletePhotoResult = await ootdDao.deletePhotoData(connection, ootdIdx);
+            
             
             await connection.commit();
             

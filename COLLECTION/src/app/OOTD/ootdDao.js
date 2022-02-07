@@ -276,29 +276,36 @@ async function deleteOotdData(connection, userIdx, ootdIdx){  //
   const updateOotdQuery = `
       UPDATE OOTD
       SET OOTD.status = "inactive"
-      WHERE userIdx = ? AND ootdIdx = ?;
+      WHERE OOTD.userIdx = ? AND OOTD.ootdIdx = ?;
       `;
     const updateOotdRow = await connection.query(updateOotdQuery, deleteOotdParams);
-    console.log(`ootd deleted :`, ootdIdx);
+    console.log(`Dao.ootd deleted :`, ootdIdx);
 
-
+    return updateOotdRow[0];
+}
+async function deleteClothesData(connection, ootdIdx){  //
   const updateClothesQuery= `
       UPDATE Clothes
-      SET status = "inactive"
+      SET Clothes.status = "inactive"
       WHERE Clothes.ootdIdx = ?;
       `;
   const updateClothesRow = await connection.query(updateClothesQuery, ootdIdx);
-  console.log(`clothes deleted :`, ootdIdx);
+  console.log(`Dao.clothes deleted :`, ootdIdx);
+  return updateClothesRow[0];
+  
+}
 
+async function deletePhotoData(connection, ootdIdx){  //
   const updatePhotoQuery= `
       UPDATE Photo, OOTD
       SET Photo.status = "inactive"
-      WHERE OOTD.photoIs = 0 AND Photo.ootdIdx = ? ;
+      WHERE OOTD.photoIs = ? AND Photo.ootdIdx = ? ;
       `;
-  const updatePhotoRow = await connection.query(updatePhotoQuery, ootdIdx);
-  console.log(`photo deleted :`, ootdIdx);
+  const deletePhotoParams = [0, ootdIdx]
+  const updatePhotoRow = await connection.query(updatePhotoQuery, deletePhotoParams);
+  console.log(`Dao.photo deleted :`, ootdIdx);
 
-  return updateOotdRow[0];
+  return updatePhotoRow[0];
   
 }
 
@@ -319,5 +326,7 @@ module.exports = {
   deleteAddedWeather,
   deleteAddedWho,
   selectOotdExist,
-  deleteOotdData
+  deleteOotdData,
+  deleteClothesData,
+  deletePhotoData
 };
