@@ -157,7 +157,7 @@ exports.tagExistCheck = async function(userIdx, Clothes, PWW, Content){
 exports.ootdExistCheck = async function(userIdx, date){
 
   const connection = await pool.getConnection(async (conn) => conn);      
-  const selectOotdExistParams = [userIdx, date];
+  const selectOotdExistParams = [userIdx, date, "active"];
   const ootdExistListResult = await ootdDao.selectOotdExist(connection, selectOotdExistParams);
   connection.release();
 

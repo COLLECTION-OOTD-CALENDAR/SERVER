@@ -120,6 +120,7 @@ module.exports = {
     DATE_RESPONSE_ERROR : { "isSuccess":false, "code":4005, "message": "DATE 값 추출에 실패했습니다."},    
     TAG_ALREADY_DELETED : { "isSuccess":false, "code":4006, "message": "이미 삭제된 태그입니다."},
     TAG_NEVER_EXISTED : { "isSuccess":false, "code":4007, "message": "추가된 적이 없는 태그입니다."},
+    OOTD_DELETION_RESPONSE_ERROR : { "isSuccess": false, "code": 4008, "message": "OOTD 삭제에 실패했습니다."},
 
 
 
