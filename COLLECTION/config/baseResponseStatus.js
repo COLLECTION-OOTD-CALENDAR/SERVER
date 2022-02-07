@@ -118,11 +118,14 @@ module.exports = {
     BIG_CLASS_NOT_MATCH : {"isSuccess" : false, "code" : 3060, "message" : "존재하지 않는 옷 카테고리입니다."},
     COLOR_INVALID_VALUE : {"isSuccess" : false, "code" : 3061, "message" : "유효하지 않은 COLOR값이 입력되었습니다."},
     COMMENT_LENGTH :  {"isSuccess" : false, "code" : 3062, "message" : "COMMENT를 65535자리 이내로 입력해주세요."},
-    
-    
-    
-
-
+    FCLOTHES_ERROR_TYPE : {"isSuccess" : false, "code" : 3063, "message" : "올바르지 않은 fixedClothes index 형식입니다."},
+    ACLOTHES_ERROR_TYPE : {"isSuccess" : false, "code" : 3064, "message" : "올바르지 않은 addedClothes smallClass 형식입니다."},
+    FPLACE_ERROR_TYPE : {"isSuccess" : false, "code" : 3065, "message" : "올바르지 않은 장소 index 형식입니다."},
+    APLACE_ERROR_TYPE : {"isSuccess" : false, "code" : 3066, "message" : "올바르지 않은 장소 place 형식입니다."},
+    FWEATHER_ERROR_TYPE : {"isSuccess" : false, "code" : 3067, "message" : "올바르지 않은 날씨 index 형식입니다."},
+    AWEATHER_ERROR_TYPE : {"isSuccess" : false, "code" : 3068, "message" : "올바르지 않은 날씨 weather 형식입니다."},
+    FWHO_ERROR_TYPE : {"isSuccess" : false, "code" : 3069, "message" : "올바르지 않은 누구 index 형식입니다."},
+    AWHO_ERROR_TYPE : {"isSuccess" : false, "code" : 3070, "message" : "올바르지 않은 누구 who 형식입니다."},
 
     
     //Response Error
