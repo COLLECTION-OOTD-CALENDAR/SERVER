@@ -273,6 +273,8 @@ async function selectOotdExist(connection, selectOotdExistParams) {
 async function deleteOotdData(connection, userIdx, ootdIdx){  //
   var updateOotdRow={};
   try{
+    await connection.beginTransaction();
+    
     const deleteOotdParams = [userIdx, ootdIdx];
     const updateOotdQuery = `
         UPDATE OOTD
