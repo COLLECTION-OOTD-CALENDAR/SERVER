@@ -117,7 +117,7 @@ module.exports = {
     THUMBNAIL_INVALID_VALUE : {"isSuccess" : false, "code" : 3059, "message" : "유효하지 않은 thumbnail 값이 입력되었습니다."},
     BIG_CLASS_NOT_MATCH : {"isSuccess" : false, "code" : 3060, "message" : "존재하지 않는 옷 카테고리입니다."},
     COLOR_INVALID_VALUE : {"isSuccess" : false, "code" : 3061, "message" : "유효하지 않은 COLOR값이 입력되었습니다."},
-    COMMENT_LENGTH :  {"isSuccess" : false, "code" : 3062, "message" : "COMMENT를 ~자리 이내로 입력해주세요."},
+    COMMENT_LENGTH :  {"isSuccess" : false, "code" : 3062, "message" : "COMMENT를 65535자리 이내로 입력해주세요."},
     
     
     
