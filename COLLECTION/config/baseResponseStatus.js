@@ -107,6 +107,20 @@ module.exports = {
     TAG_LENGTH : { "isSuccess": false, "code": 3049, "message": "태그의 내용은 6글자까지만 입력할 수 있습니다." }, //형식
     REGISTER_BLANK_ALL : { "isSuccess": false, "code": 3050, "message": "공백만 입력되었습니다." },
     REGISTER_BLANK_TEXT : { "isSuccess": false, "code": 3051, "message": "공백이 입력되었습니다." },
+    LOOKNAME_EMPTY : {"isSuccess" : false, "code" : 3052, "message" : "LOOKNAME을 입력해주세요."},
+    LOOKNAME_LENGTH : {"isSuccess" : false, "code" : 3053, "message" : "LOOKNAME을 27자리 이내로 입력해주세요."},
+    PHOTOIS_EMPTY : {"isSuccess" : false, "code" : 3054, "message" : "PhotoIs 값을 입력해주세요."},
+    PHOTOIS_ERROR_TYPE : {"isSuccess" : false, "code" : 3055, "message" : "올바르지 않은 PhotoIs 형식입니다."},
+    PHOTOIS_INVALID_VALUE : {"isSuccess" : false, "code" : 3056, "message" : "유효하지 않은 PhotoIs 값이 입력되었습니다."},
+    IMAGE_INVALID_VALUE : {"isSuccess" : false, "code" : 3057, "message" : "유효하지 않은 이미지URL이 입력되었습니다."},
+    THUMBNAIL_ERROR_TYPE :  {"isSuccess" : false, "code" : 3058, "message" : "올바르지 않은 thumbnail 형식입니다."},
+    THUMBNAIL_INVALID_VALUE : {"isSuccess" : false, "code" : 3059, "message" : "유효하지 않은 thumbnail 값이 입력되었습니다."},
+    BIG_CLASS_NOT_MATCH : {"isSuccess" : false, "code" : 3060, "message" : "존재하지 않는 옷 카테고리입니다."},
+    COLOR_INVALID_VALUE : {"isSuccess" : false, "code" : 3061, "message" : "유효하지 않은 COLOR값이 입력되었습니다."},
+    COMMENT_LENGTH :  {"isSuccess" : false, "code" : 3062, "message" : "COMMENT를 ~자리 이내로 입력해주세요."},
+    
+    
+    
 
 
 
@@ -121,6 +135,12 @@ module.exports = {
     TAG_ALREADY_DELETED : { "isSuccess":false, "code":4006, "message": "이미 삭제된 태그입니다."},
     TAG_NEVER_EXISTED : { "isSuccess":false, "code":4007, "message": "추가된 적이 없는 태그입니다."},
     OOTD_DELETION_RESPONSE_ERROR : { "isSuccess": false, "code": 4008, "message": "OOTD 삭제에 실패했습니다."},
+    OOTD_ALREADY_EXIST : { "isSuccess": false, "code": 4009, "message": "해당 DATE에 이미 OOTD가 존재합니다."},
+    CLOTHES_NOT_MATCH : { "isSuccess": false, "code": 4010, "message": "등록할 수 없는 옷이 입력되었습니다."},
+    PLACE_NOT_MATCH : { "isSuccess": false, "code": 4011, "message": "등록할 수 없는 Place가 입력되었습니다."},
+    WEATHER_NOT_MATCH : { "isSuccess": false, "code": 4012, "message": "등록할 수 없는 Weather가 입력되었습니다."},
+    WHO_NOT_MATCH : { "isSuccess": false, "code": 4013, "message": "등록할 수 없는 Who가 입력되었습니다."},
+    
 
 
 
