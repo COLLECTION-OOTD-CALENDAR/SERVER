@@ -186,27 +186,31 @@ exports.deleteOotd = async function (userIdx, date) {
 
 
         //ootd 삭제 - transaction 처리
-        // try{
-        //     await connection.beginTransaction();
+        try{
+            await connection.beginTransaction();
             
-        //     //2. ootdIdx == OOTD.ootdIdx인 OOTD.status = "inactive"로 patch
-             const deleteOotdResult = await ootdDao.deleteOotdData(connection, userIdx, ootdIdx);
+            //2. ootdIdx == OOTD.ootdIdx인 OOTD.status = "inactive"로 patch
+            const deleteOotdResult = await ootdDao.deleteOotdData(connection, userIdx, ootdIdx);
+            console.log(`Service.ootd deleted :`, ootdIdx);
 
-             console.log(`ootd deleted :`, ootdIdx);
+            const deleteClothesResult = await ootdDao.deleteClothesData(connection, ootdIdx);
+            console.log(`Service.ootd deleted :`, ootdIdx);
 
+            const deletePhotoResult = await ootdDao.deletePhotoData(connection, ootdIdx);
             
-        //     await connection.commit();
             
-             return response(baseResponse.SUCCESS_OOTD_DELETION); //, {'deleted ootd' : Content});
-        // }      
-        // catch(err){
-        //     await connection.rollback();
-        //     logger.error(`App - deleteOotd transcation error\n: ${err.message}`);
-        //     return errResponse(baseResponse.OOTD_DELETION_RESPONSE_ERROR);
-        // }
-        // finally{            
-             connection.release();            
-        // }      
+            await connection.commit();
+            
+            return response(baseResponse.SUCCESS_OOTD_DELETION); //, {'deleted ootd' : Content});
+        }      
+        catch(err){
+            await connection.rollback();
+            logger.error(`App - deleteOotd transcation error\n: ${err.message}`);
+            return errResponse(baseResponse.OOTD_DELETION_RESPONSE_ERROR);
+        }
+        finally{            
+            connection.release();            
+        }      
 
     }
     catch (err) {
