@@ -293,9 +293,10 @@ async function deleteOotdData(connection, userIdx, ootdIdx){  //
   const updatePhotoQuery= `
       UPDATE Photo, OOTD
       SET Photo.status = "inactive"
-      WHERE OOTD.photoIs = 0 AND Photo.ootdIdx = ? ;
+      WHERE OOTD.photoIs = ? AND Photo.ootdIdx = ? ;
       `;
-  const updatePhotoRow = await connection.query(updatePhotoQuery, ootdIdx);
+  const deletePhotoParams = [0, ootdIdx]
+  const updatePhotoRow = await connection.query(updatePhotoQuery, deletePhotoParams);
   console.log(`photo deleted :`, ootdIdx);
 
   return updateOotdRow[0];
