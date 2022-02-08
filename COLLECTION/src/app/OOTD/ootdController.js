@@ -134,8 +134,7 @@ exports.patchBlock = async function (req, res) {
         var PWW = req.query.PWW;          //0: Place, 1: Weather, 2: Who
 
         
-        if(Clothes == "" || Clothes == null || Clothes == undefined || ( Clothes != null && typeof Clothes == "object" && !Object.keys(Clothes).length ) ||
-            PWW == "" || PWW == null || PWW == undefined || ( PWW != null && typeof PWW == "object" && !Object.keys(PWW).length )) {
+        if((!Clothes && Clothes != 0) || (!PWW && PWW !=0 )) {
 
             return res.send(errResponse(baseResponse.CLOTHES_PWW_ONE_EMPTY));       //Clothes, PWW 중 하나라도 아예 입력되지 않은 경우
         }
