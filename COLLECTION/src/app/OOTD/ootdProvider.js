@@ -161,6 +161,6 @@ exports.ootdExistCheck = async function(userIdx, date){
   const ootdExistListResult = await ootdDao.selectOotdExist(connection, selectOotdExistParams);
   connection.release();
 
-  return ootdExistListResult;
+  return ootdExistListResult[0];
   
 }
