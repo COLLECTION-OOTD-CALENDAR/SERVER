@@ -25,18 +25,19 @@ exports.createNewBlock = async function (userIdx, Clothes, PWW, Content) {
         const ContentRows = await ootdProvider.tagRedundantCheck(userIdx, Clothes, PWW, Content);
         if(ContentRows.length > 0)
             return errResponse(baseResponse.TAG_REDUNDANT);
-
+        console.log(`중복확인 contentAdded`);
 
         const FixedContentRows = await ootdProvider.fixedRedundantCheck(Clothes, PWW, Content);
         if(FixedContentRows.length > 0)
             return errResponse(baseResponse.TAG_REDUNDANT_FIXED);
 
+        console.log(`중복확인 contentFixed`);
             
         //  2. 추가하는 블럭 20개 넘는지 체크, 20개 미만이면 추가
         const numberRows = await ootdProvider.tagNumberCheck(userIdx, Clothes, PWW);
         if (numberRows.length >= 20)
             return errResponse(baseResponse.TAG_OVERFLOW);
-
+        console.log(`중복확인 contentAdded`);
 
 
         // 3. POST 쿼리문에 사용할 변수 값을 배열 형태로 전달
