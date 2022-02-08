@@ -22,7 +22,7 @@ module.exports = function () {
     require('../src/app/OOTD/ootdRoute')(app);
     require('../src/app/Calendar/calendarRoute')(app);
     require('../src/app/MyLook/mylookRoute')(app);
-    //require('../src/app/OOTDs/ootdRoute)')(app);
+    require('../src/app/OOTDs/ootdRoute)')(app);
 
     return app;
 };
