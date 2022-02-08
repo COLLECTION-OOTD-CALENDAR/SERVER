@@ -130,7 +130,9 @@ module.exports = {
     REGISTER_NAME_REGEXP : {"isSuccess" : false, "code" : 3072, "message" : "성함은 한글(2-5자), 영문 대 소문자(2-10)자를 입력하세요."},
     REGISTER_NICKNAME_REGEXP : {"isSuccess" : false, "code" : 3073, "message" : "특수문자를 제외하고 입력하세요."},
     REGISTER_ID_REGEXP : {"isSuccess" : false, "code" : 3074, "message" : "ID는 6~15자의 영문 소문자, 숫자로 입력하세요."},
+    REGISTER_PW_REGEXP : {"isSuccess" : false, "code" : 3075, "message" : "PassWord는 영문자 소문자, 숫자, 특수문자가 각각 최소 1개 이상을 입력하세요."},
     
+
     //Response Error
     LOOKPOINT_RESPONSE_ERROR : { "isSuccess": false, "code": 4000, "message": "LOOKPOINT 값 추출에 실패했습니다."},
     SEARCH_DATE_OOTD_EMPTY : { "isSuccess": false, "code": 4001, "message": "선택하신 날짜에 해당하는 OOTD가 존재하지 않습니다." },
