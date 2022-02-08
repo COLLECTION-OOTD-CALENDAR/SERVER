@@ -236,7 +236,7 @@ async function deleteAddedPlace(connection, deleteNewBlockParams){  //deleteNewB
 async function deleteAddedWeather(connection, deleteNewBlockParams){  //deleteNewBlockParams = [userIdx, Content];
   const updateBlockQuery = `
       UPDATE AddedWeather 
-      SET status = "inactive"
+      SET status = 'inactive'
       WHERE userIdx = ? AND weather = ?;
       `;
   const updateBlockRow = await connection.query(updateBlockQuery, deleteNewBlockParams);
@@ -246,7 +246,7 @@ async function deleteAddedWeather(connection, deleteNewBlockParams){  //deleteNe
 async function deleteAddedWho(connection, deleteNewBlockParams){  //deleteNewBlockParams = [userIdx, Content];
   const updateBlockQuery = `
       UPDATE AddedWho
-      SET status = "inactive"
+      SET status = 'inactive'
       WHERE userIdx = ? AND who = ?;
       `;
   const updateBlockRow = await connection.query(updateBlockQuery, deleteNewBlockParams);
@@ -275,7 +275,7 @@ async function deleteOotdData(connection, userIdx, ootdIdx){  //
   const deleteOotdParams = [userIdx, ootdIdx];
   const updateOotdQuery = `
       UPDATE OOTD
-      SET OOTD.status = "inactive"
+      SET OOTD.status = 'inactive'
       WHERE OOTD.userIdx = ? AND OOTD.ootdIdx = ?;
       `;
     const updateOotdRow = await connection.query(updateOotdQuery, deleteOotdParams);
@@ -286,7 +286,7 @@ async function deleteOotdData(connection, userIdx, ootdIdx){  //
 async function deleteClothesData(connection, ootdIdx){  //
   const updateClothesQuery= `
       UPDATE Clothes
-      SET Clothes.status = "inactive"
+      SET Clothes.status = 'inactive'
       WHERE Clothes.ootdIdx = ?;
       `;
   const updateClothesRow = await connection.query(updateClothesQuery, ootdIdx);
@@ -298,7 +298,7 @@ async function deleteClothesData(connection, ootdIdx){  //
 async function deletePhotoData(connection, ootdIdx){  //
   const updatePhotoQuery= `
       UPDATE Photo, OOTD
-      SET Photo.status = "inactive"
+      SET Photo.status = 'inactive'
       WHERE OOTD.photoIs = ? AND Photo.ootdIdx = ? ;
       `;
   const deletePhotoParams = [0, ootdIdx]
