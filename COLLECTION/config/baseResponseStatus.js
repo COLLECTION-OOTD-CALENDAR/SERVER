@@ -98,7 +98,7 @@ module.exports = {
     //New added
     REGISTER_NAME_EMPTY : { "isSuccess": false, "code": 3041, "message":"성함을 입력해주세요." },
     QUERY_STRING_OVERFLOW : { "isSuccess": false, "code": 3042, "message": "너무 많은 Query String이 입력되었습니다." },
-    QUERY_STRING_ERROR_TYPE : { "isSuccess": false, "code": 3043, "message": "유효하지 않은 Query String 값이 입력되었습니다." },
+    QUERY_STRING_ERROR_TYPE : { "isSuccess": false, "code": 3043, "message": "유효하지 않은 Query String 형식이 입력되었습니다." },
     DATE_ERROR_TYPE : { "isSuccess": false, "code": 3044, "message": "올바르지 않는 날짜형식입니다." }, //형식
     PWW_ERROR_TYPE : { "isSuccess": false, "code": 3045, "message": "올바르지 않은 PWW flag형식이 입력되었습니다." }, //형식
     CLOTHES_ERROR_TYPE : { "isSuccess": false, "code": 3046, "message": "올바르지 않은 Clothes형식이 입력되었습니다." }, //형식
@@ -126,6 +126,7 @@ module.exports = {
     AWEATHER_ERROR_TYPE : {"isSuccess" : false, "code" : 3068, "message" : "올바르지 않은 날씨 weather 형식입니다."},
     FWHO_ERROR_TYPE : {"isSuccess" : false, "code" : 3069, "message" : "올바르지 않은 누구 index 형식입니다."},
     AWHO_ERROR_TYPE : {"isSuccess" : false, "code" : 3070, "message" : "올바르지 않은 누구 who 형식입니다."},
+    CLOTHES_PWW_ONE_EMPTY : {"isSuccess" : false, "code" : 3070, "message" : "Query String에 Clothes와 PWW를 모두 입력해야 합니다"},
 
     
     //Response Error
