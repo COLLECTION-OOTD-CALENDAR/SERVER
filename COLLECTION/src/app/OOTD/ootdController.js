@@ -55,8 +55,12 @@ exports.postNewBlock = async function (req, res) {
         const PWW = req.query.PWW;          //0: Place, 1: Weather, 2: Who
 
         console.log(`Clothes : ${Clothes}`);
+        console.log(`Clothes : ${typeof(Clothes)}`);
         console.log(`PWW :  ${PWW}`);
+        console.log(`PWW :  ${typeof(PWW)}`);
 
+
+        
 
         if(( (!Clothes) && (Clothes != 0)) || ( (!PWW) && (PWW !=0) ) || (typeof(Clothes) == 'undefined') || (typeof(PWW) == 'undefined')) {
 
@@ -64,7 +68,7 @@ exports.postNewBlock = async function (req, res) {
         }
 
 
-        if(isNaN(Clothes) || isNaN(PWW) ){ //둘 중 하나가 숫자가 아님            
+        if(!Number.isInteger(Clothes) || !Number.isInteger(PWW) ){ //둘 중 하나가 숫자가 아님            
             return res.send(errResponse(baseResponse.QUERY_STRING_ERROR_TYPE));
         }
 
@@ -148,15 +152,20 @@ exports.patchBlock = async function (req, res) {
 
         
         console.log(`Clothes : ${Clothes}`);
+        console.log(`Clothes : ${typeof(Clothes)}`);
         console.log(`PWW :  ${PWW}`);
+        console.log(`PWW :  ${typeof(PWW)}`);
 
-        if((!Clothes && Clothes != 0) || (!PWW && PWW !=0 ) || (typeof(Clothes) == 'undefined') || (typeof(PWW) == 'undefined')) {
+
+        
+
+        if(( (!Clothes) && (Clothes != 0)) || ( (!PWW) && (PWW !=0) ) || (typeof(Clothes) == 'undefined') || (typeof(PWW) == 'undefined')) {
 
             return res.send(errResponse(baseResponse.CLOTHES_PWW_ONE_EMPTY));       //Clothes, PWW 중 하나라도 아예 입력되지 않은 경우
         }
 
-        
-        if(isNaN(Clothes) || isNaN(PWW) ){ //Clothes, PWW 중 하나가 숫자가 아님            
+
+        if(!Number.isInteger(Clothes) || !Number.isInteger(PWW) ){ //둘 중 하나가 숫자가 아님            
             return res.send(errResponse(baseResponse.QUERY_STRING_ERROR_TYPE));
         }
 
