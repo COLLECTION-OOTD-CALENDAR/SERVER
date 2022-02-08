@@ -77,7 +77,7 @@ module.exports = {
     
     QUERY_STRING_EMPTY : { "isSuccess": false, "code": 3028, "message": "Query String을 입력해야 합니다." },
     PWWC_BLANK_TEXT : { "isSuccess": false, "code": 3029, "message": "공백문자만으로는 새로운 태그를 추가할 수 없습니다." },
-    CLOTHES_INVALID_VALUE : { "isSuccess": false, "code": 3030, "message": "유효하지 않은 CLothes가 입력되었습니다." },//값        
+    CLOTHES_INVALID_VALUE : { "isSuccess": false, "code": 3030, "message": "올바르지 않은 Clothes flag(0,1,2,3)값이 입력되었습니다." },//값        
     
     
     LOOKPOINT_INVALID_VALUE : { "isSuccess": false, "code": 3031, "message": "lookpoint 범위 내의 값이 아닙니다." }, //값
