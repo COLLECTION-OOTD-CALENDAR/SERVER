@@ -181,10 +181,11 @@ exports.deleteOotd = async function (userIdx, date) {
         let ootdIdx = await ootdProvider.ootdExistCheck(userIdx, date);
         
         console.log(`ootd exist 검사 - ootdIdx :`, ootdIdx);
-
+       
         if(typeof(ootdIdx)=='undefined')
             return errResponse(baseResponse.DATE_OOTD_EMPTY);
-        ootdIdx = ootdIdx.ootdIdx;
+
+        ootdIdx = ootdIdx.ootdIdx; 
         
         //ootd 삭제 - transaction 처리
         try{
