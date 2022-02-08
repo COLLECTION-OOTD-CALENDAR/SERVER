@@ -101,10 +101,19 @@ exports.registerOotd = async function (req, res) {
         return res.send(errResponse(baseResponse.PHOTOIS_INVALID_VALUE));
     }
 
+    // image 빈 값 체크
+    // null 값이어도 괜찮음.
+    if(!image){
+        return res.send(errResponse(baseResponse.REGISTER_IMAGE_EMPTY));
+    }
+
     // 입력된 이미지 URL이 S3에 존재하지 않는 경우
     // 추후 체크
 
     for(item of image){
+        // thumbnail == null일 경우 for문 빠져나오기
+        if(item["thumbnail"] === null){ break; }
+
         // thumbnail 형식 체크 (정수가 아닐 경우 error)
         if(!Number.isInteger(item["thumbnail"])){
             return res.send(errResponse(baseResponse.THUMBNAIL_ERROR_TYPE));
@@ -115,81 +124,110 @@ exports.registerOotd = async function (req, res) {
         }
     }
     
-    // 올바르지 않은 fixedClothes index 형식 (정수가 아닌 경우)
-    for(item of fClothes){
-        if(!Number.isInteger(item["index"])){
-            return res.send(errResponse(baseResponse.FCLOTHES_ERROR_TYPE));
+    // fClothes와 aClothes 동시 빈 값 체크
+    // null 값이면 안된다.
+    if(!fClothes && !aClothes){
+        return res.send(errResponse(baseResponse.REGISTER_CLOTHES_EMPTY));
+    }else {
+        // 올바르지 않은 fixedClothes index 형식 (정수가 아닌 경우)
+        for(item of fClothes){
+            if(!Number.isInteger(item["index"])){
+                return res.send(errResponse(baseResponse.FCLOTHES_ERROR_TYPE));
+            }
         }
+        // 올바르지 않은 addedClothes smallClass 형식 (문자열이 아닌 경우)
+        for(item of aClothes){
+            if(typeof item["smallClass"] !== 'string' && !(item["smallClass"] instanceof String)){
+                return res.send(errResponse(baseResponse.ACLOTHES_ERROR_TYPE));
+            }
+        }
+
+        // 존재하지 않는 옷 카테고리 (aclothes -> bigClass)
+        for(item of aClothes){
+            let bigArr = ["Top", "Bottom", "Shoes", "Etc"];
+            if(bigArr.indexOf(item["bigClass"]) == -1){
+                return res.send(errResponse(baseResponse.BIG_CLASS_NOT_MATCH));
+            }
+        }
+
+        // 유효하지 않는 COLOR 값
+        let colorArr = [ "#d60f0f", "#f59a9a", "#ffb203", "#fde6b1", "#71a238", "#b7de89",
+            "#ea7831", "#273e88", "#4168e8", "#a5b9fa", "#894ac7", "#dcacff",
+            "#ffffff", "#888888", "#191919", "#e8dcd5", "#c3b5ac", "#74461f"]
+        for(item of fClothes){
+            if(colorArr.indexOf(item["color"]) == -1){
+                return res.send(errResponse(baseResponse.COLOR_INVALID_VALUE));
+            }
+        }
+        for(item of aClothes){
+            if(colorArr.indexOf(item["color"]) == -1){
+                return res.send(errResponse(baseResponse.COLOR_INVALID_VALUE));
+            }
+        }
+
     }
-    // 올바르지 않은 addedClothes smallClass 형식 (문자열이 아닌 경우)
-    for(item of aClothes){
-        if(typeof item["smallClass"] !== 'string' && !(item["smallClass"] instanceof String)){
-            return res.send(errResponse(baseResponse.ACLOTHES_ERROR_TYPE));
+
+
+    // Place (fPlace & aPlace) 값 빈 값 체크
+    // null 값이어도 괜찮음.
+    if(!fPlace && !aPlace){
+        return res.send(errResponse(baseResponse.REGISTER_PLACE_EMPTY));
+    }
+    else {
+        // 올바르지 않은 fPlace index 형식
+        for(item of fPlace){
+            if(!Number.isInteger(item["index"])){
+                return res.send(errResponse(baseResponse.FPLACE_ERROR_TYPE));
+            }
+        }
+        // 올바르지 않은 aPlace place 형식
+        for(item of aPlace){
+            if(typeof item["place"] !== 'string' && !(item["place"] instanceof String)){
+                return res.send(errResponse(baseResponse.APLACE_ERROR_TYPE));
+            }
         }
     }
 
-    // 존재하지 않는 옷 카테고리 (aclothes -> bigClass)
-    for(item of aClothes){
-        let bigArr = ["Top", "Bottom", "Shoes", "Etc"];
-        if(bigArr.indexOf(item["bigClass"]) == -1){
-            return res.send(errResponse(baseResponse.BIG_CLASS_NOT_MATCH));
+    // Weather (fWeather & aWeather) 값 빈 값 체크
+    // null 값이어도 괜찮음.
+    if(!fWeather && !aWeather){
+        return res.send(errResponse(baseResponse.REGISTER_WEATHER_EMPTY));
+    }
+    else{
+        // 올바르지 않은 fWeather index 형식
+        for(item of fWeather){
+            if(!Number.isInteger(item["index"])){
+                return res.send(errResponse(baseResponse.FWEATHER_ERROR_TYPE));
+            }
+        }
+        // 올바르지 않은 aWeather weather 형식
+        for(item of aWeather){
+            if(typeof item["weather"] !== 'string' && !(item["weather"] instanceof String)){
+                return res.send(errResponse(baseResponse.AWEATHER_ERROR_TYPE));
+            }
         }
     }
 
-    // 유효하지 않는 COLOR 값
-    let colorArr = [ "#d60f0f", "#f59a9a", "#ffb203", "#fde6b1", "#71a238", "#b7de89",
-        "#ea7831", "#273e88", "#4168e8", "#a5b9fa", "#894ac7", "#dcacff",
-        "#ffffff", "#888888", "#191919", "#e8dcd5", "#c3b5ac", "#74461f"]
-    for(item of fClothes){
-        if(colorArr.indexOf(item["color"]) == -1){
-            return res.send(errResponse(baseResponse.COLOR_INVALID_VALUE));
+    // Who (fWho & aWho) 값 빈 값 체크
+    // null 값이어도 괜찮음.
+    if(!fWho && !aWho){
+        return res.send(errResponse(baseResponse.REGISTER_WHO_EMPTY));
+    }    
+    else {
+        // 올바르지 않은 fWho index 형식
+        for(item of fWho){
+            if(!Number.isInteger(item["index"])){
+                return res.send(errResponse(baseResponse.FWHO_ERROR_TYPE));
+            }
+        }
+        // 올바르지 않은 aWho weather 형식
+        for(item of aWho){
+            if(typeof item["who"] !== 'string' && !(item["who"] instanceof String)){
+                return res.send(errResponse(baseResponse.AWHO_ERROR_TYPE));
+            }
         }
     }
-    for(item of aClothes){
-        if(colorArr.indexOf(item["color"]) == -1){
-            return res.send(errResponse(baseResponse.COLOR_INVALID_VALUE));
-        }
-    }
-
-    // 올바르지 않은 fPlace index 형식
-    for(item of fPlace){
-        if(!Number.isInteger(item["index"])){
-            return res.send(errResponse(baseResponse.FPLACE_ERROR_TYPE));
-        }
-    }
-    // 올바르지 않은 aPlace place 형식
-    for(item of aPlace){
-        if(typeof item["place"] !== 'string' && !(item["place"] instanceof String)){
-            return res.send(errResponse(baseResponse.APLACE_ERROR_TYPE));
-        }
-    }
-
-    // 올바르지 않은 fWeather index 형식
-    for(item of fWeather){
-        if(!Number.isInteger(item["index"])){
-            return res.send(errResponse(baseResponse.FWEATHER_ERROR_TYPE));
-        }
-    }
-    // 올바르지 않은 aWeather weather 형식
-    for(item of aWeather){
-        if(typeof item["weather"] !== 'string' && !(item["weather"] instanceof String)){
-            return res.send(errResponse(baseResponse.AWEATHER_ERROR_TYPE));
-        }
-    }
-
-    // 올바르지 않은 fWho index 형식
-    for(item of fWho){
-        if(!Number.isInteger(item["index"])){
-            return res.send(errResponse(baseResponse.FWHO_ERROR_TYPE));
-        }
-    }
-    // 올바르지 않은 aWho weather 형식
-    for(item of aWho){
-        if(typeof item["who"] !== 'string' && !(item["who"] instanceof String)){
-            return res.send(errResponse(baseResponse.AWHO_ERROR_TYPE));
-        }
-    }
-
+    
     // LOOKPOINT 빈 값 체크
     if(!lookpoint){
         return res.send(errResponse(baseResponse.LOOKPOTNT_EMPTY));
