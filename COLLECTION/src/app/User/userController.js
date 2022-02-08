@@ -10,8 +10,8 @@ var blank_pattern = /^\s+|\s+$/g; //공백문자만
 var blank_all = /[\s]/g; //공백도 입력
 var regExpName = /^[가-힣]{2,5}|[a-zA-Z]{2,10}\s[a-zA-Z]{2,10}$/; //이름
 var regExpSpecial = /[ \{\}\[\]\/?.,;:|\)*~`!^\-_+┼<>@\#$%&\'\"\\\(\=]/gi;//특수문자 사용
-var regExpID = /^[a-z0-9]{6,15}$/g; //ID는 6-15자, 영문소문자,숫자 사용
-var regExpPW = /^[a-z0-9]{6,15}$/g;
+var regExpID = /^[a-z]+[a-z0-9]{5,14}$/g; //ID는 영문자로 시작하는 6~15자 영문자 또는 숫자
+var regExpPW = /^[a-z]+[a-z0-9]{5,14}$/g; //PW는 영문자로 시작하는 6~15자 영문자 또는 숫자
 
 
 /**
