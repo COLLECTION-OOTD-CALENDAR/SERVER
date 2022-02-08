@@ -126,14 +126,9 @@ module.exports = {
     AWEATHER_ERROR_TYPE : {"isSuccess" : false, "code" : 3068, "message" : "올바르지 않은 날씨 weather 형식입니다."},
     FWHO_ERROR_TYPE : {"isSuccess" : false, "code" : 3069, "message" : "올바르지 않은 누구 index 형식입니다."},
     AWHO_ERROR_TYPE : {"isSuccess" : false, "code" : 3070, "message" : "올바르지 않은 누구 who 형식입니다."},
-<<<<<<< HEAD
-    CLOTHES_PWW_ONE_EMPTY : {"isSuccess" : false, "code" : 3070, "message" : "Query String에 Clothes와 PWW를 모두 입력해야 합니다"},
-    
-
-
-=======
-    CLOTHES_PWW_ONE_EMPTY : {"isSuccess" : false, "code" : 3071, "message" : "Query String에 Clothes와 PWW를 모두 입력해야 합니다"},
->>>>>>> a05d0eb0966b5353beef0b8a58271ccd6803481d
+    CLOTHES_PWW_ONE_EMPTY : {"isSuccess" : false, "code" : 3071, "message" : "Query String에 Clothes와 PWW를 모두 입력해야 합니다."},
+    REGISTER_NAME_REGEXP : {"isSuccess" : false, "code" : 3072, "message" : "한글(2-5자), 영문 대 소문자(2-10)자를 입력하세요."},
+    REGISTER_NICKNAME_REGEXP : {"isSuccess" : false, "code" : 3073, "message" : "특수문자를 제외하고 입력하세요."},
 
     
     //Response Error

@@ -83,7 +83,7 @@ exports.postUsers = async function (req, res) {
     // 형식 체크 (by 정규표현식)
 
     if(!regExpName.test(name))
-        return res.send(response(baseResponse.REGISTER_PHONE_ERROR_TYPE_HYPHEN)) //바꾸고 올려 !!! 
+        return res.send(response(baseResponse.REGISTER_NAME_REGEXP)) 
 
     if (regExp.test(phoneNumber)) 
         return res.send(response(baseResponse.REGISTER_PHONE_ERROR_TYPE_HYPHEN))
@@ -91,7 +91,7 @@ exports.postUsers = async function (req, res) {
         return res.send(response(baseResponse.REGISTER_PHONE_INVALID_VALUE))
 
     if(!regExp.regExpSpecial.test(nickname))
-        return res.send(response(baseResponse.REGISTER_PHONE_INVALID_VALUE))
+        return res.send(response(baseResponse.REGISTER_NICKNAME_REGEXP))
 
     
 
@@ -186,7 +186,7 @@ exports.getNickname = async function(req, res) {
 
         //정규식 체크 - 닉네임에 특수문자 불가능
         if(!regExp.regExpSpecial.test(nickname))
-            return res.send(response(baseResponse.REGISTER_PHONE_INVALID_VALUE))
+            return res.send(response(baseResponse.REGISTER_NICKNAME_REGEXP))
 
         //중복 체크
         const nicknameRows = await userProvider.nicknameCheck(nickname);
