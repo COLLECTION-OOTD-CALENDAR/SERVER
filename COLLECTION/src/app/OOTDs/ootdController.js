@@ -57,7 +57,7 @@ exports.registerOotd = async function (req, res) {
     }
 
     // date 형식 체크
-    if(!datePattern.test(n_date)){
+    if(!datePattern.test(date)){
         return res.send(errResponse(baseResponse.DATE_ERROR_TYPE));
     }
 
