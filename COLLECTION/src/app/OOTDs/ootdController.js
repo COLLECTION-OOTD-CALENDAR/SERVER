@@ -86,7 +86,7 @@ exports.registerOotd = async function (req, res) {
     }
 
     // photoIs 빈 값 체크
-    if(!photoIs){
+    if(photoIs === '' || photoIs === null || photoIs === undefined || photoIs === NaN){
         return res.send(errResponse(baseResponse.PHOTOIS_EMPTY));
     }
 
