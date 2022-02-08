@@ -4,11 +4,12 @@ const userService = require("./userService");
 const baseResponse = require("../../../config/baseResponseStatus");
 const {response, errResponse} = require("../../../config/response");
 
-var regExp = /^[0-9]{3}-[0-9]{3,4}-[0-9]{4}/;
-var regExpcheck = /^01([0|1|6|7|8|9])([0-9]{3,4})?([0-9]{4})$/;
-var blank_pattern = /^\s+|\s+$/g;
-var blank_all = /[\s]/g;
-
+var regExp = /^[0-9]{3}-[0-9]{3,4}-[0-9]{4}/; //전화번호 양식
+var regExpcheck = /^01([0|1|6|7|8|9])([0-9]{3,4})?([0-9]{4})$/; //전화번호 값
+var blank_pattern = /^\s+|\s+$/g; //공백문자만
+var blank_all = /[\s]/g; //공백도 입력
+var regExpName = /^[가-힣]{2,5}|[a-zA-Z]{2,10}\s[a-zA-Z]{2,10}$/; //이름
+var regExpSpecial = /[ \{\}\[\]\/?.,;:|\)*~`!^\-_+┼<>@\#$%&\'\"\\\(\=]/gi;
 
 /**
  * API No. 1
@@ -81,10 +82,18 @@ exports.postUsers = async function (req, res) {
 
     // 형식 체크 (by 정규표현식)
 
+    if(!regExpName.test(name))
+        return res.send(response(baseResponse.REGISTER_PHONE_ERROR_TYPE_HYPHEN)) //바꾸고 올려 !!! 
+
     if (regExp.test(phoneNumber)) 
         return res.send(response(baseResponse.REGISTER_PHONE_ERROR_TYPE_HYPHEN))
     if (!regExpcheck.test(phoneNumber))
         return res.send(response(baseResponse.REGISTER_PHONE_INVALID_VALUE))
+
+    if(!regExp.regExpSpecial.test(nickname))
+        return res.send(response(baseResponse.REGISTER_PHONE_INVALID_VALUE))
+
+    
 
     // register 함수 실행을 통한 결과 값을 registerResponse에 저장
     const registerResponse = await userService.register(
@@ -110,25 +119,25 @@ exports.getDuplicateID = async function (req, res) {
     const ID = req.query.ID;
     var id = ID.toString();
 
-    //빈 값 체크
-    if (!ID)
-        return res.send(response(baseResponse.REGISTER_ID_EMPTY));
 
-    //공백문자만 입력됐는지 체크
-    if(id.replace(blank_pattern, '' ) == "" ){
-        return res.send(response(baseResponse.REGISTER_BLANK_ALL));
-    }
-
-    //문자열에 공백이 있는 경우
-    if(blank_all.test(id) == true){
-        return res.send(response(baseResponse.REGISTER_BLANK_TEXT)); 
-    }
-    
-    //중복 체크
     try{
+
+        //빈 값 체크
+        if (!ID){
+            return res.send(response(baseResponse.REGISTER_ID_EMPTY));
+        }
+        
+        //공백문자만 입력됐는지 체크
+        if(id.replace(blank_pattern, '' ) == "" ){
+            return res.send(response(baseResponse.REGISTER_BLANK_ALL));
+        }
+
+        //문자열에 공백이 있는 경우
         if(blank_all.test(id) == true){
             return res.send(response(baseResponse.REGISTER_BLANK_TEXT)); 
         }
+
+        //중복 체크
         const IDRows = await userProvider.IDCheck(ID);
         if (IDRows.length > 0){
             return res.send(response(baseResponse.REGISTER_ID_REDUNDANT));
@@ -155,31 +164,31 @@ exports.getNickname = async function(req, res) {
 
     const nickname = req.query.nickname;
     var Nickname = nickname.toString();
-
-
-    //빈 값 체크
-    if(!nickname)
-        return res.send(response(baseResponse.REGISTER_NICKNAME_EMPTY)); 
-
-    //공백문자만 입력됐는지 체크
-    if(Nickname.replace(blank_pattern, '' ) == "" ){
-        return res.send(response(baseResponse.REGISTER_BLANK_ALL));
-    }
-
-    //문자열에 공백이 있는 경우
-    if(blank_all.test(Nickname) == true){
-        return res.send(response(baseResponse.REGISTER_BLANK_TEXT)); 
-    }
-
-    //길이 체크
-    if (nickname.length < 2 || nickname.length > 6 )  
-        return res.send(response(baseResponse.REGISTER_NICKNAME_LENGTH));
-
-    //중복 체크    
+    
     try{
+        //빈 값 체크
+        if(!nickname)
+            return res.send(response(baseResponse.REGISTER_NICKNAME_EMPTY)); 
+
+        //공백문자만 입력됐는지 체크
+        if(Nickname.replace(blank_pattern, '' ) == "" ){
+            return res.send(response(baseResponse.REGISTER_BLANK_ALL));
+        }
+
+        //문자열에 공백이 있는 경우
         if(blank_all.test(Nickname) == true){
             return res.send(response(baseResponse.REGISTER_BLANK_TEXT)); 
         }
+
+        //길이 체크
+        if (nickname.length < 2 || nickname.length > 6 )  
+            return res.send(response(baseResponse.REGISTER_NICKNAME_LENGTH));
+
+        //정규식 체크 - 닉네임에 특수문자 불가능
+        if(!regExp.regExpSpecial.test(nickname))
+            return res.send(response(baseResponse.REGISTER_PHONE_INVALID_VALUE))
+
+        //중복 체크
         const nicknameRows = await userProvider.nicknameCheck(nickname);
         if (nicknameRows.length > 0){
             return res.send(response(baseResponse.REGISTER_NICKNAME_REDUNDANT));
