@@ -335,7 +335,7 @@ async function selectFixedPwwTag(connection, flag, Content) {
   if(flag == "Place"){
       selectPwwTagListQuery = `
         SELECT place 
-        FROM AddedPlace
+        FROM FixedPlace
         WHERE place = ?;
     `;
 
@@ -343,14 +343,14 @@ async function selectFixedPwwTag(connection, flag, Content) {
   if(flag == "Weather"){
     selectFixedPwwTagListQuery = `
       SELECT weather 
-      FROM AddedWeather
+      FROM FixedWeather
       WHERE weather = ?;
     `; 
   }
   if(flag == "Who"){
     selectFixedPwwTagListQuery = `
       SELECT who 
-      FROM AddedWho
+      FROM FixedWho
       WHERE who = ? ;
     `; 
   }
