@@ -175,17 +175,17 @@ exports.fixedRedundantCheck = async function(Clothes, PWW, Content){
     }
     
     else if (Clothes == -1){
-      let flag;
+      let pwwflag;
       if(PWW == 0)
-        flag = "Place";
+        pwwflag = "Place";
       if (PWW == 1)
-        flag = "Weather";
+        pwwflag = "Weather";
       if (PWW == 2)
-        flag = "Who";
+        pwwflag = "Who";
 
-      
+
       console.log(`providerFTRC flag : ${flag}`);
-      const fixedPwwRedundantListResult = await ootdDao.selectFixedPwwTag(connection, flag, Content);
+      const fixedPwwRedundantListResult = await ootdDao.selectFixedPwwTag(connection, pwwflag, Content);
       connection.release();
 
       return fixedPwwRedundantListResult;

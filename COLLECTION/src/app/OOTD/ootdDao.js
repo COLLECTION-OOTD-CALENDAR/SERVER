@@ -330,9 +330,9 @@ async function selectFixedClothesTag(connection, Content) {
 };
 
 // PWW 중복 체크
-async function selectFixedPwwTag(connection, flag, Content) {
+async function selectFixedPwwTag(connection, pwwflag, Content) {
   var selectFixedPwwTagListQuery =``;
-  if(flag == "Place"){
+  if(pwwflag == "Place"){
       selectPwwTagListQuery = `
         SELECT place 
         FROM FixedPlace
@@ -340,14 +340,14 @@ async function selectFixedPwwTag(connection, flag, Content) {
     `;
 
   }
-  if(flag == "Weather"){
+  if(pwwflag == "Weather"){
     selectFixedPwwTagListQuery = `
       SELECT weather 
       FROM FixedWeather
       WHERE weather = ?;
     `; 
   }
-  if(flag == "Who"){
+  if(pwwflag == "Who"){
     selectFixedPwwTagListQuery = `
       SELECT who 
       FROM FixedWho
