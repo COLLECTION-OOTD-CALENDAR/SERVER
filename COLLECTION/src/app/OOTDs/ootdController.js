@@ -36,7 +36,7 @@ exports.registerOotd = async function (req, res) {
 
     // request body 풀어내기
     const n_date = new Date(date);
-    
+
     /*********************************************** */
     /*****************request error***************** */
     /*********************************************** */
@@ -75,18 +75,18 @@ exports.registerOotd = async function (req, res) {
     }
 
     // lookname에 공백만 입력된 경우
-    var n_lookname = lookname.toString();
+    const n_lookname = lookname.toString();
     if(n_lookname.replace(blankPattern, '') == ""){
         return res.send(errResponse(baseResponse.REGISTER_BLANK_ALL));
     }
 
     // lookname 길이가 27자리를 초과할 때
-    if(lookname.length > 27){
+    if(n_lookname.length > 27){
         return res.send(errResponse(baseResponse.LOOKNAME_LENGTH));
     }
 
     // photoIs 빈 값 체크
-    if(!photoIs){
+    if(photoIs === '' || photoIs === null || photoIs === undefined || photoIs === NaN){
         return res.send(errResponse(baseResponse.PHOTOIS_EMPTY));
     }
 
@@ -96,7 +96,8 @@ exports.registerOotd = async function (req, res) {
     }
 
     // photoIs 값 -1 또는 0인지 체크
-    if(photoIs != -1 || photoIs != 0){
+    console.log(typeof photoIs);
+    if(photoIs != -1 && photoIs != 0){
         return res.send(errResponse(baseResponse.PHOTOIS_INVALID_VALUE));
     }
 
@@ -109,7 +110,7 @@ exports.registerOotd = async function (req, res) {
             return res.send(errResponse(baseResponse.THUMBNAIL_ERROR_TYPE));
         }
         // thumbnail 값 -1 또는 0인지 체크
-        if(item["thumbnail"] != -1 || item["thumbnail" != 0]){
+        if(item["thumbnail"] != -1 && item["thumbnail" != 0]){
             return res.send(errResponse(baseResponse.THUMBNAIL_INVALID_VALUE));
         }
     }
@@ -199,8 +200,9 @@ exports.registerOotd = async function (req, res) {
         return res.send(errResponse(baseResponse.LOOKPOINT_INVALID_VALUE));
     }
 
+    const n_comment = comment.toString();
     // COMMENT 길이 체크
-    if(comment.length > 65535){
+    if(n_comment.length > 65535){
         return res.send(errResponse(baseResponse.COMMENT_LENGTH));
     }
 
@@ -273,8 +275,8 @@ exports.registerOotd = async function (req, res) {
         }
     }
 
-    const registerUserOotd = await ootdService.lastRegisterOotd(userIdx, date, lookname, photoIs, image, fClothes, aClothes,
-        fPlace, aPlace, fWeather, aWeather, fWho, aWho, lookpoint, comment);
+    const registerUserOotd = await ootdService.lastRegisterOotd(userIdx, date, n_lookname, photoIs, image, fClothes, aClothes,
+        fPlace, aPlace, fWeather, aWeather, fWho, aWho, lookpoint, n_comment);
     return res.send(response(baseResponse.SUCCESS_LAST_REGISTER, registerUserOotd));
 
 };
