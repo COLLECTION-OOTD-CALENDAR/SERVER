@@ -126,7 +126,7 @@ exports.registerOotd = async function (req, res) {
     
     // fClothes와 aClothes 동시 빈 값 체크
     // null 값이면 안된다.
-    if(!fClothes && !aClothes){
+    if(!fClothes[0] && !aClothes[0]){
         return res.send(errResponse(baseResponse.REGISTER_CLOTHES_EMPTY));
     }else {
         // 올바르지 않은 fixedClothes index 형식 (정수가 아닌 경우)
@@ -227,7 +227,7 @@ exports.registerOotd = async function (req, res) {
             }
         }
     }
-    
+
     // LOOKPOINT 빈 값 체크
     if(!lookpoint){
         return res.send(errResponse(baseResponse.LOOKPOTNT_EMPTY));
