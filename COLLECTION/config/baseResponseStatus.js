@@ -135,7 +135,7 @@ module.exports = {
     REGISTER_PLACE_EMPTY : {"isSuccess" : false, "code" : 3077, "message" : "Place 값을 입력해주세요."},
     REGISTER_WEATHER_EMPTY : {"isSuccess" : false, "code" : 3078, "message" : "Weather 값을 입력해주세요."},
     REGISTER_WHO_EMPTY : {"isSuccess" : false, "code" : 3079, "message" : "Who 값을 입력해주세요."},
-    
+    REGISTER_PW_REGEXP : {"isSuccess" : false, "code" : 3080, "message" : "PASSWORD는 6~15자의 영문 소문자, 숫자, 특수문자가 각각 최소 1개 이상 입력하세요."},
     
     
 

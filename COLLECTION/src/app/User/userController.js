@@ -11,6 +11,8 @@ var blank_all = /[\s]/g; //공백도 입력
 var regExpName = /^[가-힣]{2,5}|[a-zA-Z]{2,10}\s[a-zA-Z]{2,10}$/; //이름
 var regExpSpecial = /[ \{\}\[\]\/?.,;:|\)*~`!^\-_+┼<>@\#$%&\'\"\\\(\=]/gi;//특수문자 사용
 var regExpID = /^[a-z0-9]{6,15}$/g;
+var regExpPW = /^(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$ %^&*-]).{6,15}$/;
+
 
 /**
  * API No. 1
@@ -87,6 +89,9 @@ exports.postUsers = async function (req, res) {
         return res.send(response(baseResponse.REGISTER_NAME_REGEXP)); 
 
     if(!regExpID.test(ID))
+        return res.send(response(baseResponse.REGISTER_ID_REGEXP)); 
+
+    if(!regExpPW.test(password))
         return res.send(response(baseResponse.REGISTER_ID_REGEXP)); 
 
     if (regExp.test(phoneNumber)) 
