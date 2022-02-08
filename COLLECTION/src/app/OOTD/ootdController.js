@@ -60,10 +60,10 @@ exports.postNewBlock = async function (req, res) {
         console.log(`PWW :  ${typeof(PWW)}`);
 
 
+        //if(( (!Clothes) && (Clothes != 0)) || ( (!PWW) && (PWW !=0) ) || (typeof(Clothes) == 'undefined') || (typeof(PWW) == 'undefined')) {
         
-
-        if(( (!Clothes) && (Clothes != 0)) || ( (!PWW) && (PWW !=0) ) || (typeof(Clothes) == 'undefined') || (typeof(PWW) == 'undefined')) {
-
+        
+        if(Clothes == "" || PWW == ""){
             return res.send(errResponse(baseResponse.CLOTHES_PWW_ONE_EMPTY));       //Clothes, PWW 중 하나라도 아예 입력되지 않은 경우
         }
 
@@ -165,8 +165,10 @@ exports.patchBlock = async function (req, res) {
 
         
 
-        if(( (!Clothes) && (Clothes != 0)) || ( (!PWW) && (PWW !=0) ) || (typeof(Clothes) == 'undefined') || (typeof(PWW) == 'undefined')) {
+       
 
+        //if(( (!Clothes) && (Clothes != 0)) || ( (!PWW) && (PWW !=0) ) || (typeof(Clothes) == 'undefined') || (typeof(PWW) == 'undefined')) {                
+        if(Clothes == "" || PWW == ""){
             return res.send(errResponse(baseResponse.CLOTHES_PWW_ONE_EMPTY));       //Clothes, PWW 중 하나라도 아예 입력되지 않은 경우
         }
 
