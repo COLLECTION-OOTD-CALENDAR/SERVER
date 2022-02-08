@@ -154,7 +154,7 @@ exports.retrieveWeeklyList = async function (userIdx) {
     return ootds;
 
   }catch(err){
-    logger.error(`App - getMonthly Provider error\n: ${err.message}`);
+    logger.error(`App - getWeekly Provider error\n: ${err.message}`);
     return errResponse(baseResponse.DB_ERROR);
   }
 
