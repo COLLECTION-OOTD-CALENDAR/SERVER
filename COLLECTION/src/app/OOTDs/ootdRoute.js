@@ -21,7 +21,7 @@ module.exports = function(app){
     //app.patch('/app/users/:userId', jwtMiddleware, user.patchUsers)
 
     // 1. OOTD 최종 등록하기
-    app.get('/app/ootd/last-register/:userIdx', jwtMiddleware, ootd.registerOotd);
+    app.get('/app/ootds/last-register/:userIdx', jwtMiddleware, ootd.registerOotd);
 
     // 2. OOTD 수정하기 - 지난 작성 화면 보여주기
     //app.get('app/ootd/modi/:userIdx', jwtMiddleware, ootd.modiOotd);
