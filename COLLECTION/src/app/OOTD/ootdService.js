@@ -178,13 +178,15 @@ exports.deleteOotd = async function (userIdx, date) {
         const connection = await pool.getConnection(async (conn) => conn);
 
         //1. 해당 userIdx에 해당 date에 OOTD가 존재하는지 검증
-        const ootdIdx = await ootdProvider.ootdExistCheck(userIdx, date);
+        let ootdIdx = await ootdProvider.ootdExistCheck(userIdx, date);
+        
         console.log(`ootd exist 검사 - ootdIdx :`, ootdIdx);
-
-        if(ootdIdx.length == 0)
+       
+        if(typeof(ootdIdx)=='undefined')
             return errResponse(baseResponse.DATE_OOTD_EMPTY);
 
-
+        ootdIdx = ootdIdx.ootdIdx; 
+        
         //ootd 삭제 - transaction 처리
         try{
             await connection.beginTransaction();
