@@ -96,6 +96,7 @@ exports.registerOotd = async function (req, res) {
     }
 
     // photoIs 값 -1 또는 0인지 체크
+    console.log(typeof photoIs);
     if(photoIs != -1 || photoIs != 0){
         return res.send(errResponse(baseResponse.PHOTOIS_INVALID_VALUE));
     }
