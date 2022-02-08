@@ -50,9 +50,9 @@ exports.postNewBlock = async function (req, res) {
         }
 
 
-        // 3. Clothes, PWW flag Null number형 형식 체크 
-        const Clothes = req.query.Clothes;  //0: Top, 1: Bottom, 2: Shoes, 3: etc
-        const PWW = req.query.PWW;          //0: Place, 1: Weather, 2: Who
+        // 3. Clothes, PWW flag Null number형 형식 체크 - Number():변수가 정의되지 않았거나 숫자로 변환할 수 없는 경우 NaN반환
+        var Clothes = req.query.Clothes;  //0: Top, 1: Bottom, 2: Shoes, 3: etc
+        var PWW = req.query.PWW;          //0: Place, 1: Weather, 2: Who
 
         console.log(`Clothes : ${Clothes}`);
         console.log(`Clothes : ${typeof(Clothes)}`);
@@ -67,6 +67,10 @@ exports.postNewBlock = async function (req, res) {
             return res.send(errResponse(baseResponse.CLOTHES_PWW_ONE_EMPTY));       //Clothes, PWW 중 하나라도 아예 입력되지 않은 경우
         }
 
+
+
+        Clothes = Number(Clothes);
+        PWW = Number(PWW);
 
         if(!Number.isInteger(Clothes) || !Number.isInteger(PWW) ){ //둘 중 하나가 숫자가 아님            
             return res.send(errResponse(baseResponse.QUERY_STRING_ERROR_TYPE));
@@ -145,12 +149,10 @@ exports.patchBlock = async function (req, res) {
             return res.send(errResponse(baseResponse.TAG_LENGTH));
         }
 
-
-        // 3. Clothes, PWW flag Null number형 형식 체크 
+        // 3. Clothes, PWW flag Null number형 형식 체크 - Number():변수가 정의되지 않았거나 숫자로 변환할 수 없는 경우 NaN반환
         var Clothes = req.query.Clothes;  //0: Top, 1: Bottom, 2: Shoes, 3: etc
         var PWW = req.query.PWW;          //0: Place, 1: Weather, 2: Who
 
-        
         console.log(`Clothes : ${Clothes}`);
         console.log(`Clothes : ${typeof(Clothes)}`);
         console.log(`PWW :  ${PWW}`);
@@ -162,11 +164,6 @@ exports.patchBlock = async function (req, res) {
         if(( (!Clothes) && (Clothes != 0)) || ( (!PWW) && (PWW !=0) ) || (typeof(Clothes) == 'undefined') || (typeof(PWW) == 'undefined')) {
 
             return res.send(errResponse(baseResponse.CLOTHES_PWW_ONE_EMPTY));       //Clothes, PWW 중 하나라도 아예 입력되지 않은 경우
-        }
-
-
-        if(!Number.isInteger(Clothes) || !Number.isInteger(PWW) ){ //둘 중 하나가 숫자가 아님            
-            return res.send(errResponse(baseResponse.QUERY_STRING_ERROR_TYPE));
         }
 
         
