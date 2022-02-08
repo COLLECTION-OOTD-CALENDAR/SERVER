@@ -83,15 +83,15 @@ exports.postUsers = async function (req, res) {
     // 형식 체크 (by 정규표현식)
 
     if(!regExpName.test(name))
-        return res.send(response(baseResponse.REGISTER_NAME_REGEXP)) 
+        return res.send(response(baseResponse.REGISTER_NAME_REGEXP)); 
 
     if (regExp.test(phoneNumber)) 
-        return res.send(response(baseResponse.REGISTER_PHONE_ERROR_TYPE_HYPHEN))
+        return res.send(response(baseResponse.REGISTER_PHONE_ERROR_TYPE_HYPHEN));
     if (!regExpcheck.test(phoneNumber))
-        return res.send(response(baseResponse.REGISTER_PHONE_INVALID_VALUE))
+        return res.send(response(baseResponse.REGISTER_PHONE_INVALID_VALUE));
 
-    if(!regExp.regExpSpecial.test(nickname))
-        return res.send(response(baseResponse.REGISTER_NICKNAME_REGEXP))
+    if(!regExpSpecial.test(nickname))
+        return res.send(response(baseResponse.REGISTER_NICKNAME_REGEXP));
 
     
 
@@ -181,12 +181,12 @@ exports.getNickname = async function(req, res) {
         }
 
         //길이 체크
-        if (nickname.length < 2 || nickname.length > 6 )  
+        if(nickname.length < 2 || nickname.length > 6 )  
             return res.send(response(baseResponse.REGISTER_NICKNAME_LENGTH));
 
         //정규식 체크 - 닉네임에 특수문자 불가능
-        if(!regExp.regExpSpecial.test(nickname))
-            return res.send(response(baseResponse.REGISTER_NICKNAME_REGEXP))
+        if(!regExpSpecial.test(nickname))
+            return res.send(response(baseResponse.REGISTER_NICKNAME_REGEXP));
 
         //중복 체크
         const nicknameRows = await userProvider.nicknameCheck(nickname);
