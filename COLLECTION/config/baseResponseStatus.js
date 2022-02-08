@@ -126,7 +126,7 @@ module.exports = {
     AWEATHER_ERROR_TYPE : {"isSuccess" : false, "code" : 3068, "message" : "올바르지 않은 날씨 weather 형식입니다."},
     FWHO_ERROR_TYPE : {"isSuccess" : false, "code" : 3069, "message" : "올바르지 않은 누구 index 형식입니다."},
     AWHO_ERROR_TYPE : {"isSuccess" : false, "code" : 3070, "message" : "올바르지 않은 누구 who 형식입니다."},
-    CLOTHES_PWW_ONE_EMPTY : {"isSuccess" : false, "code" : 3070, "message" : "Query String에 Clothes와 PWW를 모두 입력해야 합니다"},
+    CLOTHES_PWW_ONE_EMPTY : {"isSuccess" : false, "code" : 3071, "message" : "Query String에 Clothes와 PWW를 모두 입력해야 합니다"},
 
     
     //Response Error

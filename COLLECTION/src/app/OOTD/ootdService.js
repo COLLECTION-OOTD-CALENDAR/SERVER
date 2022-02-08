@@ -46,7 +46,7 @@ exports.createNewBlock = async function (userIdx, Clothes, PWW, Content) {
         const connection = await pool.getConnection(async (conn) => conn);
 
         if(PWW == -1){
-            var flag;//undefined
+            let flag;//undefined
             if(Clothes == 0) 
                 flag = "Top";
             
@@ -121,7 +121,7 @@ exports.deleteBlock = async function (userIdx, Clothes, PWW, Content) {
         const connection = await pool.getConnection(async (conn) => conn);
 
         if(PWW == -1){
-            var flag;//undefined
+            let flag;//undefined
             if(Clothes == 0) 
                 flag = "Top";
             
