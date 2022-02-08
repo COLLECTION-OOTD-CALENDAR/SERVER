@@ -2,13 +2,13 @@
 // 새롭게 추가한 함수를 아래 부분에서 export 해줘야 외부의 Provider, Service 등에서 사용가능합니다.
 
 // AddedClothes 중복 체크
-async function selectClothesTag(connection, userIdx, flag, Content) {
+async function selectClothesTag(connection, userIdx, Content) {
   const selectTagParams = [userIdx, flag, Content, "active"];// (userAdded)
 
   const selectClothesTagListQuery = `
         SELECT smallClass 
         FROM AddedClothes
-        WHERE userIdx = ? AND bigClass = ? AND smallClass = ? AND status = ?;
+        WHERE userIdx = ? AND smallClass = ? AND status = ?;
                 `;
   const [tagRows] = await connection.query(
         selectClothesTagListQuery, 
@@ -310,6 +310,59 @@ async function deletePhotoData(connection, ootdIdx){  //
 }
 
 
+
+
+
+
+
+async function selectFixedClothesTag(connection, Content) {
+
+  const selectFixedClothesTagListQuery = `
+        SELECT smallClass 
+        FROM FixedClothes
+        WHERE smallClass = ?;
+                `;
+  const [tagRows] = await connection.query(
+    selectFixedClothesTagListQuery, 
+    Content);
+
+  return tagRows;
+};
+
+// PWW 중복 체크
+async function selectFixedPwwTag(connection, pwwflag, Content) {
+  var selectFixedPwwTagListQuery =``;
+  if(pwwflag == "Place"){
+      selectPwwTagListQuery = `
+        SELECT place 
+        FROM FixedPlace
+        WHERE place = ?;
+    `;
+
+  }
+  if(pwwflag == "Weather"){
+    selectFixedPwwTagListQuery = `
+      SELECT weather 
+      FROM FixedWeather
+      WHERE weather = ?;
+    `; 
+  }
+  if(pwwflag == "Who"){
+    selectFixedPwwTagListQuery = `
+      SELECT who 
+      FROM FixedWho
+      WHERE who = ? ;
+    `; 
+  }
+
+   const [tagRows] = await connection.query(
+        selectFixedPwwTagListQuery, 
+        Content);
+
+  return tagRows;
+};
+
+
 module.exports = {
   selectClothesTag,
   selectPwwTag,
@@ -328,5 +381,7 @@ module.exports = {
   selectOotdExist,
   deleteOotdData,
   deleteClothesData,
-  deletePhotoData
+  deletePhotoData,
+  selectFixedClothesTag,
+  selectFixedPwwTag
 };
