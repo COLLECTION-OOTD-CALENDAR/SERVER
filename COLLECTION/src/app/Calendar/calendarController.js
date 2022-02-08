@@ -75,7 +75,10 @@ exports.getMonth = async function (req, res) {
             return res.send(errResponse(baseResponse.DATE_RESPONSE_ERROR));
         }
     }
-    return res.send(response(baseResponse.SUCCESS_MONTHLY_CALENDAR, callMonthCalOotd));
+
+    const monthCalFinalResult = {};
+    monthCalFinalResult["monthly"] = callMonthCalOotd;
+    return res.send(response(baseResponse.SUCCESS_MONTHLY_CALENDAR, monthCalFinalResult));
 
 }
 
@@ -117,8 +120,11 @@ exports.getWeek = async function (req, res) {
             return res.send(errResponse(baseResponse.DATE_RESPONSE_ERROR));
         }
     }
-
-    return res.send(response(baseResponse.SUCCESS_WEEKLY_CALENDAR, callWeekCalOotd));
+    
+    const weekCalFinalResult = {};
+    weekCalFinalResult["weekly"] = callWeekCalOotd;
+    //console.log('[ calendarController ] finalResult : ', weekCalFinalResult);
+    return res.send(response(baseResponse.SUCCESS_WEEKLY_CALENDAR, weekCalFinalResult));
 
 };
 

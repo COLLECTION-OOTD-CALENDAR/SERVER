@@ -170,3 +170,52 @@ exports.deleteBlock = async function (userIdx, Clothes, PWW, Content) {
     }
 
 };
+
+
+exports.deleteOotd = async function (userIdx, date) {
+    try {    
+        
+        const connection = await pool.getConnection(async (conn) => conn);
+
+        //1. 해당 userIdx에 해당 date에 OOTD가 존재하는지 검증
+        const ootdIdx = await ootdProvider.ootdExistCheck(userIdx, date);
+        console.log(`ootd exist 검사 - ootdIdx :`, ootdIdx);
+
+        if(ootdIdx.length == 0)
+            return errResponse(baseResponse.DATE_OOTD_EMPTY);
+
+
+        //ootd 삭제 - transaction 처리
+        try{
+            await connection.beginTransaction();
+            
+            //2. ootdIdx == OOTD.ootdIdx인 OOTD.status = "inactive"로 patch
+            const deleteOotdResult = await ootdDao.deleteOotdData(connection, userIdx, ootdIdx);
+            console.log(`Service.ootd deleted :`, ootdIdx);
+
+            const deleteClothesResult = await ootdDao.deleteClothesData(connection, ootdIdx);
+            console.log(`Service.clothes deleted :`, ootdIdx);
+
+            const deletePhotoResult = await ootdDao.deletePhotoData(connection, ootdIdx);
+            console.log(`Service.photo deleted :`, ootdIdx);
+            
+            await connection.commit();
+            
+            return response(baseResponse.SUCCESS_OOTD_DELETION); //, {'deleted ootd' : Content});
+        }      
+        catch(err){
+            await connection.rollback();
+            logger.error(`App - deleteOotd transcation error\n: ${err.message}`);
+            return errResponse(baseResponse.OOTD_DELETION_RESPONSE_ERROR);
+        }
+        finally{            
+            connection.release();            
+        }      
+
+    }
+    catch (err) {
+        logger.error(`App - deleteOotd Service error\n: ${err.message}`);
+        return errResponse(baseResponse.DB_ERROR);
+    }
+
+};
