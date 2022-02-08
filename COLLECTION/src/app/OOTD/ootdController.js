@@ -72,6 +72,10 @@ exports.postNewBlock = async function (req, res) {
         Clothes = Number(Clothes);
         PWW = Number(PWW);
 
+        
+        console.log(`Number(Clothes) : ${typeof(Clothes)}`);
+        console.log(`Number(PWW) :  ${typeof(PWW)}`);
+
         if(!Number.isInteger(Clothes) || !Number.isInteger(PWW) ){ //둘 중 하나가 숫자가 아님            
             return res.send(errResponse(baseResponse.QUERY_STRING_ERROR_TYPE));
         }
