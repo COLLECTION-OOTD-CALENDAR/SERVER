@@ -9,7 +9,8 @@ var regExpcheck = /^01([0|1|6|7|8|9])([0-9]{3,4})?([0-9]{4})$/; //전화번호 �
 var blank_pattern = /^\s+|\s+$/g; //공백문자만
 var blank_all = /[\s]/g; //공백도 입력
 var regExpName = /^[가-힣]{2,5}|[a-zA-Z]{2,10}\s[a-zA-Z]{2,10}$/; //이름
-var regExpSpecial = /[ \{\}\[\]\/?.,;:|\)*~`!^\-_+┼<>@\#$%&\'\"\\\(\=]/gi;
+var regExpSpecial = /[ \{\}\[\]\/?.,;:|\)*~`!^\-_+┼<>@\#$%&\'\"\\\(\=]/gi;//특수문자 사용
+var regExpID = /^[a-z0-9]{6,15}$/g;
 
 /**
  * API No. 1
@@ -85,12 +86,15 @@ exports.postUsers = async function (req, res) {
     if(!regExpName.test(name))
         return res.send(response(baseResponse.REGISTER_NAME_REGEXP)); 
 
+    if(!regExpID.test(ID))
+        return res.send(response(baseResponse.REGISTER_ID_REGEXP)); 
+
     if (regExp.test(phoneNumber)) 
         return res.send(response(baseResponse.REGISTER_PHONE_ERROR_TYPE_HYPHEN));
     if (!regExpcheck.test(phoneNumber))
         return res.send(response(baseResponse.REGISTER_PHONE_INVALID_VALUE));
 
-    if(!regExpSpecial.test(nickname))
+    if(regExpSpecial.test(nickname))
         return res.send(response(baseResponse.REGISTER_NICKNAME_REGEXP));
 
     
@@ -185,7 +189,7 @@ exports.getNickname = async function(req, res) {
             return res.send(response(baseResponse.REGISTER_NICKNAME_LENGTH));
 
         //정규식 체크 - 닉네임에 특수문자 불가능
-        if(!regExpSpecial.test(nickname))
+        if(regExpSpecial.test(nickname))
             return res.send(response(baseResponse.REGISTER_NICKNAME_REGEXP));
 
         //중복 체크
