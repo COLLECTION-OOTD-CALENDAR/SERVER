@@ -25,7 +25,7 @@ exports.tagRedundantCheck = async function(userIdx, Clothes, PWW, Content){
     }
     
     else if (Clothes == -1){
-      var flag;
+      let flag;
       if(PWW == 0)
         flag = "Place";
       if (PWW == 1)
@@ -58,7 +58,7 @@ exports.tagNumberCheck = async function(userIdx, Clothes, PWW){
     const connection = await pool.getConnection(async (conn) => conn);
     
     if(PWW == -1){
-      var flag;//undefined
+      let flag;//undefined
       if(Clothes == 0) 
           flag = "Top";
       
@@ -78,7 +78,7 @@ exports.tagNumberCheck = async function(userIdx, Clothes, PWW){
     }
 
     else if (Clothes == -1){
-      var flag;
+      let flag;
       if(PWW == 0)
         flag = "Place";
       if (PWW == 1)
@@ -100,7 +100,7 @@ exports.tagExistCheck = async function(userIdx, Clothes, PWW, Content){
   const connection = await pool.getConnection(async (conn) => conn);
 
   if(PWW == -1){
-    var flag;//undefined
+    let flag;//undefined
     if(Clothes == 0) 
         flag = "Top";
     
@@ -121,7 +121,7 @@ exports.tagExistCheck = async function(userIdx, Clothes, PWW, Content){
   }
   
   else if (Clothes == -1){
-    var flag;
+    let flag;
     if(PWW == 0)
       flag = "Place";
     if (PWW == 1)
@@ -169,13 +169,13 @@ exports.fixedRedundantCheck = async function(Clothes, PWW, Content){
 
     if(PWW == -1){
             
-      const clothesRedundantListResult = await ootdDao.selectFixedClothesTag(connection, Content);
+      const fixedClothesRedundantListResult = await ootdDao.selectFixedClothesTag(connection, Content);
       connection.release();
-      return clothesRedundantListResult;
+      return fixedClothesRedundantListResult;
     }
     
     else if (Clothes == -1){
-      var flag;
+      let flag;
       if(PWW == 0)
         flag = "Place";
       if (PWW == 1)
@@ -183,11 +183,11 @@ exports.fixedRedundantCheck = async function(Clothes, PWW, Content){
       if (PWW == 2)
         flag = "Who";
 
-
+      
       console.log(`providerFTRC flag : ${flag}`);
-      const pwwRedundantListResult = await ootdDao.selectFixedPwwTag(connection, flag, Content);
+      const fixedPwwRedundantListResult = await ootdDao.selectFixedPwwTag(connection, flag, Content);
       connection.release();
 
-      return pwwRedundantListResult;
+      return fixedPwwRedundantListResult;
     } 
 };
