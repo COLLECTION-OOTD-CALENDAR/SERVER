@@ -129,13 +129,13 @@ module.exports = {
     CLOTHES_PWW_ONE_EMPTY : {"isSuccess" : false, "code" : 3071, "message" : "Query String에 Clothes와 PWW를 모두 입력해야 합니다."},
     REGISTER_NAME_REGEXP : {"isSuccess" : false, "code" : 3072, "message" : "성함은 한글(2-5자), 영문 대 소문자(2-10)자를 입력하세요."},
     REGISTER_NICKNAME_REGEXP : {"isSuccess" : false, "code" : 3073, "message" : "특수문자를 제외하고 입력하세요."},
-    REGISTER_ID_REGEXP : {"isSuccess" : false, "code" : 3074, "message" : "ID는 6~15자의 영문 소문자, 숫자로 입력하세요."},
+    REGISTER_ID_REGEXP : {"isSuccess" : false, "code" : 3074, "message" : "ID는 영문자로 시작하는 6~15자 영문자 또는 숫자이어야 합니다."},
     REGISTER_IMAGE_EMPTY : {"isSuccess" : false, "code" : 3075, "message" : "Image 관련 값을 입력해주세요."},
     REGISTER_CLOTHES_EMPTY : {"isSuccess" : false, "code" : 3076, "message" : "Clothes 값을 입력해주세요."},
     REGISTER_PLACE_EMPTY : {"isSuccess" : false, "code" : 3077, "message" : "Place 값을 입력해주세요."},
     REGISTER_WEATHER_EMPTY : {"isSuccess" : false, "code" : 3078, "message" : "Weather 값을 입력해주세요."},
     REGISTER_WHO_EMPTY : {"isSuccess" : false, "code" : 3079, "message" : "Who 값을 입력해주세요."},
-    REGISTER_PW_REGEXP : {"isSuccess" : false, "code" : 3080, "message" : "PASSWORD는 6~15자의 영문 소문자, 숫자로 입력하세요.."},
+    REGISTER_PW_REGEXP : {"isSuccess" : false, "code" : 3080, "message" : "PASSWORD는 영문자로 시작하는 6~15자 영문자 또는 숫자이어야 합니다."},
     
     
 
