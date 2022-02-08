@@ -87,20 +87,23 @@ exports.postUsers = async function (req, res) {
 
     if(!regExpName.test(name))
         return res.send(response(baseResponse.REGISTER_NAME_REGEXP)); 
+        
+    else if(regExpSpecial.test(nickname))
+        return res.send(response(baseResponse.REGISTER_NICKNAME_REGEXP));
 
-    if(!regExpID.test(ID))
+    else if(!regExpID.test(ID))
         return res.send(response(baseResponse.REGISTER_ID_REGEXP)); 
 
-    if(!regExpPW.test(password))
+    else if(!regExpPW.test(password))
         return res.send(response(baseResponse.REGISTER_PW_REGEXP)); 
 
-    if (regExp.test(phoneNumber)) 
+    else if (regExp.test(phoneNumber)) 
         return res.send(response(baseResponse.REGISTER_PHONE_ERROR_TYPE_HYPHEN));
-    if (!regExpcheck.test(phoneNumber))
+
+    else if (!regExpcheck.test(phoneNumber))
         return res.send(response(baseResponse.REGISTER_PHONE_INVALID_VALUE));
 
-    if(regExpSpecial.test(nickname))
-        return res.send(response(baseResponse.REGISTER_NICKNAME_REGEXP));
+
 
     
 
