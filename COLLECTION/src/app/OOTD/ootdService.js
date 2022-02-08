@@ -194,10 +194,10 @@ exports.deleteOotd = async function (userIdx, date) {
             console.log(`Service.ootd deleted :`, ootdIdx);
 
             const deleteClothesResult = await ootdDao.deleteClothesData(connection, ootdIdx);
-            console.log(`Service.ootd deleted :`, ootdIdx);
+            console.log(`Service.clothes deleted :`, ootdIdx);
 
             const deletePhotoResult = await ootdDao.deletePhotoData(connection, ootdIdx);
-            
+            console.log(`Service.photo deleted :`, ootdIdx);
             
             await connection.commit();
             
