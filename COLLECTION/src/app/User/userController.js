@@ -126,6 +126,9 @@ exports.getDuplicateID = async function (req, res) {
     
     //중복 체크
     try{
+        if(blank_all.test(id) == true){
+            return res.send(response(baseResponse.REGISTER_BLANK_TEXT)); 
+        }
         const IDRows = await userProvider.IDCheck(ID);
         if (IDRows.length > 0){
             return res.send(response(baseResponse.REGISTER_ID_REDUNDANT));
