@@ -133,7 +133,8 @@ exports.patchBlock = async function (req, res) {
         const Clothes = req.query.Clothes;  //0: Top, 1: Bottom, 2: Shoes, 3: etc
         const PWW = req.query.PWW;          //0: Place, 1: Weather, 2: Who
 
-        console.log(`Clothes : `, Clothes, `PWW : `, PWW);
+        console.log(`Clothes : `, Clothes);
+        console.log(`PWW : `, PWW);
         
         if(Clothes == "" || Clothes == null || Clothes == undefined || ( Clothes != null && typeof Clothes == "object" && !Object.keys(Clothes).length ) ||
             PWW == "" || PWW == null || PWW == undefined || ( PWW != null && typeof PWW == "object" && !Object.keys(PWW).length )) {
