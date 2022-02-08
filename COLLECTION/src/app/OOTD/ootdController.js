@@ -58,7 +58,7 @@ exports.postNewBlock = async function (req, res) {
         console.log(`PWW :  ${PWW}`);
 
 
-        if((!Clothes && Clothes != 0) || (!PWW && PWW !=0 ) || (typeof(Clothes) == 'undefined') || (typeof(PWW) == 'undefined')) {
+        if(( (!Clothes) && (Clothes != 0)) || ( (!PWW) && (PWW !=0) ) || (typeof(Clothes) == 'undefined') || (typeof(PWW) == 'undefined')) {
 
             return res.send(errResponse(baseResponse.CLOTHES_PWW_ONE_EMPTY));       //Clothes, PWW 중 하나라도 아예 입력되지 않은 경우
         }
@@ -78,8 +78,11 @@ exports.postNewBlock = async function (req, res) {
          *  4-4) -1   number    => PWW 블럭 추가
         */
 
-        if( (Clothes < -1) || (3 < Clothes) || (PWW < -1) || (2 < PWW) ) {  //유효하지 않은 값
-            return res.send(errResponse(baseResponse.PWWC_INVALID_VALUE)); 
+         if( (Clothes < -1) || (3 < Clothes)){//유효하지 않은 값
+            return res.send(errResponse(baseResponse.PWW_INVALID_VALUE)); 
+        }
+        if( (PWW < -1) || (2 < PWW) ) {  //유효하지 않은 값
+            return res.send(errResponse(baseResponse.PWW_INVALID_VALUE)); 
         }
 
         if((Clothes == -1) && (PWW == -1)){
@@ -158,8 +161,11 @@ exports.patchBlock = async function (req, res) {
         }
 
         
-        if( (Clothes < -1) || (3 < Clothes) || (PWW < -1) || (2 < PWW) ) {  //유효하지 않은 값
-            return res.send(errResponse(baseResponse.PWWC_INVALID_VALUE)); 
+        if( (Clothes < -1) || (3 < Clothes)){//유효하지 않은 값
+            return res.send(errResponse(baseResponse.PWW_INVALID_VALUE)); 
+        }
+        if( (PWW < -1) || (2 < PWW) ) {  //유효하지 않은 값
+            return res.send(errResponse(baseResponse.PWW_INVALID_VALUE)); 
         }
 
         if((Clothes == -1) && (PWW == -1)){
