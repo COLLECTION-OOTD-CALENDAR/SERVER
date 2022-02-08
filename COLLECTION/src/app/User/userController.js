@@ -174,6 +174,9 @@ exports.getNickname = async function(req, res) {
 
     //중복 체크    
     try{
+        if(blank_all.test(Nickname) == true){
+            return res.send(response(baseResponse.REGISTER_BLANK_TEXT)); 
+        }
         const nicknameRows = await userProvider.nicknameCheck(nickname);
         if (nicknameRows.length > 0){
             return res.send(response(baseResponse.REGISTER_NICKNAME_REDUNDANT));
