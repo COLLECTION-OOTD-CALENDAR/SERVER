@@ -27,12 +27,13 @@ exports.createNewBlock = async function (userIdx, Clothes, PWW, Content) {
             return errResponse(baseResponse.TAG_REDUNDANT);
         console.log(`중복확인 contentAdded`);
 
+       
         // const FixedContentRows = await ootdProvider.fixedRedundantCheck(Clothes, PWW, Content);
         // if(FixedContentRows.length > 0)
         //     return errResponse(baseResponse.TAG_REDUNDANT_FIXED);
+        //  console.log(`중복확인 contentFixed`);            
 
-        // console.log(`중복확인 contentFixed`);
-            
+
         //  2. 추가하는 블럭 20개 넘는지 체크, 20개 미만이면 추가
         const numberRows = await ootdProvider.tagNumberCheck(userIdx, Clothes, PWW);
         if (numberRows.length >= 20)
@@ -45,10 +46,9 @@ exports.createNewBlock = async function (userIdx, Clothes, PWW, Content) {
 
         
         const connection = await pool.getConnection(async (conn) => conn);
-        
-        if(PWW == -1){
-            var flag = "";//undefined
 
+        if(PWW == -1){
+            var flag;//undefined
             if(Clothes == 0) 
                 flag = "Top";
             
@@ -60,7 +60,7 @@ exports.createNewBlock = async function (userIdx, Clothes, PWW, Content) {
             else if(Clothes == 3) 
                 flag = "Etc"; 
 
-            console.log(`service flag :`, flag);
+            console.log(`service flag : ${flag}`);
             const insertNewBlockParams = [userIdx, flag, Content];
             const clothesResult = await ootdDao.insertAddedClothes(connection, insertNewBlockParams);
             connection.release();
@@ -123,7 +123,7 @@ exports.deleteBlock = async function (userIdx, Clothes, PWW, Content) {
         const connection = await pool.getConnection(async (conn) => conn);
 
         if(PWW == -1){
-            var flag = "";//undefined
+            var flag;//undefined
             if(Clothes == 0) 
                 flag = "Top";
             
