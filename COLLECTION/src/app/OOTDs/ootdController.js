@@ -305,14 +305,14 @@ exports.registerOotd = async function (req, res) {
     }
 
     // COMMENT key 입력되지 않았을 때
-    if(comment === undefined){
+    if(comment === undefined){ // 추가 가능성 O
         return res.send(errResponse(baseResponse.REGISTER_COMMENT_EMPTY));
-    }
-
-    comment = comment.toString();
-    // COMMENT 길이 체크
-    if(comment.length > 65535){
-        return res.send(errResponse(baseResponse.COMMENT_LENGTH));
+    } else {
+        comment = comment.toString();
+        // COMMENT 길이 체크
+        if(comment.length > 65535){
+            return res.send(errResponse(baseResponse.COMMENT_LENGTH));
+        }
     }
 
     

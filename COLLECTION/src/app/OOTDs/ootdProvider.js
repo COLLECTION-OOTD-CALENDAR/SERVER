@@ -35,6 +35,8 @@ exports.retrieveUserList = async function (email) {
 // 입력된 date에 해당하는 ootd 존재 여부 체크
 exports.ootdDateCheck = async function (userIdx, date) {
 
+  console.log('[ootdProvider] date : ', date);
+  console.log('[ootdProvider] typeof date : ', typeof date);
   try {
     const connection = await pool.getConnection(async (conn) => conn);
     const ootdDateCheckResult = await ootdDao.checkDateOotd(connection, userIdx, date);
