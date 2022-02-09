@@ -321,7 +321,7 @@ exports.registerOotd = async function (req, res) {
     /********************************************** */
 
     // 입력된 date에 이미 OOTD 존재
-    const ootdRow = await ootdProvider.ootdDateCheck(userIdx, n_date);
+    const ootdRow = await ootdProvider.ootdDateCheck(userIdx, date);
     if(ootdRow.length > 0){
         return res.send(errResponse(baseResponse.OOTD_ALREADY_EXIST));
     }
@@ -384,7 +384,7 @@ exports.registerOotd = async function (req, res) {
         }
     }
 
-    const registerUserOotd = await ootdService.lastRegisterOotd(userIdx, n_date, lookname, photoIs, image, fClothes, aClothes,
+    const registerUserOotd = await ootdService.lastRegisterOotd(userIdx, date, lookname, photoIs, image, fClothes, aClothes,
         fPlace, aPlace, fWeather, aWeather, fWho, aWho, lookpoint, comment);
     return res.send(response(baseResponse.SUCCESS_LAST_REGISTER, registerUserOotd));
 
