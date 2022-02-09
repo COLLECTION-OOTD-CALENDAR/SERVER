@@ -230,7 +230,7 @@ exports.registerOotd = async function (req, res) {
 
 
     // Place (fPlace & aPlace) key가 없는 경우 및 빈 값 체크
-    if(!fPlace && !aPlace){
+    if(!fPlace || !aPlace){
         return res.send(errResponse(baseResponse.REGISTER_PLACE_EMPTY));
     }
     else {
@@ -248,7 +248,7 @@ exports.registerOotd = async function (req, res) {
     }
 
     // Weather (fWeather & aWeather) key가 없는 경우 및 빈 값 체크
-    if(!fWeather && !aWeather){
+    if(!fWeather || !aWeather){
         return res.send(errResponse(baseResponse.REGISTER_WEATHER_EMPTY));
     }
     else{
@@ -265,7 +265,7 @@ exports.registerOotd = async function (req, res) {
     }
 
     // Who (fWho & aWho) key가 없는 경우 및 빈 값 체크
-    if(!fWho && !aWho){
+    if(!fWho || !aWho){
         return res.send(errResponse(baseResponse.REGISTER_WHO_EMPTY));
     }    
     else {
