@@ -144,7 +144,7 @@ module.exports = {
     REGISTER_ACLOTHES_EMPTY : {"isSuccess" : false, "code" : 3086, "message" : "aClothes 값을 입력해주세요."},
     REGISTER_ACLOTHES_ERROR_TYPE : {"isSuccess" : false, "code" : 3087, "message" : "올바르지 않은 aClothes 형식입니다."},
     ACLOTHES_COLOR_EMPTY : {"isSuccess" : false, "code" : 3088, "message" : "aClothes의 color 값을 입력해주세요."},
-    REGISTER_PLACE_ERROR_TYPE : {"isSuccess" : false, "code" : 3089, "message" : "올바르지 않은 fPlace / aPlace 입력 형식입니다.."},
+    REGISTER_PLACE_ERROR_TYPE : {"isSuccess" : false, "code" : 3089, "message" : "올바르지 않은 fPlace / aPlace 입력 형식입니다."},
     REGISTER_WEATHER_ERROR_TYPE : {"isSuccess" : false, "code" : 3090, "message" : "올바르지 않은 fWeather / aWeather 입력 형식입니다."},
     REGISTER_WHO_ERROR_TYPE : {"isSuccess" : false, "code" : 3091, "message" : "올바르지 않은 fWho / aWho 입력 형식입니다."},
     
