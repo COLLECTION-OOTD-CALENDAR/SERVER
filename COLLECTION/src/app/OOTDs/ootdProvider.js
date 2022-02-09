@@ -44,7 +44,7 @@ exports.ootdDateCheck = async function (userIdx, date) {
     
     return ootdDateCheckResult; //ootdDateCheckResult[0] 할 수도
 
-  } catch (err) {
+  }catch(err) {
     logger.error(`App - ootdDateCheck Provider error\n: ${err.message}`);
     return errResponse(baseResponse.DB_ERROR);
   }
@@ -67,7 +67,7 @@ exports.clothesCheck = async function (userIdx, data) {
       return clothesCheckResult;  //clothesCheckResult[0] 할 수도
     
     }
-  } catch (err) {
+  }catch(err) {
     logger.error(`App - clothesCheck Provider error\n: ${err.message}`);
     return errResponse(baseResponse.DB_ERROR);
   }
@@ -91,7 +91,7 @@ exports.placeCheck = async function (userIdx, data) {
       return placeCheckResult; //placeCheckResult[0] 할 수도
     
     }
-  } catch (err) {
+  }catch(err) {
     logger.error(`App - placeCheck Provider error\n: ${err.message}`);
     return errResponse(baseResponse.DB_ERROR);
   }
@@ -115,7 +115,7 @@ exports.weatherCheck = async function (userIdx, data) {
       return weatherCheckResult; //weatherCheckResult[0] 할 수도
     
     }
-  } catch (err) {
+  }catch(err) {
     logger.error(`App - weatherCheck Provider error\n: ${err.message}`);
     return errResponse(baseResponse.DB_ERROR);
   }
@@ -139,7 +139,7 @@ exports.whoCheck = async function (userIdx, data) {
       return whoCheckResult; //whoCheckResult[0] 할 수도
     
     }
-  } catch (err) {
+  }catch(err) {
     logger.error(`App - whoCheck Provider error\n: ${err.message}`);
     return errResponse(baseResponse.DB_ERROR);
   }
