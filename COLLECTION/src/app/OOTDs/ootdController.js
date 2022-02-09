@@ -233,6 +233,9 @@ exports.registerOotd = async function (req, res) {
     if(!fPlace || !aPlace){
         return res.send(errResponse(baseResponse.REGISTER_PLACE_EMPTY));
     }
+    else if(!Array.isArray(fPlace) || !Array.isArray(aPlace)){
+        return res.send(errResponse(baseResponse.REGISTER_PLACE_ERROR_TYPE));
+    }
     else {
         // 올바르지 않은 fPlace index 형식
         for(item of fPlace){
@@ -251,6 +254,9 @@ exports.registerOotd = async function (req, res) {
     if(!fWeather || !aWeather){
         return res.send(errResponse(baseResponse.REGISTER_WEATHER_EMPTY));
     }
+    else if(!Array.isArray(fWeather) || !Array.isArray(aWeather)){
+        return res.send(errResponse(baseResponse.REGISTER_WEATHER_ERROR_TYPE));
+    }
     else{
         // 올바르지 않은 fWeather index 형식
         for(item of fWeather){
@@ -267,6 +273,9 @@ exports.registerOotd = async function (req, res) {
     // Who (fWho & aWho) key가 없는 경우 및 빈 값 체크
     if(!fWho || !aWho){
         return res.send(errResponse(baseResponse.REGISTER_WHO_EMPTY));
+    }
+    else if(!Array.isArray(fWho) || !Array.isArray(aWho)){
+        return res.send(errResponse(baseResponse.REGISTER_WHO_ERROR_TYPE));
     }    
     else {
         // 올바르지 않은 fWho index 형식
