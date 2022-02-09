@@ -59,7 +59,7 @@ exports.createNewBlock = async function (userIdx, Clothes, PWW, Content) {
             else if(Clothes == 3) 
                 flag = "Etc"; 
 
-            console.log(`service flag : ${flag}`);
+            console.log(`service flag :`, flag);
             const insertNewBlockParams = [userIdx, flag, Content];
             const clothesResult = await ootdDao.insertAddedClothes(connection, insertNewBlockParams);
             connection.release();
