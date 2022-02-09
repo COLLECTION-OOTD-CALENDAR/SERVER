@@ -63,7 +63,7 @@ exports.postNewBlock = async function (req, res) {
         //if(( (!Clothes) && (Clothes != 0)) || ( (!PWW) && (PWW !=0) ) || (typeof(Clothes) == 'undefined') || (typeof(PWW) == 'undefined')) {
         
         
-        if(Clothes == "" || PWW == ""){
+        if(Clothes == "" || PWW == "" || (typeof(Clothes) == 'undefined') || (typeof(PWW) == 'undefined')){
             return res.send(errResponse(baseResponse.CLOTHES_PWW_ONE_EMPTY));       //Clothes, PWW 중 하나라도 아예 입력되지 않은 경우
         }
 
@@ -169,9 +169,10 @@ exports.patchBlock = async function (req, res) {
        
 
         //if(( (!Clothes) && (Clothes != 0)) || ( (!PWW) && (PWW !=0) ) || (typeof(Clothes) == 'undefined') || (typeof(PWW) == 'undefined')) {                
-        if(Clothes == "" || PWW == ""){
+        if(Clothes == "" || PWW == "" || (typeof(Clothes) == 'undefined') || (typeof(PWW) == 'undefined')){
             return res.send(errResponse(baseResponse.CLOTHES_PWW_ONE_EMPTY));       //Clothes, PWW 중 하나라도 아예 입력되지 않은 경우
         }
+    
 
         
         if( (Clothes < -1) || (3 < Clothes)){//유효하지 않은 값
