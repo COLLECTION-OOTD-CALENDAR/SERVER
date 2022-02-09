@@ -136,6 +136,10 @@ module.exports = {
     REGISTER_WEATHER_EMPTY : {"isSuccess" : false, "code" : 3078, "message" : "Weather 값을 입력해주세요."},
     REGISTER_WHO_EMPTY : {"isSuccess" : false, "code" : 3079, "message" : "Who 값을 입력해주세요."},
     REGISTER_PW_REGEXP : {"isSuccess" : false, "code" : 3080, "message" : "PASSWORD는 영문자로 시작하는 6~15자 영문자 또는 숫자이어야 합니다."},
+    IMAGE_ERROR_TYPE : {"isSuccess" : false, "code" : 3081, "message" : "올바르지 않은 Image 입력 형식입니다."},
+    REGISTER_IMGURL_EMPTY : {"isSuccess" : false, "code" : 3082, "message" : "ImageUrl 값을 입력해주세요"},
+    REGISTER_THUMBNAIL_EMPTY : {"isSuccess" : false, "code" : 3083, "message" : "Thumbnail 값을 입력해주세요."},
+    
     
     
 
