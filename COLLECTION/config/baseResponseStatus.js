@@ -147,6 +147,8 @@ module.exports = {
     REGISTER_PLACE_ERROR_TYPE : {"isSuccess" : false, "code" : 3089, "message" : "올바르지 않은 fPlace / aPlace 입력 형식입니다."},
     REGISTER_WEATHER_ERROR_TYPE : {"isSuccess" : false, "code" : 3090, "message" : "올바르지 않은 fWeather / aWeather 입력 형식입니다."},
     REGISTER_WHO_ERROR_TYPE : {"isSuccess" : false, "code" : 3091, "message" : "올바르지 않은 fWho / aWho 입력 형식입니다."},
+    REGISTER_COMMENT_EMPTY : {"isSuccess" : false, "code" : 3092, "message" : "COMMENT 값을 입력해주세요."},
+    
     
     
     
