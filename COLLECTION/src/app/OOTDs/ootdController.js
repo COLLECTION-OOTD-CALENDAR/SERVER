@@ -304,6 +304,11 @@ exports.registerOotd = async function (req, res) {
         return res.send(errResponse(baseResponse.LOOKPOINT_INVALID_VALUE));
     }
 
+    // COMMENT key 입력되지 않았을 때
+    if(comment === undefined){
+        return res.send(errResponse(baseResponse.REGISTER_COMMENT_EMPTY));
+    }
+
     comment = comment.toString();
     // COMMENT 길이 체크
     if(comment.length > 65535){
