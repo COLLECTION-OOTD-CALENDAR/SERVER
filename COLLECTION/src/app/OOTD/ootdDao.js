@@ -3,7 +3,7 @@
 
 // AddedClothes 중복 체크
 async function selectClothesTag(connection, userIdx, Content) {
-  const selectTagParams = [userIdx, flag, Content, "active"];// (userAdded)
+  const selectTagParams = [userIdx, Content, "active"];// (userAdded)
 
   const selectClothesTagListQuery = `
         SELECT smallClass 
