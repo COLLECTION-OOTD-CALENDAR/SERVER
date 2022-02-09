@@ -333,7 +333,7 @@ async function selectFixedClothesTag(connection, Content) {
 async function selectFixedPwwTag(connection, pwwflag, Content) {
   var selectFixedPwwTagListQuery =``;
   if(pwwflag == "Place"){
-      selectPwwTagListQuery = `
+    selectFixedPwwTagListQuery = `
         SELECT place 
         FROM FixedPlace
         WHERE place = ?;
