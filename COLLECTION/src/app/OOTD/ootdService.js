@@ -28,10 +28,10 @@ exports.createNewBlock = async function (userIdx, Clothes, PWW, Content) {
         console.log(`중복확인 contentAdded`);
 
        
-        // const FixedContentRows = await ootdProvider.fixedRedundantCheck(Clothes, PWW, Content);
-        // if(FixedContentRows.length > 0)
-        //     return errResponse(baseResponse.TAG_REDUNDANT_FIXED);
-        //  console.log(`중복확인 contentFixed`);            
+        const FixedContentRows = await ootdProvider.fixedRedundantCheck(Clothes, PWW, Content);
+        if(FixedContentRows.length > 0)
+            return errResponse(baseResponse.TAG_REDUNDANT_FIXED);
+         console.log(`중복확인 contentFixed`);            
 
 
         //  2. 추가하는 블럭 20개 넘는지 체크, 20개 미만이면 추가
