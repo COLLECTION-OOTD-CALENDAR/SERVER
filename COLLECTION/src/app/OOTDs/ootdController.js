@@ -295,6 +295,10 @@ exports.registerOotd = async function (req, res) {
         return res.send(errResponse(baseResponse.LOOKPOTNT_EMPTY));
     }
 
+    if(!Number.isInteger(lookpoint)){
+        return res.send(errResponse(baseResponse.LOOKPOINT_ERROR_TYPE));
+    }
+
     // LOOKPOINT 범위 체크
     if(!lookpointPattern.test(lookpoint)){
         return res.send(errResponse(baseResponse.LOOKPOINT_INVALID_VALUE));
