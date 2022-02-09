@@ -5,6 +5,7 @@ const baseResponse = require("../../../config/baseResponseStatus");
 const {response, errResponse} = require("../../../config/response");
 
 const regexEmail = require("regex-email");
+const { TAG_NEVER_EXISTED } = require("../../../config/baseResponseStatus");
 
 var datePattern = /^(19|20)\d{2}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[0-1])$/; 
 var blankPattern = /^\s+|\s+$/g;
@@ -101,17 +102,32 @@ exports.registerOotd = async function (req, res) {
         return res.send(errResponse(baseResponse.PHOTOIS_INVALID_VALUE));
     }
 
-    // image 빈 값 체크
-    // null 값이어도 괜찮음.
+    // image 키가 없을 경우
     if(!image){
         return res.send(errResponse(baseResponse.REGISTER_IMAGE_EMPTY));
     }
-
-    // 입력된 이미지 URL이 S3에 존재하지 않는 경우
-    // 추후 체크
+    
+    // image 변수 형식 체크 (배열이 아닐 경우 error)
+    if(!Array.isArray(image)){
+        return res.send(errResponse(baseResponse.IMAGE_ERROR_TYPE));
+    }
 
     for(item of image){
+        // imgUrl 키가 없을 경우
+        if(!item["imageUrl"]) {
+            return res.send(errResponse(baseResponse.REGISTER_IMGURL_EMPTY));
+        }
+
+        // thumbnail 키가 없을 경우
+        if(!item["thumbnail"]){
+            return res.send(errResponse(baseResponse.REGISTER_THUMBNAIL_EMPTY));
+        }
+        
+        // 입력된 이미지 URL이 S3에 존재하지 않는 경우
+        // 추후 체크 + toString은 자동으로 해주기
+
         // thumbnail == null일 경우 for문 빠져나오기
+        // null 값이어도 괜찮음. imgUrl도.
         if(item["thumbnail"] === null){ break; }
 
         // thumbnail 형식 체크 (정수가 아닐 경우 error)
@@ -126,7 +142,9 @@ exports.registerOotd = async function (req, res) {
     
     // fClothes와 aClothes 동시 빈 값 체크
     // null 값이면 안된다.
-    if(!fClothes[0] && !aClothes[0]){
+    if(!fClothes && !aClothes){
+        return res.send(errResponse(baseResponse.REGISTER_CLOTHES_EMPTY));
+    }else if(!fClothes[0] && !aClothes[0]){
         return res.send(errResponse(baseResponse.REGISTER_CLOTHES_EMPTY));
     }else {
         // 올바르지 않은 fixedClothes index 형식 (정수가 아닌 경우)
