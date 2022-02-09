@@ -25,7 +25,7 @@ exports.tagRedundantCheck = async function(userIdx, Clothes, PWW, Content){
     }
     
     else if (Clothes == -1){
-      let flag;
+      var flag;
       if(PWW == 0)
         flag = "Place";
       if (PWW == 1)
@@ -58,7 +58,7 @@ exports.tagNumberCheck = async function(userIdx, Clothes, PWW){
     const connection = await pool.getConnection(async (conn) => conn);
     
     if(PWW == -1){
-      let flag;//undefined
+      var flag;//undefined
       if(Clothes == 0) 
           flag = "Top";
       
@@ -78,7 +78,7 @@ exports.tagNumberCheck = async function(userIdx, Clothes, PWW){
     }
 
     else if (Clothes == -1){
-      let flag;
+      var flag;
       if(PWW == 0)
         flag = "Place";
       if (PWW == 1)
@@ -100,7 +100,7 @@ exports.tagExistCheck = async function(userIdx, Clothes, PWW, Content){
   const connection = await pool.getConnection(async (conn) => conn);
 
   if(PWW == -1){
-    let flag;//undefined
+    var flag;//undefined
     if(Clothes == 0) 
         flag = "Top";
     
@@ -121,7 +121,7 @@ exports.tagExistCheck = async function(userIdx, Clothes, PWW, Content){
   }
   
   else if (Clothes == -1){
-    let flag;
+    var flag;
     if(PWW == 0)
       flag = "Place";
     if (PWW == 1)
@@ -175,7 +175,7 @@ exports.fixedRedundantCheck = async function(Clothes, PWW, Content){
     }
     
     else if (Clothes == -1){
-      let pwwflag;
+      var pwwflag;
       if(PWW == 0)
         pwwflag = "Place";
       if (PWW == 1)
