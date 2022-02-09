@@ -184,7 +184,7 @@ exports.fixedRedundantCheck = async function(Clothes, PWW, Content){
         pwwflag = "Who";
 
 
-      console.log(`providerFTRC flag : ${flag}`);
+      console.log(`providerFTRC flag : ${pwwflag}`);
       const fixedPwwRedundantListResult = await ootdDao.selectFixedPwwTag(connection, pwwflag, Content);
       connection.release();
 
