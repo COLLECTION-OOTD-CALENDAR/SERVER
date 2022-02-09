@@ -52,12 +52,12 @@ exports.registerOotd = async function (req, res) {
         return res.send(errResponse(baseResponse.USERID_NOT_MATCH));
     }
 
-    // date 빈 값 체크 
-    if(!date) { //'' & null도 되는지 test해볼것
+    // date 빈 값 체크
+    if(!date) {
         return res.send(errResponse(baseResponse.DATE_EMPTY));
     }
 
-    // date 형식 체크
+    // date 형식 체크 
     if(!datePattern.test(date)){
         return res.send(errResponse(baseResponse.DATE_ERROR_TYPE));
     }
@@ -70,7 +70,7 @@ exports.registerOotd = async function (req, res) {
         return res.send(errResponse(baseResponse.DATE_INVALID_VALUE));
     }
 
-    // lookname 빈 값 체크
+    // lookname 빈 값 체크, key에 looknam이 없을 때
     if(!lookname){
         return res.send(errResponse(baseResponse.LOOKNAME_EMPTY));
     }
@@ -97,12 +97,12 @@ exports.registerOotd = async function (req, res) {
     }
 
     // photoIs 값 -1 또는 0인지 체크
-    console.log(typeof photoIs);
+    //console.log(typeof photoIs);
     if(photoIs != -1 && photoIs != 0){
         return res.send(errResponse(baseResponse.PHOTOIS_INVALID_VALUE));
     }
 
-    // image 키가 없을 경우
+    // image 키가 없을 경우 & 값이 비어있을 경우
     if(!image){
         return res.send(errResponse(baseResponse.REGISTER_IMAGE_EMPTY));
     }
@@ -112,23 +112,21 @@ exports.registerOotd = async function (req, res) {
         return res.send(errResponse(baseResponse.IMAGE_ERROR_TYPE));
     }
 
-    for(item of image){
+    for(item of image){ // 배열의 원소가 하나라도 있어야 들어오는 반복문
+        console.log('image item : ', item);
         // imgUrl 키가 없을 경우
         if(!item["imageUrl"]) {
             return res.send(errResponse(baseResponse.REGISTER_IMGURL_EMPTY));
         }
 
-        // thumbnail 키가 없을 경우
-        if(!item["thumbnail"]){
+        // thumbnail 키가 없을 경우 (0이 가능하기에 이렇게)
+        if(item["thumbnail"] === '' || item["thumbnail"] === null || item["thumbnail"] === undefined || item["thumbnail"] === NaN){
             return res.send(errResponse(baseResponse.REGISTER_THUMBNAIL_EMPTY));
         }
         
         // 입력된 이미지 URL이 S3에 존재하지 않는 경우
         // 추후 체크 + toString은 자동으로 해주기
-
-        // thumbnail == null일 경우 for문 빠져나오기
-        // null 값이어도 괜찮음. imgUrl도.
-        if(item["thumbnail"] === null){ break; }
+        //let n_imageUrl = item["imageUrl"].toString();
 
         // thumbnail 형식 체크 (정수가 아닐 경우 error)
         if(!Number.isInteger(item["thumbnail"])){
@@ -139,12 +137,26 @@ exports.registerOotd = async function (req, res) {
             return res.send(errResponse(baseResponse.THUMBNAIL_INVALID_VALUE));
         }
     }
+
+    // fClothes 키가 없을 경우, 빈 값인 경우
+    if(!fClothes) {
+        return res.send(errResponse(baseResponse.REGISTER_FCLOTHES_EMPTY));
+    }
+    // fClothes 변수 형식 체크 (배열이 아닐 경우 error)
+    if(!Array.isArray(fClothes)){
+        return res.send(errResponse(baseResponse.REGISTER_FCLOTHES_ERROR_TYPE));
+    }
+
+    // aClothes 키가 없을 경우, 빈 값인 경우
+    if(!aClothes){
+        return res.send(errResponse(baseResponse.REGISTER_ACLOTHES_EMPTY));
+    }
+    // aClothes 변수 형식 체크 (배열이 아닐 경우 error)
+    if(!Array.isArray(aClothes)){
+        return res.send(errResponse(baseResponse.REGISTER_ACLOTHES_ERROR_TYPE));
+    }
     
-    // fClothes와 aClothes 동시 빈 값 체크
-    // null 값이면 안된다.
-    if(!fClothes && !aClothes){
-        return res.send(errResponse(baseResponse.REGISTER_CLOTHES_EMPTY));
-    }else if(!fClothes[0] && !aClothes[0]){
+    if(!fClothes[0] && !aClothes[0]){
         return res.send(errResponse(baseResponse.REGISTER_CLOTHES_EMPTY));
     }else {
         // 올바르지 않은 fixedClothes index 형식 (정수가 아닌 경우)
