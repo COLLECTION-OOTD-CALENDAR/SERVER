@@ -236,14 +236,14 @@ exports.registerOotd = async function (req, res) {
     else {
         // 올바르지 않은 fPlace index 형식
         for(item of fPlace){
-            if(!Number.isInteger(item["index"])){
+            if(!Number.isInteger(item)){
                 return res.send(errResponse(baseResponse.FPLACE_ERROR_TYPE));
             }
         }
 
         //aPlace 자체 String 변경
         for(item of aPlace){
-            item["place"] = item["place"].toString();
+            item = item.toString();
         }
     }
 
@@ -254,13 +254,13 @@ exports.registerOotd = async function (req, res) {
     else{
         // 올바르지 않은 fWeather index 형식
         for(item of fWeather){
-            if(!Number.isInteger(item["index"])){
+            if(!Number.isInteger(item)){
                 return res.send(errResponse(baseResponse.FWEATHER_ERROR_TYPE));
             }
         }
         // aWeather 자체 String 변경
         for(item of aWeather){
-            item["weather"] = item["weather"].toString();
+            item = item.toString();
         }
     }
 
@@ -271,13 +271,13 @@ exports.registerOotd = async function (req, res) {
     else {
         // 올바르지 않은 fWho index 형식
         for(item of fWho){
-            if(!Number.isInteger(item["index"])){
+            if(!Number.isInteger(item)){
                 return res.send(errResponse(baseResponse.FWHO_ERROR_TYPE));
             }
         }
         // aWho 자체 String 변경
         for(item of aWho){
-            item["who"] = item["who"].toString();
+            item = item.toString();
         }
     }
 
@@ -316,7 +316,7 @@ exports.registerOotd = async function (req, res) {
         }
     }
     for (item of aClothes){
-        const aClothesParams = [item["bigClass"], item["smallClass"]];
+        const aClothesParams = item["smallClass"];
         const aclothesRow = await ootdProvider.clothesCheck(userIdx, aClothesParams);
         if(aclothesRow.length == 0){
             return res.send(errResponse(baseResponse.CLOTHES_NOT_MATCH));
@@ -326,13 +326,13 @@ exports.registerOotd = async function (req, res) {
 
     // 등록할 수 없는 Place (fPlace->index, aPlace->place)
     for (item of fPlace){
-        const fplaceRow = await ootdProvider.placeCheck(userIdx, item["index"]);
+        const fplaceRow = await ootdProvider.placeCheck(userIdx, item);
         if(fplaceRow.length == 0){
             return res.send(errResponse(baseResponse.PLACE_NOT_MATCH));
         }
     }
     for (item of aPlace){
-        const aplaceRow = await ootdProvider.placeCheck(userIdx, item["place"]);
+        const aplaceRow = await ootdProvider.placeCheck(userIdx, item);
         if(aplaceRow.length == 0){
             return res.send(errResponse(baseResponse.PLACE_NOT_MATCH));
         }
@@ -340,13 +340,13 @@ exports.registerOotd = async function (req, res) {
 
     // 등록할 수 없는 Weather (fWeather->index, aWeather->weather)
     for (item of fWeather){
-        const fweatherRow = await ootdProvider.weatherCheck(userIdx, item["index"]);
+        const fweatherRow = await ootdProvider.weatherCheck(userIdx, item);
         if(fweatherRow.length == 0){
             return res.send(errResponse(baseResponse.WEATHER_NOT_MATCH));
         }
     }
     for (item of aWeather){
-        const aweatherRow = await ootdProvider.weatherCheck(userIdx, item["weather"]);
+        const aweatherRow = await ootdProvider.weatherCheck(userIdx, item);
         if(aweatherRow.length == 0){
             return res.send(errResponse(baseResponse.WEATHER_NOT_MATCH));
         }
@@ -354,13 +354,13 @@ exports.registerOotd = async function (req, res) {
 
     // 등록할 수 없는 Who (fWho->index, aWho->who)
     for (item of fWho){
-        const fwhoRow = await ootdProvider.whoCheck(userIdx, item["index"]);
+        const fwhoRow = await ootdProvider.whoCheck(userIdx, item);
         if(fwhoRow.length == 0){
             return res.send(errResponse(baseResponse.WHO_NOT_MATCH));
         }
     }
     for (item of aWho){
-        const awhoRow = await ootdProvider.whoCheck(userIdx, item["who"]);
+        const awhoRow = await ootdProvider.whoCheck(userIdx, item);
         if(awhoRow.length == 0){
             return res.send(errResponse(baseResponse.WHO_NOT_MATCH));
         }

@@ -28,9 +28,9 @@ async function checkClothesIdxIs(connection, index) {
 // addedClothes의 smallClass 존재 여부 체크
 async function checkClothesIs(connection, userIdx, data) {
   const checkClothesQuery = `
-                SELECT index, userIdx, bigClass, smallClass
+                SELECT index, userIdx, smallClass
                 FROM AddedClothes
-                WHERE userIdx = ? AND bigClass = ? AND smallClass = ?;
+                WHERE userIdx = ? AND smallClass = ?;
                 `;
   const checkAClothesRow = await connection.query(checkClothesQuery, userIdx, data);
   return checkAClothesRow;
@@ -257,6 +257,16 @@ async function getAddedPlaceIdx(connection, userIdx, aPlace) {
 
 }
 
+// API 8 : OOTD 최종 등록하기 - Place 테이블 내 -1, -1
+async function registerOotdPlace (connection, ootdIdx) {
+  const registerOotdPlaceQuery = `
+        INSERT INTO Place(ootdIdx)
+        VALUES (?);
+        `;
+  const registerOotdPlaceRow = await connection.query(
+    registerOotdPlaceQuery, ootdIdx);
+  return registerOotdPlaceRow;
+}
 
 // API 8 : OOTD 최종 등록하기 - Place 테이블 내 fixedPlace
 async function registerOotdFPlace (connection, ootdIdx, fPlace) {
@@ -271,7 +281,7 @@ async function registerOotdFPlace (connection, ootdIdx, fPlace) {
     let registerOotdPlaceEach = await connection.query(
       registerOotdFPlaceQuery,
       ootdIdx, item);
-      registerOotdPlaceRows.push(registerOotdPlaceEach);
+    registerOotdPlaceRows.push(registerOotdPlaceEach);
   }
 
   return registerOotdPlaceRows;
@@ -290,7 +300,7 @@ async function registerOotdAPlace (connection, ootdIdx, APlaceIdxList) {
     let registerOotdPlaceEach = await connection.query(
       registerOotdAPlaceQuery,
       ootdIdx, item);
-      registerOotdPlaceRows.push(registerOotdPlaceEach);
+    registerOotdPlaceRows.push(registerOotdPlaceEach);
   }
 
   return registerOotdPlaceRows;
@@ -313,6 +323,17 @@ async function getAddedWeatherIdx(connection, userIdx, aWeather) {
   }
 
   return addedWeatherIdxRows;
+}
+
+// API 8 : OOTD 최종 등록하기 - Weather 테이블 내 -1, -1
+async function registerOotdWeather (connection, ootdIdx) {
+  const registerOotdWeatherQuery = `
+        INSERT INTO Weather(ootdIdx)
+        VALUES (?);
+        `;
+  const registerOotdWeatherRow = await connection.query(
+    registerOotdWeatherQuery, ootdIdx);
+  return registerOotdWeatherRow;
 }
 
 // API 8 : OOTD 최종 등록하기 - Weather 테이블 내 fixedWeather
@@ -370,6 +391,19 @@ async function getAddedWhoIdx(connection, userIdx, aWho) {
 
   return addedWhoIdxRows;
 }
+
+
+// API 8 : OOTD 최종 등록하기 - Who 테이블 내 -1, -1
+async function registerOotdWho (connection, ootdIdx) {
+  const registerOotdWhoQuery = `
+        INSERT INTO Who(ootdIdx)
+        VALUES (?);
+        `;
+  const registerOotdWhoRow = await connection.query(
+    registerOotdWhoQuery, ootdIdx);
+  return registerOotdWhoRow;
+}
+
 
 // API 8 : OOTD 최종 등록하기 - Who 테이블 내 fixedWho
 async function registerOotdFWho(connection, ootdIdx, fWho) {
@@ -469,12 +503,15 @@ module.exports = {
   registerOotdFClothes,
   registerOotdAClothes,
   getAddedPlaceIdx,
+  registerOotdPlace,
   registerOotdFPlace,
   registerOotdAPlace,
   getAddedWeatherIdx,
+  registerOotdWeather,
   registerOotdFWeather,
   registerOotdAWeather,
   getAddedWhoIdx,
+  registerOotdWho,
   registerOotdFWho,
   registerOotdAWho
 };

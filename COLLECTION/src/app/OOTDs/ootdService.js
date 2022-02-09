@@ -63,14 +63,15 @@ exports.lastRegisterOotd = async function (userIdx, date, lookname, photoIs, ima
         /*********************************************** */
 
         // Clothes 테이블 등록을 위한 params
-        let ootdFixedClothes = [];
+        //let ootdFixedClothes = [];
         let ootdAddedClothes = [];
+        /*
         for (item of fClothes){
             let tmpfClothes = {};
             tmpfClothes["index"] = item["index"];
             tmpfClothes["color"] = item["color"];
             ootdFixedClothes.push(tmpfClothes);
-        }
+        }*/
 
         const AClothesIdxList = await ootdProvider.addedClothesIdx(connection, userIdx, aClothes);
         console.log('AClothesIdxList.length : ', AClothesIdxList.length);
@@ -82,7 +83,7 @@ exports.lastRegisterOotd = async function (userIdx, date, lookname, photoIs, ima
             ootdAddedClothes.push(tmpAClothes);
         }
 
-        console.log('ootdFixedClothesIdx [] : ', ootdFixedClothes);
+        console.log('ootdFixedClothesIdx [] : ', fClothes);
         console.log('ootdAddedClothesIdx [] : ', ootdAddedClothes);
 
         // Clothes 테이블 - fixedType 등록
@@ -103,17 +104,23 @@ exports.lastRegisterOotd = async function (userIdx, date, lookname, photoIs, ima
         const APlaceIdxList = await ootdProvider.addedPlaceIdx(connection, userIdx, aPlace);
         console.log('APlaceIdxList.length : ', APlaceIdxList.length);
         console.log('aPlace.length : ', aPlace.length);
+        
+        // 두 Place 배열이 모두 비어있을 때
+        if(!fPlace[0] && !aPlace[0]){
+            const ootdPlaceResult = await ootdDao.registerOotdPlace(connection, ootdIdx);
+            console.log('ootdPlaceResult : ', ootdPlaceResult);
+        }else {
 
-        // Place 테이블 등록 - fixedPlace 등록
-        const ootdFPlaceResult = await ootdDao.registerOotdFPlace(connection, ootdIdx, fPlace);
-        // 수정 가능성 O        
-        console.log('ootdFPlaceResult : ', ootdFPlaceResult);
+            // Place 테이블 등록 - fixedPlace 등록
+            const ootdFPlaceResult = await ootdDao.registerOotdFPlace(connection, ootdIdx, fPlace);
+            // 수정 가능성 O        
+            console.log('ootdFPlaceResult : ', ootdFPlaceResult);
 
-        // Place 테이블 등록 - addedPlace 등록
-        const ootdAPlaceResult = await ootdDao.registerOotdAPlace(connection, ootdIdx, APlaceIdxList);
-        // 수정 가능성 O
-        console.log('ootdAPlaceResult : ', ootdAPlaceResult);
-
+            // Place 테이블 등록 - addedPlace 등록
+            const ootdAPlaceResult = await ootdDao.registerOotdAPlace(connection, ootdIdx, APlaceIdxList);
+            // 수정 가능성 O
+            console.log('ootdAPlaceResult : ', ootdAPlaceResult);
+        }
         /*********************************************** */
         /***************Weather 테이블 등록************** */
         /*********************************************** */
@@ -122,36 +129,45 @@ exports.lastRegisterOotd = async function (userIdx, date, lookname, photoIs, ima
         console.log('AWeatherIdxList.length : ', AWeatherIdxList.length);
         console.log('aWeather.length : ', aWeather.length);
 
-        // Weather 테이블 등록 - fixedPlace 등록
-        const ootdFWeatherResult = await ootdDao.registerOotdFWeather(connection, ootdIdx, fWeather);
-        // 수정 가능성 O        
-        console.log('ootdFWeatherResult : ', ootdFWeatherResult);
+        // 두 Weather 배열이 모두 비어있을 때
+        if(!fWeather[0] && !aWeather[0]){
+            const ootdWeatherResult = await ootdDao.registerOotdWeather(connection, ootdIdx);
+            console.log('ootdWeatherResult : ', ootdWeatherResult);
+        }else {
+            // Weather 테이블 등록 - fixedWeather 등록
+            const ootdFWeatherResult = await ootdDao.registerOotdFWeather(connection, ootdIdx, fWeather);
+            // 수정 가능성 O        
+            console.log('ootdFWeatherResult : ', ootdFWeatherResult);
 
-        // Weather 테이블 등록 - addedPlace 등록
-        const ootdAWeatherResult = await ootdDao.registerOotdAWeather(connection, ootdIdx, AWeatherIdxList);
-        // 수정 가능성 O
-        console.log('ootdAWeatherResult : ', ootdAWeatherResult);
-
+            // Weather 테이블 등록 - addedWeather 등록
+            const ootdAWeatherResult = await ootdDao.registerOotdAWeather(connection, ootdIdx, AWeatherIdxList);
+            // 수정 가능성 O
+            console.log('ootdAWeatherResult : ', ootdAWeatherResult);
+        }
         /*********************************************** */
         /*****************Who 테이블 등록**************** */
         /*********************************************** */
+
 
         const AWhoIdxList = await ootdProvider.addedWhoIdx(connection, userIdx, aWho);
         console.log('AWhoIdxList.length : ', AWhoIdxList.length);
         console.log('aWho.length : ', aWho.length);
 
-        // Weather 테이블 등록 - fixedPlace 등록
-        const ootdFWhoResult = await ootdDao.registerOotdFWho(connection, ootdIdx, fWho);
-        // 수정 가능성 O        
-        console.log('ootdFWhoResult : ', ootdFWeatherResult);
+        // 두 Who 배열이 모두 비어있을 때
+        if(!fWho[0] && !aWho[0]){
+            const ootdWhoResult = await ootdDao.registerOotdWho(connection, ootdIdx);
+            console.log('ootdWhoResult : ', ootdWhoResult);
+        }else {
+            // Who 테이블 등록 - fixedWho 등록
+            const ootdFWhoResult = await ootdDao.registerOotdFWho(connection, ootdIdx, fWho);
+            // 수정 가능성 O        
+            console.log('ootdFWhoResult : ', ootdFWhoResult);
 
-        // Weather 테이블 등록 - addedPlace 등록
-        const ootdAWhoResult = await ootdDao.registerOotdAWho(connection, ootdIdx, AWhoIdxList);
-        // 수정 가능성 O
-        console.log('ootdAWhoResult : ', ootdAWeatherResult);
-
-
-
+            // Who 테이블 등록 - addedWho 등록
+            const ootdAWhoResult = await ootdDao.registerOotdAWho(connection, ootdIdx, AWhoIdxList);
+            // 수정 가능성 O
+            console.log('ootdAWhoResult : ', ootdAWhoResult);
+        }
 
         connection.release();
         return response(baseResponse.SUCCESS);
