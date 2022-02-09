@@ -6,9 +6,8 @@ async function checkDateOotd(connection, userIdx, date) {
   const checkDateOotdQuery = `
                 SELECT ootdIdx, userIdx, date
                 FROM OOTD
-                WHERE userIdx = ? AND date = ?;
-                `;
-  const ootdDateRow = await connection.query(checkDateOotdQuery, userIdx, date);
+                WHERE userIdx = ? AND date = ?;`;
+  const [ootdDateRow] = await connection.query(checkDateOotdQuery, userIdx, date);
   return ootdDateRow;
 }
 
