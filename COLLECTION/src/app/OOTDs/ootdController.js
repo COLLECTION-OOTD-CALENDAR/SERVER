@@ -31,12 +31,18 @@ exports.registerOotd = async function (req, res) {
 
     const userIdx = req.params.userIdx;
 
-    const {date, lookname, photoIs, image, fClothes, aClothes,
+    let {date, lookname, photoIs, image, fClothes, aClothes,
     fPlace, aPlace, fWeather, aWeather, fWho, aWho, lookpoint, comment} = req.body;
     console.log('[ootdController] req body : ', req.body);
 
     // request body 풀어내기
     const n_date = new Date(date);
+
+    const colorArr = [ "#d60f0f", "#f59a9a", "#ffb203", "#fde6b1", "#71a238", "#b7de89",
+    "#ea7831", "#273e88", "#4168e8", "#a5b9fa", "#894ac7", "#dcacff",
+    "#ffffff", "#888888", "#191919", "#e8dcd5", "#c3b5ac", "#74461f"]
+
+    const bigArr = ["Top", "Bottom", "Shoes", "Etc"];
 
     /*********************************************** */
     /*****************request error***************** */
@@ -76,13 +82,13 @@ exports.registerOotd = async function (req, res) {
     }
 
     // lookname에 공백만 입력된 경우
-    const n_lookname = lookname.toString();
-    if(n_lookname.replace(blankPattern, '') == ""){
+    lookname = lookname.toString();
+    if(lookname.replace(blankPattern, '') == ""){
         return res.send(errResponse(baseResponse.REGISTER_BLANK_ALL));
     }
 
     // lookname 길이가 27자리를 초과할 때
-    if(n_lookname.length > 27){
+    if(lookname.length > 27){
         return res.send(errResponse(baseResponse.LOOKNAME_LENGTH));
     }
 
@@ -126,7 +132,7 @@ exports.registerOotd = async function (req, res) {
         
         // 입력된 이미지 URL이 S3에 존재하지 않는 경우
         // 추후 체크 + toString은 자동으로 해주기
-        //let n_imageUrl = item["imageUrl"].toString();
+        //item["imageUrl"] = item["imageUrl"].toString();
 
         // thumbnail 형식 체크 (정수가 아닐 경우 error)
         if(!Number.isInteger(item["thumbnail"])){
@@ -156,40 +162,65 @@ exports.registerOotd = async function (req, res) {
         return res.send(errResponse(baseResponse.REGISTER_ACLOTHES_ERROR_TYPE));
     }
     
+    // 선택된 Clothes가 없을 경우
     if(!fClothes[0] && !aClothes[0]){
         return res.send(errResponse(baseResponse.REGISTER_CLOTHES_EMPTY));
     }else {
-        // 올바르지 않은 fixedClothes index 형식 (정수가 아닌 경우)
+        // fClothes 내 객체 조건 
         for(item of fClothes){
+            // index 키가 없을 경우 및 빈 값인 경우
+            if(!item["index"]){
+                return res.send(errResponse(baseResponse.FCLOTHES_INDEX_EMPTY));
+            }
+
+            // color 키가 없을 경우 및 빈 값인 경우
+            if(!item["color"]){
+                return res.send(errResponse(baseResponse.FCLOTHES_COLOR_EMPTY));
+            }
+
+            // 올바르지 않은 fixedClothes index 형식 (정수가 아닌 경우)
             if(!Number.isInteger(item["index"])){
                 return res.send(errResponse(baseResponse.FCLOTHES_ERROR_TYPE));
             }
-        }
-        // 올바르지 않은 addedClothes smallClass 형식 (문자열이 아닌 경우)
-        for(item of aClothes){
-            if(typeof item["smallClass"] !== 'string' && !(item["smallClass"] instanceof String)){
-                return res.send(errResponse(baseResponse.ACLOTHES_ERROR_TYPE));
-            }
-        }
 
-        // 존재하지 않는 옷 카테고리 (aclothes -> bigClass)
-        for(item of aClothes){
-            let bigArr = ["Top", "Bottom", "Shoes", "Etc"];
-            if(bigArr.indexOf(item["bigClass"]) == -1){
-                return res.send(errResponse(baseResponse.BIG_CLASS_NOT_MATCH));
-            }
-        }
-
-        // 유효하지 않는 COLOR 값
-        let colorArr = [ "#d60f0f", "#f59a9a", "#ffb203", "#fde6b1", "#71a238", "#b7de89",
-            "#ea7831", "#273e88", "#4168e8", "#a5b9fa", "#894ac7", "#dcacff",
-            "#ffffff", "#888888", "#191919", "#e8dcd5", "#c3b5ac", "#74461f"]
-        for(item of fClothes){
+            item["color"] = item["color"].toString();
             if(colorArr.indexOf(item["color"]) == -1){
                 return res.send(errResponse(baseResponse.COLOR_INVALID_VALUE));
             }
+
         }
+
+        // aClothes 내 객체 조건 
         for(item of aClothes){
+            // bigClass 키가 없을 경우 및 빈 값인 경우
+            if(!item["bigClass"]){
+                return res.send(errResponse(baseResponse.ACLOTHES_BIG_EMPTY));
+            }
+
+            // smallClass 키가 없을 경우 및 빈 값인 경우
+            if(!item["smallClass"]){
+                return res.send(errResponse(baseResponse.ACLOTHES_SMALL_EMPTY));
+            }
+
+            // color 키가 없을 경우 및 빈 값인 경우
+            if(!item["color"]){
+                return res.send(errResponse(baseResponse.ACLOTHES_COLOR_EMPTY));
+            }
+            /*
+            // 올바르지 않은 addedClothes smallClass 형식 (문자열이 아닌 경우)
+            if(typeof item["smallClass"] !== 'string' && !(item["smallClass"] instanceof String)){
+                return res.send(errResponse(baseResponse.ACLOTHES_ERROR_TYPE));
+            }
+            */
+
+            // 존재하지 않는 옷 카테고리
+            item["bigClass"] = item["bigClass"].toString();
+            if(bigArr.indexOf(item["bigClass"]) == -1){
+                return res.send(errResponse(baseResponse.BIG_CLASS_NOT_MATCH));
+            }
+
+            // 유효하지 않은 COLOR 값
+            item["color"] = item["color"].toString();
             if(colorArr.indexOf(item["color"]) == -1){
                 return res.send(errResponse(baseResponse.COLOR_INVALID_VALUE));
             }
@@ -198,8 +229,7 @@ exports.registerOotd = async function (req, res) {
     }
 
 
-    // Place (fPlace & aPlace) 값 빈 값 체크
-    // null 값이어도 괜찮음.
+    // Place (fPlace & aPlace) key가 없는 경우 및 빈 값 체크
     if(!fPlace && !aPlace){
         return res.send(errResponse(baseResponse.REGISTER_PLACE_EMPTY));
     }
@@ -210,16 +240,14 @@ exports.registerOotd = async function (req, res) {
                 return res.send(errResponse(baseResponse.FPLACE_ERROR_TYPE));
             }
         }
-        // 올바르지 않은 aPlace place 형식
+
+        //aPlace 자체 String 변경
         for(item of aPlace){
-            if(typeof item["place"] !== 'string' && !(item["place"] instanceof String)){
-                return res.send(errResponse(baseResponse.APLACE_ERROR_TYPE));
-            }
+            item["place"] = item["place"].toString();
         }
     }
 
-    // Weather (fWeather & aWeather) 값 빈 값 체크
-    // null 값이어도 괜찮음.
+    // Weather (fWeather & aWeather) key가 없는 경우 및 빈 값 체크
     if(!fWeather && !aWeather){
         return res.send(errResponse(baseResponse.REGISTER_WEATHER_EMPTY));
     }
@@ -230,16 +258,13 @@ exports.registerOotd = async function (req, res) {
                 return res.send(errResponse(baseResponse.FWEATHER_ERROR_TYPE));
             }
         }
-        // 올바르지 않은 aWeather weather 형식
+        // aWeather 자체 String 변경
         for(item of aWeather){
-            if(typeof item["weather"] !== 'string' && !(item["weather"] instanceof String)){
-                return res.send(errResponse(baseResponse.AWEATHER_ERROR_TYPE));
-            }
+            item["weather"] = item["weather"].toString();
         }
     }
 
-    // Who (fWho & aWho) 값 빈 값 체크
-    // null 값이어도 괜찮음.
+    // Who (fWho & aWho) key가 없는 경우 및 빈 값 체크
     if(!fWho && !aWho){
         return res.send(errResponse(baseResponse.REGISTER_WHO_EMPTY));
     }    
@@ -250,15 +275,13 @@ exports.registerOotd = async function (req, res) {
                 return res.send(errResponse(baseResponse.FWHO_ERROR_TYPE));
             }
         }
-        // 올바르지 않은 aWho weather 형식
+        // aWho 자체 String 변경
         for(item of aWho){
-            if(typeof item["who"] !== 'string' && !(item["who"] instanceof String)){
-                return res.send(errResponse(baseResponse.AWHO_ERROR_TYPE));
-            }
+            item["who"] = item["who"].toString();
         }
     }
 
-    // LOOKPOINT 빈 값 체크
+    // LOOKPOINT key가 없는 경우 및 빈 값 체크
     if(!lookpoint){
         return res.send(errResponse(baseResponse.LOOKPOTNT_EMPTY));
     }
@@ -268,9 +291,9 @@ exports.registerOotd = async function (req, res) {
         return res.send(errResponse(baseResponse.LOOKPOINT_INVALID_VALUE));
     }
 
-    const n_comment = comment.toString();
+    comment = comment.toString();
     // COMMENT 길이 체크
-    if(n_comment.length > 65535){
+    if(comment.length > 65535){
         return res.send(errResponse(baseResponse.COMMENT_LENGTH));
     }
 
@@ -343,8 +366,8 @@ exports.registerOotd = async function (req, res) {
         }
     }
 
-    const registerUserOotd = await ootdService.lastRegisterOotd(userIdx, date, n_lookname, photoIs, image, fClothes, aClothes,
-        fPlace, aPlace, fWeather, aWeather, fWho, aWho, lookpoint, n_comment);
+    const registerUserOotd = await ootdService.lastRegisterOotd(userIdx, n_date, lookname, photoIs, image, fClothes, aClothes,
+        fPlace, aPlace, fWeather, aWeather, fWho, aWho, lookpoint, comment);
     return res.send(response(baseResponse.SUCCESS_LAST_REGISTER, registerUserOotd));
 
 };
