@@ -35,16 +35,20 @@ exports.retrieveUserList = async function (email) {
 */
 // 한 명의 유저 정보만을 불러오므로 배열 타입을 리턴하는 게 아닌 0번 인덱스를 파싱해서 오브젝트 타입 리턴
 
+// errResponse 뺄 것 있음
 // 입력된 date에 해당하는 ootd 존재 여부 체크
 exports.ootdDateCheck = async function (userIdx, date) {
 
+  console.log('[ootdProvider] userIdx :', userIdx);
   console.log('[ootdProvider] date : ', date);
   console.log('[ootdProvider] typeof date : ', typeof date);
   try {
     const connection = await pool.getConnection(async (conn) => conn);
+    console.log('[ootdProvider] ootdDao checkDateOotd 넘어가기 전');
     const ootdDateCheckResult = await ootdDao.checkDateOotd(connection, userIdx, date);
     connection.release();
-    
+    console.log('[ootdProvider] ootdDao checkDateOotd 결과 : ', ootdDateCheckResult);
+
     return ootdDateCheckResult; //ootdDateCheckResult[0] 할 수도
 
   }catch(err) {

@@ -3,10 +3,13 @@
 
 //  입력된 date에 해당하는 ootd 존재 여부 체크
 async function checkDateOotd(connection, userIdx, date) {
+  console.log('[ootdDao] userIdx :', userIdx);
+  console.log('[ootdDao] date : ', date);
   const checkDateOotdQuery = `
                 SELECT ootdIdx, userIdx, date
                 FROM OOTD
-                WHERE userIdx = ? AND date = ?;`;
+                WHERE userIdx = ? AND date = ?;
+                `;
   const [ootdDateRow] = await connection.query(checkDateOotdQuery, userIdx, date);
   return ootdDateRow[0];
 };
