@@ -277,7 +277,8 @@ function getImages(row, tmp){
   }
 
   if(row.imageUrl != null && tags.indexOf(row.imageUrl) < 0){
-    let data = { imageUrl : row.ImageUrl, thumbnail : row.thumbnail};
+    console.log('row.imageUrl : ', row.imageUrl);
+    let data = { imageUrl : row.imageUrl, thumbnail : row.thumbnail};
     tags.push(data);
   }
 
