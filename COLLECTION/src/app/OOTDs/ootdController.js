@@ -395,7 +395,7 @@ exports.registerOotd = async function (req, res) {
 
     const registerUserOotd = await ootdService.lastRegisterOotd(userIdx, date, lookname, photoIs, image, fClothes, aClothes,
         fPlace, aPlace, fWeather, aWeather, fWho, aWho, lookpoint, comment);
-    return res.send(response(baseResponse.SUCCESS_LAST_REGISTER, registerUserOotd));
+    return res.send(registerUserOotd);
 
 };
 
