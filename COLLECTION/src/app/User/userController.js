@@ -105,10 +105,6 @@ exports.postUsers = async function (req, res) {
     }
 
 
-
-
-    
-
     // register 함수 실행을 통한 결과 값을 registerResponse에 저장
     const registerResponse = await userService.register(
         name,
@@ -253,35 +249,43 @@ exports.postLogin = async function (req, res) {
 
 exports.patchModiNickname = async function (req, res) {
 
-    const IDFromJWT = req.verifiedToken.userIdx;
-
-    const userIdx = req.params.userIdx;
+    const userIdx = req.verifiedToken.userIdx;
     
     const nickname = req.body.nickname;
 
-    if (IDFromJWT != userIdx) {
-        res.send(errResponse(baseResponse.USERID_NOT_MATCH))
-    } 
-    if(!userIdx){
-        res.send(errResponse(baseResponse.USERID_EMPTY))
+    const nicknameRows = await userProvider.nicknameCheck(nickname);
+
+    // if (IDFromJWT != userIdx) {
+    //     res.send(errResponse(baseResponse.USERID_NOT_MATCH))
+    // } 
+    // if(!userIdx){
+    //     res.send(errResponse(baseResponse.USERID_EMPTY))
+    // }
+    
+    //중복 체크
+    if (nicknameRows.length > 0){
+        return res.send(response(baseResponse.REGISTER_NICKNAME_REDUNDANT));
     }
-    else {
-        if (!nickname) 
-            return res.send(errResponse(baseResponse.MODI_NEW_NICKNAME_EMPTY));
 
-        const nicknameRows = await userProvider.nicknameCheck(nickname);
-        if (nicknameRows.length > 0)
-            return res.send(response(baseResponse.REGISTER_NICKNAME_REDUNDANT));
-        
-        else if (nickname.length < 2 || nickname.length > 6 )  
-            return res.send(response(baseResponse.REGISTER_NICKNAME_LENGTH));
+    //빈 값 체크
+    else if (!nickname) 
+        return res.send(errResponse(baseResponse.MODI_NEW_NICKNAME_EMPTY));
 
- 
-
-        const editNickname = await userService.editNickname(nickname, userIdx);
-        return res.send(editNickname);
-
+    //정규식 체크 - 닉네임에 특수문자 불가능
+    else if(regExpSpecial.test(nickname)){
+        return res.send(response(baseResponse.REGISTER_NICKNAME_REGEXP));
     }
+
+    //길이 체크
+    else if (nickname.length < 2 || nickname.length > 6 ){
+        return res.send(response(baseResponse.REGISTER_NICKNAME_LENGTH));
+    }  
+
+
+    const editNickname = await userService.editNickname(nickname, userIdx);
+    return res.send(editNickname);
+
+    
 
 }
 
