@@ -368,8 +368,11 @@ exports.registerOotd = async function (req, res) {
     for (item of aWeather){
         const aweatherRow = await ootdProvider.weatherCheck(userIdx, item);
         console.log('[ootdController] aweatherRow : ', aweatherRow);
-        console.log('[ootdController] aweatherRow.length : ', aweatherRow.length);
-        if(aweatherRow.length == 0){
+        //console.log('[ootdController] aweatherRow.length : ', aweatherRow.length);
+        //if(aweatherRow.length == 0){
+        //    return res.send(errResponse(baseResponse.WEATHER_NOT_MATCH));
+        //}
+        if(!aweatherRow){
             return res.send(errResponse(baseResponse.WEATHER_NOT_MATCH));
         }
     }
