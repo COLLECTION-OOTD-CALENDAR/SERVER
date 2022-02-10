@@ -322,16 +322,16 @@ exports.registerOotd = async function (req, res) {
 
     // 입력된 date에 이미 OOTD 존재
     const ootdRow = await ootdProvider.ootdDateCheck(userIdx, n_date);
-    console.log('[ootdController] ootdRow.length : ', ootdRow.length);
-    console.log("length로 진행");
-    if(ootdRow.length > 0){
-        return res.send(errResponse(baseResponse.OOTD_ALREADY_EXIST));
-    }
+    //console.log('[ootdController] ootdRow.length : ', ootdRow.length);
+    //console.log("length로 진행");
+    //if(ootdRow.length > 0){
+    //    return res.send(errResponse(baseResponse.OOTD_ALREADY_EXIST));
+    //}
     console.log("존재 유무로 진행");
     if(ootdRow){
         return res.send(errResponse(baseResponse.OOTD_ALREADY_EXIST));
     }
-    
+
     // 등록할 수 없는 옷(fClothes->index, aClothes->smallClass)
     for (item of fClothes){
         const fclothesRow = await ootdProvider.clothesCheck(userIdx, item["index"]);
