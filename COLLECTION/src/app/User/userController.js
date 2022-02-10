@@ -255,12 +255,7 @@ exports.patchModiNickname = async function (req, res) {
 
     const nicknameRows = await userProvider.nicknameCheck(nickname);
 
-    // if (IDFromJWT != userIdx) {
-    //     res.send(errResponse(baseResponse.USERID_NOT_MATCH))
-    // } 
-    // if(!userIdx){
-    //     res.send(errResponse(baseResponse.USERID_EMPTY))
-    // }
+
     
     //중복 체크
     if (nicknameRows.length > 0){
@@ -298,9 +293,8 @@ exports.patchModiNickname = async function (req, res) {
  */
 
 exports.patchModiPW = async function (req, res) {
-    const IDFromJWT = req.verifiedToken.userIdx;
 
-    const userIdx = req.params.userIdx;
+    const userIdx = req.verifiedToken.userIdx;
     
     const originPassword = req.body.originPassword;
 
@@ -309,42 +303,44 @@ exports.patchModiPW = async function (req, res) {
     const checkPassword = req.body.checkPassword;
 
 
-    if (IDFromJWT != userIdx) {
-        res.send(errResponse(baseResponse.USERID_NOT_MATCH))
-    } 
-    if(!userIdx){
-        res.send(errResponse(baseResponse.USERID_EMPTY))
+
+    //빈 값 체크
+    if (!originPassword){
+        return res.send(errResponse(baseResponse.MODI_OLD_PW_EMPTY));
     }
-    else {
-        //빈값
-        if (!originPassword)
-            return res.send(errResponse(baseResponse.MODI_OLD_PW_EMPTY))
-        if (!newPassword)
-            return res.send(errResponse(baseResponse.MODI_NEW_PW_EMPTY))
-        if(!checkPassword)
-            return res.send(errResponse(baseResponse.MODI_CHECK_PW_EMPTY))
+    else if (!newPassword){
+        return res.send(errResponse(baseResponse.MODI_NEW_PW_EMPTY));
+    }
+    else if(!checkPassword){
+        return res.send(errResponse(baseResponse.MODI_CHECK_PW_EMPTY));
+    }
+            
+    //길이 체크
+    if (originPassword.length < 6 || originPassword.length > 15){
+        return res.send(response(baseResponse.REGISTER_PW_LENGTH));
+    }  
+    else if (newPassword.length < 6 || newPassword.length > 15){
+        return res.send(response(baseResponse.REGISTER_PW_LENGTH));
+    }  
+    else if (checkPassword.length < 6 || checkPassword.length > 15){
+        return res.send(response(baseResponse.REGISTER_PW_LENGTH));
+    }  
 
-
-        //길이
-        if (originPassword.length < 6 || originPassword.length > 15 )  
-            return res.send(response(baseResponse.REGISTER_PW_LENGTH));
-        if (newPassword.length < 6 || newPassword.length > 15 )  
-            return res.send(response(baseResponse.REGISTER_PW_LENGTH));
-        if (checkPassword.length < 6 || checkPassword.length > 15 )  
-            return res.send(response(baseResponse.REGISTER_PW_LENGTH));
 
         
-        const editPW = await userService.editPW(
-            userIdx, 
-            originPassword,
-            newPassword,
-            checkPassword,
-        );
+    const editPW = await userService.editPW(
+        userIdx, 
+        originPassword,
+        newPassword,
+        checkPassword,
+    );
 
-        return res.send(editPW)
-    }
-    
+    return res.send(editPW)
+
 }
+
+
+
 
 /**
  * API NO. 7
@@ -355,33 +351,29 @@ exports.patchModiPW = async function (req, res) {
  */
 
 exports.patchModiPhone = async function (req, res) {
-    const IDFromJWT = req.verifiedToken.userIdx;
 
-    const userIdx = req.params.userIdx;
+    const userIdx = req.verifiedToken.userIdx;
 
     const phoneNumber = req.body.phoneNumber;
 
-    if (IDFromJWT != userIdx) {
-        res.send(errResponse(baseResponse.USERID_NOT_MATCH))
-    } 
-    if(!userIdx){
-        res.send(errResponse(baseResponse.USERID_EMPTY))
+//빈 값 체크
+    if (!phoneNumber){
+        return res.send(errResponse(baseResponse.MODI_NEW_PHONE_EMPTY));
     }
-    else {
-        if (!phoneNumber)
-            return res.send(errResponse(baseResponse.MODI_NEW_PHONE_EMPTY));
 
-        else if (regExp.test(phoneNumber)) 
-            return res.send(response(baseResponse.REGISTER_PHONE_ERROR_TYPE_HYPHEN));
+//정규식 체크 -하이픈 사용금지
+    else if (regExp.test(phoneNumber)) 
+        return res.send(response(baseResponse.REGISTER_PHONE_ERROR_TYPE_HYPHEN));
 
-        else if (!regExpcheck.test(phoneNumber))
-            return res.send(response(baseResponse.REGISTER_PHONE_INVALID_VALUE));
+//정규식 체크 - 전화번호 형식 오류
+    else if (!regExpcheck.test(phoneNumber))
+        return res.send(response(baseResponse.REGISTER_PHONE_INVALID_VALUE));
         
-    }
-
     const editPhone = await userService.editPhone(phoneNumber, userIdx);
     return res.send(editPhone);
 }
+
+
 
 /**
  * API No. 8
@@ -393,22 +385,12 @@ exports.patchModiPhone = async function (req, res) {
 
 exports.deleteUnregister = async function (req, res) {
 
-    const IDFromJWT = req.verifiedToken.userIdx;
-
-    const userIdx = req.params.userIdx;
+    const userIdx = req.verifiedToken.userIdx;
 
     const password = req.body.password;
 
-    if (IDFromJWT != userIdx) {
-        res.send(errResponse(baseResponse.USERID_NOT_MATCH))
-    } 
-    if(!userIdx){
-        res.send(errResponse(baseResponse.USERID_EMPTY))
-    }
-    else {
-        if (!password)
+    if (!password)
             res.send(errResponse(baseResponse.UNREGISTER_PW_EMPTY));
-    }
 
     const unregister = await userService.unregister(password, userIdx);
     return res.send(unregister);
