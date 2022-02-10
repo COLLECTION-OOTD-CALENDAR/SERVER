@@ -167,7 +167,7 @@ exports.lastRegisterOotd = async function (userIdx, date, lookname, photoIs, ima
         }
 
         connection.release();
-        return response(baseResponse.SUCCESS);
+        return response(baseResponse.SUCCESS_LAST_REGISTER);
 
     } catch (err) {
         logger.error(`App - lastRegisterOotd Service error\n: ${err.message}`);
