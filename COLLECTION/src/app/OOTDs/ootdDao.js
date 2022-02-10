@@ -27,7 +27,7 @@ async function checkClothesIdxIs(connection, data) {
                 `;
   const checkFClothesRow = await connection.query(checkClothesIdxQuery, data);
   console.log('[ootdDao] checkFClothesRow return 전');
-  return checkFClothesRow;
+  return checkFClothesRow[0];
 };
 // addedClothes의 smallClass 존재 여부 체크
 async function checkClothesIs(connection, userIdx, data) {
@@ -40,7 +40,7 @@ async function checkClothesIs(connection, userIdx, data) {
                 `;
   const checkAClothesRow = await connection.query(checkClothesQuery, [userIdx, data]);
   console.log('[ootdDao] checkAClothesRow return 전');
-  return checkAClothesRow;
+  return checkAClothesRow[0];
 };
 
 
@@ -54,7 +54,7 @@ async function checkPlaceIdxIs(connection, data) {
                 `;
   const checkFPlaceRow = await connection.query(checkPlaceIdxQuery, data);
   console.log('[ootdDao] checkFPlaceRow return 전');
-  return checkFPlaceRow;
+  return checkFPlaceRow[0];
 };
 // addedPlace의 place 존재 여부 체크
 async function checkPlaceIs(connection, userIdx, data) {
@@ -80,7 +80,7 @@ async function checkWeatherIdxIs(connection, data) {
                 WHERE FW.index = ?;
                 `;
   const checkFWeatherRow = await connection.query(checkWeatherIdxQuery, data);
-  console.log('[ootdDao] checkFWeatherRow return : ', checkFWeatherRow);
+  //console.log('[ootdDao] checkFWeatherRow return : ', checkFWeatherRow);
   return checkFWeatherRow[0];
 };
 // addedWeather의 weather 존재 여부 체크
@@ -108,7 +108,7 @@ async function checkWhoIdxIs(connection, data) {
                 `;
   const checkFWhoRow = await connection.query(checkWhoIdxQuery, data);
   console.log('[ootdDao] checkFWhoRow return 전');
-  return checkFWhoRow;
+  return checkFWhoRow[0];
 };
 // addedWeather의 who 존재 여부 체크
 async function checkWhoIs(connection, userIdx, data) {
@@ -121,7 +121,7 @@ async function checkWhoIs(connection, userIdx, data) {
                 `;
   const checkAWhoRow = await connection.query(checkWhoQuery, [userIdx, data]);
   console.log('[ootdDao] checkAWhoRow return 전');
-  return checkAWhoRow;
+  return checkAWhoRow[0];
 };
 
 
