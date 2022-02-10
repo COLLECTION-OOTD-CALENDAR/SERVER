@@ -361,8 +361,8 @@ exports.registerOotd = async function (req, res) {
     // 등록할 수 없는 Weather (fWeather->index, aWeather->weather)
     for (item of fWeather){
         const fweatherRow = await ootdProvider.weatherCheck(userIdx, item);
-        console.log('[ootdController] fweatherRow : ', aweatherRow);
-        console.log('[ootdController] fweatherRow.length : ', aweatherRow.length);
+        console.log('[ootdController] fweatherRow : ', fweatherRow);
+        console.log('[ootdController] fweatherRow.length : ', fweatherRow.length);
         if(fweatherRow.length == 0){
             return res.send(errResponse(baseResponse.WEATHER_NOT_MATCH));
         }
