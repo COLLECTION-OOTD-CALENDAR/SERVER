@@ -91,10 +91,10 @@ exports.postUsers = async function (req, res) {
     else if(regExpSpecial.test(nickname)){
         return res.send(response(baseResponse.REGISTER_NICKNAME_REGEXP));
     }
-    else if(!regExpID.test(ID)){
+    else if(!regExpID.test(id)){
         return res.send(response(baseResponse.REGISTER_ID_REGEXP));
     }
-    else if(!regExpPW.test(password)){
+    else if(!regExpPW.test(Password)){
         return res.send(response(baseResponse.REGISTER_PW_REGEXP));
     }
     else if (regExp.test(phoneNumber)){
