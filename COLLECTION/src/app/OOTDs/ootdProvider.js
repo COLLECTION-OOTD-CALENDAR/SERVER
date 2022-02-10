@@ -213,7 +213,7 @@ exports.retrieveCompleteOotd = async function (userIdx, date){
     // 입력된 날짜의 ootd가 존재하는지
     //if (!completeOotdListResult[0]) 추가할 지 고민해보기
     if(!completeOotdListResult[0]){
-      return errResponse(baseResponse.DATE_OOTD_EMPTY);
+      return completeOotdListResult;
     }
 
     let ootd = {};
