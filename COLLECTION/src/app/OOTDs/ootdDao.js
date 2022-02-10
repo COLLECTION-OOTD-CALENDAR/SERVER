@@ -10,7 +10,9 @@ async function checkDateOotd(connection, userIdx, date) {
                 FROM OOTD
                 WHERE userIdx = ? AND date = ?;
                 `;
+  console.log('[ootdDao] query문 작성 후');
   const [ootdDateRow] = await connection.query(checkDateOotdQuery, userIdx, date);
+  console.log('[ootdDao] checkDateOotd return 전');
   return ootdDateRow[0];
 };
 
