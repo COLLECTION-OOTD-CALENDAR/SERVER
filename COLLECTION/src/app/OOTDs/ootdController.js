@@ -446,7 +446,7 @@ exports.completeOotd = async function (req, res){
     }
 
     const callCompleteOotd = await ootdProvider.retrieveCompleteOotd(userIdx, date);
-    if(!callCompleteOotd[0]){
+    if(!callCompleteOotd){
         return res.send(errResponse(baseResponse.DATE_OOTD_EMPTY));
     }
 
