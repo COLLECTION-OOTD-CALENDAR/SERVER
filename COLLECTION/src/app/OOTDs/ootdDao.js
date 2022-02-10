@@ -11,7 +11,7 @@ async function checkDateOotd(connection, userIdx, date) {
                 WHERE userIdx = ? AND date = ?;
                 `;
   console.log('[ootdDao] query문 작성 후');
-  const [ootdDateRow] = await connection.query(checkDateOotdQuery, userIdx, date);
+  const [ootdDateRow] = await connection.query(checkDateOotdQuery, [userIdx, date]);
   console.log('[ootdDao] checkDateOotd return 전');
   return ootdDateRow[0];
 };
@@ -34,7 +34,7 @@ async function checkClothesIs(connection, userIdx, data) {
                 FROM AddedClothes
                 WHERE userIdx = ? AND smallClass = ?;
                 `;
-  const checkAClothesRow = await connection.query(checkClothesQuery, userIdx, data);
+  const checkAClothesRow = await connection.query(checkClothesQuery, [userIdx, data]);
   return checkAClothesRow;
 };
 
@@ -56,7 +56,7 @@ async function checkPlaceIs(connection, userIdx, data) {
                 FROM AddedPlace
                 WHERE userIdx = ? AND place = ?;
                 `;
-  const checkAPlaceRow = await connection.query(checkPlaceQuery, userIdx, data);
+  const checkAPlaceRow = await connection.query(checkPlaceQuery, [userIdx, data]);
   return checkAPlaceRow;
 };
 
@@ -78,7 +78,7 @@ async function checkWeatherIs(connection, userIdx, data) {
                 FROM AddedWeather
                 WHERE userIdx = ? AND weather = ?;
                 `;
-  const checkAWeatherRow = await connection.query(checkWeatherQuery, userIdx, data);
+  const checkAWeatherRow = await connection.query(checkWeatherQuery, [userIdx, data]);
   return checkAWeatherRow;
 };
 
@@ -100,7 +100,7 @@ async function checkWhoIs(connection, userIdx, data) {
                 FROM AddedWho
                 WHERE userIdx = ? AND who = ?;
                 `;
-  const checkAWhoRow = await connection.query(checkWhoQuery, userIdx, data);
+  const checkAWhoRow = await connection.query(checkWhoQuery, [userIdx, data]);
   return checkAWhoRow;
 };
 
@@ -129,7 +129,7 @@ async function checkNewOotd(connection, userIdx, date) {
                 FROM OOTD
                 WHERE userIdx = ? AND date = ?;
                 `;
-  const checkNewOotdRow = await connection.query(checkNewOotdQuery, userIdx, date);
+  const checkNewOotdRow = await connection.query(checkNewOotdQuery, [userIdx, date]);
   return checkNewOotdRow[0];
 };
 
@@ -145,7 +145,7 @@ async function registerOotdPhoto(connection, ootdIdx, image) {
   for (item of image){
     let registerOotdPhotoEach = await connection.query(
       registerOotdPhotoQuery,
-      ootdIdx, item["thumbnail"], item["imageUrl"]);
+      [ootdIdx, item["thumbnail"], item["imageUrl"]]);
     registerOotdPhotoRows.push(registerOotdPhotoEach);
   }
 
@@ -164,7 +164,7 @@ async function getAddedClothesIdx(connection, userIdx, aClothes){
   let returnList = [];
   for (item of aClothes){
     let getAddedClothesIdxEach = await connection.query(
-      getAddedClothesIdxQuery, userIdx, item["bigClass"], item["smallClass"]
+      getAddedClothesIdxQuery, [userIdx, item["bigClass"], item["smallClass"]]
     );
     returnList.push(getAddedClothesIdxEach[0]);
   }
@@ -186,7 +186,7 @@ async function registerOotdFClothes(connection, ootdIdx, ootdFixedClothes) {
   for (item of ootdFixedClothes){
     let registerOotdClothesEach = await connection.query(
       registerOotdFClothesQuery,
-      ootdIdx, item["index"], item["color"]);
+      [ootdIdx, item["index"], item["color"]]);
       registerOotdClothesRows.push(registerOotdClothesEach);
   }
 
@@ -206,7 +206,7 @@ async function registerOotdAClothes(connection, ootdIdx, ootdAddedClothes) {
   for (item of ootdAddedClothes){
     let registerOotdClothesEach = await connection.query(
       registerOotdAClothesQuery,
-      ootdIdx, item["index"], item["color"]);
+      [ootdIdx, item["index"], item["color"]]);
       registerOotdClothesRows.push(registerOotdClothesEach);
   }
 
@@ -225,7 +225,7 @@ async function getAddedPlaceIdx(connection, userIdx, aPlace) {
   let addedPlaceIdxRows = [];
   for (place of aPlace){
     let addedPlaceIdxEach = await connection.query(
-      getAddedPlaceIdxQuery, userIdx, place);
+      getAddedPlaceIdxQuery, [userIdx, place]);
     addedPlaceIdxRows.push(addedPlaceIdxEach);
   }
 
@@ -256,7 +256,7 @@ async function registerOotdFPlace (connection, ootdIdx, fPlace) {
   for (item of fPlace){
     let registerOotdPlaceEach = await connection.query(
       registerOotdFPlaceQuery,
-      ootdIdx, item);
+      [ootdIdx, item]);
     registerOotdPlaceRows.push(registerOotdPlaceEach);
   }
 
@@ -275,7 +275,7 @@ async function registerOotdAPlace (connection, ootdIdx, APlaceIdxList) {
   for (item of APlaceIdxList){
     let registerOotdPlaceEach = await connection.query(
       registerOotdAPlaceQuery,
-      ootdIdx, item);
+      [ootdIdx, item]);
     registerOotdPlaceRows.push(registerOotdPlaceEach);
   }
 
@@ -294,7 +294,7 @@ async function getAddedWeatherIdx(connection, userIdx, aWeather) {
   let addedWeatherIdxRows = [];
   for (weather of aWeather){
     let addedWeatherIdxEach = await connection.query(
-      getAddedWeatherIdxQuery, userIdx, weather);
+      getAddedWeatherIdxQuery, [userIdx, weather]);
     addedWeatherIdxRows.push(addedWeatherIdxEach);
   }
 
@@ -324,7 +324,7 @@ async function registerOotdFWeather(connection, ootdIdx, fWeather) {
   for (item of fWeather){
     let registerOotdWeatherEach = await connection.query(
       registerOotdFWeatherQuery,
-      ootdIdx, item);
+      [ootdIdx, item]);
       registerOotdWeatherRows.push(registerOotdWeatherEach);
   }
 
@@ -343,7 +343,7 @@ async function registerOotdAWeather(connection, ootdIdx, AWeatherIdxList) {
   for (item of AWeatherIdxList){
     let registerOotdWeatherEach = await connection.query(
       registerOotdAWeatherQuery,
-      ootdIdx, item);
+      [ootdIdx, item]);
       registerOotdWeatherRows.push(registerOotdWeatherEach);
   }
 
@@ -361,7 +361,7 @@ async function getAddedWhoIdx(connection, userIdx, aWho) {
   let addedWhoIdxRows = [];
   for (who of aWho){
     let addedWhoIdxEach = await connection.query(
-      getAddedWhoIdxQuery, userIdx, who);
+      getAddedWhoIdxQuery, [userIdx, who]);
     addedWhoIdxRows.push(addedWhoIdxEach);
   }
 
@@ -393,7 +393,7 @@ async function registerOotdFWho(connection, ootdIdx, fWho) {
   for (item of fWho){
     let registerOotdWhoEach = await connection.query(
       registerOotdFWhoQuery,
-      ootdIdx, item);
+      [ootdIdx, item]);
       registerOotdWhoRows.push(registerOotdWhoEach);
   }
 
@@ -412,7 +412,7 @@ async function registerOotdAWho(connection, ootdIdx, AWhoIdxList) {
   for (item of AWhoIdxList){
     let registerOotdWhoEach = await connection.query(
       registerOotdAWhoQuery,
-      ootdIdx, item);
+      [ootdIdx, item]);
       registerOotdWhoRows.push(registerOotdWhoEach);
   }
 
@@ -463,7 +463,7 @@ async function selectDateOotd(connection, userIdx, date) {
               ON O.ootdIdx = TMCL.ootdIdx
             WHERE O.userIdx = ? AND O.date = ?;
             `;
-  const [completeDateOotd] = await connection.query(selectDateOotdQuery, userIdx, date);
+  const [completeDateOotd] = await connection.query(selectDateOotdQuery, [userIdx, date]);
   return completeDateOotd;
 
 };
