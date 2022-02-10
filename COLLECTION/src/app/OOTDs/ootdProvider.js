@@ -276,10 +276,10 @@ function getImages(row, tmp){
     tags = tmp;
   }
 
-  for (let each of tmp){
+  for (let each of tags){
     if(each.imageUrl == row.imageUrl && each.thumbnail == row.thumbnail) return tags;
   }
-  
+
   if(row.imageUrl != null && tags.indexOf(row.imageUrl) < 0){
     console.log('row.imageUrl : ', row.imageUrl);
     let data = { imageUrl : row.imageUrl, thumbnail : row.thumbnail};
