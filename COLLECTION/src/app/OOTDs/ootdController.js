@@ -330,6 +330,7 @@ exports.registerOotd = async function (req, res) {
     // 등록할 수 없는 옷(fClothes->index, aClothes->smallClass)
     for (item of fClothes){
         const fclothesRow = await ootdProvider.clothesCheck(userIdx, item["index"]);
+        // if(fClothesRow) 로 변경 가능
         if(fclothesRow.length == 0){
             return res.send(errResponse(baseResponse.CLOTHES_NOT_MATCH));
         }
@@ -366,6 +367,8 @@ exports.registerOotd = async function (req, res) {
     }
     for (item of aWeather){
         const aweatherRow = await ootdProvider.weatherCheck(userIdx, item);
+        console.log('[ootdController] aweatherRow : ', aweatherRow);
+        console.log('[ootdController] aweatherRow.length : ', aweatherRow.length);
         if(aweatherRow.length == 0){
             return res.send(errResponse(baseResponse.WEATHER_NOT_MATCH));
         }
