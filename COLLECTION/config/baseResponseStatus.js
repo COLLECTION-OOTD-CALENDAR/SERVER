@@ -4,8 +4,8 @@ module.exports = {
 
     // Success
     SUCCESS_REGISTER : { "isSuccess": true, "code": 1000, "message":"회원가입 성공" },
-    SUCCESS_DUPLICATE_ID : { "isSuccess": true, "code": 1021, "message":"새로운 ID 확인 성공" },
-    SUCCESS_DUPLICATE_NICKNAME : { "isSuccess": true, "code": 1022, "message":"새로운 NICKNAME 확인 성공" },
+    SUCCESS_DUPLICATE_ID : { "isSuccess": true, "code": 1021, "message":"새로운 아이디 확인 성공" },
+    SUCCESS_DUPLICATE_NICKNAME : { "isSuccess": true, "code": 1022, "message":"새로운 닉네임 확인 성공" },
     SUCCESS_LOGIN : { "isSuccess": true, "code": 1001, "message":"로그인 성공" },
     SUCCESS_USERS_MODI : { "isSuccess": true, "code": 1002, "message":"회원정보 수정 성공" },
     SUCCESS_UNREGISTER : { "isSuccess": true, "code": 1003, "message":"회원탈퇴 성공" },
@@ -36,9 +36,9 @@ module.exports = {
 
     //Request error
 
-    REGISTER_ID_EMPTY : { "isSuccess": false, "code": 3000, "message":"ID 입력해주세요" },
-    REGISTER_ID_LENGTH : { "isSuccess": false, "code": 3001, "message":"ID는 6~15자리를 입력해주세요" },
-    REGISTER_ID_REDUNDANT : { "isSuccess": false, "code": 3002, "message":"이미 존재하는 ID입니다." },
+    REGISTER_ID_EMPTY : { "isSuccess": false, "code": 3000, "message":"아이디를 입력해주세요" },
+    REGISTER_ID_LENGTH : { "isSuccess": false, "code": 3001, "message":"아이디는 6~15자리를 입력해주세요" },
+    REGISTER_ID_REDUNDANT : { "isSuccess": false, "code": 3002, "message":"이미 존재하는 아이디입니다." },
 
     REGISTER_PW_EMPTY : { "isSuccess": false, "code": 3003, "message":"비밀번호를 입력해주세요" },
     REGISTER_PW_LENGTH : { "isSuccess": false, "code": 3004, "message":"비밀번호는 6~15자리를 입력해주세요" },
@@ -51,7 +51,7 @@ module.exports = {
     REGISTER_PHONE_ERROR_TYPE_HYPHEN : { "isSuccess": false, "code": 3009, "message":"-를 제외하고 입력해주세요" }, //형식 
     REGISTER_PHONE_INVALID_VALUE : { "isSuccess": false, "code": 3010, "message":"올바르지 않은 전화번호입니다." }, //값 
     
-    LOGIN_ID_WRONG : { "isSuccess": false, "code": 3011, "message": "존재하지 않는 ID입니다." },
+    LOGIN_ID_WRONG : { "isSuccess": false, "code": 3011, "message": "존재하지 않는 아이디입니다." },
     LOGIN_PW_WRONG : { "isSuccess": false, "code": 3012, "message": "비밀번호가 잘못되었습니다." },
 
 
@@ -129,13 +129,13 @@ module.exports = {
     CLOTHES_PWW_ONE_EMPTY : {"isSuccess" : false, "code" : 3071, "message" : "Query String에 Clothes와 PWW를 모두 입력해야 합니다."},
     REGISTER_NAME_REGEXP : {"isSuccess" : false, "code" : 3072, "message" : "성함은 한글(2-5자), 영문 대 소문자(2-10)자를 입력하세요."},
     REGISTER_NICKNAME_REGEXP : {"isSuccess" : false, "code" : 3073, "message" : "특수문자를 제외하고 입력하세요."},
-    REGISTER_ID_REGEXP : {"isSuccess" : false, "code" : 3074, "message" : "ID는 영문자로 시작하는 6~15자 영문자 또는 숫자이어야 합니다."},
+    REGISTER_ID_REGEXP : {"isSuccess" : false, "code" : 3074, "message" : "아이디는 영문자로 시작하는 6~15자 영문자 또는 숫자이어야 합니다."},
     REGISTER_IMAGE_EMPTY : {"isSuccess" : false, "code" : 3075, "message" : "Image 관련 값을 입력해주세요."},
     REGISTER_CLOTHES_EMPTY : {"isSuccess" : false, "code" : 3076, "message" : "선택된 Clothes가 없습니다."},
     REGISTER_PLACE_EMPTY : {"isSuccess" : false, "code" : 3077, "message" : "Place 값을 입력해주세요."},
     REGISTER_WEATHER_EMPTY : {"isSuccess" : false, "code" : 3078, "message" : "Weather 값을 입력해주세요."},
     REGISTER_WHO_EMPTY : {"isSuccess" : false, "code" : 3079, "message" : "Who 값을 입력해주세요."},
-    REGISTER_PW_REGEXP : {"isSuccess" : false, "code" : 3080, "message" : "PASSWORD는 영문자로 시작하는 6~15자 영문자 또는 숫자이어야 합니다."},
+    REGISTER_PW_REGEXP : {"isSuccess" : false, "code" : 3080, "message" : "비밀번호는 영문자로 시작하는 6~15자 영문자 또는 숫자여야 합니다."},
     IMAGE_ERROR_TYPE : {"isSuccess" : false, "code" : 3081, "message" : "올바르지 않은 Image 입력 형식입니다."},
     REGISTER_IMGURL_EMPTY : {"isSuccess" : false, "code" : 3082, "message" : "ImageUrl 값을 입력해주세요"},
     REGISTER_THUMBNAIL_EMPTY : {"isSuccess" : false, "code" : 3083, "message" : "Thumbnail 값을 입력해주세요."},
