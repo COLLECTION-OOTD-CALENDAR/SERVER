@@ -320,7 +320,11 @@ async function getAddedWeatherIdx(connection, userIdx, aWeather) {
   for (weather of aWeather){
     let addedWeatherIdxEach = await connection.query(
       getAddedWeatherIdxQuery, [userIdx, weather]);
-    addedWeatherIdxRows.push(addedWeatherIdxEach);
+    console.log('[ootdDao] addedWeatherIdxEach : ', addedWeatherIdxEach);
+    console.log('[ootdDao] addedWeatherIdxEach[0] : ',addedWeatherIdxEach[0]);
+    addedWeatherIdxEach = addedWeatherIdxEach[0];
+    console.log('[ootdDao] addedWeatherIdxEach[0][0].index : ', addedWeatherIdxEach[0].index);
+    addedWeatherIdxRows.push(addedWeatherIdxEach[0].index);
   }
 
   return addedWeatherIdxRows;
@@ -387,7 +391,11 @@ async function getAddedWhoIdx(connection, userIdx, aWho) {
   for (who of aWho){
     let addedWhoIdxEach = await connection.query(
       getAddedWhoIdxQuery, [userIdx, who]);
-    addedWhoIdxRows.push(addedWhoIdxEach);
+      console.log('[ootdDao] addedWhoIdxEach : ', addedWhoIdxEach);
+      console.log('[ootdDao] addedWhoIdxEach[0] : ',addedWhoIdxEach[0]);
+      addedWhoIdxEach = addedWhoIdxEach[0];
+      console.log('[ootdDao] addedWhoIdxEach[0][0].index : ', addedWhoIdxEach[0].index);
+    addedWhoIdxRows.push(addedWhoIdxEach[0].index);
   }
 
   return addedWhoIdxRows;
