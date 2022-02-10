@@ -246,7 +246,10 @@ async function getAddedPlaceIdx(connection, userIdx, aPlace) {
   for (place of aPlace){
     let addedPlaceIdxEach = await connection.query(
       getAddedPlaceIdxQuery, [userIdx, place]);
+    console.log('[ootdDao] addedPlaceIdxEach : ', addedPlaceIdxEach);
+    //console.log('[ootdDao] addedPlaceIdxEach["index"] : ', addedPlaceIdxEach["index"]);
     addedPlaceIdxRows.push(addedPlaceIdxEach);
+    console.log('[ootdDao] addedPlaceIdxRows : ', addedPlaceIdxRows);
   }
 
   return addedPlaceIdxRows;
