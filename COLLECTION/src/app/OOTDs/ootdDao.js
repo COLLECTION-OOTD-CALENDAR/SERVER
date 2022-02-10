@@ -3,13 +3,16 @@
 
 //  입력된 date에 해당하는 ootd 존재 여부 체크
 async function checkDateOotd(connection, userIdx, date) {
+  console.log('[ootdDao] userIdx :', userIdx);
+  console.log('[ootdDao] date : ', date);
   const checkDateOotdQuery = `
                 SELECT ootdIdx, userIdx, date
                 FROM OOTD
-                WHERE userIdx = ? AND date = ?;`;
+                WHERE userIdx = ? AND date = ?;
+                `;
   const [ootdDateRow] = await connection.query(checkDateOotdQuery, userIdx, date);
-  return ootdDateRow;
-}
+  return ootdDateRow[0];
+};
 
 
 // fixedClothes의 index 존재 여부 체크
@@ -21,7 +24,7 @@ async function checkClothesIdxIs(connection, index) {
                 `;
   const checkFClothesRow = await connection.query(checkClothesIdxQuery, index);
   return checkFClothesRow;
-}
+};
 // addedClothes의 smallClass 존재 여부 체크
 async function checkClothesIs(connection, userIdx, data) {
   const checkClothesQuery = `
@@ -31,7 +34,7 @@ async function checkClothesIs(connection, userIdx, data) {
                 `;
   const checkAClothesRow = await connection.query(checkClothesQuery, userIdx, data);
   return checkAClothesRow;
-}
+};
 
 
 // fixedPlace의 index 존재 여부 체크
@@ -43,7 +46,7 @@ async function checkPlaceIdxIs(connection, index) {
                 `;
   const checkFPlaceRow = await connection.query(checkPlaceIdxQuery, index);
   return checkFPlaceRow;
-}
+};
 // addedPlace의 place 존재 여부 체크
 async function checkPlaceIs(connection, userIdx, data) {
   const checkPlaceQuery = `
@@ -53,7 +56,7 @@ async function checkPlaceIs(connection, userIdx, data) {
                 `;
   const checkAPlaceRow = await connection.query(checkPlaceQuery, userIdx, data);
   return checkAPlaceRow;
-}
+};
 
 
 // fixedWeather의 index 존재 여부 체크
@@ -65,7 +68,7 @@ async function checkWeatherIdxIs(connection, index) {
                 `;
   const checkFWeatherRow = await connection.query(checkWeatherIdxQuery, index);
   return checkFWeatherRow;
-}
+};
 // addedWeather의 weather 존재 여부 체크
 async function checkWeatherIs(connection, userIdx, data) {
   const checkWeatherQuery = `
@@ -75,7 +78,7 @@ async function checkWeatherIs(connection, userIdx, data) {
                 `;
   const checkAWeatherRow = await connection.query(checkWeatherQuery, userIdx, data);
   return checkAWeatherRow;
-}
+};
 
 
 // fixedWho의 index 존재 여부 체크
@@ -87,7 +90,7 @@ async function checkWhoIdxIs(connection, index) {
                 `;
   const checkFWhoRow = await connection.query(checkWhoIdxQuery, index);
   return checkFWhoRow;
-}
+};
 // addedWeather의 who 존재 여부 체크
 async function checkWhoIs(connection, userIdx, data) {
   const checkWhoQuery = `
@@ -97,37 +100,11 @@ async function checkWhoIs(connection, userIdx, data) {
                 `;
   const checkAWhoRow = await connection.query(checkWhoQuery, userIdx, data);
   return checkAWhoRow;
-}
-
-// userId 회원 조회
-/*
-async function selectUserId(connection, userId) {
-  const selectUserIdQuery = `
-                  SELECT id, email, nickname 
-                  FROM UserInfo 
-                  WHERE id = ?;
-                  `;
-  const [userRow] = await connection.query(selectUserIdQuery, userId);
-  return userRow;
-}
-*/
+};
 
 
-// 유저 생성
-/*
-async function insertUserInfo(connection, insertUserInfoParams) {
-  const insertUserInfoQuery = `
-        INSERT INTO UserInfo(email, password, nickname)
-        VALUES (?, ?, ?);
-    `;
-  const insertUserInfoRow = await connection.query(
-    insertUserInfoQuery,
-    insertUserInfoParams
-  );
-
-  return insertUserInfoRow;
-}
-*/
+/*************************************************************** */
+/*************************************************************** */
 
 // API 8 : OOTD 최종 등록하기 - OOTD 테이블
 async function registerNewOotd(connection, lastRegisterOotdParams) {
@@ -141,7 +118,7 @@ async function registerNewOotd(connection, lastRegisterOotdParams) {
   );
 
   return registerNewOotdRow;
-}
+};
 
 // API 8 : OOTD 최종 등록하기 - OOTD 테이블 내 ootdIdx 찾아오기
 async function checkNewOotd(connection, userIdx, date) {
@@ -152,7 +129,7 @@ async function checkNewOotd(connection, userIdx, date) {
                 `;
   const checkNewOotdRow = await connection.query(checkNewOotdQuery, userIdx, date);
   return checkNewOotdRow[0];
-}
+};
 
 // API 8 : OOTD 최종 등록하기 - Photo 테이블
 async function registerOotdPhoto(connection, ootdIdx, image) {
@@ -171,7 +148,7 @@ async function registerOotdPhoto(connection, ootdIdx, image) {
   }
 
   return registerOotdPhotoRows;
-}
+};
 
 
 // API 8 : OOTD 최종 등록하기 - AddedClothes 테이블 내 일치하는 index 찾기
@@ -192,7 +169,7 @@ async function getAddedClothesIdx(connection, userIdx, aClothes){
 
   return returnList;
 
-}
+};
 
 
 // API 8 : OOTD 최종 등록하기 - Clothes 테이블 내 fixedType
@@ -212,7 +189,7 @@ async function registerOotdFClothes(connection, ootdIdx, ootdFixedClothes) {
   }
 
   return registerOotdClothesRows;
-}
+};
 
 
 // API 8 : OOTD 최종 등록하기 - Clothes 테이블 내 addedType
@@ -232,7 +209,7 @@ async function registerOotdAClothes(connection, ootdIdx, ootdAddedClothes) {
   }
 
   return registerOotdClothesRows;
-}
+};
 
 
 // API 8 : OOTD 최종 등록하기 - AddedPlace 테이블 내 일치하는 index 찾기
@@ -252,7 +229,7 @@ async function getAddedPlaceIdx(connection, userIdx, aPlace) {
 
   return addedPlaceIdxRows;
 
-}
+};
 
 // API 8 : OOTD 최종 등록하기 - Place 테이블 내 -1, -1
 async function registerOotdPlace (connection, ootdIdx) {
@@ -263,7 +240,7 @@ async function registerOotdPlace (connection, ootdIdx) {
   const registerOotdPlaceRow = await connection.query(
     registerOotdPlaceQuery, ootdIdx);
   return registerOotdPlaceRow;
-}
+};
 
 // API 8 : OOTD 최종 등록하기 - Place 테이블 내 fixedPlace
 async function registerOotdFPlace (connection, ootdIdx, fPlace) {
@@ -282,7 +259,7 @@ async function registerOotdFPlace (connection, ootdIdx, fPlace) {
   }
 
   return registerOotdPlaceRows;
-}
+};
 
 // API 8 : OOTD 최종 등록하기 - Place 테이블 내 addedPlace
 async function registerOotdAPlace (connection, ootdIdx, APlaceIdxList) {
@@ -301,7 +278,7 @@ async function registerOotdAPlace (connection, ootdIdx, APlaceIdxList) {
   }
 
   return registerOotdPlaceRows;
-}
+};
 
 
 // API 8 : OOTD 최종 등록하기 - AddedWeather 테이블 내 일치하는 index 찾기
@@ -320,7 +297,7 @@ async function getAddedWeatherIdx(connection, userIdx, aWeather) {
   }
 
   return addedWeatherIdxRows;
-}
+};
 
 // API 8 : OOTD 최종 등록하기 - Weather 테이블 내 -1, -1
 async function registerOotdWeather (connection, ootdIdx) {
@@ -331,7 +308,7 @@ async function registerOotdWeather (connection, ootdIdx) {
   const registerOotdWeatherRow = await connection.query(
     registerOotdWeatherQuery, ootdIdx);
   return registerOotdWeatherRow;
-}
+};
 
 // API 8 : OOTD 최종 등록하기 - Weather 테이블 내 fixedWeather
 async function registerOotdFWeather(connection, ootdIdx, fWeather) {
@@ -350,7 +327,7 @@ async function registerOotdFWeather(connection, ootdIdx, fWeather) {
   }
 
   return registerOotdWeatherRows;
-}
+};
 
 // API 8 : OOTD 최종 등록하기 - Weather 테이블 내 addedWeather
 async function registerOotdAWeather(connection, ootdIdx, AWeatherIdxList) {
@@ -369,7 +346,7 @@ async function registerOotdAWeather(connection, ootdIdx, AWeatherIdxList) {
   }
 
   return registerOotdWeatherRows;
-}
+};
 
 // API 8 : OOTD 최종 등록하기 = AddedWho 테이블 내 일치하는 index 찾기
 async function getAddedWhoIdx(connection, userIdx, aWho) {
@@ -387,7 +364,7 @@ async function getAddedWhoIdx(connection, userIdx, aWho) {
   }
 
   return addedWhoIdxRows;
-}
+};
 
 
 // API 8 : OOTD 최종 등록하기 - Who 테이블 내 -1, -1
@@ -399,7 +376,7 @@ async function registerOotdWho (connection, ootdIdx) {
   const registerOotdWhoRow = await connection.query(
     registerOotdWhoQuery, ootdIdx);
   return registerOotdWhoRow;
-}
+};
 
 
 // API 8 : OOTD 최종 등록하기 - Who 테이블 내 fixedWho
@@ -419,7 +396,7 @@ async function registerOotdFWho(connection, ootdIdx, fWho) {
   }
 
   return registerOotdWhoRows;
-}
+};
 
 // API 8 : OOTD 최종 등록하기 - Who 테이블 내 addedWho
 async function registerOotdAWho(connection, ootdIdx, AWhoIdxList) {
@@ -438,10 +415,73 @@ async function registerOotdAWho(connection, ootdIdx, AWhoIdxList) {
   }
 
   return registerOotdWhoRows;
+};
+
+// API 12 : OOTD 완료 페이지 불러오기
+async function selectDateOotd(connection, userIdx, date) {
+  const selectDateOotdQuery = `
+            SELECT distinct O.ootdIdx, O.date, O.lookname, O.lookpoint, O.comment,
+              TMPH.imageUrl, TMPH.thumbnail, TMPL.fpName, TMPL.apName,
+              TMWE.fwName, TMWE.awName, TMWH.fwhName, TMWH.awhName,
+              TMCL.color, TMCL.fixedBig, TMCL.fixedSmall, TMCL.addedBig, TMCL.addedSmall
+
+            FROM OOTD AS O
+            LEFT JOIN ( SELECT Ph.ootdIdx, Ph.imageUrl, Ph.thumbnail
+              FROM Photo AS Ph
+                RIGHT JOIN OOTD AS O
+                  ON Ph.ootdIdx = O.ootdIdx) AS TMPH
+              ON O.ootdIdx = TMPH.ootdIdx
+            LEFT JOIN ( SELECT PL.ootdIdx, PL.fixedPlace, PL.addedPlace, FP.place AS fpName, AP.place AS apName
+              FROM Place as PL
+                LEFT JOIN FixedPlace AS FP
+                  ON PL.fixedPlace = FP.index
+                LEFT JOIN AddedPlace AS AP
+                  ON PL.addedPlace = AP.index ) AS TMPL
+              ON O.ootdIdx = TMPL.ootdIdx
+            LEFT JOIN ( SELECT WE.ootdIdx, WE.fixedWeather, WE.addedWeather, FW.weather AS fwName, AW.weather AS awName
+              FROM Weather as WE
+                LEFT JOIN FixedWeather AS FW
+                  ON WE.fixedWeather = FW.index
+                LEFT JOIN AddedWeather AS AW
+                  ON WE.addedWeather = AW.index ) AS TMWE
+              ON O.ootdIdx = TMWE.ootdIdx
+            LEFT JOIN ( SELECT WH.ootdIdx, WH.fixedWho, WH.addedWho, FWH.who AS fwhName, AWH.who AS awhName
+              FROM Who as WH
+                LEFT JOIN FixedWho AS FWH
+                    ON WH.fixedWho = FWH.index
+                LEFT JOIN AddedWho AS AWH
+                    ON WH.addedWho = AWH.index ) AS TMWH
+              ON O.ootdIdx = TMWH.ootdIdx
+            LEFT JOIN ( SELECT CL.ootdIdx, CL.fixedType, CL.addedType, CL.color, FC.bigClass AS fixedBig, FC.smallClass AS fixedSmall, AC.bigClass AS addedBig, AC.smallClass AS addedSmall
+              FROM Clothes AS CL
+                LEFT JOIN FixedClothes AS FC
+                  ON CL.fixedType = FC.index
+                LEFT JOIN AddedClothes AS AC
+                  ON CL.addedType = AC.index ) AS TMCL
+              ON O.ootdIdx = TMCL.ootdIdx
+            WHERE O.userIdx = ? AND O.date = ?;
+            `;
+  const [completeDateOotd] = await connection.query(selectDateOotdQuery, userIdx, date);
+  return completeDateOotd;
+
+};
+
+/*
+// 유저 생성
+async function insertUserInfo(connection, insertUserInfoParams) {
+  const insertUserInfoQuery = `
+        INSERT INTO UserInfo(email, password, nickname)
+        VALUES (?, ?, ?);
+    `;
+  const insertUserInfoRow = await connection.query(
+    insertUserInfoQuery,
+    insertUserInfoParams
+  );
+
+  return insertUserInfoRow;
 }
 
 // 패스워드 체크
-/*
 async function selectUserPassword(connection, selectUserPasswordParams) {
   const selectUserPasswordQuery = `
         SELECT email, nickname, password
@@ -454,10 +494,8 @@ async function selectUserPassword(connection, selectUserPasswordParams) {
 
   return selectUserPasswordRow;
 }
-*/
 
 // 유저 계정 상태 체크 (jwt 생성 위해 id 값도 가져온다.)
-/*
 async function selectUserAccount(connection, email) {
   const selectUserAccountQuery = `
         SELECT status, id
@@ -469,10 +507,7 @@ async function selectUserAccount(connection, email) {
   );
   return selectUserAccountRow[0];
 }
-*/
 
-
-/*
 async function updateUserInfo(connection, id, nickname) {
   const updateUserQuery = `
   UPDATE UserInfo 
@@ -510,5 +545,6 @@ module.exports = {
   getAddedWhoIdx,
   registerOotdWho,
   registerOotdFWho,
-  registerOotdAWho
+  registerOotdAWho,
+  selectDateOotd,
 };
