@@ -19,14 +19,6 @@ exports.lastRegisterOotd = async function (userIdx, date, lookname, photoIs, ima
     fClothes, aClothes, fPlace, aPlace, fWeather, aWeather,
     fWho, aWho, lookpoint, comment) {
     try {
-        // 이메일 중복 확인
-        // UserProvider에서 해당 이메일과 같은 User 목록을 받아서 emailRows에 저장한 후, 배열의 길이를 검사한다.
-        // -> 길이가 0 이상이면 이미 해당 이메일을 갖고 있는 User가 조회된다는 의미
-        //const emailRows = await userProvider.emailCheck(email);
-        //if (emailRows.length > 0)
-        //    return errResponse(baseResponse.SIGNUP_REDUNDANT_EMAIL);
-        //let 
-
         const connection = await pool.getConnection(async (conn) => conn);
 
             
@@ -40,8 +32,8 @@ exports.lastRegisterOotd = async function (userIdx, date, lookname, photoIs, ima
         // OOTD 테이블 등록
         const lastRegisterResult = await ootdDao.registerNewOotd(connection, lastRegisterOotdParams);
         //console.log(`추가된 OOTD : ${lastRegisterResult[0].userIdx}`);
-        console.log('lastRegisterResult : ', lastRegisterResult);
-        //로그 변경할 것 ${userIdResult[0].insertId}
+        //console.log('lastRegisterResult : ', lastRegisterResult);
+        console.log(`추가된 ootdIdx : ${lastRegisterResult[0].insertId}`);
         
         // OOTD 테이블 등록 후 생성된 ootdIdx 가져오기
         // 위에서 insertId를 가지고 온다면 굳이 필요하진 않다는 것
