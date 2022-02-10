@@ -42,8 +42,9 @@ exports.ootdDateCheck = async function (userIdx, date) {
   console.log('[ootdProvider] userIdx :', userIdx);
   console.log('[ootdProvider] date : ', date);
   console.log('[ootdProvider] typeof date : ', typeof date);
+  const connection = await pool.getConnection(async (conn) => conn);
+
   try {
-    const connection = await pool.getConnection(async (conn) => conn);
     console.log('[ootdProvider] ootdDao checkDateOotd 넘어가기 전');
     const ootdDateCheckResult = await ootdDao.checkDateOotd(connection, userIdx, date);
     connection.release();
