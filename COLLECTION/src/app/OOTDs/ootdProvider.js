@@ -1,6 +1,9 @@
 const e = require("express");
 const { pool } = require("../../../config/database");
 const { logger } = require("../../../config/winston");
+const baseResponse = require("../../../config/baseResponseStatus");
+const {response} = require("../../../config/response");
+const {errResponse} = require("../../../config/response");
 
 const ootdDao = require("./ootdDao");
 
@@ -182,6 +185,175 @@ exports.addedWhoIdx = async function (connection, userIdx, aWho){
   const addedWhoIdxResult = await ootdDao.getAddedWhoIdx(connection, userIdx, aWho);
   return addedWhoIdxResult;
 };
+
+
+// OOTD 완료 페이지 불러오기
+exports.retrieveCompleteOotd = async function (userIdx, date){
+
+  try {
+    // connection 은 db와의 연결을 도와줌
+    const connection = await pool.getConnection(async (conn) => conn);
+
+    // Dao 쿼리문의 결과를 호출
+    const completeOotdListResult = await ootdDao.selectDateOotd(connection, userIdx, date);
+    console.log('[ootdProvider] completeOotdListResult : ', completeOotdListResult);
+    // connection 해제
+    connection.release();
+
+    // 입력된 날짜의 ootd가 존재하는지
+    //if (!completeOotdListResult[0]) 추가할 지 고민해보기
+    if(!completeOotdListResult[0]){
+      return errResponse(baseResponse.DATE_OOTD_EMPTY);
+    }
+
+    let ootd = {};
+    var moment = require('moment');
+    for (let row of completeOotdListResult){
+      console.log('row : ', row);
+      if(row === completeOotdListResult[0]){
+        ootd["ootdIdx"] = row.ootdIdx;
+        ootd["date"] = moment(row.date).format('YYYY-MM-DD');
+        ootd["lookname"] = row.lookname;
+        ootd["lookpoint"] = row.lookpoint;
+        ootd["comment"] = row.comment;
+      }
+
+      ootd["image"] = getImages(row, ootd["image"]);
+      ootd["place"] = getPlaces(row, ootd["place"]);
+      ootd["weather"] = getWeathers(row, ootd["weather"]);
+      ootd["who"] = getWhos(row, ootd["who"]);
+
+      // bigClass Key 생성
+      ootd = getBigClass(ootd);
+      
+      // smallClass 넣기
+      if(row.fixedBig != null){
+        let data = {smallClass : row.fixedSmall, color : row.color};
+
+        if(!hasClothes(ootd[row.fixedBig], data)){
+          ootd[row.fixedBig].push(data);
+          //console.log('ootd(+ clothes) : ', ootd);
+        }
+      }
+      else {
+        let data = {smallClass : row.addedSmall, color : row.color};
+
+        if(!hasClothes(ootd[row.addedBig], data)){
+          ootd[row.addedBig].push(data);
+          //console.log('ootd(+ clothes) : ', ootd);
+        }
+      }
+      
+    }
+    console.log('[ootdProvider] 최종 ootd : ', ootd);
+
+    return ootd;
+
+  } catch(err) {
+    logger.error(`App - retrieveOotd Provider error\n: ${err.message}`);
+    return errResponse(baseResponse.DB_ERROR);
+  }
+
+};
+
+// Image value를 채우는 함수
+function getImages(row, tmp){
+  let tags;
+
+  if(tmp === undefined || tmp === null) {
+    tags = [];
+  }else {
+    tags = tmp;
+  }
+
+  if(row.imageUrl != null && tags.indexOf(row.imageUrl) < 0){
+    let data = { imageUrl : row.ImageUrl, thumbnail : row.thumbnail};
+    tags.push(data);
+  }
+
+  return tags;
+};
+
+// Place value를 채우는 함수
+function getPlaces(row, tmp){
+  let tags;
+
+  if(tmp === undefined || tmp === null) {
+    tags = [];
+  } else {
+    tags = tmp;
+  }
+
+  if(row.fpName != null && tags.indexOf(row.fpName) < 0){
+    tags.push(row.fpName);
+  }
+
+  if(row.apName != null && tags.indexOf(row.apName) < 0){
+    tags.push(row.apName);
+  }
+  return tags;
+};
+
+// Weather value를 채우는 함수
+function getWeathers(row, tmp){
+  let tags;
+
+  if(tmp === undefined || tmp === null) {
+    tags = [];
+  } else {
+    tags = tmp;
+  }
+
+  if(row.fwName != null && tags.indexOf(row.fwName) < 0){
+    tags.push(row.fwName);
+  }
+
+  if(row.awName != null && tags.indexOf(row.awName) < 0){
+    tags.push(row.awName);
+  }
+  return tags;
+};
+
+// Who value를 채우는 함수
+function getWhos(row, tmp){
+  let tags;
+
+  if(tmp === undefined || tmp === null) {
+    tags = [];
+  } else {
+    tags = tmp;
+  }
+
+  if(row.fwhName != null && tags.indexOf(row.fwhName) < 0){
+    tags.push(row.fwhName);
+  }
+
+  if(row.awhName != null && tags.indexOf(row.awhName) < 0){
+    tags.push(row.awhName);
+  }
+  return tags;
+};
+
+// BigClass에 해당하는 key를 모두 만드는 함수
+function getBigClass(ootd){
+  if(!ootd["Top"] && !ootd["Bottom"] && !ootd["Shoes"] && !ootd["Etc"]){
+    ootd["Top"] = [];
+    ootd["Bottom"] = [];
+    ootd["Shoes"] = [];
+    ootd["Etc"] = [];
+  }
+
+  return ootd;
+};
+
+function hasClothes(list, data){
+  for(let each of list){
+    if(each.smallClass == data.smallClass && each.color == data.color) return true;
+  }
+
+  return false;
+};
+
 /*
 exports.passwordCheck = async function (selectUserPasswordParams) {
   const connection = await pool.getConnection(async (conn) => conn);
