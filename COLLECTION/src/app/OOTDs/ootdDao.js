@@ -67,7 +67,7 @@ async function checkPlaceIs(connection, userIdx, data) {
                 `;
   const checkAPlaceRow = await connection.query(checkPlaceQuery, [userIdx, data]);
   console.log('[ootdDao] checkAPlaceRow return 전');
-  return checkAPlaceRow;
+  return checkAPlaceRow[0];
 };
 
 
@@ -80,8 +80,8 @@ async function checkWeatherIdxIs(connection, data) {
                 WHERE FW.index = ?;
                 `;
   const checkFWeatherRow = await connection.query(checkWeatherIdxQuery, data);
-  console.log('[ootdDao] checkFWeatherRow return 전');
-  return checkFWeatherRow;
+  console.log('[ootdDao] checkFWeatherRow return : ', checkFWeatherRow);
+  return checkFWeatherRow[0];
 };
 // addedWeather의 weather 존재 여부 체크
 async function checkWeatherIs(connection, userIdx, data) {
@@ -93,8 +93,8 @@ async function checkWeatherIs(connection, userIdx, data) {
                 WHERE userIdx = ? AND weather = ?;
                 `;
   const checkAWeatherRow = await connection.query(checkWeatherQuery, [userIdx, data]);
-  console.log('[ootdDao] checkAWeatherRow return : ', checkAWeatherRow);
-  return checkAWeatherRow;
+  //console.log('[ootdDao] checkAWeatherRow return : ', checkAWeatherRow);
+  return checkAWeatherRow[0];
 };
 
 
