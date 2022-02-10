@@ -62,8 +62,13 @@ exports.ootdDateCheck = async function (userIdx, date) {
 // 등록할 수 없는 옷 (fClothes->index, aClothes->smallClass)
 exports.clothesCheck = async function (userIdx, data) {
 
+  console.log('[ootdProvider] userIdx :', userIdx);
+  console.log('[ootdProvider] data : ', data);
+  console.log('[ootdProvider] typeof data : ', typeof data);
+  const connection = await pool.getConnection(async (conn) => conn);
+
   try {
-    const connection = await pool.getConnection(async (conn) => conn);
+    
     if(Number.isInteger(data)){ // data가 정수일 경우 (fClothes->index)
       const clothesCheckResult = await ootdDao.checkClothesIdxIs(connection, data);
       connection.release();

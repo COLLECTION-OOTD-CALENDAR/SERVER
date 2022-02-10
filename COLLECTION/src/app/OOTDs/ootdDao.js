@@ -18,89 +18,109 @@ async function checkDateOotd(connection, userIdx, date) {
 
 
 // fixedClothes의 index 존재 여부 체크
-async function checkClothesIdxIs(connection, index) {
+async function checkClothesIdxIs(connection, data) {
+  console.log('[ootdDao] data : ', data);
   const checkClothesIdxQuery = `
                 SELECT index, bigClass, smallClass
                 FROM FixedClothes
                 WHERE index = ?;
                 `;
-  const checkFClothesRow = await connection.query(checkClothesIdxQuery, index);
+  const checkFClothesRow = await connection.query(checkClothesIdxQuery, data);
+  console.log('[ootdDao] checkFClothesRow return 전');
   return checkFClothesRow;
 };
 // addedClothes의 smallClass 존재 여부 체크
 async function checkClothesIs(connection, userIdx, data) {
+  console.log('[ootdDao] userIdx :', userIdx);
+  console.log('[ootdDao] data : ', data);
   const checkClothesQuery = `
                 SELECT index, userIdx, smallClass
                 FROM AddedClothes
                 WHERE userIdx = ? AND smallClass = ?;
                 `;
   const checkAClothesRow = await connection.query(checkClothesQuery, [userIdx, data]);
+  console.log('[ootdDao] checkAClothesRow return 전');
   return checkAClothesRow;
 };
 
 
 // fixedPlace의 index 존재 여부 체크
-async function checkPlaceIdxIs(connection, index) {
+async function checkPlaceIdxIs(connection, data) {
+  console.log('[ootdDao] data : ', data);
   const checkPlaceIdxQuery = `
                 SELECT index, place
                 FROM FixedPlace
                 WHERE index = ?;
                 `;
-  const checkFPlaceRow = await connection.query(checkPlaceIdxQuery, index);
+  const checkFPlaceRow = await connection.query(checkPlaceIdxQuery, data);
+  console.log('[ootdDao] checkFPlaceRow return 전');
   return checkFPlaceRow;
 };
 // addedPlace의 place 존재 여부 체크
 async function checkPlaceIs(connection, userIdx, data) {
+  console.log('[ootdDao] userIdx :', userIdx);
+  console.log('[ootdDao] data : ', data);
   const checkPlaceQuery = `
                 SELECT index, userIdx, place
                 FROM AddedPlace
                 WHERE userIdx = ? AND place = ?;
                 `;
   const checkAPlaceRow = await connection.query(checkPlaceQuery, [userIdx, data]);
+  console.log('[ootdDao] checkAPlaceRow return 전');
   return checkAPlaceRow;
 };
 
 
 // fixedWeather의 index 존재 여부 체크
-async function checkWeatherIdxIs(connection, index) {
+async function checkWeatherIdxIs(connection, data) {
+  console.log('[ootdDao] data : ', data);
   const checkWeatherIdxQuery = `
                 SELECT index, weather
                 FROM FixedWeather
                 WHERE index = ?;
                 `;
-  const checkFWeatherRow = await connection.query(checkWeatherIdxQuery, index);
+  const checkFWeatherRow = await connection.query(checkWeatherIdxQuery, data);
+  console.log('[ootdDao] checkFWeatherRow return 전');
   return checkFWeatherRow;
 };
 // addedWeather의 weather 존재 여부 체크
 async function checkWeatherIs(connection, userIdx, data) {
+  console.log('[ootdDao] userIdx :', userIdx);
+  console.log('[ootdDao] data : ', data);
   const checkWeatherQuery = `
                 SELECT index, userIdx, weather
                 FROM AddedWeather
                 WHERE userIdx = ? AND weather = ?;
                 `;
   const checkAWeatherRow = await connection.query(checkWeatherQuery, [userIdx, data]);
+  console.log('[ootdDao] checkAWeatherRow return 전');
   return checkAWeatherRow;
 };
 
 
 // fixedWho의 index 존재 여부 체크
-async function checkWhoIdxIs(connection, index) {
+async function checkWhoIdxIs(connection, data) {
+  console.log('[ootdDao] data : ', data);
   const checkWhoIdxQuery = `
                 SELECT index, who
                 FROM FixedWho
                 WHERE index = ?;
                 `;
-  const checkFWhoRow = await connection.query(checkWhoIdxQuery, index);
+  const checkFWhoRow = await connection.query(checkWhoIdxQuery, data);
+  console.log('[ootdDao] checkFWhoRow return 전');
   return checkFWhoRow;
 };
 // addedWeather의 who 존재 여부 체크
 async function checkWhoIs(connection, userIdx, data) {
+  console.log('[ootdDao] userIdx :', userIdx);
+  console.log('[ootdDao] data : ', data);
   const checkWhoQuery = `
                 SELECT index, userIdx, who
                 FROM AddedWho
                 WHERE userIdx = ? AND who = ?;
                 `;
   const checkAWhoRow = await connection.query(checkWhoQuery, [userIdx, data]);
+  console.log('[ootdDao] checkAWhoRow return 전');
   return checkAWhoRow;
 };
 
