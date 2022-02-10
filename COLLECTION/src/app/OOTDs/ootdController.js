@@ -27,7 +27,7 @@ exports.registerOotd = async function (req, res) {
 
     // jwt - userId, path variable :userId
     console.log('[ootdController] registerOotd function');
-    const userIdFromJWT = req.verifiedToken.userIdx;
+    const userIdxFromJWT = req.verifiedToken.userIdx;
 
     const userIdx = req.params.userIdx;
 
@@ -54,7 +54,7 @@ exports.registerOotd = async function (req, res) {
     }
 
     // 유효하지 않는 userIdx 입력
-    if (userIdFromJWT != userIdx) {
+    if (userIdxFromJWT != userIdx) {
         return res.send(errResponse(baseResponse.USERID_NOT_MATCH));
     }
 
@@ -390,6 +390,57 @@ exports.registerOotd = async function (req, res) {
 
 };
 
+
+
+/**
+ * API No. 12
+ * API Name : OOTD 완료 페이지 불러오기
+ * [GET] /app/ootd/complete/:userIdx
+ * path variable : userIdx
+ * Query string : date
+ */
+exports.completeOotd = async function (req, res){
+
+    const userIdxFromJWT = req.verifiedToken.userIdx;
+
+    const userIdx = req.params.userIdx;
+    const date = req.query.date;
+
+    // userIdx가 입력되지 않음, 추후 진행
+    if (!userIdx) { 
+        return res.send(errResponse(baseResponse.USERID_EMPTY));
+    }
+
+    // 유효하지 않는 userIdx 입력
+    if (userIdxFromJWT != userIdx) {
+        return res.send(errResponse(baseResponse.USERID_NOT_MATCH));
+    }
+
+    // query string으로 date가 들어오지 않았을 경우
+    if(!date){
+        return res.send(errResponse(baseResponse.DATE_EMPTY));
+    }
+
+    // date 형식 체크 
+    if(!datePattern.test(date)){
+        return res.send(errResponse(baseResponse.DATE_ERROR_TYPE));
+    }
+
+    // 2010년 1월 1일 ~ 2099년 12월 31 일 이내의 date(유효 date)인지 체크
+    var date_start = new Date('2010-01-01');
+    var date_end = new Date('2100-01-01');
+    let n_date = new Date(date);
+
+    // 유효하지 않은 date 입력
+    if(n_date < date_start || n_date > date_end) {
+        return res.send(errResponse(baseResponse.DATE_INVALID_VALUE));
+    }
+
+    const callCompleteOotd = await ootdProvider.retrieveCompleteOotd(userIdx, date);
+
+    return res.send(response(baseResponse.SUCCESS_OOTD_COMPLETE, callCompleteOotd));
+
+}
 
 /**
  * API No. 1

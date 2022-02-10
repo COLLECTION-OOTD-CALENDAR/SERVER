@@ -29,8 +29,8 @@ module.exports = function(app){
     // 3. OOTD 삭제하기
     //app.get('app/ootd/deletion/:userIdx', jwtMiddleware, ootd.deleteOotd);
 
-    // 6. OOTD 완료 페이지 불러오기
-    //app.get('app/ootd/complete/:userIdx', jwtMiddleware, ootd.completeOotd);
+    //4. OOTD 완료 페이지 불러오기
+    app.get('/app/ootd/complete/:userIdx', jwtMiddleware, ootd.completeOotd);
 };
 
 
