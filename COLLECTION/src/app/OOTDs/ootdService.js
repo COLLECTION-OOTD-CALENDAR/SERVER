@@ -41,8 +41,10 @@ exports.lastRegisterOotd = async function (userIdx, date, lookname, photoIs, ima
         const lastRegisterResult = await ootdDao.registerNewOotd(connection, lastRegisterOotdParams);
         //console.log(`추가된 OOTD : ${lastRegisterResult[0].userIdx}`);
         console.log('lastRegisterResult : ', lastRegisterResult);
+        //로그 변경할 것 ${userIdResult[0].insertId}
         
         // OOTD 테이블 등록 후 생성된 ootdIdx 가져오기
+        // 위에서 insertId를 가지고 온다면 굳이 필요하진 않다는 것
         const lastRegisterOotdIdx = await ootdProvider.newOotdIdx(connection, userIdx, date);
         console.log('새로 추가된 ootdIdx : ', lastRegisterOotdIdx["ootdIdx"]);
         const ootdIdxParam = lastRegisterOotdIdx["ootdIdx"];
@@ -56,6 +58,8 @@ exports.lastRegisterOotd = async function (userIdx, date, lookname, photoIs, ima
             const ootdPhotoResult = await ootdDao.registerOotdPhoto(connection, ootdIdxParam, image);
             // 수정 가능성 O
             console.log('ootdPhotoResult : ', ootdPhotoResult);
+            //로그 변경할 것 ${userIdResult[0].insertId}
+
         }
 
         /*********************************************** */
@@ -83,17 +87,19 @@ exports.lastRegisterOotd = async function (userIdx, date, lookname, photoIs, ima
             ootdAddedClothes.push(tmpAClothes);
         }
 
-        console.log('ootdFixedClothesIdx [] : ', fClothes);
-        console.log('ootdAddedClothesIdx [] : ', ootdAddedClothes);
+        console.log('fClothes : ', fClothes);
+        console.log('ootdAddedClothesIdx : ', ootdAddedClothes);
 
         // Clothes 테이블 - fixedType 등록
         const ootdFClothesResult = await ootdDao.registerOotdFClothes(connection, ootdIdxParam, fClothes);
         // 수정 가능성 O
+        //로그 변경할 것 ${userIdResult[0].insertId}
         console.log('ootdFClothesResult : ', ootdFClothesResult); 
 
         // Clothes 테이블 - addedType 등록
         const ootdAClothesResult = await ootdDao.registerOotdAClothes(connection, ootdIdxParam, ootdAddedClothes);
         // 수정 가능성 O
+        //로그 변경할 것 ${userIdResult[0].insertId}
         console.log('ootdAClothesResult : ', ootdAClothesResult); 
 
         /*********************************************** */
@@ -104,20 +110,19 @@ exports.lastRegisterOotd = async function (userIdx, date, lookname, photoIs, ima
         const APlaceIdxList = await ootdProvider.addedPlaceIdx(connection, userIdx, aPlace);
         console.log('APlaceIdxList.length : ', APlaceIdxList.length);
         console.log('aPlace.length : ', aPlace.length);
-        
+        console.log('APlaceIdxList : ', APlaceIdxList);
         // 두 Place 배열이 모두 비어있을 때
         if(!fPlace[0] && !aPlace[0]){
-            const ootdPlaceResult = await ootdDao.registerOotdPlace(connection, ootdIdx);
+            const ootdPlaceResult = await ootdDao.registerOotdPlace(connection, ootdIdxParam);
             console.log('ootdPlaceResult : ', ootdPlaceResult);
         }else {
-
             // Place 테이블 등록 - fixedPlace 등록
-            const ootdFPlaceResult = await ootdDao.registerOotdFPlace(connection, ootdIdx, fPlace);
+            const ootdFPlaceResult = await ootdDao.registerOotdFPlace(connection, ootdIdxParam, fPlace);
             // 수정 가능성 O        
             console.log('ootdFPlaceResult : ', ootdFPlaceResult);
 
             // Place 테이블 등록 - addedPlace 등록
-            const ootdAPlaceResult = await ootdDao.registerOotdAPlace(connection, ootdIdx, APlaceIdxList);
+            const ootdAPlaceResult = await ootdDao.registerOotdAPlace(connection, ootdIdxParam, APlaceIdxList);
             // 수정 가능성 O
             console.log('ootdAPlaceResult : ', ootdAPlaceResult);
         }
@@ -131,16 +136,16 @@ exports.lastRegisterOotd = async function (userIdx, date, lookname, photoIs, ima
 
         // 두 Weather 배열이 모두 비어있을 때
         if(!fWeather[0] && !aWeather[0]){
-            const ootdWeatherResult = await ootdDao.registerOotdWeather(connection, ootdIdx);
+            const ootdWeatherResult = await ootdDao.registerOotdWeather(connection, ootdIdxParam);
             console.log('ootdWeatherResult : ', ootdWeatherResult);
         }else {
             // Weather 테이블 등록 - fixedWeather 등록
-            const ootdFWeatherResult = await ootdDao.registerOotdFWeather(connection, ootdIdx, fWeather);
+            const ootdFWeatherResult = await ootdDao.registerOotdFWeather(connection, ootdIdxParam, fWeather);
             // 수정 가능성 O        
             console.log('ootdFWeatherResult : ', ootdFWeatherResult);
 
             // Weather 테이블 등록 - addedWeather 등록
-            const ootdAWeatherResult = await ootdDao.registerOotdAWeather(connection, ootdIdx, AWeatherIdxList);
+            const ootdAWeatherResult = await ootdDao.registerOotdAWeather(connection, ootdIdxParam, AWeatherIdxList);
             // 수정 가능성 O
             console.log('ootdAWeatherResult : ', ootdAWeatherResult);
         }
@@ -155,16 +160,16 @@ exports.lastRegisterOotd = async function (userIdx, date, lookname, photoIs, ima
 
         // 두 Who 배열이 모두 비어있을 때
         if(!fWho[0] && !aWho[0]){
-            const ootdWhoResult = await ootdDao.registerOotdWho(connection, ootdIdx);
+            const ootdWhoResult = await ootdDao.registerOotdWho(connection, ootdIdxParam);
             console.log('ootdWhoResult : ', ootdWhoResult);
         }else {
             // Who 테이블 등록 - fixedWho 등록
-            const ootdFWhoResult = await ootdDao.registerOotdFWho(connection, ootdIdx, fWho);
+            const ootdFWhoResult = await ootdDao.registerOotdFWho(connection, ootdIdxParam, fWho);
             // 수정 가능성 O        
             console.log('ootdFWhoResult : ', ootdFWhoResult);
 
             // Who 테이블 등록 - addedWho 등록
-            const ootdAWhoResult = await ootdDao.registerOotdAWho(connection, ootdIdx, AWhoIdxList);
+            const ootdAWhoResult = await ootdDao.registerOotdAWho(connection, ootdIdxParam, AWhoIdxList);
             // 수정 가능성 O
             console.log('ootdAWhoResult : ', ootdAWhoResult);
         }
