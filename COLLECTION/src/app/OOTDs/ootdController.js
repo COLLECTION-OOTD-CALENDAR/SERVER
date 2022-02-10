@@ -361,6 +361,8 @@ exports.registerOotd = async function (req, res) {
     // 등록할 수 없는 Weather (fWeather->index, aWeather->weather)
     for (item of fWeather){
         const fweatherRow = await ootdProvider.weatherCheck(userIdx, item);
+        console.log('[ootdController] fweatherRow : ', aweatherRow);
+        console.log('[ootdController] fweatherRow.length : ', aweatherRow.length);
         if(fweatherRow.length == 0){
             return res.send(errResponse(baseResponse.WEATHER_NOT_MATCH));
         }
@@ -368,13 +370,11 @@ exports.registerOotd = async function (req, res) {
     for (item of aWeather){
         const aweatherRow = await ootdProvider.weatherCheck(userIdx, item);
         console.log('[ootdController] aweatherRow : ', aweatherRow);
-        //console.log('[ootdController] aweatherRow.length : ', aweatherRow.length);
-        //if(aweatherRow.length == 0){
-        //    return res.send(errResponse(baseResponse.WEATHER_NOT_MATCH));
-        //}
-        if(!aweatherRow){
+        console.log('[ootdController] aweatherRow.length : ', aweatherRow.length);
+        if(aweatherRow.length == 0){
             return res.send(errResponse(baseResponse.WEATHER_NOT_MATCH));
         }
+
     }
 
     // 등록할 수 없는 Who (fWho->index, aWho->who)
