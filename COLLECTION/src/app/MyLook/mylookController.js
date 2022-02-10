@@ -9,69 +9,56 @@ const {response, errResponse} = require("../../../config/response");
 /**
  * API No. 1
  * API Name : myLook 메인페이지 API
- * [GET] /app/mylook/mainpage/:userIdx/:lookpoint
+ * [GET] /app/mylook/mainpage/:lookpoint
  * path variable : userIdx , lookpoint
  */
 exports.getMyLookMain = async function (req, res) {
 
-    const IDFromJWT = req.verifiedToken.userIdx;
 
-    const userIdx = req.params.userIdx;
+    const userIdx = req.verifiedToken.userIdx;
+
     const lookpoint = req.params.lookpoint;
 
-    if (IDFromJWT != userIdx) {
-        return res.send(errResponse(baseResponse.USERID_NOT_MATCH));
-    } 
-    else {
-        if(!userIdx){
-            return res.send(errResponse(baseResponse.USERID_EMPTY));
-        }
-        if(!lookpoint){
-            return res.send(errResponse(baseResponse.LOOKPOTNT_EMPTY));
-        }
-        if(lookpoint < 0 || lookpoint > 5){
-            return res.send(errResponse(baseResponse.LOOKPOINT_INVALID_VALUE));
-        }
-
-        const getMyLook = await mylookProvider.getMyLookMain(lookpoint, userIdx);
-        return res.send(getMyLook);
+  
+    if(!lookpoint){
+        return res.send(errResponse(baseResponse.LOOKPOTNT_EMPTY));
+    }
+    else if(lookpoint < 0 || lookpoint > 5){
+        return res.send(errResponse(baseResponse.LOOKPOINT_INVALID_VALUE));
     }
 
-};
+    const getMyLook = await mylookProvider.getMyLookMain(lookpoint, userIdx);
+    return res.send(getMyLook);
+
+}
+
+
 
 /**
  * API No.2 
  * API Name : myLook 상세페이지 API
- * [GET] /app/mylook/detail/:userIdx/:lookpoint
+ * [GET] /app/mylook/detail/:lookpoint
  * path variable : userIdx, lookpoint
  */
 
  exports.getMyLookDetail = async function (req, res) {
 
-    const IDFromJWT = req.verifiedToken.userIdx;
+    const userIdx = req.verifiedToken.userIdx;
 
-    const userIdx = req.params.userIdx;
     const lookpoint = req.params.lookpoint;
 
-    if (IDFromJWT != userIdx) {
-        return res.send(errResponse(baseResponse.USERID_NOT_MATCH));
-    } 
-    else {
-        if(!userIdx){
-            return res.send(errResponse(baseResponse.USERID_EMPTY));
-        }
-        if(!lookpoint){
-            return res.send(errResponse(baseResponse.LOOKPOTNT_EMPTY));
-        }
-        if(lookpoint < 0 || lookpoint > 5){
-            return res.send(errResponse(baseResponse.LOOKPOINT_INVALID_VALUE));
-        }
-
-        const getMyLookD = await mylookProvider.getMyLookDetail(lookpoint, userIdx);
-        return res.send(getMyLookD);
+    if(!lookpoint){
+        return res.send(errResponse(baseResponse.LOOKPOTNT_EMPTY));
+    }
+    if(lookpoint < 0 || lookpoint > 5){
+        return res.send(errResponse(baseResponse.LOOKPOINT_INVALID_VALUE));
     }
 
-};
+    const getMyLookD = await mylookProvider.getMyLookDetail(lookpoint, userIdx);
+    return res.send(getMyLookD);
+}
+
+
 
 
 
