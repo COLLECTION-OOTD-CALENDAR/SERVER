@@ -320,6 +320,8 @@ exports.registerOotd = async function (req, res) {
     /****************response error**************** */
     /********************************************** */
 
+    // 나중에 ootdService 내부 코드들과 합치는 게 좋긴 함.
+
     // 입력된 date에 이미 OOTD 존재
     const ootdRow = await ootdProvider.ootdDateCheck(userIdx, n_date);
 
