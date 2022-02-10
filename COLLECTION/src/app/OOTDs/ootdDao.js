@@ -93,7 +93,7 @@ async function checkWeatherIs(connection, userIdx, data) {
                 WHERE userIdx = ? AND weather = ?;
                 `;
   const checkAWeatherRow = await connection.query(checkWeatherQuery, [userIdx, data]);
-  console.log('[ootdDao] checkAWeatherRow return 전');
+  console.log('[ootdDao] checkAWeatherRow return : ', checkAWeatherRow);
   return checkAWeatherRow;
 };
 
