@@ -15,7 +15,7 @@ module.exports = function(app){
     app.post('/app/user/login',user.postLogin);
 
     //5. 회원정보 수정 (닉네임)
-    app.patch('/app/user/modi-nickname/:userIdx',jwtMiddleware, user.patchModiNickname);
+    app.patch('/app/user/modi-nickname', jwtMiddleware, user.patchModiNickname);
 
     //6. 회원정보 수정 (비밀번호)
     app.patch('/app/user/modi-password/:userIdx',jwtMiddleware, user.patchModiPW);
