@@ -97,7 +97,7 @@ exports.postLogIn = async function (ID, password) {
             } // 유효 기간 365일
         );
 
-        return response(baseResponse.SUCCESS_LOGIN, {'userId': userInfoRows[0].ID, 'jwt': token});
+        return response(baseResponse.SUCCESS_LOGIN, {'userId': userInfoRows[0].ID, 'nickname': userInfoRows[0].nickname, 'jwt': token});
 
     } catch (err) {
         logger.error(`App - postLogIn Service error\n: ${err.message} \n${JSON.stringify(err)}`);

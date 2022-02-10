@@ -67,7 +67,7 @@ async function selectUserPW(connection, userIdx) {
 //ID로 계정의 STATUS여부 확인 함수
 async function selectUserAccount(connection, ID) {
   const selectUserAccountQuery = `
-        SELECT status, ID, userIdx
+        SELECT status, ID, userIdx, nickname
         FROM User
         WHERE ID = ?;`;
   const selectUserAccountRow = await connection.query(
