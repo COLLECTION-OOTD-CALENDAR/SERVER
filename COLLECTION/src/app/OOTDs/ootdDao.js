@@ -21,9 +21,9 @@ async function checkDateOotd(connection, userIdx, date) {
 async function checkClothesIdxIs(connection, data) {
   console.log('[ootdDao] data : ', data);
   const checkClothesIdxQuery = `
-                SELECT index, bigClass, smallClass
-                FROM FixedClothes
-                WHERE index = ?;
+                SELECT FC.index, bigClass, smallClass
+                FROM FixedClothes AS FC
+                WHERE FC.index = ?;
                 `;
   const checkFClothesRow = await connection.query(checkClothesIdxQuery, data);
   console.log('[ootdDao] checkFClothesRow return 전');
@@ -34,8 +34,8 @@ async function checkClothesIs(connection, userIdx, data) {
   console.log('[ootdDao] userIdx :', userIdx);
   console.log('[ootdDao] data : ', data);
   const checkClothesQuery = `
-                SELECT index, userIdx, smallClass
-                FROM AddedClothes
+                SELECT AC.index, userIdx, smallClass
+                FROM AddedClothes AS AC
                 WHERE userIdx = ? AND smallClass = ?;
                 `;
   const checkAClothesRow = await connection.query(checkClothesQuery, [userIdx, data]);
@@ -48,9 +48,9 @@ async function checkClothesIs(connection, userIdx, data) {
 async function checkPlaceIdxIs(connection, data) {
   console.log('[ootdDao] data : ', data);
   const checkPlaceIdxQuery = `
-                SELECT index, place
-                FROM FixedPlace
-                WHERE index = ?;
+                SELECT FP.index, place
+                FROM FixedPlace AS FP
+                WHERE FP.index = ?;
                 `;
   const checkFPlaceRow = await connection.query(checkPlaceIdxQuery, data);
   console.log('[ootdDao] checkFPlaceRow return 전');
@@ -61,8 +61,8 @@ async function checkPlaceIs(connection, userIdx, data) {
   console.log('[ootdDao] userIdx :', userIdx);
   console.log('[ootdDao] data : ', data);
   const checkPlaceQuery = `
-                SELECT index, userIdx, place
-                FROM AddedPlace
+                SELECT AP.index, userIdx, place
+                FROM AddedPlace AS AP
                 WHERE userIdx = ? AND place = ?;
                 `;
   const checkAPlaceRow = await connection.query(checkPlaceQuery, [userIdx, data]);
@@ -75,9 +75,9 @@ async function checkPlaceIs(connection, userIdx, data) {
 async function checkWeatherIdxIs(connection, data) {
   console.log('[ootdDao] data : ', data);
   const checkWeatherIdxQuery = `
-                SELECT index, weather
-                FROM FixedWeather
-                WHERE index = ?;
+                SELECT FW.index, weather
+                FROM FixedWeather AS FW
+                WHERE FW.index = ?;
                 `;
   const checkFWeatherRow = await connection.query(checkWeatherIdxQuery, data);
   console.log('[ootdDao] checkFWeatherRow return 전');
@@ -88,8 +88,8 @@ async function checkWeatherIs(connection, userIdx, data) {
   console.log('[ootdDao] userIdx :', userIdx);
   console.log('[ootdDao] data : ', data);
   const checkWeatherQuery = `
-                SELECT index, userIdx, weather
-                FROM AddedWeather
+                SELECT AW.index, userIdx, weather
+                FROM AddedWeather AS AW
                 WHERE userIdx = ? AND weather = ?;
                 `;
   const checkAWeatherRow = await connection.query(checkWeatherQuery, [userIdx, data]);
@@ -102,9 +102,9 @@ async function checkWeatherIs(connection, userIdx, data) {
 async function checkWhoIdxIs(connection, data) {
   console.log('[ootdDao] data : ', data);
   const checkWhoIdxQuery = `
-                SELECT index, who
-                FROM FixedWho
-                WHERE index = ?;
+                SELECT FWH.index, who
+                FROM FixedWho AS FWH
+                WHERE FWH.index = ?;
                 `;
   const checkFWhoRow = await connection.query(checkWhoIdxQuery, data);
   console.log('[ootdDao] checkFWhoRow return 전');
@@ -115,8 +115,8 @@ async function checkWhoIs(connection, userIdx, data) {
   console.log('[ootdDao] userIdx :', userIdx);
   console.log('[ootdDao] data : ', data);
   const checkWhoQuery = `
-                SELECT index, userIdx, who
-                FROM AddedWho
+                SELECT AWH.index, userIdx, who
+                FROM AddedWho AS AWH
                 WHERE userIdx = ? AND who = ?;
                 `;
   const checkAWhoRow = await connection.query(checkWhoQuery, [userIdx, data]);
@@ -176,8 +176,8 @@ async function registerOotdPhoto(connection, ootdIdx, image) {
 // API 8 : OOTD 최종 등록하기 - AddedClothes 테이블 내 일치하는 index 찾기
 async function getAddedClothesIdx(connection, userIdx, aClothes){
   const getAddedClothesIdxQuery = `
-        SELECT index
-        FROM AddedClothes
+        SELECT AC.index
+        FROM AddedClothes AS AC
         WHERE userIdx = ? AND bigClass = ? AND smallClass = ?
         ;`;
   
@@ -237,8 +237,8 @@ async function registerOotdAClothes(connection, ootdIdx, ootdAddedClothes) {
 // API 8 : OOTD 최종 등록하기 - AddedPlace 테이블 내 일치하는 index 찾기
 async function getAddedPlaceIdx(connection, userIdx, aPlace) {
   const getAddedPlaceIdxQuery = `
-          SELECT index
-          FROM AddedPlace
+          SELECT AP.index
+          FROM AddedPlace AS AP
           WHERE userIdx = ? AND place = ?;
           `;
   
@@ -306,8 +306,8 @@ async function registerOotdAPlace (connection, ootdIdx, APlaceIdxList) {
 // API 8 : OOTD 최종 등록하기 - AddedWeather 테이블 내 일치하는 index 찾기
 async function getAddedWeatherIdx(connection, userIdx, aWeather) {
   const getAddedWeatherIdxQuery = `
-          SELECT index
-          FROM AddedWeather
+          SELECT AW.index
+          FROM AddedWeather AS AW
           WHERE userIdx = ? AND weather = ?;
           `;
   
@@ -373,8 +373,8 @@ async function registerOotdAWeather(connection, ootdIdx, AWeatherIdxList) {
 // API 8 : OOTD 최종 등록하기 = AddedWho 테이블 내 일치하는 index 찾기
 async function getAddedWhoIdx(connection, userIdx, aWho) {
   const getAddedWhoIdxQuery = `
-          SELECT index
-          FROM AddedWho
+          SELECT AWH.index
+          FROM AddedWho AS AWH
           WHERE userIdx = ? AND who = ?;
           `;
   
