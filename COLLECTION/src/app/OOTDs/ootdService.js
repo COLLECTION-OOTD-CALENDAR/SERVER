@@ -87,7 +87,7 @@ exports.lastRegisterOotd = async function (userIdx, date, lookname, photoIs, ima
         console.log('ootdAddedClothesIdx [] : ', ootdAddedClothes);
 
         // Clothes 테이블 - fixedType 등록
-        const ootdFClothesResult = await ootdDao.registerOotdFClothes(connection, ootdIdxParam, ootdFixedClothes);
+        const ootdFClothesResult = await ootdDao.registerOotdFClothes(connection, ootdIdxParam, fClothes);
         // 수정 가능성 O
         console.log('ootdFClothesResult : ', ootdFClothesResult); 
 
