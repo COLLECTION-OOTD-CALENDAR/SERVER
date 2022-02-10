@@ -10,8 +10,8 @@ var blank_pattern = /^\s+|\s+$/g; //공백문자만
 var blank_all = /[\s]/g; //공백도 입력
 var regExpName = /^[가-힣]{2,5}|[a-zA-Z]{2,10}\s[a-zA-Z]{2,10}$/; //이름
 var regExpSpecial = /[ \{\}\[\]\/?.,;:|\)*~`!^\-_+┼<>@\#$%&\'\"\\\(\=]/gi;//특수문자 사용
-var regExpID = /^[a-z]+[a-z0-9]{5,14}$/g; //ID는 영문자로 시작하는 6~15자 영문자 또는 숫자
-var regExpPW = /^[a-z]+[a-z0-9]{5,14}$/g; //PW는 영문자로 시작하는 6~15자 영문자 또는 숫자
+// var regExpID = /^[a-z]+[a-z0-9]{5,14}$/g; //ID는 영문자로 시작하는 6~15자 영문자 또는 숫자
+// var regExpPW = /^[a-z]+[a-z0-9]{5,14}$/g; //PW는 영문자로 시작하는 6~15자 영문자 또는 숫자
 
 
 /**
@@ -91,12 +91,12 @@ exports.postUsers = async function (req, res) {
     else if(regExpSpecial.test(nickname)){
         return res.send(response(baseResponse.REGISTER_NICKNAME_REGEXP));
     }
-    else if(!regExpID.test(id)){
-        return res.send(response(baseResponse.REGISTER_ID_REGEXP));
-    }
-    else if(!regExpPW.test(Password)){
-        return res.send(response(baseResponse.REGISTER_PW_REGEXP));
-    }
+    // else if(!regExpID.test(id)){
+    //     return res.send(response(baseResponse.REGISTER_ID_REGEXP));
+    // }
+    // else if(!regExpPW.test(Password)){
+    //     return res.send(response(baseResponse.REGISTER_PW_REGEXP));
+    // }
     else if (regExp.test(phoneNumber)){
         return res.send(response(baseResponse.REGISTER_PHONE_ERROR_TYPE_HYPHEN));
     }
