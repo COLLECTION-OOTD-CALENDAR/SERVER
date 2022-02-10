@@ -247,8 +247,10 @@ async function getAddedPlaceIdx(connection, userIdx, aPlace) {
     let addedPlaceIdxEach = await connection.query(
       getAddedPlaceIdxQuery, [userIdx, place]);
     console.log('[ootdDao] addedPlaceIdxEach : ', addedPlaceIdxEach);
-    //console.log('[ootdDao] addedPlaceIdxEach["index"] : ', addedPlaceIdxEach["index"]);
-    addedPlaceIdxRows.push(addedPlaceIdxEach);
+    console.log('[ootdDao] addedPlaceIdxEach[0] : ', addedPlaceIdxEach[0]);
+    addedPlaceIdxEach = addedPlaceIdxEach[0];
+    console.log('[ootdDao] addedPlaceIdxEach[0][0].index', addedPlaceIdxEach[0].index);
+    addedPlaceIdxRows.push(addedPlaceIdxEach[0].index);
     console.log('[ootdDao] addedPlaceIdxRows : ', addedPlaceIdxRows);
   }
 
