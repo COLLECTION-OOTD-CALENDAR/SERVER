@@ -85,23 +85,25 @@ exports.postUsers = async function (req, res) {
 
     // 형식 체크 (by 정규표현식)
 
-    if(!regExpName.test(name))
+    if(!regExpName.test(name)){
         return res.send(response(baseResponse.REGISTER_NAME_REGEXP)); 
-        
-    else if(regExpSpecial.test(nickname))
+    }
+    else if(regExpSpecial.test(nickname)){
         return res.send(response(baseResponse.REGISTER_NICKNAME_REGEXP));
-
-    else if(!regExpID.test(ID))
-        return res.send(response(baseResponse.REGISTER_ID_REGEXP)); 
-
-    else if(!regExpPW.test(password))
-        return res.send(response(baseResponse.REGISTER_PW_REGEXP)); 
-
-    else if (regExp.test(phoneNumber)) 
+    }
+    else if(!regExpID.test(ID)){
+        return res.send(response(baseResponse.REGISTER_ID_REGEXP));
+    }
+    else if(!regExpPW.test(password)){
+        return res.send(response(baseResponse.REGISTER_PW_REGEXP));
+    }
+    else if (regExp.test(phoneNumber)){
         return res.send(response(baseResponse.REGISTER_PHONE_ERROR_TYPE_HYPHEN));
-
-    else if (!regExpcheck.test(phoneNumber))
+    }
+    else if (!regExpcheck.test(phoneNumber)){
         return res.send(response(baseResponse.REGISTER_PHONE_INVALID_VALUE));
+    }
+
 
 
 
