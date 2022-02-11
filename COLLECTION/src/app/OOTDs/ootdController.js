@@ -338,6 +338,8 @@ exports.registerOotd = async function (req, res) {
     for (item of fClothes){
         const fclothesRow = await ootdProvider.clothesCheck(userIdx, item["index"]);
         // if(fClothesRow) 로 변경 가능
+        console.log('[ootdController] fclothesRow : ', fclothesRow);
+        console.log('[ootdController] fclothesRow.length : ', fclothesRow.length);
         if(fclothesRow.length == 0){
             return res.send(errResponse(baseResponse.CLOTHES_NOT_MATCH));
         }
@@ -345,6 +347,8 @@ exports.registerOotd = async function (req, res) {
     for (item of aClothes){
         const aClothesParams = item["smallClass"];
         const aclothesRow = await ootdProvider.clothesCheck(userIdx, aClothesParams);
+        console.log('[ootdController] aclotheseRow : ', aclothesRow);
+        console.log('[ootdController] aclothesRow.length : ', aclothesRow.length);
         if(aclothesRow.length == 0){
             return res.send(errResponse(baseResponse.CLOTHES_NOT_MATCH));
         }
