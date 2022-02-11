@@ -139,7 +139,7 @@ exports.registerOotd = async function (req, res) {
             return res.send(errResponse(baseResponse.THUMBNAIL_ERROR_TYPE));
         }
         // thumbnail 값 -1 또는 0인지 체크
-        if(item["thumbnail"] != -1 && item["thumbnail" != 0]){
+        if(item["thumbnail"] != -1 && item["thumbnail"] != 0){
             return res.send(errResponse(baseResponse.THUMBNAIL_INVALID_VALUE));
         }
     }
@@ -219,6 +219,8 @@ exports.registerOotd = async function (req, res) {
                 return res.send(errResponse(baseResponse.BIG_CLASS_NOT_MATCH));
             }
 
+            item["smallClass"] = item["smallClass"].toString();
+
             // 유효하지 않은 COLOR 값
             item["color"] = item["color"].toString();
             if(colorArr.indexOf(item["color"]) == -1){
@@ -247,6 +249,7 @@ exports.registerOotd = async function (req, res) {
         //aPlace 자체 String 변경
         for(item of aPlace){
             item = item.toString();
+            console.log('[ootdController] item.toString 후 : ', item);
         }
     }
 
@@ -305,9 +308,11 @@ exports.registerOotd = async function (req, res) {
     }
 
     // COMMENT key 입력되지 않았을 때
-    if(comment === undefined){ // 추가 가능성 O
-        return res.send(errResponse(baseResponse.REGISTER_COMMENT_EMPTY));
-    } else {
+    //if(comment === undefined){ // 추가 가능성 O
+    //    return res.send(errResponse(baseResponse.REGISTER_COMMENT_EMPTY));
+    //}else {
+        //코멘트가 있는 경우
+    if(comment){
         comment = comment.toString();
         // COMMENT 길이 체크
         if(comment.length > 65535){
@@ -333,6 +338,8 @@ exports.registerOotd = async function (req, res) {
     for (item of fClothes){
         const fclothesRow = await ootdProvider.clothesCheck(userIdx, item["index"]);
         // if(fClothesRow) 로 변경 가능
+        console.log('[ootdController] fclothesRow : ', fclothesRow);
+        console.log('[ootdController] fclothesRow.length : ', fclothesRow.length);
         if(fclothesRow.length == 0){
             return res.send(errResponse(baseResponse.CLOTHES_NOT_MATCH));
         }
@@ -340,6 +347,8 @@ exports.registerOotd = async function (req, res) {
     for (item of aClothes){
         const aClothesParams = item["smallClass"];
         const aclothesRow = await ootdProvider.clothesCheck(userIdx, aClothesParams);
+        console.log('[ootdController] aclotheseRow : ', aclothesRow);
+        console.log('[ootdController] aclothesRow.length : ', aclothesRow.length);
         if(aclothesRow.length == 0){
             return res.send(errResponse(baseResponse.CLOTHES_NOT_MATCH));
         }
@@ -349,12 +358,17 @@ exports.registerOotd = async function (req, res) {
     // 등록할 수 없는 Place (fPlace->index, aPlace->place)
     for (item of fPlace){
         const fplaceRow = await ootdProvider.placeCheck(userIdx, item);
+        console.log('[ootdController] fplaceRow : ', fplaceRow);
+        console.log('[ootdController] fplaceRow.length : ', fplaceRow.length);        
         if(fplaceRow.length == 0){
             return res.send(errResponse(baseResponse.PLACE_NOT_MATCH));
         }
     }
     for (item of aPlace){
+        console.log('[ootdController] aPlace item : ', item);
         const aplaceRow = await ootdProvider.placeCheck(userIdx, item);
+        console.log('[ootdController] aplaceRow : ', aplaceRow);
+        console.log('[ootdController] aplaceRow.length : ', aplaceRow.length);
         if(aplaceRow.length == 0){
             return res.send(errResponse(baseResponse.PLACE_NOT_MATCH));
         }

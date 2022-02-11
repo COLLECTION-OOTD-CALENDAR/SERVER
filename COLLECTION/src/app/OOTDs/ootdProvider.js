@@ -69,7 +69,7 @@ exports.clothesCheck = async function (userIdx, data) {
 
   try {
     
-    if(Number.isInteger(data)){ // data가 정수일 경우 (fClothes->index)
+    if(Number.isInteger(data) && typeof data == 'number'){ // data가 정수일 경우 (fClothes->index)
       const clothesCheckResult = await ootdDao.checkClothesIdxIs(connection, data);
       connection.release();
       return clothesCheckResult;  //clothesCheckResult[0] 할 수도
@@ -93,7 +93,7 @@ exports.placeCheck = async function (userIdx, data) {
 
   try {
     const connection = await pool.getConnection(async (conn) => conn);
-    if(Number.isInteger(data)){ // data가 정수일 경우 (fPlace->index)
+    if(Number.isInteger(data) && typeof data == 'number'){ // data가 정수일 경우 (fPlace->index)
       const placeCheckResult = await ootdDao.checkPlaceIdxIs(connection, data);
       connection.release();
       return placeCheckResult; //placeCheckResult[0] 할 수도
@@ -117,7 +117,7 @@ exports.weatherCheck = async function (userIdx, data) {
 
   try {
     const connection = await pool.getConnection(async (conn) => conn);
-    if(Number.isInteger(data)){ // data가 정수일 경우 (fWeather->index)
+    if(Number.isInteger(data) && typeof data == 'number'){ // data가 정수일 경우 (fWeather->index)
       const weatherCheckResult = await ootdDao.checkWeatherIdxIs(connection, data);
       connection.release();
       return weatherCheckResult; //weatherCheckResult[0] 할 수도
@@ -141,7 +141,7 @@ exports.whoCheck = async function (userIdx, data) {
 
   try {
     const connection = await pool.getConnection(async (conn) => conn);
-    if(Number.isInteger(data)){ // data가 정수일 경우 (fWeather->index)
+    if(Number.isInteger(data) && typeof data == 'number'){ // data가 정수일 경우 (fWeather->index)
       const whoCheckResult = await ootdDao.checkWhoIdxIs(connection, data);
       connection.release();
       return whoCheckResult; //whoCheckResult[0] 할 수도

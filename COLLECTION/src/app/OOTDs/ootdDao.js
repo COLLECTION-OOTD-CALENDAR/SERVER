@@ -39,7 +39,8 @@ async function checkClothesIs(connection, userIdx, data) {
                 WHERE userIdx = ? AND smallClass = ?;
                 `;
   const checkAClothesRow = await connection.query(checkClothesQuery, [userIdx, data]);
-  console.log('[ootdDao] checkAClothesRow return 전');
+  console.log('[ootdDao] checkAClothesRow return 값 : ', checkAClothesRow);
+  console.log('[ootdDao] checkClothesRow[0] 값 : ', checkAClothesRow[0] );
   return checkAClothesRow[0];
 };
 
@@ -66,7 +67,8 @@ async function checkPlaceIs(connection, userIdx, data) {
                 WHERE userIdx = ? AND place = ?;
                 `;
   const checkAPlaceRow = await connection.query(checkPlaceQuery, [userIdx, data]);
-  console.log('[ootdDao] checkAPlaceRow return 전');
+  console.log('[ootdDao] checkAPlaceRow return 값 : ', checkAPlaceRow);
+  console.log('[ootdDao] checkPlaceRow[0] 값 : ', checkAPlaceRow[0] );
   return checkAPlaceRow[0];
 };
 
