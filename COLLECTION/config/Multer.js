@@ -16,9 +16,9 @@ const upload = multer({
             cb(null, `collectionImageDB/${Date.now()}_${file.originalname}`); 
         } 
     }), 
-    limits: { 
-        fileSize: 3024 * 4032 * 2 
-    } 
+    // limits: { 
+    //     fileSize: 3024 * 4032 * 2 
+    // } 
 }); 
 
 module.exports = upload;
