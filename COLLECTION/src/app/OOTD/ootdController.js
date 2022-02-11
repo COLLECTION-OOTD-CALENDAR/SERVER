@@ -4,6 +4,8 @@ const ootdService = require("./ootdService");
 const baseResponse = require("../../../config/baseResponseStatus");
 const {response, errResponse} = require("../../../config/response");
 
+const uploadMulter = require("../../../config/uploadMulter");
+
 const regexEmail = require("regex-email");
 
 /**
@@ -223,10 +225,13 @@ exports.patchOotd = async function (req, res) {
 };
 
 
-exports.postS3test = async function (req, res, next) {
+exports.postImgTest = async function (req, res) {
 
-    const Img = req.file;
-    console.log(`s3 이미지 경로 : `, Img.location);
+    //const Img = req.file;
 
+    const imageUrl = await uploadMulter.getImageUrl(req);
+    console.log(`s3 이미지 경로 : `, imageUrl);
 
+    return res.send(imageUrlg);
 };
+
