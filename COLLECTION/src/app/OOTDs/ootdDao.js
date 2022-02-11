@@ -454,6 +454,72 @@ async function registerOotdAWho(connection, ootdIdx, AWhoIdxList) {
   return registerOotdWhoRows;
 };
 
+// API 10 : OOTD 수정하기 - 지난 작성 화면 불러오기
+async function selectModiDateOotd(connection, usreIdx, date){
+  const selectModiDateOotdQuery = `
+            SELECT distinct O.userIdx, O.ootdIdx, O.date, O.lookname, O.lookpoint, O.comment,
+              TMPH.imageUrl, TMPH.thumbnail, TMPL.fpName, TMPL.apName,
+              TMWE.fwName, TMWE.awName, TMWH.fwhName, TMWH.awhName,
+              TMCL.color, TMCL.fixedBig, TMCL.fixedSmall, TMCL.addedBig, TMCL.addedSmall,
+              AP.placeList, AW.weatherList, AWH.whoList, AC.bigClassList, AC.smallClassList
+
+            FROM OOTD AS O
+            LEFT JOIN ( SELECT Ph.ootdIdx, Ph.imageUrl, Ph.thumbnail
+              FROM Photo AS Ph
+                RIGHT JOIN OOTD AS O
+                  ON Ph.ootdIdx = O.ootdIdx) AS TMPH
+              ON O.ootdIdx = TMPH.ootdIdx
+            LEFT JOIN ( SELECT PL.ootdIdx, PL.fixedPlace, PL.addedPlace, FP.place AS fpName, AP.place AS apName
+              FROM Place as PL
+                LEFT JOIN FixedPlace AS FP
+                  ON PL.fixedPlace = FP.index
+                LEFT JOIN AddedPlace AS AP
+                  ON PL.addedPlace = AP.index ) AS TMPL
+              ON O.ootdIdx = TMPL.ootdIdx
+            LEFT JOIN ( SELECT WE.ootdIdx, WE.fixedWeather, WE.addedWeather, FW.weather AS fwName, AW.weather AS awName
+              FROM Weather as WE
+                LEFT JOIN FixedWeather AS FW
+                  ON WE.fixedWeather = FW.index
+                LEFT JOIN AddedWeather AS AW
+                  ON WE.addedWeather = AW.index ) AS TMWE
+              ON O.ootdIdx = TMWE.ootdIdx
+            LEFT JOIN ( SELECT WH.ootdIdx, WH.fixedWho, WH.addedWho, FWH.who AS fwhName, AWH.who AS awhName
+              FROM Who as WH
+                LEFT JOIN FixedWho AS FWH
+                    ON WH.fixedWho = FWH.index
+                LEFT JOIN AddedWho AS AWH
+                    ON WH.addedWho = AWH.index ) AS TMWH
+              ON O.ootdIdx = TMWH.ootdIdx
+            LEFT JOIN ( SELECT CL.ootdIdx, CL.fixedType, CL.addedType, CL.color, FC.bigClass AS fixedBig, FC.smallClass AS fixedSmall, AC.bigClass AS addedBig, AC.smallClass AS addedSmall
+              FROM Clothes AS CL
+                LEFT JOIN FixedClothes AS FC
+                  ON CL.fixedType = FC.index
+                LEFT JOIN AddedClothes AS AC
+                  ON CL.addedType = AC.index ) AS TMCL
+              ON O.ootdIdx = TMCL.ootdIdx
+            LEFT JOIN (SELECT userIdx, place AS placeList
+                    FROM AddedPlace
+                    WHERE status = 'active') AS AP
+                ON AP.userIdx = O.userIdx
+            LEFT JOIN (SELECT userIdx, weather AS weatherList
+                    FROM AddedWeather
+                    WHERE status = 'active') AS AW
+                ON AW.userIdx = O.userIdx
+            LEFT JOIN (SELECT userIdx, who AS whoList
+                    FROM AddedWho
+                    WHERE status = 'active') AS AWH
+                ON AWH.userIdx = O.userIdx
+            LEFT JOIN (SELECT userIdx, bigClass AS bigClassList, smallClass AS smallClassList
+                    FROM AddedClothes
+                    WHERE status = 'active') AS AC
+                ON AC.userIdx = O.userIdx
+            WHERE O.userIdx = ? AND O.date = ?;
+            `;
+  const [modiDateOotd] = await connection.query(selectModiDateOotdQuery, [userIdx, date]);
+  return modiDateOotd;
+}
+
+
 // API 12 : OOTD 완료 페이지 불러오기
 async function selectDateOotd(connection, userIdx, date) {
   const selectDateOotdQuery = `
@@ -584,4 +650,5 @@ module.exports = {
   registerOotdFWho,
   registerOotdAWho,
   selectDateOotd,
+  selectModiDateOotd
 };
