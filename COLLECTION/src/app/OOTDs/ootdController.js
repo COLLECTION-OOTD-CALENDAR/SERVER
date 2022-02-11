@@ -248,9 +248,11 @@ exports.registerOotd = async function (req, res) {
 
         //aPlace 자체 String 변경
         for(item of aPlace){
+            console.log('[ootdController] item.toString 전 : ', item);
+            console.log('[ootdController] item.toString 예상 값 : ', item.toString);
             item = item.toString();
+            console.log('[ootdController] item.toString 후 : ', item);
         }
-        console.log('[ootdContorller] aPlace to String RESULT : ', aPlace);
     }
 
     // Weather (fWeather & aWeather) key가 없는 경우 및 빈 값 체크
