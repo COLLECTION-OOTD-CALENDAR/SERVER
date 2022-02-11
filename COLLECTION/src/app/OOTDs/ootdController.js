@@ -250,6 +250,7 @@ exports.registerOotd = async function (req, res) {
         for(item of aPlace){
             item = item.toString();
             console.log('[ootdController] item.toString 후 : ', item);
+            console.log('[ootdController] item.toString 후 type : ', typeof item);
         }
     }
 
@@ -366,6 +367,7 @@ exports.registerOotd = async function (req, res) {
     }
     for (item of aPlace){
         console.log('[ootdController] aPlace item : ', item);
+        console.log('[ootdController] aPlace item type : ', typeof item);
         const aplaceRow = await ootdProvider.placeCheck(userIdx, item);
         console.log('[ootdController] aplaceRow : ', aplaceRow);
         console.log('[ootdController] aplaceRow.length : ', aplaceRow.length);
