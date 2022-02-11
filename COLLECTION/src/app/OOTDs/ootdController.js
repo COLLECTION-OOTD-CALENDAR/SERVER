@@ -219,6 +219,8 @@ exports.registerOotd = async function (req, res) {
                 return res.send(errResponse(baseResponse.BIG_CLASS_NOT_MATCH));
             }
 
+            item["smallClass"] = item["smallClass"].toString();
+
             // 유효하지 않은 COLOR 값
             item["color"] = item["color"].toString();
             if(colorArr.indexOf(item["color"]) == -1){
@@ -351,12 +353,16 @@ exports.registerOotd = async function (req, res) {
     // 등록할 수 없는 Place (fPlace->index, aPlace->place)
     for (item of fPlace){
         const fplaceRow = await ootdProvider.placeCheck(userIdx, item);
+        console.log('[ootdController] fplaceRow : ', fplaceRow);
+        console.log('[ootdController] fplaceRow.length : ', fplaceRow.length);        
         if(fplaceRow.length == 0){
             return res.send(errResponse(baseResponse.PLACE_NOT_MATCH));
         }
     }
     for (item of aPlace){
         const aplaceRow = await ootdProvider.placeCheck(userIdx, item);
+        console.log('[ootdController] aplaceRow : ', aplaceRow);
+        console.log('[ootdController] aplaceRow.length : ', aplaceRow.length);
         if(aplaceRow.length == 0){
             return res.send(errResponse(baseResponse.PLACE_NOT_MATCH));
         }
