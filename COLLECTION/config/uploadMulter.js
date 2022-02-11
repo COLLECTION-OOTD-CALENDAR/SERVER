@@ -1,4 +1,4 @@
-const upload = require('../../../config/Multer');
+const upload = require('./Multer');
 
 exports.getImageUrl = async (req, res, next) =>
 {   
