@@ -24,7 +24,7 @@ module.exports = function(app){
     app.post('/app/ootd/last-register/:userIdx', jwtMiddleware, ootd.registerOotd);
 
     // 2. OOTD 수정하기 - 지난 작성 화면 보여주기
-    //app.get('app/ootd/modi/:userIdx', jwtMiddleware, ootd.modiOotd);
+    app.get('app/ootd/modi/:userIdx', jwtMiddleware, ootd.modiOotd);
 
     // 3. OOTD 삭제하기
     //app.get('app/ootd/deletion/:userIdx', jwtMiddleware, ootd.deleteOotd);
