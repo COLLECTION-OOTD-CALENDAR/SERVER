@@ -93,7 +93,7 @@ exports.placeCheck = async function (userIdx, data) {
 
   try {
     const connection = await pool.getConnection(async (conn) => conn);
-    if(Number.isInteger(data)){ // data가 정수일 경우 (fPlace->index)
+    if(Number.isInteger(data) && typeof data == number){ // data가 정수일 경우 (fPlace->index)
       const placeCheckResult = await ootdDao.checkPlaceIdxIs(connection, data);
       connection.release();
       return placeCheckResult; //placeCheckResult[0] 할 수도
