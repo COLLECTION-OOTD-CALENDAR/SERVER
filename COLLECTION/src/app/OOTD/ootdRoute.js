@@ -21,7 +21,7 @@ module.exports = function(app){
     app.post('/app/ootd/s3test', upload.single('image'), function(req, res)
     {   
         const Img = req.file;
-        console.log('uploaded iamge : ', Img);
-        res.send(Img);                    
+        console.log('uploaded iamge : ', Img.location);
+        res.send(Img.location);                    
     });
 };
