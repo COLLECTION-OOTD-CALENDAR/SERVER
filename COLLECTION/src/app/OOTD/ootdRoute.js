@@ -1,9 +1,8 @@
 module.exports = function(app){
-    const baseResponse = require("../../../config/baseResponseStatus");
-    const {response, errResponse} = require("../../../config/response");
     const ootd = require('./ootdController');
     const jwtMiddleware = require('../../../config/jwtMiddleware');
-    const upload = require('../../../config/Multer');
+    const uploadMulter = require('../../../config/uploadMulter');
+
 
     // 1. 사용자 블럭 추가 API (JWT 검증 및 Validation )
     app.post('/app/ootd/new-block', jwtMiddleware, ootd.postNewBlock); //, jwtMiddleware, ootd.postNewBlock);
@@ -18,10 +17,13 @@ module.exports = function(app){
 
 
     //4. S3 test 이미지 업로드 API
-    app.post('/app/ootd/s3test', upload.single('image'), function(req, res)
-    {   
-        const Img = req.file;
-        console.log('uploaded iamge : ', Img.location);
-        res.send(Img.location);                    
-    });
+    // app.post('/app/ootd/s3test', upload.single('image'), function(req, res)
+    // {   
+    //     const Img = req.file;
+    //     console.log('uploaded iamge : ', Img.location);
+    //     res.send(Img.location);                    
+    // });
+
+    //5. uploadMulter test api
+    app.post('/app/ootd/uploadMulter-test',uploadMulter, ootd.postImgTest);
 };
