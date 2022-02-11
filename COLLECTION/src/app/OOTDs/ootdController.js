@@ -250,6 +250,7 @@ exports.registerOotd = async function (req, res) {
         for(item of aPlace){
             item = item.toString();
         }
+        console.log('[ootdContorller] aPlace to String RESULT : ', aPlace);
     }
 
     // Weather (fWeather & aWeather) key가 없는 경우 및 빈 값 체크
@@ -360,6 +361,7 @@ exports.registerOotd = async function (req, res) {
         }
     }
     for (item of aPlace){
+        console.log('[ootdController] aPlace item : ', item);
         const aplaceRow = await ootdProvider.placeCheck(userIdx, item);
         console.log('[ootdController] aplaceRow : ', aplaceRow);
         console.log('[ootdController] aplaceRow.length : ', aplaceRow.length);
