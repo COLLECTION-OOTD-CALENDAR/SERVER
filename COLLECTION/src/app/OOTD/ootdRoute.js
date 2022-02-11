@@ -1,6 +1,7 @@
 module.exports = function(app){
     const ootd = require('./ootdController');
     const jwtMiddleware = require('../../../config/jwtMiddleware');
+    const multer = require('../../../config/Multer');
 
 
     // 1. 사용자 블럭 추가 API (JWT 검증 및 Validation )
@@ -13,4 +14,13 @@ module.exports = function(app){
 
     //3. OOTD 삭제 API
     app.patch('/app/ootd/deletion',jwtMiddleware, ootd.patchOotd);
+
+
+    //4. S3 test 이미지 업로드 API
+    app.post('/app/ootd/s3test', upload.single('image'), function(req, res)
+    {        
+        const Img = req.file;
+        console.log(Img.location)
+        return Img.location;
+    });
 };
