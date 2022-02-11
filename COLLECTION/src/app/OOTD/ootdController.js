@@ -221,3 +221,12 @@ exports.patchOotd = async function (req, res) {
 
 
 };
+
+
+exports.postS3test = async function (req, res, next) {
+
+    const Img = req.file;
+    console.log(`s3 이미지 경로 : `, Img.location);
+
+
+};
