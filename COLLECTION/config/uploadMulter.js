@@ -5,7 +5,7 @@ exports.getImageUrl = async (req, res, next) =>
     upload.single('image');    
     const Img = req.file;
     console.log('uploaded iamge : ', Img.location);
-    return Img.location;                    
+    return response(baseResponse.SUCCESS_IMAGE_URL, {'image url' : Img.location });                  
 };
 
 
