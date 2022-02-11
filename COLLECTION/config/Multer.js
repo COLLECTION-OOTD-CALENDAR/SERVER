@@ -9,7 +9,8 @@ aws.config.loadFromPath(__dirname + '/awsconfig.json');
 const s3 = new aws.S3(); 
 const upload = multer({ 
     storage: multerS3({ 
-        s3: s3, bucket: 'collection8bucket', 
+        s3: s3, 
+        bucket: 'collection8bucket', 
         acl: 'public-read', 
         key: function(req, file, cb) { 
             cb(null, `collectionImageDB/${Date.now()}_${file.originalname}`); 

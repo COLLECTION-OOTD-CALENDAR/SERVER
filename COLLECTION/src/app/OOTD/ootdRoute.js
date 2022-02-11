@@ -22,11 +22,7 @@ module.exports = function(app){
     {        
         try{
             const Img = req.file;
-
-            console.log("image req file : ", Img)
-
-            let payload = { url :Img.location };
-            res.send(payload); 
+            res.send(Img); 
         }
         catch(err){
             console.log(err);
