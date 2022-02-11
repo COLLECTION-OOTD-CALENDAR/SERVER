@@ -16,16 +16,19 @@ module.exports = function(app){
 
 
     //4. S3 test 이미지 업로드 API
-    app.post('/app/ootd/s3test', upload.single('image'), function(req, res)
+    app.post('/app/ootd/s3test', upload.single('image'), (req, res) =>
     {        
         try{
             const Img = req.file;
-        console.log(Img.location)
-        return Img.location;
+
+            console.log("image req file : ", Img)
+
+            let payload = { url :Img.location };
+            res.send(payload); 
         }
         catch(err){
             console.log(err);
-            
+            return errResponse(baseResponse.SERVER_ERROR);
         }
     });
 };
