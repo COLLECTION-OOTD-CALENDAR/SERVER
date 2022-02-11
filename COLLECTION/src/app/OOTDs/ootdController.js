@@ -139,7 +139,7 @@ exports.registerOotd = async function (req, res) {
             return res.send(errResponse(baseResponse.THUMBNAIL_ERROR_TYPE));
         }
         // thumbnail 값 -1 또는 0인지 체크
-        if(item["thumbnail"] != -1 && item["thumbnail" != 0]){
+        if(item["thumbnail"] != -1 && item["thumbnail"] != 0){
             return res.send(errResponse(baseResponse.THUMBNAIL_INVALID_VALUE));
         }
     }
