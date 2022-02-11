@@ -18,8 +18,14 @@ module.exports = function(app){
     //4. S3 test 이미지 업로드 API
     app.post('/app/ootd/s3test', upload.single('image'), function(req, res)
     {        
-        const Img = req.file;
+        try{
+            const Img = req.file;
         console.log(Img.location)
         return Img.location;
+        }
+        catch(err){
+            console.log(err);
+            
+        }
     });
 };
