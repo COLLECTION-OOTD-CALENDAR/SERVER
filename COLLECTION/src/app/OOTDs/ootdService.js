@@ -34,13 +34,19 @@ exports.lastRegisterOotd = async function (userIdx, date, lookname, photoIs, ima
         //console.log(`추가된 OOTD : ${lastRegisterResult[0].userIdx}`);
         //console.log('lastRegisterResult : ', lastRegisterResult);
         console.log(`추가된 ootdIdx : ${lastRegisterResult[0].insertId}`);
-        
+        const ootdIdxParam2 = lastRegisterResult[0].insertId;
+        console.log("ootdIdxParam2 :", ootdIdxParam2);
         // OOTD 테이블 등록 후 생성된 ootdIdx 가져오기
         // 위에서 insertId를 가지고 온다면 굳이 필요하진 않다는 것
         const lastRegisterOotdIdx = await ootdProvider.newOotdIdx(connection, userIdx, date);
         console.log('새로 추가된 ootdIdx : ', lastRegisterOotdIdx["ootdIdx"]);
         const ootdIdxParam = lastRegisterOotdIdx["ootdIdx"];
-
+        if(ootdIdxParam2 == ootdIdxParam){
+            console.log('========== ootdIdxParam == ootdIdxParam2 ==========');
+        }
+        if(ootdIdxParam2 === ootdIdxParam){
+            console.log('========== ootdIdxParam =real= ootdIdxParam2 ==========');
+        }
         /*********************************************** */
         /****************Photo 테이블 등록*************** */
         /*********************************************** */
