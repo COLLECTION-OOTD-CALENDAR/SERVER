@@ -65,7 +65,7 @@ exports.registerOotd = async function (req, res) {
         return res.send(errResponse(baseResponse.MODE_EMPTY));
     }
 
-    if(Number.isInteger(mode)){
+    if(!Number.isInteger(mode)){
         return res.send(errResponse(baseResponse.MODE_ERROR_TYPE));
     }
 
