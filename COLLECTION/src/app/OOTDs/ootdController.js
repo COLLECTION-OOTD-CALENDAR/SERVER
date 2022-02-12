@@ -530,12 +530,20 @@ exports.modiOotd = async function (req, res){
         return res.send(errResponse(baseResponse.DATE_INVALID_VALUE));
     }
 
-    const callModiOotd = await ootdProvider.retrieveModiOotd(userIdx, date);
-    if(!callModiOotd){
+    let result = {};
+
+    // 해당 OOTD data 부르기
+    const callCompleteOotd = await ootdProvider.retrieveCompleteOotd(userIdx, date);
+    if(!callCompleteOotd){
         return res.send(errResponse(baseResponse.DATE_OOTD_EMPTY));
     }
+    result["selected"] = callCompleteOotd;
 
-    return res.send(response(baseResponse.SUCCESS_OOTD_COMPLETE, callModiOotd));
+    // 사용자가 지금까지 선택한 added~ 부르기
+    const callModiOotd = await ootdProvider.retrieveModiOotd(userIdx);
+    result["added"] = callModiOotd;
+
+    return res.send(response(baseResponse.SUCCESS_OOTD_COMPLETE, result));
 }
 
 
