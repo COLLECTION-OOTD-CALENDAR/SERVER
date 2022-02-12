@@ -64,14 +64,14 @@ exports.registerOotd = async function (req, res) {
     if(!mode){
         return res.send(errResponse(baseResponse.MODE_EMPTY));
     }
-    console.log("mode : ", mode);
-    console.log("typeof mode : ", typeof mode);
-    if(!Number.isInteger(mode)){
+
+    // 숫자가 아닌 경우 error
+    if(isNaN(mode)){
         return res.send(errResponse(baseResponse.MODE_ERROR_TYPE));
     }
 
     // mode가 유효한 값이 아닌 경우(1,2)
-    if(mode != 1 && mode != 2){
+    if(mode !== 1 && mode !== 2){
         return res.send(errResponse(baseResponse.MODE_INVALID_VALUE));
     }
 
