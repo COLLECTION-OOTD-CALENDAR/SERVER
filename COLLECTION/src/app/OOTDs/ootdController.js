@@ -270,11 +270,13 @@ exports.registerOotd = async function (req, res) {
         return res.send(errResponse(baseResponse.REGISTER_PLACE_ERROR_TYPE));
     }
     else {
+        let placeCnt = 0;
         // 올바르지 않은 fPlace index 형식
         for(item of fPlace){
             if(!Number.isInteger(item)){
                 return res.send(errResponse(baseResponse.FPLACE_ERROR_TYPE));
             }
+            placeCnt++;
         }
 
         //aPlace 자체 String 변경
@@ -284,6 +286,11 @@ exports.registerOotd = async function (req, res) {
             aPlace[i] = item;
             console.log('[ootdController] item.toString 후 : ', aPlace[i]);
             console.log('[ootdController] item.toString 후 type : ', typeof aPlace[i]);
+            placeCnt++;
+        }
+        
+        if(placeCnt > 2){
+            return res.send(errResponse(baseResponse.REGISTER_PLACE_MAX));
         }
     }
 
@@ -295,16 +302,23 @@ exports.registerOotd = async function (req, res) {
         return res.send(errResponse(baseResponse.REGISTER_WEATHER_ERROR_TYPE));
     }
     else{
+        let weatherCnt = 0;
         // 올바르지 않은 fWeather index 형식
         for(item of fWeather){
             if(!Number.isInteger(item)){
                 return res.send(errResponse(baseResponse.FWEATHER_ERROR_TYPE));
             }
+            weatherCnt++;
         }
         // aWeather 자체 String 변경
         for(let i in aWeather){
             item = aWeather[i].toString();
             aWeather[i] = item;
+            weatherCnt++;
+        }
+
+        if(weatherCnt > 2){
+            return res.send(errResponse(baseResponse.REGISTER_WEATHER_MAX));
         }
     }
 
@@ -316,16 +330,23 @@ exports.registerOotd = async function (req, res) {
         return res.send(errResponse(baseResponse.REGISTER_WHO_ERROR_TYPE));
     }    
     else {
+        let whoCnt = 0;
         // 올바르지 않은 fWho index 형식
         for(item of fWho){
             if(!Number.isInteger(item)){
                 return res.send(errResponse(baseResponse.FWHO_ERROR_TYPE));
             }
+            whoCnt++;
         }
         // aWho 자체 String 변경
         for(let i in aWho){
             item = aWho[i].toString();
             aWho[i] = item;
+            whoCnt++;
+        }
+
+        if(whoCnt > 2){
+            return res.send(errResponse(baseResponse.REGISTER_WHO_MAX));
         }
     }
 
