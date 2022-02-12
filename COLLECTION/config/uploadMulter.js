@@ -4,7 +4,7 @@ exports.getImageUrl = async function (req, res)
 {   
     this.one = function(){
         upload.single('image');
-        two();
+        two(req, res);
     }   
     function two(req, res){
         const Img = req.file;
