@@ -15,6 +15,23 @@ const crypto = require("crypto");
 
 // Service: Create, Update, Delete 비즈니스 로직 처리
 
+// 기존에 존재한 ootd의 status 를 inactive로 변경
+exports.modiOriginStatus = async function (ootdIdx){
+    try {
+
+        const connection = await pool.getConnection(async (conn) => conn);
+        const modiStatusResult = await ootdDao.modifyOriginOotd(connection, ootdIdx);
+        
+        connection.release();
+        return modiStatusResult;
+
+    } catch(err){
+        logger.error(`App - lastRegisterOotd Service error\n: ${err.message}`);
+        return errResponse(baseResponse.DB_ERROR);
+    }
+};
+
+// OOTD 새로 등록하기
 exports.lastRegisterOotd = async function (userIdx, date, lookname, photoIs, image,
     fClothes, aClothes, fPlace, aPlace, fWeather, aWeather,
     fWho, aWho, lookpoint, comment) {
