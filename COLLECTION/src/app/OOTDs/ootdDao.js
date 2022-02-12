@@ -200,9 +200,11 @@ async function getAddedClothesIdx(connection, userIdx, aClothes){
     let getAddedClothesIdxEach = await connection.query(
       getAddedClothesIdxQuery, [userIdx, item["bigClass"], item["smallClass"]]
     );
+    console.log('[ootdDao] getAddedClothesIdxEach : ', getAddedClothesIdxEach);
     returnList.push(getAddedClothesIdxEach[0]);
   }
 
+  console.log('[ootdDao] returnList : ', returnList);
   return returnList;
 
 };
