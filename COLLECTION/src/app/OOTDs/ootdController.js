@@ -120,7 +120,9 @@ exports.registerOotd = async function (req, res) {
 
     let cntThumb = 0;
     for(item of image){ // 배열의 원소가 하나라도 있어야 들어오는 반복문
-        cntThumb = -1;
+        if(item == image[0]){
+            cntThumb = -1;
+        }
         console.log('image item : ', item);
         // imgUrl 키가 없을 경우
         if(!item["imageUrl"]) {
