@@ -25,5 +25,5 @@ module.exports = function(app){
     });
 
     //5. uploadMulter test api
-   // app.post('/app/ootd/uploadMulter-test',uploadMulter, ootd.postImgTest);
+    app.post('/app/ootd/uploadMulter-test', ootd.postImgTest);
 };
