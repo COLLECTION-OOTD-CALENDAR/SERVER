@@ -201,82 +201,44 @@ exports.addedWhoIdx = async function (connection, userIdx, aWho){
 
 
 // OOTD 수정하기 - 지난 작성 화면 보여주기
-exports.retrieveModiOotd = async function (userIdx, date){
+exports.retrieveModiOotd = async function (userIdx){
 
   try {
     // connection 은 db와의 연결을 도와줌
     const connection = await pool.getConnection(async (conn) => conn);
 
     // Dao 쿼리문의 결과를 호출
-    const modiOotdListResult = await ootdDao.selectModiDateOotd(connection, userIdx, date);
+    const modiOotdListResult = await ootdDao.selectModiDateOotd(connection, userIdx);
     console.log('[ootdProvider] modiOotdListResult : ', modiOotdListResult);
     // connection 해제
     connection.release();
 
-    // 입력된 날짜의 ootd가 존재하는지
+    // 추가한 항목들이 없을 경우
     if(!modiOotdListResult[0]){
       return modiOotdListResult[0];
     }
 
-    let ootd = {};
-    var moment = require('moment');
+    let added = {};
     for (let row of modiOotdListResult){
-      console.log('row : ', row);
-      if(row === modiOotdListResult[0]){
-        ootd["ootdIdx"] = row.ootdIdx;
-        ootd["date"] = moment(row.date).format('YYYY-MM-DD');
-        ootd["lookname"] = row.lookname;
-        ootd["lookpoint"] = row.lookpoint;
-        ootd["comment"] = row.comment;
-      }
 
-      ootd["image"] = getImages(row, ootd["image"]);
-      
-      /******************여기부터****************** */
-      /***************최종등록과 다름*************** */
-
-      ootd["selectedPlace"] = getPlaces(row, ootd["selectedPlace"]);
-      ootd["selectedWeather"] = getWeathers(row, ootd["selectedWeather"]);
-      ootd["selectedWho"] = getWhos(row, ootd["selectedWho"]);
-
-      ootd["addedPlace"] = getPlaceList(row, ootd["addedPlace"]);
-      ootd["addedWeather"] = getWeatherList(row, ootd["addedWeather"]);
-      ootd["addedWho"] = getWhoList(row, ootd["addedWho"]);
+      added["aPlace"] = getPlaceList(row, ootd["aPlace"]);
+      added["aWeather"] = getWeatherList(row, ootd["aWeather"]);
+      added["aWho"] = getWhoList(row, ootd["aWho"]);
 
       // bigClass Key 생성
-      ootd = getSelectedBigClass(ootd);
-      ootd = getAddedBigClass(ootd);
+      added = getAddedBigClass(added);
       
-      // selected의 smallClass 넣기
-      if(row.fixedBig != null){
-        let data = {smallClass : row.fixedSmall, color : row.color};
-
-        let bigKey = 'selected'+row.fixedBig;
-        if(!hasClothes(ootd[bigKey], data)){
-          ootd[bigKey].push(data);
-          //console.log('ootd(+ clothes) : ', ootd);
-        }
-      }
-      else {
-        let data = {smallClass : row.addedSmall, color : row.color};
-
-        let bigKey = 'selected'+row.addedBig;
-        if(!hasClothes(ootd[bigKey], data)){
-          ootd[bigKey].push(data);
-          //console.log('ootd(+ clothes) : ', ootd);
-        }
+      let bigKey = 'a'+row.bigClass;
+      if(!hasAdded(added[bigKey], row.smallClass)){
+        added[bigKey].push(row.smallClass);
+        //console.log('ootd(+ clothes) : ', ootd);
       }
 
-      // added의 smallClass 넣기
-      let bigKey = 'added'+row.bigClassList;
-      if(!hasAdded(ootd[bigKey], row.smallClassList)){
-        ootd[bigKey].push(row.smallClassList);
-      }
-      
     }
-    console.log('[ootdProvider] 최종 ootd : ', ootd);
 
-    return ootd;
+    console.log('[ootdProvider] 최종 added : ', added);
+
+    return added;
 
   } catch(err) {
     logger.error(`App - modiOotd Provider error\n: ${err.message}`);
@@ -287,27 +249,68 @@ exports.retrieveModiOotd = async function (userIdx, date){
 
 
 function getPlaceList(row, tmp){
+  let tags;
 
+  if(tmp === undefined || tmp === null) {
+    tags = [];
+  } else {
+    tags = tmp;
+  }
+
+  if(row.place != null && tags.indexOf(row.place) < 0){
+    tags.push(row.place);
+  }
+
+  return tags;
 };
 
 function getWeatherList(row, tmp){
+  let tags;
 
+  if(tmp === undefined || tmp === null) {
+    tags = [];
+  } else {
+    tags = tmp;
+  }
+
+  if(row.weather != null && tags.indexOf(row.weather) < 0){
+    tags.push(row.weather);
+  }
+
+  return tags;
 };
 
 function getWhoList(row, tmp){
+  let tags;
 
+  if(tmp === undefined || tmp === null) {
+    tags = [];
+  } else {
+    tags = tmp;
+  }
+
+  if(row.who != null && tags.indexOf(row.who) < 0){
+    tags.push(row.who);
+  }
+
+  return tags;
 };
 
-function getSelectedBigClass(ootd){
-
-};
-
-function getAddedBigClass(ootd){
-  
+function getAddedBigClass(added){
+  if(!added["aTop"] && !added["aBottom"] && !added["aShoes"] && !added["aEtc"]){
+    added["aTop"] = [];
+    added["aBottom"] = [];
+    added["aShoes"] = [];
+    added["aEtc"] = [];
+  }
 };
 
 function hasAdded(list, data){
+  for(let each of list){
+    if(each == data) return true;
+  }
 
+  return false;
 };
 
 // OOTD 완료 페이지 불러오기
