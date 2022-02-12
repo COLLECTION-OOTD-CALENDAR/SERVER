@@ -8,12 +8,14 @@ exports.getImageUrl = async function (req, res)
     }   
     function two(req, res){
         const Img = req.file;
-        console.log('uploaded image : ', Img.location);
-        res.send(Img.location);      
+        console.log('uploaded image : ', Img);
+        
+        return res.send(Img.location);    
+
     }                  
 };
 
-
+//return response(baseResponse.SUCCESS_IMAGE_URL, {'ImgUrl' : Img.location});
 
 
 // @ ootdRoute
