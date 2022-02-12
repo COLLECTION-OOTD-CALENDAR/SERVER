@@ -64,7 +64,8 @@ exports.registerOotd = async function (req, res) {
     if(!mode){
         return res.send(errResponse(baseResponse.MODE_EMPTY));
     }
-
+    console.log("mode : ", mode);
+    console.log("typeof mode : ", typeof mode);
     if(!Number.isInteger(mode)){
         return res.send(errResponse(baseResponse.MODE_ERROR_TYPE));
     }
