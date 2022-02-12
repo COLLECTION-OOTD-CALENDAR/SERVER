@@ -150,6 +150,9 @@ module.exports = {
     REGISTER_WHO_ERROR_TYPE : {"isSuccess" : false, "code" : 3091, "message" : "올바르지 않은 fWho / aWho 입력 형식입니다."},
     REGISTER_COMMENT_EMPTY : {"isSuccess" : false, "code" : 3092, "message" : "COMMENT 값을 입력해주세요."},
     THUMBNAIL_MANY_MAIN : {"isSuccess" : false, "code" : 3093, "message" : "한 개의 사진이 thumbnail로 지정되어야 합니다."},
+    MODE_EMPTY : {"isSuccess" : false, "code" : 3094, "message" : "Query String에 mode를 입력해야 합니다."},
+    MODE_INVALID_VALUE : {"isSuccess" : false, "code" : 3095, "message" : "유효하지 않은 mode Query String(1,2)값이 입력되었습니다."},
+    
     
     
     
