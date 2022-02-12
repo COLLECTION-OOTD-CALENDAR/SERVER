@@ -201,7 +201,7 @@ async function getAddedClothesIdx(connection, userIdx, aClothes){
       getAddedClothesIdxQuery, [userIdx, item["bigClass"], item["smallClass"]]
     );
     console.log('[ootdDao] getAddedClothesIdxEach : ', getAddedClothesIdxEach);
-    returnList.push(getAddedClothesIdxEach[0]);
+    returnList.push(getAddedClothesIdxEach[0].index);
   }
 
   console.log('[ootdDao] returnList : ', returnList);
