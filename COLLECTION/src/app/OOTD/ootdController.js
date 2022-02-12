@@ -229,7 +229,7 @@ exports.postImgTest = async function (req, res) {
 
     //const Img = req.file;
 
-    const imageUrl = await uploadMulter.getImageUrl(req, res);
+    const imageUrl = await uploadMulter.getImageUrl();
     console.log(`s3 이미지 경로 : `, imageUrl);
 
     return res.send(imageUrl);
