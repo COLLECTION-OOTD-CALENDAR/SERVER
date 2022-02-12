@@ -118,7 +118,9 @@ exports.registerOotd = async function (req, res) {
         return res.send(errResponse(baseResponse.IMAGE_ERROR_TYPE));
     }
 
+    let cntThumb = 0;
     for(item of image){ // 배열의 원소가 하나라도 있어야 들어오는 반복문
+        cntThumb = -1;
         console.log('image item : ', item);
         // imgUrl 키가 없을 경우
         if(!item["imageUrl"]) {
@@ -142,6 +144,16 @@ exports.registerOotd = async function (req, res) {
         if(item["thumbnail"] != -1 && item["thumbnail"] != 0){
             return res.send(errResponse(baseResponse.THUMBNAIL_INVALID_VALUE));
         }
+        
+        // thumbnail에 1개의 0이 없을 경우
+        if(item["thumbnail"] == 0){
+            cntThumb+=1;
+        }
+    }
+
+    // thumbnail에 1개의 0이 없을 경우
+    if(cntThumb != 0){
+        return res.send(errResponse(baseResponse.THUMBNAIL_MANY_MAIN));
     }
 
     // fClothes 키가 없을 경우, 빈 값인 경우
