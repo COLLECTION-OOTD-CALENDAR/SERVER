@@ -260,12 +260,12 @@ async function getAddedPlaceIdx(connection, userIdx, aPlace) {
   
   let addedPlaceIdxRows = [];
   for (place of aPlace){
-    let addedPlaceIdxEach = await connection.query(
+    let [addedPlaceIdxEach] = await connection.query(
       getAddedPlaceIdxQuery, [userIdx, place]);
     console.log('[ootdDao] addedPlaceIdxEach : ', addedPlaceIdxEach);
     console.log('[ootdDao] addedPlaceIdxEach[0] : ', addedPlaceIdxEach[0]);
-    addedPlaceIdxEach = addedPlaceIdxEach[0];
-    console.log('[ootdDao] addedPlaceIdxEach[0][0].index', addedPlaceIdxEach[0].index);
+    //addedPlaceIdxEach = addedPlaceIdxEach[0];
+    //console.log('[ootdDao] addedPlaceIdxEach[0][0].index', addedPlaceIdxEach[0].index);
     addedPlaceIdxRows.push(addedPlaceIdxEach[0].index);
     console.log('[ootdDao] addedPlaceIdxRows : ', addedPlaceIdxRows);
   }
@@ -334,12 +334,12 @@ async function getAddedWeatherIdx(connection, userIdx, aWeather) {
   
   let addedWeatherIdxRows = [];
   for (weather of aWeather){
-    let addedWeatherIdxEach = await connection.query(
+    let [addedWeatherIdxEach] = await connection.query(
       getAddedWeatherIdxQuery, [userIdx, weather]);
     console.log('[ootdDao] addedWeatherIdxEach : ', addedWeatherIdxEach);
     console.log('[ootdDao] addedWeatherIdxEach[0] : ',addedWeatherIdxEach[0]);
-    addedWeatherIdxEach = addedWeatherIdxEach[0];
-    console.log('[ootdDao] addedWeatherIdxEach[0][0].index : ', addedWeatherIdxEach[0].index);
+    //addedWeatherIdxEach = addedWeatherIdxEach[0];
+    //console.log('[ootdDao] addedWeatherIdxEach[0][0].index : ', addedWeatherIdxEach[0].index);
     addedWeatherIdxRows.push(addedWeatherIdxEach[0].index);
   }
 
@@ -405,12 +405,12 @@ async function getAddedWhoIdx(connection, userIdx, aWho) {
   
   let addedWhoIdxRows = [];
   for (who of aWho){
-    let addedWhoIdxEach = await connection.query(
+    let [addedWhoIdxEach] = await connection.query(
       getAddedWhoIdxQuery, [userIdx, who]);
       console.log('[ootdDao] addedWhoIdxEach : ', addedWhoIdxEach);
       console.log('[ootdDao] addedWhoIdxEach[0] : ',addedWhoIdxEach[0]);
-      addedWhoIdxEach = addedWhoIdxEach[0];
-      console.log('[ootdDao] addedWhoIdxEach[0][0].index : ', addedWhoIdxEach[0].index);
+      //addedWhoIdxEach = addedWhoIdxEach[0];
+      //console.log('[ootdDao] addedWhoIdxEach[0][0].index : ', addedWhoIdxEach[0].index);
     addedWhoIdxRows.push(addedWhoIdxEach[0].index);
   }
 
