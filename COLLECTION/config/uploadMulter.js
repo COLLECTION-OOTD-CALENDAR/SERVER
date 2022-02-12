@@ -1,5 +1,5 @@
 const upload = require('./Multer');
-const {logger} = require("../../../config/winston");
+const {logger} = require("./winston");
 
 
 exports.getImageUrl = async (req, res, next) =>
