@@ -2,17 +2,26 @@ const upload = require('./Multer');
 
 exports.getImageUrl = async function (req, res)
 {   
-    this.one = function(){
-        upload.single('image');
-        two(req, res);
-    }   
-    function two(req, res){
-        const Img = req.file;
-        console.log('uploaded image : ', Img);
-        
-        return res.send(Img.location);    
-
-    }                  
+    try{
+        this.one = function(){
+            upload.single('image').then(
+                res => two(req, res)
+            );
+            console.log('after upload');
+            //two(req, res);
+        }   
+        function two(req, res){
+            const Img = req.file;
+            console.log('uploaded image : ', Img);
+            
+            return res.send(Img.location);        
+        }       
+    }
+    catch(err){
+        logger.error(`App - uploadMulter.getImageUrl error\n: ${err.message}`);
+        return errResponse(baseResponse.DB_ERROR);
+    }
+               
 };
 
 //return response(baseResponse.SUCCESS_IMAGE_URL, {'ImgUrl' : Img.location});
