@@ -367,11 +367,19 @@ exports.registerOotd = async function (req, res) {
 
     const ootdRow = await ootdProvider.ootdDateCheck(userIdx, n_date);
 
+    // ootdRow의 결과와 mode가 잘 맞지 않는 경우
+    // ootdRow가 없는데 수정모드일 경우, ootdRow가 있는데 등록모드일 경우 error
     if(ootdRow && mode == 1){
         return res.send(errResponse(baseResponse.OOTD_ALREADY_EXIST));
     }
     else if (!ootdRow && mode == 2){
         return res.send(errResponse(baseResponse.OOTD_NOT_EXIST));
+    }
+
+    // 수정모드일 때, ootdRow의 ootdIdx value에 접근하여 status : active -> inactive
+    if(mode == 2){
+        const modiOriginResult = await ootdService.modiOriginStatus(ootdRow.ootdIdx);
+        console.log('[ootdController] modiOriginRow : ', modiOriginResult);
     }
 
     // 등록할 수 없는 옷(fClothes->index, aClothes->smallClass)
