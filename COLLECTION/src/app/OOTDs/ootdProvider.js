@@ -221,9 +221,9 @@ exports.retrieveModiOotd = async function (userIdx){
     let added = {};
     for (let row of modiOotdListResult){
 
-      added["aPlace"] = getPlaceList(row, ootd["aPlace"]);
-      added["aWeather"] = getWeatherList(row, ootd["aWeather"]);
-      added["aWho"] = getWhoList(row, ootd["aWho"]);
+      added["aPlace"] = getPlaceList(row, added["aPlace"]);
+      added["aWeather"] = getWeatherList(row, added["aWeather"]);
+      added["aWho"] = getWhoList(row, added["aWho"]);
 
       // bigClass Key 생성
       added = getAddedBigClass(added);
