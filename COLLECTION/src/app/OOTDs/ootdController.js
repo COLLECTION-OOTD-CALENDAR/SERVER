@@ -191,19 +191,19 @@ exports.registerOotd = async function (req, res) {
         }
 
         // aClothes 내 객체 조건 
-        for(item of aClothes){
+        for(let i in aClothes){
             // bigClass 키가 없을 경우 및 빈 값인 경우
-            if(!item["bigClass"]){
+            if(!aClothes[i].bigClass){
                 return res.send(errResponse(baseResponse.ACLOTHES_BIG_EMPTY));
             }
 
             // smallClass 키가 없을 경우 및 빈 값인 경우
-            if(!item["smallClass"]){
+            if(!aClothes[i].smallClass){
                 return res.send(errResponse(baseResponse.ACLOTHES_SMALL_EMPTY));
             }
 
             // color 키가 없을 경우 및 빈 값인 경우
-            if(!item["color"]){
+            if(!aClothes[i].color){
                 return res.send(errResponse(baseResponse.ACLOTHES_COLOR_EMPTY));
             }
             /*
@@ -214,15 +214,15 @@ exports.registerOotd = async function (req, res) {
             */
 
             // 존재하지 않는 옷 카테고리
-            item["bigClass"] = item["bigClass"].toString();
-            if(bigArr.indexOf(item["bigClass"]) == -1){
+            aClothes[i].bigClass = (aClothes[i].bigClass).toString();
+            if(bigArr.indexOf(aClothes[i].bigClass) == -1){
                 return res.send(errResponse(baseResponse.BIG_CLASS_NOT_MATCH));
             }
 
-            item["smallClass"] = item["smallClass"].toString();
-
+            let strSmall = (aClothes[i].smallClass).toString();
+            aClothes[i].smallClass = strSmall;
             // 유효하지 않은 COLOR 값
-            item["color"] = item["color"].toString();
+            aClothes[i].color = (aClothes[i].color).toString();
             if(colorArr.indexOf(item["color"]) == -1){
                 return res.send(errResponse(baseResponse.COLOR_INVALID_VALUE));
             }
@@ -247,10 +247,12 @@ exports.registerOotd = async function (req, res) {
         }
 
         //aPlace 자체 String 변경
-        for(item of aPlace){
-            item = item.toString();
-            console.log('[ootdController] item.toString 후 : ', item);
-            console.log('[ootdController] item.toString 후 type : ', typeof item);
+        for(let i in aPlace){
+            //item = item.toString();
+            item = aPlace[i].toString();
+            aPlace[i] = item;
+            console.log('[ootdController] item.toString 후 : ', aPlace[i]);
+            console.log('[ootdController] item.toString 후 type : ', typeof aPlace[i]);
         }
     }
 
@@ -269,8 +271,9 @@ exports.registerOotd = async function (req, res) {
             }
         }
         // aWeather 자체 String 변경
-        for(item of aWeather){
-            item = item.toString();
+        for(let i in aWeather){
+            item = aWeather[i].toString();
+            aWeather[i] = item;
         }
     }
 
@@ -289,8 +292,9 @@ exports.registerOotd = async function (req, res) {
             }
         }
         // aWho 자체 String 변경
-        for(item of aWho){
-            item = item.toString();
+        for(let i in aWho){
+            item = aWho[i].toString();
+            aWho[i] = item;
         }
     }
 
