@@ -8,7 +8,7 @@ exports.getImageUrl = async (req, res, next) =>
         console.log('uploaded iamge : ', Img.location);
         return response(baseResponse.SUCCESS_IMAGE_URL, {'image url' : Img.location });  
     }
-    catch{
+    catch(err){
         logger.error(`App - getImageUrl uploadmulter error\n: ${err.message}`);
         return errResponse(baseResponse.SERVER_ERROR);
     }                
