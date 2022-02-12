@@ -149,7 +149,7 @@ module.exports = {
     REGISTER_WEATHER_ERROR_TYPE : {"isSuccess" : false, "code" : 3090, "message" : "올바르지 않은 fWeather / aWeather 입력 형식입니다."},
     REGISTER_WHO_ERROR_TYPE : {"isSuccess" : false, "code" : 3091, "message" : "올바르지 않은 fWho / aWho 입력 형식입니다."},
     REGISTER_COMMENT_EMPTY : {"isSuccess" : false, "code" : 3092, "message" : "COMMENT 값을 입력해주세요."},
-    
+    THUMBNAIL_MANY_MAIN : {"isSuccess" : false, "code" : 3093, "message" : "한 개의 사진이 thumbnail로 지정되어야 합니다."},
     
     
     
