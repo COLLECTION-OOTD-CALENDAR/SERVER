@@ -24,7 +24,7 @@ module.exports = {
     SUCCESS_MATCH : { "isSuccess": true, "code": 1020, "message":"매칭 페이지 검색 결과 불러오기 성공" },
     SUCCESS_MATCH_DATE : { "isSuccess": true, "code": 1023, "message":"날짜 기반 매칭 페이지 검색 결과 불러오기 성공" },
     SUCCESS_DELETE_BLOCK : { "isSuccess": true, "code": 1024, "message":"사용자 블럭 삭제 성공" },
-    SUCCESS_IMAGE_URL : { "isSuccess": true, "code": 1024, "message":"이미지 url 변환 성공" },  //220212 0419am 
+    SUCCESS_IMAGE_URL : { "isSuccess": true, "code": 1025, "message":"이미지 url 변환 성공" },  //220212 0419am 
 
 
 
