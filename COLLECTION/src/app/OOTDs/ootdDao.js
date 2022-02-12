@@ -8,7 +8,7 @@ async function checkDateOotd(connection, userIdx, date) {
   const checkDateOotdQuery = `
                 SELECT ootdIdx, userIdx, date
                 FROM OOTD
-                WHERE userIdx = ? AND date = ?;
+                WHERE userIdx = ? AND date = ? AND status = 'active';
                 `;
   console.log('[ootdDao] query문 작성 후');
   const [ootdDateRow] = await connection.query(checkDateOotdQuery, [userIdx, date]);
@@ -36,7 +36,7 @@ async function checkClothesIs(connection, userIdx, data) {
   const checkClothesQuery = `
                 SELECT AC.index, userIdx, smallClass
                 FROM AddedClothes AS AC
-                WHERE userIdx = ? AND smallClass = ?;
+                WHERE userIdx = ? AND smallClass = ? AND status = 'active';
                 `;
   const checkAClothesRow = await connection.query(checkClothesQuery, [userIdx, data]);
   console.log('[ootdDao] checkAClothesRow return 값 : ', checkAClothesRow);
@@ -64,7 +64,7 @@ async function checkPlaceIs(connection, userIdx, data) {
   const checkPlaceQuery = `
                 SELECT AP.index, userIdx, place
                 FROM AddedPlace AS AP
-                WHERE userIdx = ? AND place = ?;
+                WHERE userIdx = ? AND place = ? AND status = 'active';
                 `;
   const checkAPlaceRow = await connection.query(checkPlaceQuery, [userIdx, data]);
   console.log('[ootdDao] checkAPlaceRow return 값 : ', checkAPlaceRow);
@@ -92,7 +92,7 @@ async function checkWeatherIs(connection, userIdx, data) {
   const checkWeatherQuery = `
                 SELECT AW.index, userIdx, weather
                 FROM AddedWeather AS AW
-                WHERE userIdx = ? AND weather = ?;
+                WHERE userIdx = ? AND weather = ? AND status = 'active';
                 `;
   const checkAWeatherRow = await connection.query(checkWeatherQuery, [userIdx, data]);
   //console.log('[ootdDao] checkAWeatherRow return : ', checkAWeatherRow);
@@ -119,7 +119,7 @@ async function checkWhoIs(connection, userIdx, data) {
   const checkWhoQuery = `
                 SELECT AWH.index, userIdx, who
                 FROM AddedWho AS AWH
-                WHERE userIdx = ? AND who = ?;
+                WHERE userIdx = ? AND who = ? AND status = 'active';
                 `;
   const checkAWhoRow = await connection.query(checkWhoQuery, [userIdx, data]);
   console.log('[ootdDao] checkAWhoRow return 전');
@@ -145,6 +145,7 @@ async function registerNewOotd(connection, lastRegisterOotdParams) {
 };
 
 // API 8 : OOTD 최종 등록하기 - OOTD 테이블 내 ootdIdx 찾아오기
+/*
 async function checkNewOotd(connection, userIdx, date) {
   const checkNewOotdQuery = `
                 SELECT ootdIdx
@@ -154,6 +155,7 @@ async function checkNewOotd(connection, userIdx, date) {
   const checkNewOotdRow = await connection.query(checkNewOotdQuery, [userIdx, date]);
   return checkNewOotdRow[0];
 };
+*/
 
 // API 8 : OOTD 최종 등록하기 - Photo 테이블
 async function registerOotdPhoto(connection, ootdIdx, image) {
@@ -180,7 +182,7 @@ async function getAddedClothesIdx(connection, userIdx, aClothes){
   const getAddedClothesIdxQuery = `
         SELECT AC.index
         FROM AddedClothes AS AC
-        WHERE userIdx = ? AND bigClass = ? AND smallClass = ?
+        WHERE userIdx = ? AND bigClass = ? AND smallClass = ? AND status = 'active'
         ;`;
   
   let returnList = [];
@@ -241,7 +243,7 @@ async function getAddedPlaceIdx(connection, userIdx, aPlace) {
   const getAddedPlaceIdxQuery = `
           SELECT AP.index
           FROM AddedPlace AS AP
-          WHERE userIdx = ? AND place = ?;
+          WHERE userIdx = ? AND place = ? AND status = 'active';
           `;
   
   let addedPlaceIdxRows = [];
@@ -315,7 +317,7 @@ async function getAddedWeatherIdx(connection, userIdx, aWeather) {
   const getAddedWeatherIdxQuery = `
           SELECT AW.index
           FROM AddedWeather AS AW
-          WHERE userIdx = ? AND weather = ?;
+          WHERE userIdx = ? AND weather = ? AND status = 'active';
           `;
   
   let addedWeatherIdxRows = [];
@@ -386,7 +388,7 @@ async function getAddedWhoIdx(connection, userIdx, aWho) {
   const getAddedWhoIdxQuery = `
           SELECT AWH.index
           FROM AddedWho AS AWH
-          WHERE userIdx = ? AND who = ?;
+          WHERE userIdx = ? AND who = ? AND status = 'active';
           `;
   
   let addedWhoIdxRows = [];
@@ -513,7 +515,7 @@ async function selectModiDateOotd(connection, usreIdx, date){
                     FROM AddedClothes
                     WHERE status = 'active') AS AC
                 ON AC.userIdx = O.userIdx
-            WHERE O.userIdx = ? AND O.date = ?;
+            WHERE O.userIdx = ? AND O.date = ? AND O.status='active';
             `;
   const [modiDateOotd] = await connection.query(selectModiDateOotdQuery, [userIdx, date]);
   return modiDateOotd;
@@ -562,7 +564,7 @@ async function selectDateOotd(connection, userIdx, date) {
                 LEFT JOIN AddedClothes AS AC
                   ON CL.addedType = AC.index ) AS TMCL
               ON O.ootdIdx = TMCL.ootdIdx
-            WHERE O.userIdx = ? AND O.date = ?;
+            WHERE O.userIdx = ? AND O.date = ? AND status = 'active';
             `;
   const [completeDateOotd] = await connection.query(selectDateOotdQuery, [userIdx, date]);
   return completeDateOotd;

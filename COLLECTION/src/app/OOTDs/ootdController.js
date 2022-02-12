@@ -16,6 +16,7 @@ var lookpointPattern = /^[1-5]$/;
  * API Name : OOTD 최종 등록하기
  * [POST] /app/ootd/last-register/:userIdx
  * path variable : userIdx
+ * Query String : mode (1 : register 2 : modi)
  * Body : date, lookname, photoIs, image[{imageUrl, thumbnail}],
  * fClothes[{index, color}], aClothes[{bigClass, smallClass, color}], 
  * fPlace[placeIdx], aPlace[place], fWeather[weatherIdx], aWeather[weather],
@@ -30,6 +31,7 @@ exports.registerOotd = async function (req, res) {
     const userIdxFromJWT = req.verifiedToken.userIdx;
 
     const userIdx = req.params.userIdx;
+    const mode = req.query.mode;
 
     let {date, lookname, photoIs, image, fClothes, aClothes,
     fPlace, aPlace, fWeather, aWeather, fWho, aWho, lookpoint, comment} = req.body;
@@ -56,6 +58,16 @@ exports.registerOotd = async function (req, res) {
     // 유효하지 않는 userIdx 입력
     if (userIdxFromJWT != userIdx) {
         return res.send(errResponse(baseResponse.USERID_NOT_MATCH));
+    }
+
+    // mode가 없을 경우 error
+    if(!mode){
+        return res.send(errResponse(baseResponse.MODE_EMPTY));
+    }
+
+    // mode가 유효한 값이 아닌 경우(1,2)
+    if(mode != 1 && mode != 2){
+        return res.send(errResponse(baseResponse.MODE_INVALID_VALUE));
     }
 
     // date 빈 값 체크
@@ -346,11 +358,15 @@ exports.registerOotd = async function (req, res) {
 
     // 나중에 ootdService 내부 코드들과 합치는 게 좋긴 함.
 
-    // 입력된 date에 이미 OOTD 존재
+    // 입력된 date에 이미 OOTD 존재 (mode가 register(1)일 때만)
+
     const ootdRow = await ootdProvider.ootdDateCheck(userIdx, n_date);
 
-    if(ootdRow){
+    if(ootdRow && mode == 1){
         return res.send(errResponse(baseResponse.OOTD_ALREADY_EXIST));
+    }
+    else if (!ootdRow && mode == 2){
+        return res.send(errResponse(baseResponse.OOTD_NOT_EXIST));
     }
 
     // 등록할 수 없는 옷(fClothes->index, aClothes->smallClass)

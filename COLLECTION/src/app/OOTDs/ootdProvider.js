@@ -161,12 +161,14 @@ exports.whoCheck = async function (userIdx, data) {
 
 
 // userIdx와 date를 이용하여 ootdIdx 추출하기
+/*
 exports.newOotdIdx = async function (connection, userIdx, date) {
 
   const newOotdIdxResult = await ootdDao.checkNewOotd(connection, userIdx, date);
   return newOotdIdxResult[0];
   
 };
+*/
 
 // userIdx와 aClothes의 bigClass, smallClass를 이용한 index 추출하기
 exports.addedClothesIdx = async function (connection, userIdx, aClothes){

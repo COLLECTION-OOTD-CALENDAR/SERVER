@@ -174,6 +174,8 @@ module.exports = {
     WEATHER_NOT_MATCH : { "isSuccess": false, "code": 4012, "message": "등록할 수 없는 Weather가 입력되었습니다."},
     WHO_NOT_MATCH : { "isSuccess": false, "code": 4013, "message": "등록할 수 없는 Who가 입력되었습니다."},
     TAG_REDUNDANT_FIXED : { "isSuccess": false, "code": 4014, "message": "기본 태그에 존재합니다." },
+    OOTD_NOT_EXIST :  { "isSuccess": false, "code": 4015, "message": "해당 DATE에 OOTD가 존재하지 않습니다." },
+    
     
 
 
