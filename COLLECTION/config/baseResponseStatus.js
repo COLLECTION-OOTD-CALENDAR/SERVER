@@ -153,8 +153,9 @@ module.exports = {
     MODE_EMPTY : {"isSuccess" : false, "code" : 3094, "message" : "Query String에 mode를 입력해야 합니다."},
     MODE_ERROR_TYPE : {"isSuccess" : false, "code" : 3095, "message" : "올바르지 않은 mode Query String 형식입니다."},
     MODE_INVALID_VALUE : {"isSuccess" : false, "code" : 3096, "message" : "유효하지 않은 mode Query String(1,2)값이 입력되었습니다."},
-    
-    
+    REGISTER_PLACE_MAX : {"isSuccess" : false, "code" : 3097, "message" : "Place는 최대 두 개까지 선택할 수 있습니다."},
+    REGISTER_WEATHER_MAX : {"isSuccess" : false, "code" : 3098, "message" : "Weather는 최대 두 개까지 선택할 수 있습니다."},
+    REGISTER_WHO_MAX : {"isSuccess" : false, "code" : 3099, "message" : "Who는 최대 두 개까지 선택할 수 있습니다."},
     
 
 
