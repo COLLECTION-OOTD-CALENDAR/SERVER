@@ -634,7 +634,7 @@ module.exports = {
   checkWhoIdxIs,
   checkWhoIs,
   registerNewOotd,
-  checkNewOotd,
+  //checkNewOotd,
   registerOotdPhoto,
   getAddedClothesIdx,
   registerOotdFClothes,
