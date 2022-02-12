@@ -90,8 +90,10 @@ exports.lastRegisterOotd = async function (userIdx, date, lookname, photoIs, ima
         const AClothesIdxList = await ootdProvider.addedClothesIdx(connection, userIdx, aClothes);
         console.log('AClothesIdxList.length : ', AClothesIdxList.length);
         console.log('aClothes.length : ', aClothes.length);
+        console.log('[ootdService] AClothesIdxList : ', AClothesIdxList);
         for (i in aClothes){
             let tmpAClothes = {};
+            console.log(AClothesIdxList[i]);
             tmpAClothes["index"] = AClothesIdxList[i];
             tmpAClothes["color"] = aClothes[i].color;
             ootdAddedClothes.push(tmpAClothes);
