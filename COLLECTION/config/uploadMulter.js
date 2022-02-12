@@ -6,7 +6,7 @@ exports.getImageUrl = async function (req, res)
         upload.single('image');
         two();
     }   
-    function two(){
+    function two(req, res){
         const Img = req.file;
         console.log('uploaded image : ', Img.location);
         res.send(Img.location);      
