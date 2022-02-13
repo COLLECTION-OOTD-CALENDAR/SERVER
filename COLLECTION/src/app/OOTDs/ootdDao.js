@@ -3,136 +3,114 @@
 
 //  입력된 date에 해당하는 ootd 존재 여부 체크
 async function checkDateOotd(connection, userIdx, date) {
-  console.log('[ootdDao] userIdx :', userIdx);
-  console.log('[ootdDao] date : ', date);
+
   const checkDateOotdQuery = `
                 SELECT ootdIdx, userIdx, date
                 FROM OOTD
                 WHERE userIdx = ? AND date = ? AND status = 'active';
                 `;
-  console.log('[ootdDao] query문 작성 후');
+
   const [ootdDateRow] = await connection.query(checkDateOotdQuery, [userIdx, date]);
-  console.log('[ootdDao] checkDateOotd return 전');
   return ootdDateRow[0];
 };
-
-/*
-async function modifyOriginOotd(connection, ootdIdx){
-  const modifyOriginOotdQuery = `
-                UPDATE OOTD
-                SET status = 'inactive'
-                WHERE ootdIdx = ?;`;
-  const modiOotdRow = await connection.query(modifyOriginOotdQuery, ootdIdx);
-  return modiOotdRow[0];
-}*/
 
 
 // fixedClothes의 index 존재 여부 체크
 async function checkClothesIdxIs(connection, data) {
-  console.log('[ootdDao] data : ', data);
+
   const checkClothesIdxQuery = `
                 SELECT FC.index, bigClass, smallClass
                 FROM FixedClothes AS FC
                 WHERE FC.index = ?;
                 `;
   const checkFClothesRow = await connection.query(checkClothesIdxQuery, data);
-  console.log('[ootdDao] checkFClothesRow return 전');
   return checkFClothesRow[0];
 };
+
 // addedClothes의 smallClass 존재 여부 체크
 async function checkClothesIs(connection, userIdx, data) {
-  console.log('[ootdDao] userIdx :', userIdx);
-  console.log('[ootdDao] data : ', data);
+
   const checkClothesQuery = `
                 SELECT AC.index, userIdx, smallClass
                 FROM AddedClothes AS AC
                 WHERE userIdx = ? AND smallClass = ? AND status = 'active';
                 `;
   const checkAClothesRow = await connection.query(checkClothesQuery, [userIdx, data]);
-  console.log('[ootdDao] checkAClothesRow return 값 : ', checkAClothesRow);
-  console.log('[ootdDao] checkClothesRow[0] 값 : ', checkAClothesRow[0] );
   return checkAClothesRow[0];
 };
 
 
 // fixedPlace의 index 존재 여부 체크
 async function checkPlaceIdxIs(connection, data) {
-  console.log('[ootdDao] data : ', data);
+
   const checkPlaceIdxQuery = `
                 SELECT FP.index, place
                 FROM FixedPlace AS FP
                 WHERE FP.index = ?;
                 `;
   const checkFPlaceRow = await connection.query(checkPlaceIdxQuery, data);
-  console.log('[ootdDao] checkFPlaceRow return 전');
   return checkFPlaceRow[0];
 };
+
 // addedPlace의 place 존재 여부 체크
 async function checkPlaceIs(connection, userIdx, data) {
-  console.log('[ootdDao] userIdx :', userIdx);
-  console.log('[ootdDao] data : ', data);
+
   const checkPlaceQuery = `
                 SELECT AP.index, userIdx, place
                 FROM AddedPlace AS AP
                 WHERE userIdx = ? AND place = ? AND status = 'active';
                 `;
   const checkAPlaceRow = await connection.query(checkPlaceQuery, [userIdx, data]);
-  console.log('[ootdDao] checkAPlaceRow return 값 : ', checkAPlaceRow);
-  console.log('[ootdDao] checkPlaceRow[0] 값 : ', checkAPlaceRow[0] );
   return checkAPlaceRow[0];
 };
 
 
 // fixedWeather의 index 존재 여부 체크
 async function checkWeatherIdxIs(connection, data) {
-  console.log('[ootdDao] data : ', data);
+
   const checkWeatherIdxQuery = `
                 SELECT FW.index, weather
                 FROM FixedWeather AS FW
                 WHERE FW.index = ?;
                 `;
   const checkFWeatherRow = await connection.query(checkWeatherIdxQuery, data);
-  //console.log('[ootdDao] checkFWeatherRow return : ', checkFWeatherRow);
   return checkFWeatherRow[0];
 };
+
 // addedWeather의 weather 존재 여부 체크
 async function checkWeatherIs(connection, userIdx, data) {
-  console.log('[ootdDao] userIdx :', userIdx);
-  console.log('[ootdDao] data : ', data);
+
   const checkWeatherQuery = `
                 SELECT AW.index, userIdx, weather
                 FROM AddedWeather AS AW
                 WHERE userIdx = ? AND weather = ? AND status = 'active';
                 `;
   const checkAWeatherRow = await connection.query(checkWeatherQuery, [userIdx, data]);
-  //console.log('[ootdDao] checkAWeatherRow return : ', checkAWeatherRow);
   return checkAWeatherRow[0];
 };
 
 
 // fixedWho의 index 존재 여부 체크
 async function checkWhoIdxIs(connection, data) {
-  console.log('[ootdDao] data : ', data);
+
   const checkWhoIdxQuery = `
                 SELECT FWH.index, who
                 FROM FixedWho AS FWH
                 WHERE FWH.index = ?;
                 `;
   const checkFWhoRow = await connection.query(checkWhoIdxQuery, data);
-  console.log('[ootdDao] checkFWhoRow return 전');
   return checkFWhoRow[0];
 };
+
 // addedWeather의 who 존재 여부 체크
 async function checkWhoIs(connection, userIdx, data) {
-  console.log('[ootdDao] userIdx :', userIdx);
-  console.log('[ootdDao] data : ', data);
+
   const checkWhoQuery = `
                 SELECT AWH.index, userIdx, who
                 FROM AddedWho AS AWH
                 WHERE userIdx = ? AND who = ? AND status = 'active';
                 `;
   const checkAWhoRow = await connection.query(checkWhoQuery, [userIdx, data]);
-  console.log('[ootdDao] checkAWhoRow return 전');
   return checkAWhoRow[0];
 };
 
@@ -200,13 +178,9 @@ async function getAddedClothesIdx(connection, userIdx, aClothes){
     let [getAddedClothesIdxEach] = await connection.query(
       getAddedClothesIdxQuery, [userIdx, item["bigClass"], item["smallClass"]]
     );
-    console.log('[ootdDao] getAddedClothesIdxEach : ', getAddedClothesIdxEach);
     returnList.push(getAddedClothesIdxEach[0].index);
   }
-
-  console.log('[ootdDao] returnList : ', returnList);
   return returnList;
-
 };
 
 
@@ -218,14 +192,12 @@ async function registerOotdFClothes(connection, ootdIdx, ootdFixedClothes) {
     `;
 
   let registerOotdClothesRows = [];
-
   for (item of ootdFixedClothes){
     let registerOotdClothesEach = await connection.query(
       registerOotdFClothesQuery,
       [ootdIdx, item["index"], item["color"]]);
       registerOotdClothesRows.push(registerOotdClothesEach);
   }
-
   return registerOotdClothesRows;
 };
 
@@ -238,14 +210,12 @@ async function registerOotdAClothes(connection, ootdIdx, ootdAddedClothes) {
     `;
 
   let registerOotdClothesRows = [];
-
   for (item of ootdAddedClothes){
     let registerOotdClothesEach = await connection.query(
       registerOotdAClothesQuery,
       [ootdIdx, item["index"], item["color"]]);
       registerOotdClothesRows.push(registerOotdClothesEach);
   }
-
   return registerOotdClothesRows;
 };
 
@@ -262,14 +232,9 @@ async function getAddedPlaceIdx(connection, userIdx, aPlace) {
   for (place of aPlace){
     let [addedPlaceIdxEach] = await connection.query(
       getAddedPlaceIdxQuery, [userIdx, place]);
-    console.log('[ootdDao] addedPlaceIdxEach : ', addedPlaceIdxEach);
-    console.log('[ootdDao] addedPlaceIdxEach[0] : ', addedPlaceIdxEach[0]);
-    //addedPlaceIdxEach = addedPlaceIdxEach[0];
-    //console.log('[ootdDao] addedPlaceIdxEach[0][0].index', addedPlaceIdxEach[0].index);
     addedPlaceIdxRows.push(addedPlaceIdxEach[0].index);
     console.log('[ootdDao] addedPlaceIdxRows : ', addedPlaceIdxRows);
   }
-
   return addedPlaceIdxRows;
 
 };
@@ -293,14 +258,12 @@ async function registerOotdFPlace (connection, ootdIdx, fPlace) {
     `;
 
   let registerOotdPlaceRows = [];
-
   for (item of fPlace){
     let registerOotdPlaceEach = await connection.query(
       registerOotdFPlaceQuery,
       [ootdIdx, item]);
     registerOotdPlaceRows.push(registerOotdPlaceEach);
   }
-
   return registerOotdPlaceRows;
 };
 
@@ -312,14 +275,12 @@ async function registerOotdAPlace (connection, ootdIdx, APlaceIdxList) {
     `;
 
   let registerOotdPlaceRows = [];
-
   for (item of APlaceIdxList){
     let registerOotdPlaceEach = await connection.query(
       registerOotdAPlaceQuery,
       [ootdIdx, item]);
     registerOotdPlaceRows.push(registerOotdPlaceEach);
   }
-
   return registerOotdPlaceRows;
 };
 
@@ -336,13 +297,8 @@ async function getAddedWeatherIdx(connection, userIdx, aWeather) {
   for (weather of aWeather){
     let [addedWeatherIdxEach] = await connection.query(
       getAddedWeatherIdxQuery, [userIdx, weather]);
-    console.log('[ootdDao] addedWeatherIdxEach : ', addedWeatherIdxEach);
-    console.log('[ootdDao] addedWeatherIdxEach[0] : ',addedWeatherIdxEach[0]);
-    //addedWeatherIdxEach = addedWeatherIdxEach[0];
-    //console.log('[ootdDao] addedWeatherIdxEach[0][0].index : ', addedWeatherIdxEach[0].index);
     addedWeatherIdxRows.push(addedWeatherIdxEach[0].index);
   }
-
   return addedWeatherIdxRows;
 };
 
@@ -365,14 +321,12 @@ async function registerOotdFWeather(connection, ootdIdx, fWeather) {
     `;
 
   let registerOotdWeatherRows = [];
-
   for (item of fWeather){
     let registerOotdWeatherEach = await connection.query(
       registerOotdFWeatherQuery,
       [ootdIdx, item]);
       registerOotdWeatherRows.push(registerOotdWeatherEach);
   }
-
   return registerOotdWeatherRows;
 };
 
@@ -384,14 +338,12 @@ async function registerOotdAWeather(connection, ootdIdx, AWeatherIdxList) {
     `;
 
   let registerOotdWeatherRows = [];
-
   for (item of AWeatherIdxList){
     let registerOotdWeatherEach = await connection.query(
       registerOotdAWeatherQuery,
       [ootdIdx, item]);
       registerOotdWeatherRows.push(registerOotdWeatherEach);
   }
-
   return registerOotdWeatherRows;
 };
 
@@ -407,13 +359,8 @@ async function getAddedWhoIdx(connection, userIdx, aWho) {
   for (who of aWho){
     let [addedWhoIdxEach] = await connection.query(
       getAddedWhoIdxQuery, [userIdx, who]);
-      console.log('[ootdDao] addedWhoIdxEach : ', addedWhoIdxEach);
-      console.log('[ootdDao] addedWhoIdxEach[0] : ',addedWhoIdxEach[0]);
-      //addedWhoIdxEach = addedWhoIdxEach[0];
-      //console.log('[ootdDao] addedWhoIdxEach[0][0].index : ', addedWhoIdxEach[0].index);
     addedWhoIdxRows.push(addedWhoIdxEach[0].index);
   }
-
   return addedWhoIdxRows;
 };
 
@@ -438,14 +385,12 @@ async function registerOotdFWho(connection, ootdIdx, fWho) {
     `;
 
   let registerOotdWhoRows = [];
-
   for (item of fWho){
     let registerOotdWhoEach = await connection.query(
       registerOotdFWhoQuery,
       [ootdIdx, item]);
       registerOotdWhoRows.push(registerOotdWhoEach);
   }
-
   return registerOotdWhoRows;
 };
 
@@ -457,14 +402,12 @@ async function registerOotdAWho(connection, ootdIdx, AWhoIdxList) {
     `;
 
   let registerOotdWhoRows = [];
-
   for (item of AWhoIdxList){
     let registerOotdWhoEach = await connection.query(
       registerOotdAWhoQuery,
       [ootdIdx, item]);
       registerOotdWhoRows.push(registerOotdWhoEach);
   }
-
   return registerOotdWhoRows;
 };
 
@@ -547,61 +490,8 @@ async function selectDateOotd(connection, userIdx, date) {
 
 };
 
-/*
-// 유저 생성
-async function insertUserInfo(connection, insertUserInfoParams) {
-  const insertUserInfoQuery = `
-        INSERT INTO UserInfo(email, password, nickname)
-        VALUES (?, ?, ?);
-    `;
-  const insertUserInfoRow = await connection.query(
-    insertUserInfoQuery,
-    insertUserInfoParams
-  );
-
-  return insertUserInfoRow;
-}
-
-// 패스워드 체크
-async function selectUserPassword(connection, selectUserPasswordParams) {
-  const selectUserPasswordQuery = `
-        SELECT email, nickname, password
-        FROM UserInfo 
-        WHERE email = ? AND password = ?;`;
-  const selectUserPasswordRow = await connection.query(
-      selectUserPasswordQuery,
-      selectUserPasswordParams
-  );
-
-  return selectUserPasswordRow;
-}
-
-// 유저 계정 상태 체크 (jwt 생성 위해 id 값도 가져온다.)
-async function selectUserAccount(connection, email) {
-  const selectUserAccountQuery = `
-        SELECT status, id
-        FROM UserInfo 
-        WHERE email = ?;`;
-  const selectUserAccountRow = await connection.query(
-      selectUserAccountQuery,
-      email
-  );
-  return selectUserAccountRow[0];
-}
-
-async function updateUserInfo(connection, id, nickname) {
-  const updateUserQuery = `
-  UPDATE UserInfo 
-  SET nickname = ?
-  WHERE id = ?;`;
-  const updateUserRow = await connection.query(updateUserQuery, [nickname, id]);
-  return updateUserRow[0];
-}
-*/
-
 module.exports = {
   checkDateOotd,
-  //modifyOriginOotd,
   checkClothesIdxIs,
   checkClothesIs,
   checkPlaceIdxIs,
