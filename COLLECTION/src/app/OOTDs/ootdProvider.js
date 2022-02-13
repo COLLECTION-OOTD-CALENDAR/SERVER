@@ -303,6 +303,9 @@ function getAddedBigClass(added){
     added["aShoes"] = [];
     added["aEtc"] = [];
   }
+
+  return added;
+
 };
 
 function hasAdded(list, data){
