@@ -156,7 +156,8 @@ module.exports = {
     REGISTER_PLACE_MAX : {"isSuccess" : false, "code" : 3097, "message" : "Place는 최대 두 개까지 선택할 수 있습니다."},
     REGISTER_WEATHER_MAX : {"isSuccess" : false, "code" : 3098, "message" : "Weather는 최대 두 개까지 선택할 수 있습니다."},
     REGISTER_WHO_MAX : {"isSuccess" : false, "code" : 3099, "message" : "Who는 최대 두 개까지 선택할 수 있습니다."},
-    
+    REGISTER_IMAGE_OBJ : {"isSuccess" : false, "code" : 3100, "message" : "Image 배열 내 하나 이상의 값이 있어야 합니다."},
+
 
 
     //Response Error
