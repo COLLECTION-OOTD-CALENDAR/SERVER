@@ -28,9 +28,7 @@ exports.registerOotd = async function (req, res) {
 
     // jwt - userId, path variable :userId
     console.log('[ootdController] registerOotd function');
-    const userIdxFromJWT = req.verifiedToken.userIdx;
-
-    const userIdx = req.params.userIdx;
+    const userIdx = req.verifiedToken.userIdx;
     const mode = req.query.mode;
 
     let {date, lookname, photoIs, image, fClothes, aClothes,
@@ -500,9 +498,7 @@ exports.registerOotd = async function (req, res) {
 
 exports.modiOotd = async function (req, res){
 
-    const userIdxFromJWT = req.verifiedToken.userIdx;
-
-    const userIdx = req.params.userIdx;
+    const userIdx = req.verifiedToken.userIdx;
     const date = req.query.date;
 
     // userIdx가 입력되지 않음, 추후 진행
@@ -561,9 +557,7 @@ exports.modiOotd = async function (req, res){
  */
 exports.completeOotd = async function (req, res){
 
-    const userIdxFromJWT = req.verifiedToken.userIdx;
-
-    const userIdx = req.params.userIdx;
+    const userIdx = req.verifiedToken.userIdx;
     const date = req.query.date;
 
     // userIdx가 입력되지 않음, 추후 진행
