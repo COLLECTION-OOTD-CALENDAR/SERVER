@@ -4,7 +4,6 @@ const ootdService = require("./ootdService");
 const baseResponse = require("../../../config/baseResponseStatus");
 const {response, errResponse} = require("../../../config/response");
 
-const regexEmail = require("regex-email");
 const { TAG_NEVER_EXISTED } = require("../../../config/baseResponseStatus");
 
 var datePattern = /^(19|20)\d{2}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[0-1])$/; 
@@ -27,48 +26,39 @@ var lookpointPattern = /^[1-5]$/;
 exports.registerOotd = async function (req, res) {
 
     // jwt - userId, path variable :userId
-    console.log('[ootdController] registerOotd function');
+    console.log('[ootdController] registerOotd start');
     const userIdx = req.verifiedToken.userIdx;
     const mode = req.query.mode;
 
     let {date, lookname, photoIs, image, fClothes, aClothes,
     fPlace, aPlace, fWeather, aWeather, fWho, aWho, lookpoint, comment} = req.body;
-    console.log('[ootdController] req body : ', req.body);
 
     // request body 풀어내기
     const n_date = new Date(date);
 
+    // color 배열
     const colorArr = [ "#d60f0f", "#f59a9a", "#ffb203", "#fde6b1", "#71a238", "#b7de89",
     "#ea7831", "#273e88", "#4168e8", "#a5b9fa", "#894ac7", "#dcacff",
     "#ffffff", "#888888", "#191919", "#e8dcd5", "#c3b5ac", "#74461f"]
 
+    // bigClass 배열
     const bigArr = ["Top", "Bottom", "Shoes", "Etc"];
 
     /*********************************************** */
     /*****************request error***************** */
     /*********************************************** */
 
-    // userIdx가 입력되지 않음 -> JWT 토큰이 없는 경우로 이미 처리됨
-    //if (!userIdx) { 
-    //    return res.send(errResponse(baseResponse.USERID_EMPTY));
-    //}
-
-    // 유효하지 않는 userIdx 입력
-    //if (userIdxFromJWT != userIdx) {
-    //    return res.send(errResponse(baseResponse.USERID_NOT_MATCH));
-    //}
-
     // mode가 없을 경우 error
     if(!mode){
         return res.send(errResponse(baseResponse.MODE_EMPTY));
     }
-    console.log("mode : ", mode);
-    // 숫자가 아닌 경우 error
+
+    // 숫자가 아닌 경우 error : 약한 검사
     if(isNaN(mode)){
         return res.send(errResponse(baseResponse.MODE_ERROR_TYPE));
     }
 
-    // mode가 유효한 값이 아닌 경우(1,2)
+    // mode가 유효한 값이 아닌 경우(1,2) : 강한 검사
     if(mode != 1 && mode != 2){
         return res.send(errResponse(baseResponse.MODE_INVALID_VALUE));
     }
@@ -118,7 +108,6 @@ exports.registerOotd = async function (req, res) {
     }
 
     // photoIs 값 -1 또는 0인지 체크
-    //console.log(typeof photoIs);
     if(photoIs != -1 && photoIs != 0){
         return res.send(errResponse(baseResponse.PHOTOIS_INVALID_VALUE));
     }
@@ -138,12 +127,15 @@ exports.registerOotd = async function (req, res) {
         return res.send(errResponse(baseResponse.REGISTER_IMAGE_OBJ));
     }
 
+    // thumbnail = 0 개수 검사를 하기 위함
     let cntThumb = 0;
     for(item of image){ // 배열의 원소가 하나라도 있어야 들어오는 반복문
+        
+        // thumbnail = 0 개수 검사를 하기 위함
         if(item == image[0]){
             cntThumb = -1;
         }
-        console.log('image item : ', item);
+
         // imgUrl 키가 없을 경우
         if(!item["imageUrl"]) {
             return res.send(errResponse(baseResponse.REGISTER_IMGURL_EMPTY));
@@ -154,9 +146,10 @@ exports.registerOotd = async function (req, res) {
             return res.send(errResponse(baseResponse.REGISTER_THUMBNAIL_EMPTY));
         }
         
-        // 입력된 이미지 URL이 S3에 존재하지 않는 경우
-        // 추후 체크 + toString은 자동으로 해주기
-        //item["imageUrl"] = item["imageUrl"].toString();
+        // 입력된 이미지 URL이 S3에 존재하지 않는 경우 : 할 필요성이 낮아 하지 않음
+        // 이미지 값 string 형태로 변형
+        let imgUrlStr = item["imageUrl"].toString();
+        item["imageUrl"] = imgUrlStr;
 
         // thumbnail 형식 체크 (정수가 아닐 경우 error)
         if(!Number.isInteger(item["thumbnail"])){
@@ -216,8 +209,10 @@ exports.registerOotd = async function (req, res) {
             if(!Number.isInteger(item["index"])){
                 return res.send(errResponse(baseResponse.FCLOTHES_ERROR_TYPE));
             }
-
-            item["color"] = item["color"].toString();
+            
+            // color toString 해준 뒤 color 배열에 존재하는 값인지 확인
+            let fixedColorStr = item["color"].toString();
+            item["color"] = fixedColorStr;
             if(colorArr.indexOf(item["color"]) == -1){
                 return res.send(errResponse(baseResponse.COLOR_INVALID_VALUE));
             }
@@ -240,23 +235,21 @@ exports.registerOotd = async function (req, res) {
             if(!aClothes[i].color){
                 return res.send(errResponse(baseResponse.ACLOTHES_COLOR_EMPTY));
             }
-            /*
-            // 올바르지 않은 addedClothes smallClass 형식 (문자열이 아닌 경우)
-            if(typeof item["smallClass"] !== 'string' && !(item["smallClass"] instanceof String)){
-                return res.send(errResponse(baseResponse.ACLOTHES_ERROR_TYPE));
-            }
-            */
 
             // 존재하지 않는 옷 카테고리
-            aClothes[i].bigClass = (aClothes[i].bigClass).toString();
+            let strBig = (aClothes[i].bigClass).toString();
+            aClothes[i].bigClass = strBig;
             if(bigArr.indexOf(aClothes[i].bigClass) == -1){
                 return res.send(errResponse(baseResponse.BIG_CLASS_NOT_MATCH));
             }
 
+            // smallClass string화
             let strSmall = (aClothes[i].smallClass).toString();
             aClothes[i].smallClass = strSmall;
+
             // 유효하지 않은 COLOR 값
-            aClothes[i].color = (aClothes[i].color).toString();
+            let addedColorStr = (aClothes[i].color).toString();
+            aClothes[i].color = addedColorStr;
             if(colorArr.indexOf(item["color"]) == -1){
                 return res.send(errResponse(baseResponse.COLOR_INVALID_VALUE));
             }
@@ -269,7 +262,7 @@ exports.registerOotd = async function (req, res) {
     if(!fPlace || !aPlace){
         return res.send(errResponse(baseResponse.REGISTER_PLACE_EMPTY));
     }
-    else if(!Array.isArray(fPlace) || !Array.isArray(aPlace)){
+    else if(!Array.isArray(fPlace) || !Array.isArray(aPlace)){ // fPlace와 aPlace 형식이 배열인지 체크
         return res.send(errResponse(baseResponse.REGISTER_PLACE_ERROR_TYPE));
     }
     else {
@@ -284,14 +277,13 @@ exports.registerOotd = async function (req, res) {
 
         //aPlace 자체 String 변경
         for(let i in aPlace){
-            //item = item.toString();
+
             item = aPlace[i].toString();
             aPlace[i] = item;
-            console.log('[ootdController] item.toString 후 : ', aPlace[i]);
-            console.log('[ootdController] item.toString 후 type : ', typeof aPlace[i]);
             placeCnt++;
         }
         
+        // 최대 두 개의 장소 선택 가능
         if(placeCnt > 2){
             return res.send(errResponse(baseResponse.REGISTER_PLACE_MAX));
         }
@@ -301,7 +293,7 @@ exports.registerOotd = async function (req, res) {
     if(!fWeather || !aWeather){
         return res.send(errResponse(baseResponse.REGISTER_WEATHER_EMPTY));
     }
-    else if(!Array.isArray(fWeather) || !Array.isArray(aWeather)){
+    else if(!Array.isArray(fWeather) || !Array.isArray(aWeather)){ // fWeather와 aWeather 형식이 배열인지 체크
         return res.send(errResponse(baseResponse.REGISTER_WEATHER_ERROR_TYPE));
     }
     else{
@@ -320,6 +312,7 @@ exports.registerOotd = async function (req, res) {
             weatherCnt++;
         }
 
+        // 최대 두 개의 날씨 선택 가능
         if(weatherCnt > 2){
             return res.send(errResponse(baseResponse.REGISTER_WEATHER_MAX));
         }
@@ -329,7 +322,7 @@ exports.registerOotd = async function (req, res) {
     if(!fWho || !aWho){
         return res.send(errResponse(baseResponse.REGISTER_WHO_EMPTY));
     }
-    else if(!Array.isArray(fWho) || !Array.isArray(aWho)){
+    else if(!Array.isArray(fWho) || !Array.isArray(aWho)){ // fWho와 aWho 형식이 배열인지 체크
         return res.send(errResponse(baseResponse.REGISTER_WHO_ERROR_TYPE));
     }    
     else {
@@ -348,6 +341,7 @@ exports.registerOotd = async function (req, res) {
             whoCnt++;
         }
 
+        // 최대 두 개의 누구 선택 가능
         if(whoCnt > 2){
             return res.send(errResponse(baseResponse.REGISTER_WHO_MAX));
         }
@@ -367,11 +361,7 @@ exports.registerOotd = async function (req, res) {
         return res.send(errResponse(baseResponse.LOOKPOINT_INVALID_VALUE));
     }
 
-    // COMMENT key 입력되지 않았을 때
-    //if(comment === undefined){ // 추가 가능성 O
-    //    return res.send(errResponse(baseResponse.REGISTER_COMMENT_EMPTY));
-    //}else {
-        //코멘트가 있는 경우
+    //코멘트가 있는 경우
     if(comment){
         comment = comment.toString();
         // COMMENT 길이 체크
@@ -385,34 +375,31 @@ exports.registerOotd = async function (req, res) {
     /****************response error**************** */
     /********************************************** */
 
-    // 나중에 ootdService 내부 코드들과 합치는 게 좋긴 함.
+    // 나중에 ootdService 내부 코드들과 합치는 게 좋긴 했으나,
+    // 특정 테이블에만 값이 삽입될 경우 방지를 위해 따로 뺌
 
-    // 입력된 date에 이미 OOTD 존재 (mode가 register(1)일 때만)
-
+    // 입력한 날짜에 OOTD 존재 여부 체크
     const ootdRow = await ootdProvider.ootdDateCheck(userIdx, n_date);
 
     // ootdRow의 결과와 mode가 잘 맞지 않는 경우
     // ootdRow가 없는데 수정모드일 경우, ootdRow가 있는데 등록모드일 경우 error
-    if(ootdRow && mode == 1){
+    if(ootdRow && mode == 1){ // 입력된 date에 이미 OOTD 존재 (새로 등록시 문제)
         return res.send(errResponse(baseResponse.OOTD_ALREADY_EXIST));
     }
-    else if (!ootdRow && mode == 2){
+    else if (!ootdRow && mode == 2){ // 입력된 date OOTD 존재안함 (수정시 문제)
         return res.send(errResponse(baseResponse.OOTD_NOT_EXIST));
     }
 
-    // 수정모드일 때, ootdRow의 ootdIdx value에 접근하여 status : active -> inactive
-    // inactive해야할 게 너무 많아서 OOTD 삭제 코드 활용 시도
+    // 수정모드일 때, status : active -> inactive이므로 OOTD 삭제 코드 활용 예정
     if(mode == 2){
         const modiOriginResult = await ootdService.modiOriginStatus(userIdx, ootdRow.ootdIdx);
-        console.log('[ootdController] modiOriginStatus 함수 다녀옴. ootdIdx : ', modiOriginResult);
     }
 
     // 등록할 수 없는 옷(fClothes->index, aClothes->smallClass)
     for (item of fClothes){
         const fclothesRow = await ootdProvider.clothesCheck(userIdx, item["index"]);
-        // if(fClothesRow) 로 변경 가능
-        console.log('[ootdController] fclothesRow : ', fclothesRow);
-        console.log('[ootdController] fclothesRow.length : ', fclothesRow.length);
+
+        // 존재하는 고정 옷이 아닐 때
         if(fclothesRow.length == 0){
             return res.send(errResponse(baseResponse.CLOTHES_NOT_MATCH));
         }
@@ -420,8 +407,8 @@ exports.registerOotd = async function (req, res) {
     for (item of aClothes){
         const aClothesParams = item["smallClass"];
         const aclothesRow = await ootdProvider.clothesCheck(userIdx, aClothesParams);
-        console.log('[ootdController] aclotheseRow : ', aclothesRow);
-        console.log('[ootdController] aclothesRow.length : ', aclothesRow.length);
+
+        // 사용자가 추가한 옷이 아닐 때
         if(aclothesRow.length == 0){
             return res.send(errResponse(baseResponse.CLOTHES_NOT_MATCH));
         }
@@ -431,18 +418,16 @@ exports.registerOotd = async function (req, res) {
     // 등록할 수 없는 Place (fPlace->index, aPlace->place)
     for (item of fPlace){
         const fplaceRow = await ootdProvider.placeCheck(userIdx, item);
-        console.log('[ootdController] fplaceRow : ', fplaceRow);
-        console.log('[ootdController] fplaceRow.length : ', fplaceRow.length);        
+
+        // 존재하는 고정 장소가 아닐 때
         if(fplaceRow.length == 0){
             return res.send(errResponse(baseResponse.PLACE_NOT_MATCH));
         }
     }
     for (item of aPlace){
-        console.log('[ootdController] aPlace item : ', item);
-        console.log('[ootdController] aPlace item type : ', typeof item);
         const aplaceRow = await ootdProvider.placeCheck(userIdx, item);
-        console.log('[ootdController] aplaceRow : ', aplaceRow);
-        console.log('[ootdController] aplaceRow.length : ', aplaceRow.length);
+
+        // 사용자가 추가한 장소가 아닐 때
         if(aplaceRow.length == 0){
             return res.send(errResponse(baseResponse.PLACE_NOT_MATCH));
         }
@@ -451,16 +436,16 @@ exports.registerOotd = async function (req, res) {
     // 등록할 수 없는 Weather (fWeather->index, aWeather->weather)
     for (item of fWeather){
         const fweatherRow = await ootdProvider.weatherCheck(userIdx, item);
-        console.log('[ootdController] fweatherRow : ', fweatherRow);
-        console.log('[ootdController] fweatherRow.length : ', fweatherRow.length);
+
+        // 존재하는 고정 날씨가 아닐 때
         if(fweatherRow.length == 0){
             return res.send(errResponse(baseResponse.WEATHER_NOT_MATCH));
         }
     }
     for (item of aWeather){
         const aweatherRow = await ootdProvider.weatherCheck(userIdx, item);
-        console.log('[ootdController] aweatherRow : ', aweatherRow);
-        console.log('[ootdController] aweatherRow.length : ', aweatherRow.length);
+
+        // 사용자가 추가한 날씨가 아닐 때
         if(aweatherRow.length == 0){
             return res.send(errResponse(baseResponse.WEATHER_NOT_MATCH));
         }
@@ -470,19 +455,26 @@ exports.registerOotd = async function (req, res) {
     // 등록할 수 없는 Who (fWho->index, aWho->who)
     for (item of fWho){
         const fwhoRow = await ootdProvider.whoCheck(userIdx, item);
+        
+        // 존재하는 고정 누구가 아닐 때
         if(fwhoRow.length == 0){
             return res.send(errResponse(baseResponse.WHO_NOT_MATCH));
         }
     }
     for (item of aWho){
         const awhoRow = await ootdProvider.whoCheck(userIdx, item);
+        
+        // 사용자가 추가한 누구가 아닐 때
         if(awhoRow.length == 0){
             return res.send(errResponse(baseResponse.WHO_NOT_MATCH));
         }
     }
 
+    // 최종 등록 API 
     const registerUserOotd = await ootdService.lastRegisterOotd(userIdx, date, lookname, photoIs, image, fClothes, aClothes,
         fPlace, aPlace, fWeather, aWeather, fWho, aWho, lookpoint, comment);
+    
+    console.log('[ootdController] registerOotd finish');
     return res.send(registerUserOotd);
 
 };
@@ -498,18 +490,10 @@ exports.registerOotd = async function (req, res) {
 
 exports.modiOotd = async function (req, res){
 
+    console.log('[ootdController] modiOotd start');
+
     const userIdx = req.verifiedToken.userIdx;
     const date = req.query.date;
-
-    // userIdx가 입력되지 않음, 추후 진행
-    //if (!userIdx) { 
-    //    return res.send(errResponse(baseResponse.USERID_EMPTY));
-    //}
-
-    // 유효하지 않는 userIdx 입력
-    //if (userIdxFromJWT != userIdx) {
-    //    return res.send(errResponse(baseResponse.USERID_NOT_MATCH));
-    //}
 
     // query string으로 date가 들어오지 않았을 경우
     if(!date){
@@ -531,6 +515,7 @@ exports.modiOotd = async function (req, res){
         return res.send(errResponse(baseResponse.DATE_INVALID_VALUE));
     }
 
+    // 최종 반환할 변수 선언
     let result = {};
 
     // 해당 OOTD data 부르기
@@ -544,8 +529,10 @@ exports.modiOotd = async function (req, res){
     const callModiOotd = await ootdProvider.retrieveModiOotd(userIdx);
     result["added"] = callModiOotd;
 
+    console.log('[ootdController] modiOotd finish');
+
     return res.send(response(baseResponse.SUCCESS_OOTD_MODI, result));
-}
+};
 
 
 /**
@@ -557,18 +544,10 @@ exports.modiOotd = async function (req, res){
  */
 exports.completeOotd = async function (req, res){
 
+    console.log('[ootdController] completeOotd start');
+
     const userIdx = req.verifiedToken.userIdx;
     const date = req.query.date;
-
-    // userIdx가 입력되지 않음, 추후 진행
-    //if (!userIdx) { 
-    //    return res.send(errResponse(baseResponse.USERID_EMPTY));
-    //}
-
-    // 유효하지 않는 userIdx 입력
-    //if (userIdxFromJWT != userIdx) {
-    //    return res.send(errResponse(baseResponse.USERID_NOT_MATCH));
-    //}
 
     // query string으로 date가 들어오지 않았을 경우
     if(!date){
@@ -595,146 +574,8 @@ exports.completeOotd = async function (req, res){
         return res.send(errResponse(baseResponse.DATE_OOTD_EMPTY));
     }
 
+    console.log('[ootdController] completeOotd finish');
+
     return res.send(response(baseResponse.SUCCESS_OOTD_COMPLETE, callCompleteOotd));
 
-}
-
-/**
- * API No. 1
- * API Name : 유저 생성 (회원가입) API
- * [POST] /app/users
- * Body: email, password, nickname
- */
-/*
-exports.postUsers = async function (req, res) {
-
-    const {email, password, nickname} = req.body;
-
-    // 빈 값 체크
-    if (!email)
-        return res.send(response(baseResponse.SIGNUP_EMAIL_EMPTY));
-
-    // 길이 체크
-    if (email.length > 30)
-        return res.send(response(baseResponse.SIGNUP_EMAIL_LENGTH));
-
-    // 형식 체크 (by 정규표현식)
-    if (!regexEmail.test(email))
-        return res.send(response(baseResponse.SIGNUP_EMAIL_ERROR_TYPE));
-
-    // createUser 함수 실행을 통한 결과 값을 signUpResponse에 저장
-    const signUpResponse = await userService.createUser(
-        email,
-        password,
-        nickname
-    );
-
-    // signUpResponse 값을 json으로 전달
-    return res.send(signUpResponse);
 };
-*/
-
-/**
- * API No. 2
- * API Name : 유저 조회 API (+ 이메일로 검색 조회)
- * [GET] /app/users
- * Query String: email
- */
-/*
-exports.getUsers = async function (req, res) {
-
-    const email = req.query.email;
-
-    if (!email) {
-        // 유저 전체 조회
-        const userListResult = await userProvider.retrieveUserList();
-        // SUCCESS : { "isSuccess": true, "code": 1000, "message":"성공" }, 메세지와 함께 userListResult 호출
-        return res.send(response(baseResponse.SUCCESS, userListResult));
-    } else {
-        // 아메일을 통한 유저 검색 조회
-        const userListByEmail = await userProvider.retrieveUserList(email);
-        return res.send(response(baseResponse.SUCCESS, userListByEmail));
-    }
-};
-*/
-
-/**
- * API No. 3
- * API Name : 특정 유저 조회 API
- * [GET] /app/users/{userId}
- * Path Variable: userId
- */
-/*
-exports.getUserById = async function (req, res) {
-
-    const userId = req.params.userId;
-    // errResponse 전달
-    if (!userId) return res.send(errResponse(baseResponse.USER_USERID_EMPTY));
-
-    // userId를 통한 유저 검색 함수 호출 및 결과 저장
-    const userByUserId = await userProvider.retrieveUser(userId);
-    return res.send(response(baseResponse.SUCCESS, userByUserId));
-};
-*/
-
-// TODO: After 로그인 인증 방법 (JWT)
-/**
- * API No. 4
- * API Name : 로그인 API
- * [POST] /app/login
- * body : email, passsword
- */
-/*
-exports.login = async function (req, res) {
-
-    const {email, password} = req.body;
-
-    const signInResponse = await userService.postSignIn(email, password);
-
-    return res.send(signInResponse);
-};
-*/
-
-/**
- * API No. 5
- * API Name : 회원 정보 수정 API + JWT + Validation
- * [PATCH] /app/users/:userId
- * path variable : userId
- * body : nickname
- */
-/*
-exports.patchUsers = async function (req, res) {
-
-    // jwt - userId, path variable :userId
-
-    const userIdFromJWT = req.verifiedToken.userId
-
-    const userId = req.params.userId;
-    const nickname = req.body.nickname;
-
-    // JWT는 이 후 주차에 다룰 내용
-    if (userIdFromJWT != userId) {
-        res.send(errResponse(baseResponse.USER_ID_NOT_MATCH));
-    } else {
-        if (!nickname) return res.send(errResponse(baseResponse.USER_NICKNAME_EMPTY));
-
-        const editUserInfo = await userService.editUser(userId, nickname)
-        return res.send(editUserInfo);
-    }
-};
-*/
-
-
-
-
-// JWT 이 후 주차에 다룰 내용
-/** JWT 토큰 검증 API
- * [GET] /app/auto-login
- */
-/*
-exports.check = async function (req, res) {
-    const userIdResult = req.verifiedToken.userId;
-    console.log(userIdResult);
-    return res.send(response(baseResponse.TOKEN_VERIFICATION_SUCCESS));
-};
-*/

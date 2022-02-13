@@ -9,48 +9,22 @@ const ootdDao = require("./ootdDao");
 
 // Provider: Read 비즈니스 로직 처리
 
-/*
-exports.retrieveUserList = async function (email) {
-
-  //email을 인자로 받는 경우와 받지 않는 경우를 구분하여 하나의 함수에서 두 가지 기능을 처리함
-
-  if (!email) {
-    // connection 은 db와의 연결을 도와줌
-    const connection = await pool.getConnection(async (conn) => conn);
-    // Dao 쿼리문의 결과를 호출
-    const userListResult = await userDao.selectUser(connection);
-    // connection 해제
-    connection.release();
-
-    return userListResult;
-
-  } else {
-    const connection = await pool.getConnection(async (conn) => conn);
-    const userListResult = await userDao.selectUserEmail(connection, email);
-    connection.release();
-
-    return userListResult;
-  }
-};
-*/
-// 한 명의 유저 정보만을 불러오므로 배열 타입을 리턴하는 게 아닌 0번 인덱스를 파싱해서 오브젝트 타입 리턴
-
-// errResponse 뺄 것 있음
-// 입력된 date에 해당하는 ootd 존재 여부 체크
+// 입력한 날짜에 OOTD 존재 여부 체크
 exports.ootdDateCheck = async function (userIdx, date) {
 
-  console.log('[ootdProvider] userIdx :', userIdx);
-  console.log('[ootdProvider] date : ', date);
-  console.log('[ootdProvider] typeof date : ', typeof date);
-  const connection = await pool.getConnection(async (conn) => conn);
+  console.log('[ootdProvider] ootdDateCheck start');
 
   try {
-    console.log('[ootdProvider] ootdDao checkDateOotd 넘어가기 전');
+
+    // DB에 연결
+    const connection = await pool.getConnection(async (conn) => conn);
+
     const ootdDateCheckResult = await ootdDao.checkDateOotd(connection, userIdx, date);
     connection.release();
-    console.log('[ootdProvider] ootdDao checkDateOotd 결과 : ', ootdDateCheckResult);
 
-    return ootdDateCheckResult; //ootdDateCheckResult[0] 할 수도
+    console.log('[ootdProvider] ootdDateCheck finish');
+
+    return ootdDateCheckResult;
 
   }catch(err) {
     logger.error(`App - ootdDateCheck Provider error\n: ${err.message}`);
@@ -62,22 +36,29 @@ exports.ootdDateCheck = async function (userIdx, date) {
 // 등록할 수 없는 옷 (fClothes->index, aClothes->smallClass)
 exports.clothesCheck = async function (userIdx, data) {
 
-  console.log('[ootdProvider] userIdx :', userIdx);
-  console.log('[ootdProvider] data : ', data);
-  console.log('[ootdProvider] typeof data : ', typeof data);
-  const connection = await pool.getConnection(async (conn) => conn);
+  console.log('[ootdProvider] clothesCheck start');
 
   try {
+
+    // DB에 연결
+    const connection = await pool.getConnection(async (conn) => conn);
     
-    if(Number.isInteger(data) && typeof data == 'number'){ // data가 정수일 경우 (fClothes->index)
+    // data가 정수일 경우 (fClothes->index)
+    if(Number.isInteger(data) && typeof data == 'number'){ 
       const clothesCheckResult = await ootdDao.checkClothesIdxIs(connection, data);
       connection.release();
-      return clothesCheckResult;  //clothesCheckResult[0] 할 수도
+
+      console.log('[ootdProvider] clothesCheck finish');
+
+      return clothesCheckResult;
     }
-    else {
+    else { // data가 string일 경우 (aClothes->smallClass)
       const clothesCheckResult = await ootdDao.checkClothesIs(connection, userIdx, data);
       connection.release();
-      return clothesCheckResult;  //clothesCheckResult[0] 할 수도
+
+      console.log('[ootdProvider] clothesCheck finish');
+
+      return clothesCheckResult;
     
     }
   }catch(err) {
@@ -91,17 +72,29 @@ exports.clothesCheck = async function (userIdx, data) {
 // 등록할 수 없는 Place (fPlace->index, aPlace->place)
 exports.placeCheck = async function (userIdx, data) {
 
+  console.log('[ootdProvider] placeCheck start');
+  
   try {
+
+    // DB에 연결
     const connection = await pool.getConnection(async (conn) => conn);
-    if(Number.isInteger(data) && typeof data == 'number'){ // data가 정수일 경우 (fPlace->index)
+
+    // data가 정수일 경우 (fPlace->index)
+    if(Number.isInteger(data) && typeof data == 'number'){ 
       const placeCheckResult = await ootdDao.checkPlaceIdxIs(connection, data);
       connection.release();
-      return placeCheckResult; //placeCheckResult[0] 할 수도
+
+      console.log('[ootdProvider] placeCheck finish');
+
+      return placeCheckResult;
     }
-    else {
+    else { // data가 string일 경우 (aPlace->place)
       const placeCheckResult = await ootdDao.checkPlaceIs(connection, userIdx, data);
       connection.release();
-      return placeCheckResult; //placeCheckResult[0] 할 수도
+
+      console.log('[ootdProvider] placeCheck finish');
+
+      return placeCheckResult;
     
     }
   }catch(err) {
@@ -115,17 +108,29 @@ exports.placeCheck = async function (userIdx, data) {
 // 등록할 수 없는 Weather (fWeather->index, aWeather->weather)
 exports.weatherCheck = async function (userIdx, data) {
 
+  console.log('[ootdProvider] weatherCheck start');
+
   try {
+
+    // DB에 연결
     const connection = await pool.getConnection(async (conn) => conn);
-    if(Number.isInteger(data) && typeof data == 'number'){ // data가 정수일 경우 (fWeather->index)
+    
+    // data가 정수일 경우 (fWeather->index)
+    if(Number.isInteger(data) && typeof data == 'number'){ 
       const weatherCheckResult = await ootdDao.checkWeatherIdxIs(connection, data);
       connection.release();
-      return weatherCheckResult; //weatherCheckResult[0] 할 수도
+
+      console.log('[ootdProvider] weatherCheck finish');
+
+      return weatherCheckResult;
     }
-    else {
+    else { // data가 string일 경우 (aWeather->weather)
       const weatherCheckResult = await ootdDao.checkWeatherIs(connection, userIdx, data);
       connection.release();
-      return weatherCheckResult; //weatherCheckResult[0] 할 수도
+      
+      console.log('[ootdProvider] weatherCheck finish');
+      
+      return weatherCheckResult;
     
     }
   }catch(err) {
@@ -139,17 +144,29 @@ exports.weatherCheck = async function (userIdx, data) {
 // 등록할 수 없는 Who (fWho->index, aWho->who)
 exports.whoCheck = async function (userIdx, data) {
 
+  console.log('[ootdProvider] whoCheck start');
+
   try {
+
+    // DB에 연결
     const connection = await pool.getConnection(async (conn) => conn);
-    if(Number.isInteger(data) && typeof data == 'number'){ // data가 정수일 경우 (fWeather->index)
+    
+    // data가 정수일 경우 (fWho->index)
+    if(Number.isInteger(data) && typeof data == 'number'){
       const whoCheckResult = await ootdDao.checkWhoIdxIs(connection, data);
       connection.release();
-      return whoCheckResult; //whoCheckResult[0] 할 수도
+      
+      console.log('[ootdProvider] whoCheck finish');
+      
+      return whoCheckResult;
     }
-    else {
+    else { // data가 string일 경우 (aWho->who)
       const whoCheckResult = await ootdDao.checkWhoIs(connection, userIdx, data);
       connection.release();
-      return whoCheckResult; //whoCheckResult[0] 할 수도
+      
+      console.log('[ootdProvider] whoCheck finish');
+      
+      return whoCheckResult;
     
     }
   }catch(err) {
@@ -199,9 +216,10 @@ exports.addedWhoIdx = async function (connection, userIdx, aWho){
 };
 
 
-
 // OOTD 수정하기 - 지난 작성 화면 보여주기
 exports.retrieveModiOotd = async function (userIdx){
+
+  console.log('[ootdProvider] retrieveModiOotd start');
 
   try {
     // connection 은 db와의 연결을 도와줌
@@ -209,7 +227,6 @@ exports.retrieveModiOotd = async function (userIdx){
 
     // Dao 쿼리문의 결과를 호출
     const modiOotdListResult = await ootdDao.selectModiDateOotd(connection, userIdx);
-    console.log('[ootdProvider] modiOotdListResult : ', modiOotdListResult);
     // connection 해제
     connection.release();
 
@@ -223,27 +240,31 @@ exports.retrieveModiOotd = async function (userIdx){
         added["aWeather"] = [];
         added["aWho"] = [];
         added = getAddedBigClass(added);
-      return added;
+      
+        console.log('[ootdProvider] retrieveModiOotd finish');
+      
+        return added;
     }
 
     for (let row of modiOotdListResult){
-
+      // added Place, Weather, Who 리스트 생성 및 data 추가
       added["aPlace"] = getPlaceList(row, added["aPlace"]);
       added["aWeather"] = getWeatherList(row, added["aWeather"]);
       added["aWho"] = getWhoList(row, added["aWho"]);
 
-      // bigClass Key 생성
+      // added에 대한 bigClass Key 생성
       added = getAddedBigClass(added);
       
       let bigKey = 'a'+row.bigClass;
+
+      // added Clothes(bigClass) 리스트 내 data 추가
       if(!hasAdded(added[bigKey], row.smallClass)){
         added[bigKey].push(row.smallClass);
-        //console.log('ootd(+ clothes) : ', ootd);
       }
 
     }
 
-    console.log('[ootdProvider] 최종 added : ', added);
+    console.log('[ootdProvider] retrieveModiOotd finish');
 
     return added;
 
@@ -254,7 +275,7 @@ exports.retrieveModiOotd = async function (userIdx){
 
 };
 
-
+// Added place list를 채우는 함수
 function getPlaceList(row, tmp){
   let tags;
 
@@ -271,6 +292,7 @@ function getPlaceList(row, tmp){
   return tags;
 };
 
+// Added weather list를 채우는 함수
 function getWeatherList(row, tmp){
   let tags;
 
@@ -287,6 +309,7 @@ function getWeatherList(row, tmp){
   return tags;
 };
 
+// Added who list를 채우는 함수
 function getWhoList(row, tmp){
   let tags;
 
@@ -303,6 +326,7 @@ function getWhoList(row, tmp){
   return tags;
 };
 
+// Added big Class key 및 배열 생성
 function getAddedBigClass(added){
   if(!added["aTop"] && !added["aBottom"] && !added["aShoes"] && !added["aEtc"]){
     added["aTop"] = [];
@@ -315,6 +339,7 @@ function getAddedBigClass(added){
 
 };
 
+// Added list 내 주어진 data가 존재하는 지 체크
 function hasAdded(list, data){
   if(data == null) return true;
   for(let each of list){
@@ -324,8 +349,11 @@ function hasAdded(list, data){
   return false;
 };
 
+
 // OOTD 완료 페이지 불러오기
 exports.retrieveCompleteOotd = async function (userIdx, date){
+
+  console.log('[ootdProvider] retrieveCompleteOotd start');
 
   try {
     // connection 은 db와의 연결을 도와줌
@@ -333,20 +361,21 @@ exports.retrieveCompleteOotd = async function (userIdx, date){
 
     // Dao 쿼리문의 결과를 호출
     const completeOotdListResult = await ootdDao.selectDateOotd(connection, userIdx, date);
-    console.log('[ootdProvider] completeOotdListResult : ', completeOotdListResult);
     // connection 해제
     connection.release();
 
-    // 입력된 날짜의 ootd가 존재하는지
-    //if (!completeOotdListResult[0]) 추가할 지 고민해보기
+    // 입력된 날짜의 ootd가 존재하는지 체크
     if(!completeOotdListResult[0]){
+      console.log('[ootdProvider] retrieveCompleteOotd finish');
       return completeOotdListResult[0];
     }
 
     let ootd = {};
     var moment = require('moment');
+
+    // 출력된 row들을 종합하여 출력 JSON 형태 만들기
     for (let row of completeOotdListResult){
-      console.log('row : ', row);
+      // 처음 row를 정리할 때 고정된 값을 결과 JSON에 대입
       if(row === completeOotdListResult[0]){
         ootd["ootdIdx"] = row.ootdIdx;
         ootd["date"] = moment(row.date).format('YYYY-MM-DD');
@@ -355,6 +384,7 @@ exports.retrieveCompleteOotd = async function (userIdx, date){
         ootd["comment"] = row.comment;
       }
 
+      // image, place, weather, who value에 새로운 data 대입
       ootd["image"] = getImages(row, ootd["image"]);
       ootd["place"] = getPlaces(row, ootd["place"]);
       ootd["weather"] = getWeathers(row, ootd["weather"]);
@@ -363,26 +393,25 @@ exports.retrieveCompleteOotd = async function (userIdx, date){
       // bigClass Key 생성
       ootd = getBigClass(ootd);
       
-      // smallClass 넣기
+      // fixed smallClass 넣기
       if(row.fixedBig != null){
         let data = {smallClass : row.fixedSmall, color : row.color};
 
         if(!hasClothes(ootd[row.fixedBig], data)){
           ootd[row.fixedBig].push(data);
-          //console.log('ootd(+ clothes) : ', ootd);
         }
       }
-      else {
+      else { // added smallClass 넣기
         let data = {smallClass : row.addedSmall, color : row.color};
 
         if(!hasClothes(ootd[row.addedBig], data)){
           ootd[row.addedBig].push(data);
-          //console.log('ootd(+ clothes) : ', ootd);
         }
       }
       
     }
-    console.log('[ootdProvider] 최종 ootd : ', ootd);
+
+    console.log('[ootdProvider] retrieveCompleteOotd finish');
 
     return ootd;
 
@@ -392,7 +421,6 @@ exports.retrieveCompleteOotd = async function (userIdx, date){
   }
 
 };
-
 
 
 // Image value를 채우는 함수
@@ -490,6 +518,7 @@ function getBigClass(ootd){
   return ootd;
 };
 
+// list(BigClass)에 data가 존재하는지 확인하는 함수
 function hasClothes(list, data){
   for(let each of list){
     if(each.smallClass == data.smallClass && each.color == data.color) return true;
@@ -497,26 +526,3 @@ function hasClothes(list, data){
 
   return false;
 };
-
-/*
-exports.passwordCheck = async function (selectUserPasswordParams) {
-  const connection = await pool.getConnection(async (conn) => conn);
-  // 쿼리문에 여러개의 인자를 전달할 때 selectUserPasswordParams와 같이 사용합니다.
-  const passwordCheckResult = await userDao.selectUserPassword(
-      connection,
-      selectUserPasswordParams
-  );
-  connection.release();
-  return passwordCheckResult[0];
-};
-*/
-
-/*
-exports.accountCheck = async function (email) {
-  const connection = await pool.getConnection(async (conn) => conn);
-  const userAccountResult = await userDao.selectUserAccount(connection, email);
-  connection.release();
-
-  return userAccountResult;
-};
-*/
