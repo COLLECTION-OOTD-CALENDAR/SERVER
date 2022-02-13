@@ -312,7 +312,7 @@ async function deletePhotoData(connection, ootdIdx){  //
 async function deletePlaceData(connection, ootdIdx){  //
   const updatePlaceQuery= `
       UPDATE Place
-      SET Place.status = 'inactive', , Place.updateAt = CURRENT_TIMESTAMP
+      SET Place.status = 'inactive', Place.updateAt = CURRENT_TIMESTAMP
       WHERE Place.ootdIdx = ?;
       `;
   const updatePlaceRow = await connection.query(updatePlaceQuery, ootdIdx);
@@ -323,7 +323,7 @@ async function deletePlaceData(connection, ootdIdx){  //
 async function deleteWeatherData(connection, ootdIdx){  //
   const updateWeatherQuery= `
       UPDATE Weather
-      SET Weather.status = 'inactive', , Weather.updateAt = CURRENT_TIMESTAMP
+      SET Weather.status = 'inactive', Weather.updateAt = CURRENT_TIMESTAMP
       WHERE Weather.ootdIdx = ?;
       `;
   const updateWeatherRow = await connection.query(updateWeatherQuery, ootdIdx);
@@ -334,7 +334,7 @@ async function deleteWeatherData(connection, ootdIdx){  //
 async function deleteWhoData(connection, ootdIdx){  //
   const updateWhoQuery= `
       UPDATE Who
-      SET Who.status = 'inactive', , Who.updateAt = CURRENT_TIMESTAMP
+      SET Who.status = 'inactive', Who.updateAt = CURRENT_TIMESTAMP
       WHERE Who.ootdIdx = ?;
       `;
   const updateWhoRow = await connection.query(updateWhoQuery, ootdIdx);
