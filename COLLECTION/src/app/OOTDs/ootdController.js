@@ -403,8 +403,8 @@ exports.registerOotd = async function (req, res) {
     // 수정모드일 때, ootdRow의 ootdIdx value에 접근하여 status : active -> inactive
     // inactive해야할 게 너무 많아서 OOTD 삭제 코드 활용 시도
     if(mode == 2){
-        const modiOriginResult = await ootdService.modiOriginStatus(ootdRow.ootdIdx);
-        console.log('[ootdController] modiOriginRow : ', modiOriginResult);
+        const modiOriginResult = await ootdService.modiOriginStatus(userIdx, ootdRow.ootdIdx);
+        console.log('[ootdController] modiOriginStatus 함수 다녀옴. ootdIdx : ', modiOriginResult);
     }
 
     // 등록할 수 없는 옷(fClothes->index, aClothes->smallClass)
