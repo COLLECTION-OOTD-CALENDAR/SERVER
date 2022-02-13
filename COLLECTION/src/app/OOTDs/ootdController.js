@@ -543,7 +543,7 @@ exports.modiOotd = async function (req, res){
     const callModiOotd = await ootdProvider.retrieveModiOotd(userIdx);
     result["added"] = callModiOotd;
 
-    return res.send(response(baseResponse.SUCCESS_OOTD_COMPLETE, result));
+    return res.send(response(baseResponse.SUCCESS_OOTD_MODI, result));
 }
 
 
