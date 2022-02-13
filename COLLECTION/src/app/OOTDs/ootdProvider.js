@@ -316,6 +316,7 @@ function getAddedBigClass(added){
 };
 
 function hasAdded(list, data){
+  if(data != null) return true;
   for(let each of list){
     if(each == data) return true;
   }
