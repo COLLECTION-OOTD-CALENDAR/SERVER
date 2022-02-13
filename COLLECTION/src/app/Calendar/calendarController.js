@@ -46,20 +46,18 @@ exports.patchUsers = async function (req, res) {
 exports.getMonth = async function (req, res) {
 
     console.log('calendarController : 처음 오류발생');
-    const userIdxFromJWT = req.verifiedToken.userIdx;
-
-    const userIdx = req.params.userIdx;
+    const userIdx = req.verifiedToken.userIdx;
     console.log('calendarController : 변수 받기 성공');
 
     // 비어있는 userIdx 입력
-    if(!userIdx){
-        return res.send(errResponse(baseResponse.USERID_EMPTY));
-    }
+    //if(!userIdx){
+    //    return res.send(errResponse(baseResponse.USERID_EMPTY));
+    //}
 
     // 유효하지 않은 userIdx 입력
-    if(userIdxFromJWT != userIdx) { 
-        return res.send(errResponse(baseResponse.USERID_NOT_MATCH));
-    }
+    //if(userIdxFromJWT != userIdx) { 
+    //    return res.send(errResponse(baseResponse.USERID_NOT_MATCH));
+    //}
     console.log('calendarController : request error check complete');
 
     // userIdx를 통한 Monthly 달력 OOTD 검색 함수 및 결과 저장
@@ -92,19 +90,18 @@ exports.getMonth = async function (req, res) {
 exports.getWeek = async function (req, res) {
 
     console.log('calendarController : 처음 오류발생');
-    const userIdxFromJWT = req.verifiedToken.userIdx;
-    
-    const userIdx = req.params.userIdx;
+    const userIdx = req.verifiedToken.userIdx;
     console.log('calendarController : 변수 받기 성공');
-     // 비어있는 userIdx 입력
-    if(!userIdx){
-        return res.send(errResponse(baseResponse.USERID_EMPTY));
-    }
+    
+    // 비어있는 userIdx 입력
+    //if(!userIdx){
+    //    return res.send(errResponse(baseResponse.USERID_EMPTY));
+    //}
 
     // 유효하지 않은 userIdx 입력
-    if(userIdxFromJWT != userIdx) { 
-        return res.send(errResponse(baseResponse.USERID_NOT_MATCH));
-    }
+    //if(userIdxFromJWT != userIdx) { 
+    //    return res.send(errResponse(baseResponse.USERID_NOT_MATCH));
+    //}
     console.log('calendarController : request error check complete');
 
     // userId를 통한 Weekly 달력 OOTD 검색 함수 및 결과 저장

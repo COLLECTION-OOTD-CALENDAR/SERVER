@@ -3,13 +3,13 @@ module.exports = function(app){
     const jwtMiddleware = require('../../../config/jwtMiddleware');
 
     // 1. Monthly 달력 OOTD 부르기 API
-    app.get('/app/calendar/monthly/:userIdx', jwtMiddleware, calendar.getMonth);
+    app.get('/app/calendar/monthly', jwtMiddleware, calendar.getMonth);
 
     // 1. 유저 생성 (회원가입) API
     //app.post('/app/users', calendar.postUsers);
 
     // 2. Weekly 달력 OOTD 부르기 API
-    app.get('/app/calendar/weekly/:userIdx', jwtMiddleware, calendar.getWeek); 
+    app.get('/app/calendar/weekly', jwtMiddleware, calendar.getWeek); 
 
     // 3. 특정 유저 조회 API
     //app.get('/app/users/:userId', calendar.getUserById);
