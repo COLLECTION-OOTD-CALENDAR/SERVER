@@ -135,6 +135,11 @@ exports.registerOotd = async function (req, res) {
         return res.send(errResponse(baseResponse.IMAGE_ERROR_TYPE));
     }
 
+    // photoIs 는 0인데 Image value인 배열 내 객체가 없을 경우
+    if(photoIs == 0 && !image[0]){
+        return res.send(errResponse(baseResponse.REGISTER_IMAGE_OBJ));
+    }
+
     let cntThumb = 0;
     for(item of image){ // 배열의 원소가 하나라도 있어야 들어오는 반복문
         if(item == image[0]){
