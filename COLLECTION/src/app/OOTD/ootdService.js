@@ -207,6 +207,17 @@ exports.deleteOotd = async function (userIdx, date) {
             const deletePhotoResult = await ootdDao.deletePhotoData(connection, ootdIdx);
             console.log(`Service.photo deleted :`, ootdIdx);
             
+
+            const deletePlaceResult = await ootdDao.deletePlaceData(connection, ootdIdx);
+            console.log(`Service.place deleted :`, ootdIdx);
+
+            const deleteWeatherResult = await ootdDao.deleteWeatherData(connection, ootdIdx);
+            console.log(`Service.weather deleted :`, ootdIdx);
+
+            const deleteWeatherResult = await ootdDao.deleteWhoData(connection, ootdIdx);
+            console.log(`Service.who deleted :`, ootdIdx);            
+
+
             await connection.commit();
             
             return response(baseResponse.SUCCESS_OOTD_DELETION); //, {'deleted ootd' : Content});

@@ -216,7 +216,7 @@ async function selectPwwExist(connection, userIdx, flag, Content) {
 async function deleteAddedClothes(connection, deleteNewBlockParams){  //deleteNewBlockParams = [userIdx, flag, Content];
     const updateBlockQuery = `
         UPDATE AddedClothes 
-        SET status = "inactive"
+        SET status = "inactive", AddedClothes.updateAt = CURRENT_TIMESTAMP
         WHERE userIdx = ? AND bigClass = ? AND smallClass = ?;
         `;
     const updateBlockRow = await connection.query(updateBlockQuery, deleteNewBlockParams);
@@ -226,7 +226,7 @@ async function deleteAddedClothes(connection, deleteNewBlockParams){  //deleteNe
 async function deleteAddedPlace(connection, deleteNewBlockParams){  //deleteNewBlockParams = [userIdx, Content];
   const updateBlockQuery = `
       UPDATE AddedPlace
-      SET status = "inactive"
+      SET status = "inactive", AddedPlace.updateAt = CURRENT_TIMESTAMP
       WHERE userIdx = ? AND place = ?;
       `;
   const updateBlockRow = await connection.query(updateBlockQuery, deleteNewBlockParams);
@@ -236,7 +236,7 @@ async function deleteAddedPlace(connection, deleteNewBlockParams){  //deleteNewB
 async function deleteAddedWeather(connection, deleteNewBlockParams){  //deleteNewBlockParams = [userIdx, Content];
   const updateBlockQuery = `
       UPDATE AddedWeather 
-      SET status = 'inactive'
+      SET status = 'inactive', AddedWeather.updateAt = CURRENT_TIMESTAMP
       WHERE userIdx = ? AND weather = ?;
       `;
   const updateBlockRow = await connection.query(updateBlockQuery, deleteNewBlockParams);
@@ -246,7 +246,7 @@ async function deleteAddedWeather(connection, deleteNewBlockParams){  //deleteNe
 async function deleteAddedWho(connection, deleteNewBlockParams){  //deleteNewBlockParams = [userIdx, Content];
   const updateBlockQuery = `
       UPDATE AddedWho
-      SET status = 'inactive'
+      SET status = 'inactive', AddedWho.updateAt = CURRENT_TIMESTAMP
       WHERE userIdx = ? AND who = ?;
       `;
   const updateBlockRow = await connection.query(updateBlockQuery, deleteNewBlockParams);
@@ -275,7 +275,7 @@ async function deleteOotdData(connection, userIdx, ootdIdx){  //
   const deleteOotdParams = [userIdx, ootdIdx];
   const updateOotdQuery = `
       UPDATE OOTD
-      SET OOTD.status = 'inactive'
+      SET OOTD.status = 'inactive', OOTD.updateAt = CURRENT_TIMESTAMP
       WHERE OOTD.userIdx = ? AND OOTD.ootdIdx = ?;
       `;
     const updateOotdRow = await connection.query(updateOotdQuery, deleteOotdParams);
@@ -286,7 +286,7 @@ async function deleteOotdData(connection, userIdx, ootdIdx){  //
 async function deleteClothesData(connection, ootdIdx){  //
   const updateClothesQuery= `
       UPDATE Clothes
-      SET Clothes.status = 'inactive'
+      SET Clothes.status = 'inactive', Clothes.updateAt = CURRENT_TIMESTAMP
       WHERE Clothes.ootdIdx = ?;
       `;
   const updateClothesRow = await connection.query(updateClothesQuery, ootdIdx);
@@ -298,15 +298,48 @@ async function deleteClothesData(connection, ootdIdx){  //
 async function deletePhotoData(connection, ootdIdx){  //
   const updatePhotoQuery= `
       UPDATE Photo, OOTD
-      SET Photo.status = 'inactive'
+      SET Photo.status = 'inactive', Photo.updateAt = CURRENT_TIMESTAMP
       WHERE OOTD.photoIs = ? AND Photo.ootdIdx = ? ;
       `;
   const deletePhotoParams = [0, ootdIdx]
   const updatePhotoRow = await connection.query(updatePhotoQuery, deletePhotoParams);
   console.log(`Dao.photo deleted :`, ootdIdx);
 
-  return updatePhotoRow[0];
-  
+  return updatePhotoRow[0];  
+}
+
+
+async function deletePlaceData(connection, ootdIdx){  //
+  const updatePlaceQuery= `
+      UPDATE Place
+      SET Place.status = 'inactive', , Place.updateAt = CURRENT_TIMESTAMP
+      WHERE Place.ootdIdx = ?;
+      `;
+  const updatePlaceRow = await connection.query(updatePlaceQuery, ootdIdx);
+  console.log(`Dao.place deleted :`, ootdIdx);
+  return updatePlaceRow[0];  
+}
+
+async function deleteWeatherData(connection, ootdIdx){  //
+  const updateWeatherQuery= `
+      UPDATE Weather
+      SET Weather.status = 'inactive', , Weather.updateAt = CURRENT_TIMESTAMP
+      WHERE Weather.ootdIdx = ?;
+      `;
+  const updateWeatherRow = await connection.query(updateWeatherQuery, ootdIdx);
+  console.log(`Dao.Weather deleted :`, ootdIdx);
+  return updateWeatherRow[0];  
+}
+
+async function deleteWhoData(connection, ootdIdx){  //
+  const updateWhoQuery= `
+      UPDATE Who
+      SET Who.status = 'inactive', , Who.updateAt = CURRENT_TIMESTAMP
+      WHERE Who.ootdIdx = ?;
+      `;
+  const updateWhoRow = await connection.query(updateWhoQuery, ootdIdx);
+  console.log(`Dao.Who deleted :`, ootdIdx);
+  return updateWhoRow[0];  
 }
 
 
@@ -382,6 +415,9 @@ module.exports = {
   deleteOotdData,
   deleteClothesData,
   deletePhotoData,
+  deletePlaceData,
+  deleteWeatherData,
+  deleteWhoData,
   selectFixedClothesTag,
-  selectFixedPwwTag
+  selectFixedPwwTag,
 };
