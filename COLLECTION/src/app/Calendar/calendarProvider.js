@@ -9,20 +9,20 @@ const calendarDao = require("./calendarDao");
 exports.retrieveMonthlyList = async function (userIdx) {
 
   try {
+    console.log('[calendarProvider] retrieveMonthlyList start');
+
     // connection 은 db와의 연결을 도와줌
     const connection = await pool.getConnection(async (conn) => conn);
-    console.log('calendarProvider : connect complete');
     // Dao 쿼리문의 결과를 호출
     const monthlyListResult = await calendarDao.selectMonthly(connection, userIdx);
     for ( i in monthlyListResult ) {
       var moment = require('moment');
       monthlyListResult[i].date = moment(monthlyListResult[i].date).format('YYYY-MM-DD');
-      console.log(monthlyListResult[i].date);
     }
-    console.log('calendarProvider return: ', monthlyListResult);
-
     // connection 해제
     connection.release();
+    console.log('[calendarProvider] retrieveMonthlyList finish');
+
     return monthlyListResult;
 
   } catch(err) {
@@ -35,121 +35,61 @@ exports.retrieveMonthlyList = async function (userIdx) {
 // Weekly 달력 OOTD 부르기
 exports.retrieveWeeklyList = async function (userIdx) {
 
-  // connection 은 db와의 연결을 도와줌
-  const connection = await pool.getConnection(async (conn) => conn);
-  // Dao 쿼리문의 결과를 호출
-  //const placeFixedOrAdded = await calendarDao.selectWhatPlace(connection, userIdx);
-  //if(placeFixedOrAdded)
-
-  //자체적으로 android에서 필요한 정보들을 뽑아 쓰는 것이라고 가정
-
-  // date, lookpoint
-  //const ootdListResult = await calendarDao.selectWeeklyOotd(connection, userIdx);
-  //console.log('ootdListResult(date, lookpoint) : ', ootdListResult);
-  
-  // ootdIdx
-  //const ootdIdxListResult = await calendarDao.selectWeeklyOotdIdx(connection, userIdx);
-  //console.log('ootdIdxListResult(ootdIdx) : ', ootdIdxListResult);
-
-  // ootd & place로 fixedPlace, addedPlace 리스트 (userIdx 사용)
-  //const placeListResult1 = await calendarDao.selectWeeklyPlace1(connection, userIdx);
-  //console.log('placeListResult1(fixedPlace, addedPlace) by userIdx : ', placeListResult1);
-
-  // ootd & place로 fixedPlace, addedPlace 리스트 (ootdIdx 사용)
-  //const placeListResult2 = await calendarDao.selectWeeklyPlace2(connection, ootdIdxListResult);
-  //console.log('placeListResult2(fixedPlace, addedPlace) by ootdIdx : ', placeListResult2);
-
-  // FixedPlace & AddedPlace 테이블 내 값 가져오기
-  //const fixedAddedPlaceResult1 = await calendarDao.selectWeeklyPlaceName(connection, placeListResult1);
-  //const fixedAddedPlaceResult2 = await calendarDao.selectWeeklyPlaceName2(connection, placeListResult2);
-
-  /********또 다른 방법******* */
-
-  // Place & FixedPlace & AddedPlace 테이블 join
-  //const placeJoinTable = await calendarDao.selectWeeklyPlaceJoin(connection);
-
-  // OOTD & Place Join 테이블 join하여 place 
-  //const fixedAddedPlaceResult3 = await calendarDao.selectWeeklyPlaceName3(connection, userIdx, placeJoinTable);
-
-  /*******다 같이 JOIN & UNION*******/
-  // group concat 사용
-  /*
-  try {
-    console.log('calendarProvider : connect complete');
-    const ootdWeeklyListResult = await calendarDao.selectWeeklyOotdList(connection, userIdx);
-    for ( i in ootdWeeklyListResult ) {
-      var moment = require('moment');
-      ootdWeeklyListResult[i].date = moment(ootdWeeklyListResult[i].date).format('YYYY-MM-DD');
-      console.log(ootdWeeklyListResult[i].date);
-    }
-    console.log('calendarProvider return: ', ootdWeeklyListResult);
-    // const weeklyListResult = await calendarDao.selectWeekly(connection, userIdx);
-    // connection 해제
-    connection.release();
-
-    return ootdWeeklyListResult;
-  } catch(err) {
-    logger.error(`App - getWeekly Provider error\n: ${err.message}`);
-    return errResponse(baseResponse.DB_ERROR);
-  }
-  */
+  console.log('[calendarProvider] retrieveWeeklyList start');
 
   try{
-    // object merge 및 assgin 사용
-    console.log('calendarProvider : connect complete');
+    // connection 은 db와의 연결을 도와줌
+    const connection = await pool.getConnection(async (conn) => conn);
+    // Dao 쿼리문의 결과를 호출
     const ootdWeeklyListResult = await calendarDao.selectWeeklyOotdList(connection, userIdx);
-    console.log('ootdWeeklyListResult length : ', ootdWeeklyListResult.length);
-    console.log('ootdWeeklyListResult : ', ootdWeeklyListResult);
+    // connection 해제
     connection.release();
 
     let ootds = [];
     var moment = require('moment');
 
     for (let row of ootdWeeklyListResult) {
-      //console.log('=============for start===============');
-      //console.log('ootdWeeklyListResult[0] : ', ootdWeeklyListResult[0]);
-      console.log('row : ', row);
+      
+      // ootds 배열에 새로운 ootd row 추가 여부 결정
       let ootd = getOotd(row.ootdIdx, ootds);
-      //console.log('처음 ootd 상태 : ', ootd);
 
+      // ootdIdx, date, lookpoint, imageUrl 정의. 똑같을 확률 높음.
       ootd["ootdIdx"] = row.ootdIdx;
       ootd["date"] = moment(row.date).format('YYYY-MM-DD');
       ootd["lookpoint"] = row.lookpoint;
       ootd["imageUrl"] = row.imageUrl;
-      //console.log('ootd(ootdIdx, date, lookpoint, imageUrl) : ', ootd);
 
+      // place, weather, who에 접근하여 같은 것이 있는지 확인하고 넣기
       ootd["place"] = getPlaces(row, ootd["place"]);
       ootd["weather"] = getWeathers(row, ootd["weather"]);
       ootd["who"] = getWhos(row, ootd["who"]);
-
-      // ootd["PWW"] 새로 추가해서 place, weather, who 배열을 모두 병합하는 방법도 추후 고려해야 
       
+      // bigClass 이름으로 된 key가 없을 경우 추가 및 빈 배열 value 생성
       ootd = getBigClass(row.ootdIdx, ootds, ootd);
-      //console.log('ootd(+ PWW, Top, Bottom, Shoes, Etc)', ootd);
 
+      // fixedClothes가 있을 때
       if(row.fixedBig != null) {
+        // smallClass - color로 이루어진 객체 생성
         let data = { smallClass : row.fixedSmall, color : row.color};
 
+        // 만든 smallClass - color 객체가 이미 저장되었는지 확인한 후 저장 
         if(!hasClothes(ootd[row.fixedBig], data)){
           ootd[row.fixedBig].push(data);
-          //console.log('ootd(+ clothes) : ', ootd);
         }
       }
-      else {
+      else { // addedClothes가 있을 때
+        // smallClass - color로 이루어진 객체 생성
         let data = {smallClass : row.addedSmall, color : row.color};
 
+        // 만든 smallClass - color 객체가 이미 저장되었는지 확인한 후 저장
         if(!hasClothes(ootd[row.addedBig], data)){
           ootd[row.addedBig].push(data);
-          //console.log('ootd(+ clothes) : ', ootd);
         }
       }
-      //console.log('final ootd : ', ootd);
+      
+      // 새로 만들어진 ootd를 배열에 삽입
       ootds = pushOotd(ootds, ootd);
-      //console.log('****** 현재 ootds ******', ootds);
     }
-
-    console.log('++++++++최종 return ootds++++++++');
-    console.log(ootds);
 
     return ootds;
 
@@ -160,6 +100,7 @@ exports.retrieveWeeklyList = async function (userIdx) {
 
 };
 
+// ootds 배열에 새로운 ootd row 추가 or 삽입 여부 결정
 function getOotd(ootdIdx, ootds) {
   for (let each of ootds){
     if(each.ootdIdx == ootdIdx) return each;
@@ -168,6 +109,7 @@ function getOotd(ootdIdx, ootds) {
   return {};
 };
 
+// bigClass명으로 된 key가 없을 때 key 및 빈 배열 value 생성
 function getBigClass(ootdIdx, ootds, ootd){
   for (let each of ootds){
     if(each.ootdIdx == ootdIdx) return ootd;
@@ -181,6 +123,7 @@ function getBigClass(ootdIdx, ootds, ootd){
   return ootd;
 };
 
+// 이미 place 배열이 존재하는 지 확인 -> place명 추가
 function getPlaces(row, tmp){
   let tags;
 
@@ -200,6 +143,7 @@ function getPlaces(row, tmp){
   return tags;
 }
 
+// 이미 weather 배열이 존재하는 지 확인 -> weather명 추가
 function getWeathers(row, tmp){
   let tags;
 
@@ -219,6 +163,7 @@ function getWeathers(row, tmp){
   return tags;
 }
 
+// 이미 who 배열이 존재하는 지 확인 -> who명 추가
 function getWhos(row, tmp){
   let tags;
 
@@ -238,6 +183,7 @@ function getWhos(row, tmp){
   return tags;
 }
 
+// 주어진 list 내에 data가 존재하는 지 확인
 function hasClothes(list, data) {
   for(let each of list) {
       if(each.smallClass == data.smallClass && each.color == data.color) return true;
@@ -246,6 +192,7 @@ function hasClothes(list, data) {
   return false;
 };
 
+// ootdIdx가 같다면 삽입 X. 같지 않다면 삽입 O
 function pushOotd(list, data){
   for (let each of list){
     if(each.ootdIdx == data.ootdIdx) return list;
