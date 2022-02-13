@@ -213,12 +213,19 @@ exports.retrieveModiOotd = async function (userIdx){
     // connection 해제
     connection.release();
 
+    let added = {};
+
     // 추가한 항목들이 없을 경우
-    if(!modiOotdListResult[0]){
-      return modiOotdListResult[0];
+    if(!modiOotdListResult[0].place && !modiOotdListResult[0].weather && !modiOotdListResult[0].who
+      && !modiOotdListResult[0].bigClass){
+      
+        added["aPlace"] = [];
+        added["aWeather"] = [];
+        added["aWho"] = [];
+        added = getAddedBigClass(added);
+      return added;
     }
 
-    let added = {};
     for (let row of modiOotdListResult){
 
       added["aPlace"] = getPlaceList(row, added["aPlace"]);
