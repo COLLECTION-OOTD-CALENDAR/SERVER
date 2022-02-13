@@ -16,7 +16,7 @@ async function checkDateOotd(connection, userIdx, date) {
   return ootdDateRow[0];
 };
 
-
+/*
 async function modifyOriginOotd(connection, ootdIdx){
   const modifyOriginOotdQuery = `
                 UPDATE OOTD
@@ -24,7 +24,7 @@ async function modifyOriginOotd(connection, ootdIdx){
                 WHERE ootdIdx = ?;`;
   const modiOotdRow = await connection.query(modifyOriginOotdQuery, ootdIdx);
   return modiOotdRow[0];
-}
+}*/
 
 
 // fixedClothes의 index 존재 여부 체크
@@ -601,7 +601,7 @@ async function updateUserInfo(connection, id, nickname) {
 
 module.exports = {
   checkDateOotd,
-  modifyOriginOotd,
+  //modifyOriginOotd,
   checkClothesIdxIs,
   checkClothesIs,
   checkPlaceIdxIs,

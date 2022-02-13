@@ -5,7 +5,7 @@ const secret_config = require("../../../config/secret");
 // user 뿐만 아니라 다른 도메인의 Provider와 Dao도 아래처럼 require하여 사용할 수 있습니다.
 const ootdProvider = require("./ootdProvider");
 const ootdDao = require("./ootdDao");
-
+const ootdDao2 = require("../OOTD/ootdDao");
 const baseResponse = require("../../../config/baseResponseStatus");
 const {response} = require("../../../config/response");
 const {errResponse} = require("../../../config/response");
@@ -16,14 +16,20 @@ const crypto = require("crypto");
 // Service: Create, Update, Delete 비즈니스 로직 처리
 
 // 기존에 존재한 ootd의 status 를 inactive로 변경
-exports.modiOriginStatus = async function (ootdIdx){
+exports.modiOriginStatus = async function (userIdx, ootdIdx){
     try {
 
         const connection = await pool.getConnection(async (conn) => conn);
-        const modiStatusResult = await ootdDao.modifyOriginOotd(connection, ootdIdx);
-        
+        //const modiStatusResult = await ootdDao.modifyOriginOotd(connection, ootdIdx);
+        const deleteOotdResult = await ootdDao2.deleteOotdData(connection, userIdx, ootdIdx);
+        const deleteClothesResult = await ootdDao2.deleteClothesData(connection, ootdIdx);
+        const deletePhotoResult = await ootdDao2.deletePhotoData(connection, ootdIdx);
+        const deletePlaceResult = await ootdDao2.deletePlaceData(connection, ootdIdx);
+        const deleteWeatherResult = await ootdDao2.deleteWeatherData(connection, ootdIdx);
+        const deleteWhoResult = await ootdDao2.deleteWhoData(connection, ootdIdx);
+
         connection.release();
-        return modiStatusResult;
+        return ootdIdx;
 
     } catch(err){
         logger.error(`App - lastRegisterOotd Service error\n: ${err.message}`);
