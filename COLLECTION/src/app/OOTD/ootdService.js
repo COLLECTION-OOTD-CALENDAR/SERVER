@@ -214,7 +214,7 @@ exports.deleteOotd = async function (userIdx, date) {
             const deleteWeatherResult = await ootdDao.deleteWeatherData(connection, ootdIdx);
             console.log(`Service.weather deleted :`, ootdIdx);
 
-            const deleteWeatherResult = await ootdDao.deleteWhoData(connection, ootdIdx);
+            const deleteWhoResult = await ootdDao.deleteWhoData(connection, ootdIdx);
             console.log(`Service.who deleted :`, ootdIdx);            
 
 
