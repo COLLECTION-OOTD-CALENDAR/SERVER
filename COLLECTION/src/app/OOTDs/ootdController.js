@@ -48,15 +48,15 @@ exports.registerOotd = async function (req, res) {
     /*****************request error***************** */
     /*********************************************** */
 
-    // userIdx가 입력되지 않음, 추후 진행
-    if (!userIdx) { 
-        return res.send(errResponse(baseResponse.USERID_EMPTY));
-    }
+    // userIdx가 입력되지 않음 -> JWT 토큰이 없는 경우로 이미 처리됨
+    //if (!userIdx) { 
+    //    return res.send(errResponse(baseResponse.USERID_EMPTY));
+    //}
 
     // 유효하지 않는 userIdx 입력
-    if (userIdxFromJWT != userIdx) {
-        return res.send(errResponse(baseResponse.USERID_NOT_MATCH));
-    }
+    //if (userIdxFromJWT != userIdx) {
+    //    return res.send(errResponse(baseResponse.USERID_NOT_MATCH));
+    //}
 
     // mode가 없을 경우 error
     if(!mode){
@@ -502,14 +502,14 @@ exports.modiOotd = async function (req, res){
     const date = req.query.date;
 
     // userIdx가 입력되지 않음, 추후 진행
-    if (!userIdx) { 
-        return res.send(errResponse(baseResponse.USERID_EMPTY));
-    }
+    //if (!userIdx) { 
+    //    return res.send(errResponse(baseResponse.USERID_EMPTY));
+    //}
 
     // 유효하지 않는 userIdx 입력
-    if (userIdxFromJWT != userIdx) {
-        return res.send(errResponse(baseResponse.USERID_NOT_MATCH));
-    }
+    //if (userIdxFromJWT != userIdx) {
+    //    return res.send(errResponse(baseResponse.USERID_NOT_MATCH));
+    //}
 
     // query string으로 date가 들어오지 않았을 경우
     if(!date){
@@ -561,14 +561,14 @@ exports.completeOotd = async function (req, res){
     const date = req.query.date;
 
     // userIdx가 입력되지 않음, 추후 진행
-    if (!userIdx) { 
-        return res.send(errResponse(baseResponse.USERID_EMPTY));
-    }
+    //if (!userIdx) { 
+    //    return res.send(errResponse(baseResponse.USERID_EMPTY));
+    //}
 
     // 유효하지 않는 userIdx 입력
-    if (userIdxFromJWT != userIdx) {
-        return res.send(errResponse(baseResponse.USERID_NOT_MATCH));
-    }
+    //if (userIdxFromJWT != userIdx) {
+    //    return res.send(errResponse(baseResponse.USERID_NOT_MATCH));
+    //}
 
     // query string으로 date가 들어오지 않았을 경우
     if(!date){
