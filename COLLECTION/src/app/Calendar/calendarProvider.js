@@ -91,6 +91,7 @@ exports.retrieveWeeklyList = async function (userIdx) {
       ootds = pushOotd(ootds, ootd);
     }
 
+    console.log('[calendarProvider] retrieveWeeklyList finish');
     return ootds;
 
   }catch(err){
