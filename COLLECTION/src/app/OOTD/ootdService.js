@@ -25,14 +25,20 @@ exports.createNewBlock = async function (userIdx, Clothes, PWW, Content) {
         const ContentRows = await ootdProvider.tagRedundantCheck(userIdx, Clothes, PWW, Content);
         if(ContentRows.length > 0)
             return errResponse(baseResponse.TAG_REDUNDANT);
+        console.log(`중복확인 contentAdded`);
+
+       
+        const FixedContentRows = await ootdProvider.fixedRedundantCheck(Clothes, PWW, Content);
+        if(FixedContentRows.length > 0)
+            return errResponse(baseResponse.TAG_REDUNDANT_FIXED);
+         console.log(`중복확인 contentFixed`);            
 
 
-            
         //  2. 추가하는 블럭 20개 넘는지 체크, 20개 미만이면 추가
         const numberRows = await ootdProvider.tagNumberCheck(userIdx, Clothes, PWW);
         if (numberRows.length >= 20)
             return errResponse(baseResponse.TAG_OVERFLOW);
-
+        console.log(`중복확인 contentAdded`);
 
 
         // 3. POST 쿼리문에 사용할 변수 값을 배열 형태로 전달
@@ -178,13 +184,15 @@ exports.deleteOotd = async function (userIdx, date) {
         const connection = await pool.getConnection(async (conn) => conn);
 
         //1. 해당 userIdx에 해당 date에 OOTD가 존재하는지 검증
-        const ootdIdx = await ootdProvider.ootdExistCheck(userIdx, date);
+        let ootdIdx = await ootdProvider.ootdExistCheck(userIdx, date);
+        
         console.log(`ootd exist 검사 - ootdIdx :`, ootdIdx);
-
-        if(ootdIdx.length == 0)
+       
+        if(typeof(ootdIdx)=='undefined')
             return errResponse(baseResponse.DATE_OOTD_EMPTY);
 
-
+        ootdIdx = ootdIdx.ootdIdx; 
+        
         //ootd 삭제 - transaction 처리
         try{
             await connection.beginTransaction();
@@ -194,10 +202,10 @@ exports.deleteOotd = async function (userIdx, date) {
             console.log(`Service.ootd deleted :`, ootdIdx);
 
             const deleteClothesResult = await ootdDao.deleteClothesData(connection, ootdIdx);
-            console.log(`Service.ootd deleted :`, ootdIdx);
+            console.log(`Service.clothes deleted :`, ootdIdx);
 
             const deletePhotoResult = await ootdDao.deletePhotoData(connection, ootdIdx);
-            
+            console.log(`Service.photo deleted :`, ootdIdx);
             
             await connection.commit();
             

@@ -4,8 +4,8 @@ module.exports = {
 
     // Success
     SUCCESS_REGISTER : { "isSuccess": true, "code": 1000, "message":"회원가입 성공" },
-    SUCCESS_DUPLICATE_ID : { "isSuccess": true, "code": 1021, "message":"새로운 ID 확인 성공" },
-    SUCCESS_DUPLICATE_NICKNAME : { "isSuccess": true, "code": 1022, "message":"새로운 NICKNAME 확인 성공" },
+    SUCCESS_DUPLICATE_ID : { "isSuccess": true, "code": 1021, "message":"새로운 아이디 확인 성공" },
+    SUCCESS_DUPLICATE_NICKNAME : { "isSuccess": true, "code": 1022, "message":"새로운 닉네임 확인 성공" },
     SUCCESS_LOGIN : { "isSuccess": true, "code": 1001, "message":"로그인 성공" },
     SUCCESS_USERS_MODI : { "isSuccess": true, "code": 1002, "message":"회원정보 수정 성공" },
     SUCCESS_UNREGISTER : { "isSuccess": true, "code": 1003, "message":"회원탈퇴 성공" },
@@ -24,6 +24,7 @@ module.exports = {
     SUCCESS_MATCH : { "isSuccess": true, "code": 1020, "message":"매칭 페이지 검색 결과 불러오기 성공" },
     SUCCESS_MATCH_DATE : { "isSuccess": true, "code": 1023, "message":"날짜 기반 매칭 페이지 검색 결과 불러오기 성공" },
     SUCCESS_DELETE_BLOCK : { "isSuccess": true, "code": 1024, "message":"사용자 블럭 삭제 성공" },
+    SUCCESS_IMAGE_URL : { "isSuccess": true, "code": 1025, "message":"이미지 url 변환 성공" },  //220212 0419am 
 
 
 
@@ -36,9 +37,9 @@ module.exports = {
 
     //Request error
 
-    REGISTER_ID_EMPTY : { "isSuccess": false, "code": 3000, "message":"ID 입력해주세요" },
-    REGISTER_ID_LENGTH : { "isSuccess": false, "code": 3001, "message":"ID는 6~15자리를 입력해주세요" },
-    REGISTER_ID_REDUNDANT : { "isSuccess": false, "code": 3002, "message":"이미 존재하는 ID입니다." },
+    REGISTER_ID_EMPTY : { "isSuccess": false, "code": 3000, "message":"아이디를 입력해주세요" },
+    REGISTER_ID_LENGTH : { "isSuccess": false, "code": 3001, "message":"아이디는 6~15자리를 입력해주세요" },
+    REGISTER_ID_REDUNDANT : { "isSuccess": false, "code": 3002, "message":"이미 존재하는 아이디입니다." },
 
     REGISTER_PW_EMPTY : { "isSuccess": false, "code": 3003, "message":"비밀번호를 입력해주세요" },
     REGISTER_PW_LENGTH : { "isSuccess": false, "code": 3004, "message":"비밀번호는 6~15자리를 입력해주세요" },
@@ -51,7 +52,7 @@ module.exports = {
     REGISTER_PHONE_ERROR_TYPE_HYPHEN : { "isSuccess": false, "code": 3009, "message":"-를 제외하고 입력해주세요" }, //형식 
     REGISTER_PHONE_INVALID_VALUE : { "isSuccess": false, "code": 3010, "message":"올바르지 않은 전화번호입니다." }, //값 
     
-    LOGIN_ID_WRONG : { "isSuccess": false, "code": 3011, "message": "존재하지 않는 ID입니다." },
+    LOGIN_ID_WRONG : { "isSuccess": false, "code": 3011, "message": "존재하지 않는 아이디입니다." },
     LOGIN_PW_WRONG : { "isSuccess": false, "code": 3012, "message": "비밀번호가 잘못되었습니다." },
 
 
@@ -77,7 +78,7 @@ module.exports = {
     
     QUERY_STRING_EMPTY : { "isSuccess": false, "code": 3028, "message": "Query String을 입력해야 합니다." },
     PWWC_BLANK_TEXT : { "isSuccess": false, "code": 3029, "message": "공백문자만으로는 새로운 태그를 추가할 수 없습니다." },
-    CLOTHES_INVALID_VALUE : { "isSuccess": false, "code": 3030, "message": "유효하지 않은 CLothes가 입력되었습니다." },//값        
+    CLOTHES_INVALID_VALUE : { "isSuccess": false, "code": 3030, "message": "올바르지 않은 Clothes flag(0,1,2,3)값이 입력되었습니다." },//값        
     
     
     LOOKPOINT_INVALID_VALUE : { "isSuccess": false, "code": 3031, "message": "lookpoint 범위 내의 값이 아닙니다." }, //값
@@ -98,7 +99,7 @@ module.exports = {
     //New added
     REGISTER_NAME_EMPTY : { "isSuccess": false, "code": 3041, "message":"성함을 입력해주세요." },
     QUERY_STRING_OVERFLOW : { "isSuccess": false, "code": 3042, "message": "너무 많은 Query String이 입력되었습니다." },
-    QUERY_STRING_ERROR_TYPE : { "isSuccess": false, "code": 3043, "message": "유효하지 않은 Query String 값이 입력되었습니다." },
+    QUERY_STRING_ERROR_TYPE : { "isSuccess": false, "code": 3043, "message": "유효하지 않은 Query String 형식이 입력되었습니다." },
     DATE_ERROR_TYPE : { "isSuccess": false, "code": 3044, "message": "올바르지 않는 날짜형식입니다." }, //형식
     PWW_ERROR_TYPE : { "isSuccess": false, "code": 3045, "message": "올바르지 않은 PWW flag형식이 입력되었습니다." }, //형식
     CLOTHES_ERROR_TYPE : { "isSuccess": false, "code": 3046, "message": "올바르지 않은 Clothes형식이 입력되었습니다." }, //형식
@@ -119,21 +120,52 @@ module.exports = {
     COLOR_INVALID_VALUE : {"isSuccess" : false, "code" : 3061, "message" : "유효하지 않은 COLOR값이 입력되었습니다."},
     COMMENT_LENGTH :  {"isSuccess" : false, "code" : 3062, "message" : "COMMENT를 65535자리 이내로 입력해주세요."},
     FCLOTHES_ERROR_TYPE : {"isSuccess" : false, "code" : 3063, "message" : "올바르지 않은 fixedClothes index 형식입니다."},
-    ACLOTHES_ERROR_TYPE : {"isSuccess" : false, "code" : 3064, "message" : "올바르지 않은 addedClothes smallClass 형식입니다."},
-    FPLACE_ERROR_TYPE : {"isSuccess" : false, "code" : 3065, "message" : "올바르지 않은 장소 index 형식입니다."},
-    APLACE_ERROR_TYPE : {"isSuccess" : false, "code" : 3066, "message" : "올바르지 않은 장소 place 형식입니다."},
+    FCLOTHES_INDEX_EMPTY : {"isSuccess" : false, "code" : 3064, "message" : "fClothes의 index 값을 입력해주세요."},
+    FCLOTHES_COLOR_EMPTY : {"isSuccess" : false, "code" : 3065, "message" : "fClothes의 color 값을 입력해주세요."},
+    FPLACE_ERROR_TYPE : {"isSuccess" : false, "code" : 3066, "message" : "올바르지 않은 장소 index 형식입니다."},
     FWEATHER_ERROR_TYPE : {"isSuccess" : false, "code" : 3067, "message" : "올바르지 않은 날씨 index 형식입니다."},
-    AWEATHER_ERROR_TYPE : {"isSuccess" : false, "code" : 3068, "message" : "올바르지 않은 날씨 weather 형식입니다."},
-    FWHO_ERROR_TYPE : {"isSuccess" : false, "code" : 3069, "message" : "올바르지 않은 누구 index 형식입니다."},
-    AWHO_ERROR_TYPE : {"isSuccess" : false, "code" : 3070, "message" : "올바르지 않은 누구 who 형식입니다."},
+    FWHO_ERROR_TYPE : {"isSuccess" : false, "code" : 3068, "message" : "올바르지 않은 누구 index 형식입니다."},
+    ACLOTHES_BIG_EMPTY : {"isSuccess" : false, "code" : 3069, "message" : "aClass의 bigClass 값을 입력해주세요."},
+    ACLOTHES_SMALL_EMPTY : {"isSuccess" : false, "code" : 3070, "message" : "aClass의 smallClass 값을 입력해주세요."},
+    CLOTHES_PWW_ONE_EMPTY : {"isSuccess" : false, "code" : 3071, "message" : "Query String에 Clothes와 PWW를 모두 입력해야 합니다."},
+    REGISTER_NAME_REGEXP : {"isSuccess" : false, "code" : 3072, "message" : "성함은 한글(2-5자), 영문 대 소문자(2-10)자를 입력하세요."},
+    REGISTER_NICKNAME_REGEXP : {"isSuccess" : false, "code" : 3073, "message" : "특수문자를 제외하고 입력하세요."},
+    REGISTER_ID_REGEXP : {"isSuccess" : false, "code" : 3074, "message" : "아이디는 영문자로 시작하는 6~15자 영문자 또는 숫자이어야 합니다."},
+    REGISTER_IMAGE_EMPTY : {"isSuccess" : false, "code" : 3075, "message" : "Image 관련 값을 입력해주세요."},
+    REGISTER_CLOTHES_EMPTY : {"isSuccess" : false, "code" : 3076, "message" : "선택된 Clothes가 없습니다."},
+    REGISTER_PLACE_EMPTY : {"isSuccess" : false, "code" : 3077, "message" : "Place 값을 입력해주세요."},
+    REGISTER_WEATHER_EMPTY : {"isSuccess" : false, "code" : 3078, "message" : "Weather 값을 입력해주세요."},
+    REGISTER_WHO_EMPTY : {"isSuccess" : false, "code" : 3079, "message" : "Who 값을 입력해주세요."},
+    REGISTER_PW_REGEXP : {"isSuccess" : false, "code" : 3080, "message" : "비밀번호는 영문자로 시작하는 6~15자 영문자 또는 숫자여야 합니다."},
+    IMAGE_ERROR_TYPE : {"isSuccess" : false, "code" : 3081, "message" : "올바르지 않은 Image 입력 형식입니다."},
+    REGISTER_IMGURL_EMPTY : {"isSuccess" : false, "code" : 3082, "message" : "ImageUrl 값을 입력해주세요"},
+    REGISTER_THUMBNAIL_EMPTY : {"isSuccess" : false, "code" : 3083, "message" : "Thumbnail 값을 입력해주세요."},
+    REGISTER_FCLOTHES_EMPTY : {"isSuccess" : false, "code" : 3084, "message" : "fClothes 값을 입력해주세요."},
+    REGISTER_FCLOTHES_ERROR_TYPE : {"isSuccess" : false, "code" : 3085, "message" : "올바르지 않은 fClothes 형식입니다."},
+    REGISTER_ACLOTHES_EMPTY : {"isSuccess" : false, "code" : 3086, "message" : "aClothes 값을 입력해주세요."},
+    REGISTER_ACLOTHES_ERROR_TYPE : {"isSuccess" : false, "code" : 3087, "message" : "올바르지 않은 aClothes 형식입니다."},
+    ACLOTHES_COLOR_EMPTY : {"isSuccess" : false, "code" : 3088, "message" : "aClothes의 color 값을 입력해주세요."},
+    REGISTER_PLACE_ERROR_TYPE : {"isSuccess" : false, "code" : 3089, "message" : "올바르지 않은 fPlace / aPlace 입력 형식입니다."},
+    REGISTER_WEATHER_ERROR_TYPE : {"isSuccess" : false, "code" : 3090, "message" : "올바르지 않은 fWeather / aWeather 입력 형식입니다."},
+    REGISTER_WHO_ERROR_TYPE : {"isSuccess" : false, "code" : 3091, "message" : "올바르지 않은 fWho / aWho 입력 형식입니다."},
+    REGISTER_COMMENT_EMPTY : {"isSuccess" : false, "code" : 3092, "message" : "COMMENT 값을 입력해주세요."},
+    THUMBNAIL_MANY_MAIN : {"isSuccess" : false, "code" : 3093, "message" : "한 개의 사진이 thumbnail로 지정되어야 합니다."},
+    MODE_EMPTY : {"isSuccess" : false, "code" : 3094, "message" : "Query String에 mode를 입력해야 합니다."},
+    MODE_ERROR_TYPE : {"isSuccess" : false, "code" : 3095, "message" : "올바르지 않은 mode Query String 형식입니다."},
+    MODE_INVALID_VALUE : {"isSuccess" : false, "code" : 3096, "message" : "유효하지 않은 mode Query String(1,2)값이 입력되었습니다."},
+    REGISTER_PLACE_MAX : {"isSuccess" : false, "code" : 3097, "message" : "Place는 최대 두 개까지 선택할 수 있습니다."},
+    REGISTER_WEATHER_MAX : {"isSuccess" : false, "code" : 3098, "message" : "Weather는 최대 두 개까지 선택할 수 있습니다."},
+    REGISTER_WHO_MAX : {"isSuccess" : false, "code" : 3099, "message" : "Who는 최대 두 개까지 선택할 수 있습니다."},
+    REGISTER_IMAGE_OBJ : {"isSuccess" : false, "code" : 3100, "message" : "Image 배열 내 하나 이상의 값이 있어야 합니다."},
 
-    
+
+
     //Response Error
     LOOKPOINT_RESPONSE_ERROR : { "isSuccess": false, "code": 4000, "message": "LOOKPOINT 값 추출에 실패했습니다."},
     SEARCH_DATE_OOTD_EMPTY : { "isSuccess": false, "code": 4001, "message": "선택하신 날짜에 해당하는 OOTD가 존재하지 않습니다." },
     LOGIN_UNREGISTER_USER : { "isSuccess": false, "code": 4002, "message": "탈퇴된 계정입니다. 문의해주세요." },
     TAG_OVERFLOW : { "isSuccess": false, "code": 4003, "message": "태그는 최대 20개까지 추가할 수 있습니다. 새로운 태그를 추가하기 위해 기존의 태그를 삭제해주세요." },
-    TAG_REDUNDANT : { "isSuccess": false, "code": 4004, "message": "이미 존재하는 태그입니다." }, //형식
+    TAG_REDUNDANT : { "isSuccess": false, "code": 4004, "message": "이미 존재하는 태그입니다." }, 
     DATE_RESPONSE_ERROR : { "isSuccess":false, "code":4005, "message": "DATE 값 추출에 실패했습니다."},    
     TAG_ALREADY_DELETED : { "isSuccess":false, "code":4006, "message": "이미 삭제된 태그입니다."},
     TAG_NEVER_EXISTED : { "isSuccess":false, "code":4007, "message": "추가된 적이 없는 태그입니다."},
@@ -143,6 +175,9 @@ module.exports = {
     PLACE_NOT_MATCH : { "isSuccess": false, "code": 4011, "message": "등록할 수 없는 Place가 입력되었습니다."},
     WEATHER_NOT_MATCH : { "isSuccess": false, "code": 4012, "message": "등록할 수 없는 Weather가 입력되었습니다."},
     WHO_NOT_MATCH : { "isSuccess": false, "code": 4013, "message": "등록할 수 없는 Who가 입력되었습니다."},
+    TAG_REDUNDANT_FIXED : { "isSuccess": false, "code": 4014, "message": "기본 태그에 존재합니다." },
+    OOTD_NOT_EXIST :  { "isSuccess": false, "code": 4015, "message": "해당 DATE에 OOTD가 존재하지 않습니다." },
+    
     
 
 

@@ -22,7 +22,7 @@ const jwtMiddleware = (req, res, next) => {
             })
         }
     );
-
+        
     // if it has failed to verify, it will return an error message
     const onError = (error) => {
         return res.send(errResponse(baseResponse.TOKEN_VERIFICATION_FAILURE))

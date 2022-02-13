@@ -15,16 +15,16 @@ module.exports = function(app){
     app.post('/app/user/login',user.postLogin);
 
     //5. 회원정보 수정 (닉네임)
-    app.patch('/app/user/modi-nickname/:userIdx',jwtMiddleware, user.patchModiNickname);
+    app.patch('/app/user/modi-nickname', jwtMiddleware, user.patchModiNickname);
 
     //6. 회원정보 수정 (비밀번호)
-    app.patch('/app/user/modi-password/:userIdx',jwtMiddleware, user.patchModiPW);
+    app.patch('/app/user/modi-password',jwtMiddleware, user.patchModiPW);
 
     //7. 회원정보 수정 (전화번호)
-    app.patch('/app/user/modi-phone/:userIdx',jwtMiddleware, user.patchModiPhone);
+    app.patch('/app/user/modi-phone',jwtMiddleware, user.patchModiPhone);
 
     //8. 회원탈퇴
-    app.patch('/app/user/unregister/:userIdx',jwtMiddleware,user.deleteUnregister);
+    app.patch('/app/user/unregister',jwtMiddleware,user.deleteUnregister);
 
 };
 

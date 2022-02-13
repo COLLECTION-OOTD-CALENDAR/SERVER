@@ -4,8 +4,12 @@ const methodOverride = require('method-override');
 var cors = require('cors');
 module.exports = function () {
     const app = express();
+    var bodyParser = require('body-parser'); 
 
     app.use(compression());
+            
+    app.use(bodyParser.json({limit:'50mb'})); 
+    app.use(bodyParser.urlencoded({extended:true, limit:'50mb'})); 
 
     app.use(express.json());
 
@@ -22,7 +26,7 @@ module.exports = function () {
     require('../src/app/OOTD/ootdRoute')(app);
     require('../src/app/Calendar/calendarRoute')(app);
     require('../src/app/MyLook/mylookRoute')(app);
-    //require('../src/app/OOTDs/ootdRoute)')(app);
+    require('../src/app/OOTDs/ootdRoute')(app);
 
     return app;
 };
