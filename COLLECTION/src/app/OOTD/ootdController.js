@@ -4,8 +4,6 @@ const ootdService = require("./ootdService");
 const baseResponse = require("../../../config/baseResponseStatus");
 const {response, errResponse} = require("../../../config/response");
 
-const uploadMulter = require("../../../config/uploadMulter");
-
 const regexEmail = require("regex-email");
 
 /**
