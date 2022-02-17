@@ -99,7 +99,7 @@ module.exports = {
     //New added
     REGISTER_NAME_EMPTY : { "isSuccess": false, "code": 3041, "message":"성함을 입력해주세요." },
     QUERY_STRING_OVERFLOW : { "isSuccess": false, "code": 3042, "message": "너무 많은 Query String이 입력되었습니다." },
-    QUERY_STRING_ERROR_TYPE : { "isSuccess": false, "code": 3043, "message": "유효하지 않은 Query String 형식이 입력되었습니다." },
+    QUERY_STRING_ERROR_TYPE : { "isSuccess": false, "code": 3043, "message": "올바르지 않은 Query String 형식이 입력되었습니다." },
     DATE_ERROR_TYPE : { "isSuccess": false, "code": 3044, "message": "올바르지 않는 날짜형식입니다." }, //형식
     PWW_ERROR_TYPE : { "isSuccess": false, "code": 3045, "message": "올바르지 않은 PWW flag형식이 입력되었습니다." }, //형식
     CLOTHES_ERROR_TYPE : { "isSuccess": false, "code": 3046, "message": "올바르지 않은 Clothes형식이 입력되었습니다." }, //형식
@@ -157,6 +157,19 @@ module.exports = {
     REGISTER_WEATHER_MAX : {"isSuccess" : false, "code" : 3098, "message" : "Weather는 최대 두 개까지 선택할 수 있습니다."},
     REGISTER_WHO_MAX : {"isSuccess" : false, "code" : 3099, "message" : "Who는 최대 두 개까지 선택할 수 있습니다."},
     REGISTER_IMAGE_OBJ : {"isSuccess" : false, "code" : 3100, "message" : "Image 배열 내 하나 이상의 값이 있어야 합니다."},
+
+
+
+    PWWC_EMPTY :  {"isSuccess" : false, "code" : 3101, "message" : "PWWC flag 값이 입력되어야합니다."},
+    HISTORY_CONTENT_UNDEFINED :  {"isSuccess" : false, "code" : 3102, "message" : "삭제할 블럭이 지정되지 않았습니다."},
+    UNNECESSARY_CONTENT :  {"isSuccess" : false, "code" : 3103, "message" : "전체삭제에 알맞지 않은 조건입니다."},
+    QUERY_STRING_INVALID_VALUE :  {"isSuccess" : false, "code" : 3105, "message" : "유효하지 않은 Query String 값이 입력되었습니다."},
+    STARTAT_ERROR_TYPE :  {"isSuccess" : false, "code" : 3106, "message" : "올바르지 않은 startAt 형식이 입력되었습니다."},
+    STARTAT_INVALID_VALUE :  {"isSuccess" : false, "code" : 3107, "message" : "유효하지 않은 startAt 값이 입력되었습니다."},
+    ENDAT_ERROR_TYPE :  {"isSuccess" : false, "code" : 3108, "message" : "올바르지 않은 endAt 형식이 입력되었습니다."},
+    ENDAT_INVALID_VALUE :  {"isSuccess" : false, "code" : 3109, "message" : "유효하지 않은 endAt 값이 입력되었습니다."},
+    SEARCH_KEYWORD_LENGTH :  {"isSuccess" : false, "code" : 3110, "message" : "6자 이내로 검색해야 합니다."},
+    TAG_EMPTY :  {"isSuccess" : false, "code" : 3111, "message" : "태그 내용을 입력해야 합니다."},
 
 
 

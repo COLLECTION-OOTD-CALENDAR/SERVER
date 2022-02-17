@@ -6,6 +6,9 @@ const {response, errResponse} = require("../../../config/response");
 
 const regexEmail = require("regex-email");
 
+var blank_pattern = /^\s+|\s+$/g;
+
+
 /**
  * API No. 1
  * API Name : 사용자 추가 블럭 API
@@ -15,6 +18,7 @@ exports.postNewBlock = async function (req, res) {
     // 1. jwt token 검증 
 
     const userIdx = req.verifiedToken.userIdx;
+
 
     /**jwt token 검증 성공한 다음*/
 
@@ -26,9 +30,13 @@ exports.postNewBlock = async function (req, res) {
     
     const content = req.body.content;
 
-    var Content = content.toString();
-    var blank_pattern = /^\s+|\s+$/g;
+    if(!content){
+        return res.send(errResponse(baseResponse.TAG_EMPTY));
+    }
 
+
+
+    var Content = content.toString();
     if(Content.replace(blank_pattern, '' ) == "" ){
         return res.send(errResponse(baseResponse.PWWC_BLANK_TEXT));  
     }
@@ -122,9 +130,12 @@ exports.patchBlock = async function (req, res) {
     const userIdx = req.verifiedToken.userIdx;
     const content = req.body.content;
 
-    var Content = content.toString();
-    
-    var blank_pattern = /^\s+|\s+$/g;
+
+    if(!content){
+        return res.send(errResponse(baseResponse.TAG_EMPTY));
+    }
+
+    var Content = content.toString();    
 
     if(Content.replace(blank_pattern, '' ) == "" ){
         return res.send(errResponse(baseResponse.PWWC_BLANK_TEXT));  
@@ -153,11 +164,11 @@ exports.patchBlock = async function (req, res) {
     
 
     //if(( (!Clothes) && (Clothes != 0)) || ( (!PWW) && (PWW !=0) ) || (typeof(Clothes) == 'undefined') || (typeof(PWW) == 'undefined')) {                
-    if(Clothes == "" || PWW == "" || (typeof(Clothes) == 'undefined') || (typeof(PWW) == 'undefined')){
+    if(Clothes == "" || PWW == "" || (typeof(Clothes) == 'undefined') || (typeof(PWW) == 'undefined')){ 
         return res.send(errResponse(baseResponse.CLOTHES_PWW_ONE_EMPTY));       //Clothes, PWW 중 하나라도 아예 입력되지 않은 경우
     }
 
-
+    
     
     if( (Clothes < -1) || (3 < Clothes)){//유효하지 않은 값
         return res.send(errResponse(baseResponse.PWW_INVALID_VALUE)); 
@@ -206,7 +217,7 @@ exports.patchOotd = async function (req, res) {
 
 
     var date_start = new Date('2010-01-01');
-    var date_end = new Date('2100-01-01');
+    var date_end = new Date('2099-12-31');
 
     if( (date < date_start) || (date > date_end) ){     //기준 날짜 범위 외의 날짜 검사
         return res.send(errResponse(baseResponse.DATE_INVALID_VALUE));
