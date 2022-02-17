@@ -169,6 +169,8 @@ module.exports = {
     ENDAT_ERROR_TYPE :  {"isSuccess" : false, "code" : 3108, "message" : "올바르지 않은 endAt 형식이 입력되었습니다."},
     ENDAT_INVALID_VALUE :  {"isSuccess" : false, "code" : 3109, "message" : "유효하지 않은 endAt 값이 입력되었습니다."},
     SEARCH_KEYWORD_LENGTH :  {"isSuccess" : false, "code" : 3110, "message" : "6자 이내로 검색해야 합니다."},
+    TAG_EMPTY :  {"isSuccess" : false, "code" : 3111, "message" : "삭제할 태그 내용을 입력해야 합니다."},
+
 
 
     //Response Error
