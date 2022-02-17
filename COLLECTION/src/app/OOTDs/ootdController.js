@@ -195,8 +195,6 @@ exports.registerOotd = async function (req, res) {
     }else {
         // fClothes 내 객체 조건 
         for(item of fClothes){
-            console.log('여기에 들어오나요? fClothes 배열 내 객체가 없는데?');
-            console.log('item : ', item);
             // index 키가 없을 경우 및 빈 값인 경우
             if(!item["index"]){
                 return res.send(errResponse(baseResponse.FCLOTHES_INDEX_EMPTY));
@@ -252,7 +250,8 @@ exports.registerOotd = async function (req, res) {
             // 유효하지 않은 COLOR 값
             let addedColorStr = (aClothes[i].color).toString();
             aClothes[i].color = addedColorStr;
-            if(colorArr.indexOf(item["color"]) == -1){
+            console.log()
+            if(colorArr.indexOf(aClothes[i].color) == -1){
                 return res.send(errResponse(baseResponse.COLOR_INVALID_VALUE));
             }
         }
