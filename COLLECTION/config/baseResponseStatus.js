@@ -190,6 +190,10 @@ module.exports = {
     WHO_NOT_MATCH : { "isSuccess": false, "code": 4013, "message": "등록할 수 없는 Who가 입력되었습니다."},
     TAG_REDUNDANT_FIXED : { "isSuccess": false, "code": 4014, "message": "기본 태그에 존재합니다." },
     OOTD_NOT_EXIST :  { "isSuccess": false, "code": 4015, "message": "해당 DATE에 OOTD가 존재하지 않습니다." },
+    SEARCH_NOT_EXIST : { "isSuccess": false, "code": 4016, "message": "존재하지 않는 검색 내역입니다." },
+    HISTORY_DELETED : { "isSuccess": false, "code": 4017, "message": "삭제된 History입니다." },
+    SEARCH_NOT_FOUND : { "isSuccess": false, "code": 4018, "message": "검색결과를 찾을 수 없습니다." },
+    
     
     
 
