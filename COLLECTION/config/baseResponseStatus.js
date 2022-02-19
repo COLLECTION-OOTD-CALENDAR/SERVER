@@ -195,6 +195,7 @@ module.exports = {
     HISTORY_DELETED : { "isSuccess": false, "code": 4017, "message": "삭제된 History입니다." },
     SEARCH_NOT_FOUND : { "isSuccess": false, "code": 4018, "message": "검색결과를 찾을 수 없습니다." },
     SEARCH_TAG_NOT_EXIST : { "isSuccess": false, "code": 4019, "message": "해당 키워드를 포함하는 태그가 존재하지 않습니다." },
+    PRINT_IMG_ERROR : { "isSuccess": false, "code": 4020, "message": "Thumbnail 사진 및 저장된 사진의 개수 출력에 문제가 있습니다." },
     
     
 
