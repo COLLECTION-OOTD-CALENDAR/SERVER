@@ -6,7 +6,7 @@ async function selectMonthly(connection, userIdx) {
   const selectMonthlyListQuery = `
                 SELECT date, lookpoint
                 FROM OOTD
-                WHERE userIdx = ?
+                WHERE userIdx = ? AND status = 'active'
                 ORDER BY date;
                 `;
   const [monthlyRows] = await connection.query(selectMonthlyListQuery, userIdx);
@@ -55,7 +55,7 @@ async function selectWeeklyOotdList(connection, userIdx){
                         LEFT JOIN AddedClothes AS AC
                           ON CL.addedType = AC.index ) AS TMCL
                       ON O.ootdIdx = TMCL.ootdIdx
-                  WHERE O.userIdx = ?
+                  WHERE O.userIdx = ? AND O.status = 'active'
                   ORDER BY O.date;
                   `;
   const [weeklyOotdRows] = await connection.query(selectWeeklyOotdListQuery, userIdx);
