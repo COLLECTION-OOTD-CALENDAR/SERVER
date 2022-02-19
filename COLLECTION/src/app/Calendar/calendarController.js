@@ -66,6 +66,10 @@ exports.getWeek = async function (req, res) {
         if(!datePattern.test(callWeekCalOotd[i].date)){
             return res.send(errResponse(baseResponse.DATE_RESPONSE_ERROR));
         }
+
+        if(callWeekCalOotd[i].imageUrl == null && callWeekCalOotd[i].imageCnt > 0){
+            return res.send(errResponse(baseResponse.PRINT_IMG_ERROR));
+        }
     }
     
     const weekCalFinalResult = {};
