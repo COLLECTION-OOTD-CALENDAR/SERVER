@@ -66,12 +66,13 @@ exports.retrieveWeeklyList = async function (userIdx) {
       ootd["lookpoint"] = row.lookpoint;
       //ootd["imageUrl"] = row.imageUrl;
       ootd["imageUrl"] = getImageUrl(row.imageUrl, row.thumbnail);
+      console.log("[calendarProvider] ootdIdx)imageUrl : ", ootd.ootdIdx, ")", ootd["imageUrl"]);
       ootd["imageCnt"] = getImageCntKey(row.ootdIdx, ootds);
-      console.log("[calendarProvider] imageCnt 이어 나가자 : ", ootd["imageCnt"]);
+      console.log("[calendarProvider] imageCnt 이어 나가자 : ", ootd.ootdIdx, ")", ootd["imageCnt"]);
       if(!hasImageUrl(imgUrlArr, row.imageUrl)){
         ootd["imageCnt"] = getImageCnt(row.thumbnail, img_cnt, ootd["imageCnt"]);
         img_cnt = ootd["imageCnt"];
-        console.log("[calendarProvider] imageCnt 증가 확인 : ", ootd["imageCnt"]);
+        console.log("[calendarProvider] imageCnt 증가 확인 : ", ootd.ootdIdx, ")", ootd["imageCnt"]);
       }
       // place, weather, who에 접근하여 같은 것이 있는지 확인하고 넣기
       ootd["place"] = getPlaces(row, ootd["place"]);
