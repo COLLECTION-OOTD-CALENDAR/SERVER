@@ -47,18 +47,32 @@ exports.retrieveWeeklyList = async function (userIdx) {
 
     let ootds = [];
     var moment = require('moment');
+    let img_cnt = 0;
+    let imgUrlArr = [];
 
     for (let row of ootdWeeklyListResult) {
       
       // ootds 배열에 새로운 ootd row 추가 여부 결정
       let ootd = getOotd(row.ootdIdx, ootds);
+      // img_cnt와 distinct한 imgUrl을 저장하는 배열 초기화
+      if(!ootd.ootdIdx){
+        img_cnt = 0;
+        imgUrlArr = [];
+      }
 
       // ootdIdx, date, lookpoint, imageUrl 정의. 똑같을 확률 높음.
       ootd["ootdIdx"] = row.ootdIdx;
       ootd["date"] = moment(row.date).format('YYYY-MM-DD');
       ootd["lookpoint"] = row.lookpoint;
-      ootd["imageUrl"] = row.imageUrl;
-
+      //ootd["imageUrl"] = row.imageUrl;
+      ootd["imageUrl"] = getImageUrl(row.imageUrl, row.thumbnail);
+      ootd["imageCnt"] = getImageCntKey(row.ootdIdx, ootds);
+      console.log("[calendarProvider] imageCnt 이어 나가자 : ", ootd["imageCnt"]);
+      if(!hasImageUrl(imgUrlArr, row.imageUrl)){
+        ootd["imageCnt"] = getImageCnt(row.thumbnail, img_cnt, ootd["imageCnt"]);
+        img_cnt = ootd["imageCnt"];
+        console.log("[calendarProvider] imageCnt 증가 확인 : ", ootd["imageCnt"]);
+      }
       // place, weather, who에 접근하여 같은 것이 있는지 확인하고 넣기
       ootd["place"] = getPlaces(row, ootd["place"]);
       ootd["weather"] = getWeathers(row, ootd["weather"]);
@@ -100,6 +114,57 @@ exports.retrieveWeeklyList = async function (userIdx) {
   }
 
 };
+
+// image 관련 imageUrl 값을 변경하는 함수
+function getImageUrl(imageUrl, thumbnail){
+  if(!imageUrl){
+    return null;
+  }
+
+  if(thumbnail == 0){
+    return imageUrl;
+  }
+  else return;
+  
+}
+
+function getImageCntKey(ootdIdx, ootds){
+  for (let each of ootds){
+    if(each.ootdIdx == ootdIdx) return each.imageCnt;
+  }
+
+  return;
+}
+
+
+// imageCnt++ 하기 위한 조건
+function hasImageUrl(imgUrlArr, imageUrl){
+
+  if(imageUrl === undefined || imageUrl === null){
+    return false;
+  }
+
+  for(let each of imgUrlArr){
+    if(each == imageUrl) return true;
+  }
+
+  imgUrlArr.push(imageUrl);
+  return false;
+}
+
+// image 관련 imageCnt 값을 변경하는 함수
+function getImageCnt(thumbnail, img_cnt, tmp){
+  if(!thumbnail){
+    return img_cnt;
+  }
+
+  if(thumbnail == -1){
+    return ++img_cnt;
+  }
+
+  return img_cnt;
+}
+
 
 // ootds 배열에 새로운 ootd row 추가 or 삽입 여부 결정
 function getOotd(ootdIdx, ootds) {

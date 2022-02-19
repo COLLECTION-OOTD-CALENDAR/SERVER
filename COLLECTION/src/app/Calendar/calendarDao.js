@@ -17,16 +17,15 @@ async function selectMonthly(connection, userIdx) {
 async function selectWeeklyOotdList(connection, userIdx){
   const selectWeeklyOotdListQuery = `
                   SELECT distinct O.ootdIdx, O.date, O.lookpoint, 
-                  TMPH.imageUrl, TMPL.fpName, TMPL.apName, 
+                  TMPH.imageUrl, TMPH.thumbnail, TMPL.fpName, TMPL.apName, 
                   TMWE.fwName, TMWE.awName, TMWH.fwhName, TMWH.awhName, 
                   TMCL.color, TMCL.fixedBig, TMCL.fixedSmall, TMCL.addedBig, TMCL.addedSmall
                   
                   FROM OOTD AS O
-                    LEFT JOIN ( SELECT Ph.ootdIdx, Ph.imageUrl
+                    LEFT JOIN ( SELECT Ph.ootdIdx, Ph.imageUrl, Ph.thumbnail
                       FROM Photo AS Ph
                         RIGHT JOIN OOTD AS O
-                          ON Ph.ootdIdx = O.ootdIdx
-                      WHERE Ph.thumbnail = 0 ) AS TMPH
+                          ON Ph.ootdIdx = O.ootdIdx) AS TMPH
                       ON O.ootdIdx = TMPH.ootdIdx
                     LEFT JOIN ( SELECT PL.ootdIdx, PL.fixedPlace, PL.addedPlace, FP.place AS fpName, AP.place AS apName
                       FROM Place as PL
