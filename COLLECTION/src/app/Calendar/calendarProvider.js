@@ -64,16 +64,25 @@ exports.retrieveWeeklyList = async function (userIdx) {
       ootd["ootdIdx"] = row.ootdIdx;
       ootd["date"] = moment(row.date).format('YYYY-MM-DD');
       ootd["lookpoint"] = row.lookpoint;
-      //ootd["imageUrl"] = row.imageUrl;
-      ootd["imageUrl"] = getImageUrl(row.imageUrl, row.thumbnail);
+
+      // imageUrl key를 이어가거나 새로 추가하기
+      ootd["imageUrl"] = getImageUrlKey(row.ootdIdx, ootds);
+      // imageUrl
+      if(!ootd["imageUrl"]){
+        ootd["imageUrl"] = getImageUrl(row.imageUrl, row.thumbnail);
+      }
       console.log("[calendarProvider] ootdIdx)imageUrl : ", ootd.ootdIdx, ")", ootd["imageUrl"]);
+      
+      // imageCnt key를 이어나가거나 새로 추가하기
       ootd["imageCnt"] = getImageCntKey(row.ootdIdx, ootds);
       console.log("[calendarProvider] imageCnt 이어 나가자 : ", ootd.ootdIdx, ")", ootd["imageCnt"]);
+      //imageCnt
       if(!hasImageUrl(imgUrlArr, row.imageUrl)){
         ootd["imageCnt"] = getImageCnt(row.thumbnail, img_cnt, ootd["imageCnt"]);
         img_cnt = ootd["imageCnt"];
         console.log("[calendarProvider] imageCnt 증가 확인 : ", ootd.ootdIdx, ")", ootd["imageCnt"]);
       }
+      
       // place, weather, who에 접근하여 같은 것이 있는지 확인하고 넣기
       ootd["place"] = getPlaces(row, ootd["place"]);
       ootd["weather"] = getWeathers(row, ootd["weather"]);
@@ -116,6 +125,17 @@ exports.retrieveWeeklyList = async function (userIdx) {
 
 };
 
+
+// imageUrl Key를 새로 생성 또는 이어서 진행할지 결정
+function getImageUrlKey(ootdIdx, ootds){
+  for (let each of ootds){
+    if(each.ootdIdx == ootdIdx) return each.imageUrl;
+  }
+
+  return;
+}
+
+
 // image 관련 imageUrl 값을 변경하는 함수
 function getImageUrl(imageUrl, thumbnail){
   if(!imageUrl){
@@ -129,6 +149,7 @@ function getImageUrl(imageUrl, thumbnail){
   
 }
 
+// imageCnt Key를 새로 생성 또는 이어서 진행할지 결정
 function getImageCntKey(ootdIdx, ootds){
   for (let each of ootds){
     if(each.ootdIdx == ootdIdx) return each.imageCnt;
