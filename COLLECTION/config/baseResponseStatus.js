@@ -4,8 +4,6 @@ module.exports = {
 
     // Success
     SUCCESS_REGISTER : { "isSuccess": true, "code": 1000, "message":"회원가입 성공" },
-    SUCCESS_DUPLICATE_ID : { "isSuccess": true, "code": 1021, "message":"새로운 아이디 확인 성공" },
-    SUCCESS_DUPLICATE_NICKNAME : { "isSuccess": true, "code": 1022, "message":"새로운 닉네임 확인 성공" },
     SUCCESS_LOGIN : { "isSuccess": true, "code": 1001, "message":"로그인 성공" },
     SUCCESS_USERS_MODI : { "isSuccess": true, "code": 1002, "message":"회원정보 수정 성공" },
     SUCCESS_UNREGISTER : { "isSuccess": true, "code": 1003, "message":"회원탈퇴 성공" },
@@ -22,9 +20,12 @@ module.exports = {
     SUCCESS_SEARCH_DELETION : { "isSuccess": true, "code": 1018, "message":"PWWC 검색 History 삭제 성공" },
     SUCCESS_SEARCH_ADDITION : { "isSuccess": true, "code": 1019, "message":"History 추가 성공" },
     SUCCESS_MATCH : { "isSuccess": true, "code": 1020, "message":"매칭 페이지 검색 결과 불러오기 성공" },
+    SUCCESS_DUPLICATE_ID : { "isSuccess": true, "code": 1021, "message":"새로운 아이디 확인 성공" },
+    SUCCESS_DUPLICATE_NICKNAME : { "isSuccess": true, "code": 1022, "message":"새로운 닉네임 확인 성공" },
     SUCCESS_MATCH_DATE : { "isSuccess": true, "code": 1023, "message":"날짜 기반 매칭 페이지 검색 결과 불러오기 성공" },
     SUCCESS_DELETE_BLOCK : { "isSuccess": true, "code": 1024, "message":"사용자 블럭 삭제 성공" },
-    SUCCESS_IMAGE_URL : { "isSuccess": true, "code": 1025, "message":"이미지 url 변환 성공" },  //220212 0419am 
+    SUCCESS_IMAGE_URL : { "isSuccess": true, "code": 1025, "message":"이미지 url 변환 성공" },  
+    SUCCESS_SEARCH_SUGGEST : { "isSuccess": true, "code": 1026, "message":"매칭 페이지 검색 키워드 제안 성공" },
 
 
 
@@ -193,7 +194,7 @@ module.exports = {
     SEARCH_NOT_EXIST : { "isSuccess": false, "code": 4016, "message": "존재하지 않는 검색 내역입니다." },
     HISTORY_DELETED : { "isSuccess": false, "code": 4017, "message": "삭제된 History입니다." },
     SEARCH_NOT_FOUND : { "isSuccess": false, "code": 4018, "message": "검색결과를 찾을 수 없습니다." },
-    
+    SEARCH_TAG_NOT_EXIST : { "isSuccess": false, "code": 4019, "message": "해당 키워드를 포함하는 태그가 존재하지 않습니다." },
     
     
 
