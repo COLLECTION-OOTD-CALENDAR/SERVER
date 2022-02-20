@@ -1,33 +1,43 @@
 const { pool } = require("../../../config/database");
 const { logger } = require("../../../config/winston");
 
-const userDao = require("./userDao");
+const searchDao = require("./searchDao");
 
 // Provider: Read 비즈니스 로직 처리
 
-exports.retrieveUserList = async function (email) {
+exports.retrieveSearchHistory = async function (userIdx, PWWC) {
 
-  //email을 인자로 받는 경우와 받지 않는 경우를 구분하여 하나의 함수에서 두 가지 기능을 처리함
-
-  if (!email) {
+  try {
     // connection 은 db와의 연결을 도와줌
     const connection = await pool.getConnection(async (conn) => conn);
-    // Dao 쿼리문의 결과를 호출
-    const userListResult = await userDao.selectUser(connection);
-    // connection 해제
-    connection.release();
+    
+    // color도 함께 출력 (Color)
+    if (PWWC == 3){
+      // Dao 쿼리문의 결과를 호출
+      const colorHistoryResult = await searchDao.selectColorHistory(connection, userIdx);
+      // connection 해제
+      connection.release();
 
-    return userListResult;
+      return colorHistoryResult;
 
-  } else {
-    const connection = await pool.getConnection(async (conn) => conn);
-    const userListResult = await userDao.selectUserEmail(connection, email);
-    connection.release();
+    } else { // color는 출력하지 않음 (Place, Weather, Who)
+      // Dao 쿼리문의 결과를 호출
+      const PWWHistoryResult = await searchDao.selectPWWHistory(connection, userIdx, PWWC);
+      // connection 해제
+      connection.release();
 
-    return userListResult;
+      return PWWHistoryResult;
+    }
+
+  } catch (err){
+    logger.error(`App - ootdDateCheck Provider error\n: ${err.message}`);
+    return errResponse(baseResponse.DB_ERROR);
   }
+
 };
 
+
+/*
 exports.retrieveUser = async function (userId) {
   const connection = await pool.getConnection(async (conn) => conn);
   const userResult = await userDao.selectUserId(connection, userId);
@@ -63,3 +73,4 @@ exports.accountCheck = async function (email) {
 
   return userAccountResult;
 };
+*/

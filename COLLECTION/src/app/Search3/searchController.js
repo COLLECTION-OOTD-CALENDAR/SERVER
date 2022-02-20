@@ -1,65 +1,56 @@
 const jwtMiddleware = require("../../../config/jwtMiddleware");
-const userProvider = require("./userProvider");
-const userService = require("./userService");
+const searchProvider = require("./searchProvider");
+//const searchService = require("./searchService");
 const baseResponse = require("../../../config/baseResponseStatus");
 const {response, errResponse} = require("../../../config/response");
 
 const regexEmail = require("regex-email");
 
 /**
- * API No. 0
- * API Name : 테스트 API
- * [GET] /app/test
+ * API No. 15
+ * API Name : [PWWC] 검색 초기화면 보여주기 API
+ * [GET] /app/search/mainpage/:PWWC
+ * path variable : PWWC
  */
-// exports.getTest = async function (req, res) {
-//     return res.send(response(baseResponse.SUCCESS))
-// }
+exports.searchMain = async function (req, res) {
 
-/**
- * API No. 1
- * API Name : 유저 생성 (회원가입) API
- * [POST] /app/users
- */
-exports.postUsers = async function (req, res) {
+    const userIdx = req.verifiedToken.userIdx;
+    const PWWC = req.params.PWWC;
 
-    /**
-     * Body: email, password, nickname
-     */
-    const {email, password, nickname} = req.body;
+    // PWWC Query String이 입력되지 않았을 때 (key / value)
+    if(PWWC === '' || PWWC === null || PWWC === undefined || PWWC === NaN){
+        return res.send(errResponse(baseResponse.PWWC_EMPTY));
+    }
 
-    // 빈 값 체크
-    if (!email)
-        return res.send(response(baseResponse.SIGNUP_EMAIL_EMPTY));
+    // PWWC Query String이 숫자가 아닌 경우(약한 검사)
+    if(isNaN(PWWC)){
+        return res.send(errResponse(baseResponse.PWWC_ERROR_TYPE));
+    }
 
-    // 길이 체크
-    if (email.length > 30)
-        return res.send(response(baseResponse.SIGNUP_EMAIL_LENGTH));
+    // PWWC Query String이 0,1,2,3 값이 아닌 경우
+    if(PWWC < 0 || PWWC > 3){
+        return res.send(errResponse(baseResponse.PWWC_INVALID_VALUE));
+    }
 
-    // 형식 체크 (by 정규표현식)
-    if (!regexEmail.test(email))
-        return res.send(response(baseResponse.SIGNUP_EMAIL_ERROR_TYPE));
+    const searchHistoryResult = await searchProvider.retrieveSearchHistory(userIdx, PWWC);
+    return res.send(response(baseResponse.SUCCESS_SEARCH_MAIN, searchHistoryResult));
 
-    // createUser 함수 실행을 통한 결과 값을 signUpResponse에 저장
-    const signUpResponse = await userService.createUser(
-        email,
-        password,
-        nickname
-    );
-
-    // signUpResponse 값을 json으로 전달
-    return res.send(signUpResponse);
 };
+
+
+/************************************************ */
+/************************************************ */
+/************************************************ */
+
 
 /**
  * API No. 2
  * API Name : 유저 조회 API (+ 이메일로 검색 조회)
  * [GET] /app/users
  */
+/*
 exports.getUsers = async function (req, res) {
 
-    /**
-     * Query String: email
-     */
     const email = req.query.email;
 
     if (!email) {
@@ -73,17 +64,16 @@ exports.getUsers = async function (req, res) {
         return res.send(response(baseResponse.SUCCESS, userListByEmail));
     }
 };
+*/
 
 /**
  * API No. 3
  * API Name : 특정 유저 조회 API
  * [GET] /app/users/{userId}
  */
+/*
 exports.getUserById = async function (req, res) {
 
-    /**
-     * Path Variable: userId
-     */
     const userId = req.params.userId;
     // errResponse 전달
     if (!userId) return res.send(errResponse(baseResponse.USER_USERID_EMPTY));
@@ -92,7 +82,7 @@ exports.getUserById = async function (req, res) {
     const userByUserId = await userProvider.retrieveUser(userId);
     return res.send(response(baseResponse.SUCCESS, userByUserId));
 };
-
+*/
 
 // TODO: After 로그인 인증 방법 (JWT)
 /**
@@ -101,6 +91,7 @@ exports.getUserById = async function (req, res) {
  * [POST] /app/login
  * body : email, passsword
  */
+/*
 exports.login = async function (req, res) {
 
     const {email, password} = req.body;
@@ -109,7 +100,7 @@ exports.login = async function (req, res) {
 
     return res.send(signInResponse);
 };
-
+*/
 
 /**
  * API No. 5
@@ -118,6 +109,7 @@ exports.login = async function (req, res) {
  * path variable : userId
  * body : nickname
  */
+/*
 exports.patchUsers = async function (req, res) {
 
     // jwt - userId, path variable :userId
@@ -137,18 +129,4 @@ exports.patchUsers = async function (req, res) {
         return res.send(editUserInfo);
     }
 };
-
-
-
-
-
-
-// JWT 이 후 주차에 다룰 내용
-/** JWT 토큰 검증 API
- * [GET] /app/auto-login
- */
-exports.check = async function (req, res) {
-    const userIdResult = req.verifiedToken.userId;
-    console.log(userIdResult);
-    return res.send(response(baseResponse.TOKEN_VERIFICATION_SUCCESS));
-};
+*/
