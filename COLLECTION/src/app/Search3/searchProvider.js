@@ -14,7 +14,7 @@ exports.retrieveSearchHistory = async function (userIdx, PWWC) {
     // color도 함께 출력 (Color)
     if (PWWC == 3){
       // Dao 쿼리문의 결과를 호출
-      const colorHistoryResult = await searchDao.selectColorHistory(connection, userIdx);
+      const colorHistoryResult = await searchDao.selectColorHistory(connection, userIdx, PWWC);
       // connection 해제
       connection.release();
 
