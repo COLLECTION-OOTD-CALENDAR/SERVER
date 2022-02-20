@@ -112,6 +112,9 @@ exports.retrieveWeeklyList = async function (userIdx) {
       ootds = pushOotd(ootds, ootd);
     }
 
+    // 빈 배열을 갖는 Top, Bottom, Shoes, Etc 값 변경 함수
+    ootds = changeBlankClothes(ootds);
+
     console.log('[calendarProvider] retrieveWeeklyList finish');
     return ootds;
 
@@ -121,6 +124,26 @@ exports.retrieveWeeklyList = async function (userIdx) {
   }
 
 };
+
+// 빈 배열의 Top, Bottom, Shoes, Etc일 경우 텍스트 "해당 항목 없음" 으로 변경
+function changeBlankClothes(ootds){
+  for(let row of ootds){
+    if(!row.Top[0]){
+      row.Top = '해당 항목 없음';
+    }
+    if(!row.Bottom[0]){
+      row.Bottom = '해당 항목 없음';
+    }
+    if(!row.Shoes[0]){
+      row.Shoes = '해당 항목 없음';
+    }
+    if(!row.Etc[0]){
+      row.Etc = '해당 항목 없음';
+    }
+  }
+
+  return ootds;
+}
 
 
 // imageUrl Key를 새로 생성 또는 이어서 진행할지 결정
