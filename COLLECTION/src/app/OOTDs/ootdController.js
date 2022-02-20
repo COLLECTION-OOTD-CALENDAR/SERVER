@@ -484,8 +484,7 @@ exports.registerOotd = async function (req, res) {
 /**
  * API No. 10
  * API Name : OOTD 수정하기 - 지난 작성 화면 보여주기
- * [GET] /app/ootd/modi/:userIdx
- * path variable : userIdx
+ * [GET] /app/ootd/modi
  * Query string : date
  */
 
@@ -539,8 +538,7 @@ exports.modiOotd = async function (req, res){
 /**
  * API No. 12
  * API Name : OOTD 완료 페이지 불러오기
- * [GET] /app/ootd/complete/:userIdx
- * path variable : userIdx
+ * [GET] /app/ootd/complete
  * Query string : date
  */
 exports.completeOotd = async function (req, res){
