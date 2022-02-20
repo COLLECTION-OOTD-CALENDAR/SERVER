@@ -237,9 +237,11 @@ exports.patchOotd = async function (req, res) {
 };
 
 exports.getPreSignUrl = async function (req,res) {
+    const userIdx = req.verifiedToken.userIdx;
+
     try{       
         const url = await PreSignUrl();
-        return res.json( { url } );
+        return res.send(response(baseResponse.SUCCESS_S3_PRESIGNEDURL, {'preSignedUrl' : url}));
     }
     catch(err){
         logger.error(`App - getPreSignUrl Controller error\n: ${err.message}`);

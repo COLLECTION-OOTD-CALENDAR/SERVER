@@ -26,7 +26,7 @@ module.exports = {
     SUCCESS_DELETE_BLOCK : { "isSuccess": true, "code": 1024, "message":"사용자 블럭 삭제 성공" },
     SUCCESS_IMAGE_URL : { "isSuccess": true, "code": 1025, "message":"이미지 url 변환 성공" },  
     SUCCESS_SEARCH_SUGGEST : { "isSuccess": true, "code": 1026, "message":"매칭 페이지 검색 키워드 제안 성공" },
-
+    SUCCESS_S3_PRESIGNEDURL : { "isSuccess": true, "code": 1027, "message":"s3 presignedURL 발급 성공" },
 
 
     // Common
