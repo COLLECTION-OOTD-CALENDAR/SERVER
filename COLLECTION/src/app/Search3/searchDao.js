@@ -9,7 +9,7 @@ async function selectColorHistory(connection, userIdx, PWWC) {
                 WHERE userIdx = ? AND PWWC = ? AND status = 'active'
                 ORDER BY createAt DESC;
                 `;
-  const [historyRows] = await connection.query(selectColorHistoryQuery, {userIdx, PWWC});
+  const [historyRows] = await connection.query(selectColorHistoryQuery, [userIdx, PWWC]);
   return historyRows;
 }
 
@@ -21,7 +21,7 @@ async function selectPWWHistory(connection, userIdx, PWWC) {
                 WHERE userIdx = ? AND PWWC = ? AND status = 'active'
                 ORDER BY createAt DESC;
                 `;
-  const [historyRows] = await connection.query(selectPWWHistoryQuery, {userIdx, PWWC});
+  const [historyRows] = await connection.query(selectPWWHistoryQuery, [userIdx, PWWC]);
   return historyRows;
 }
 
