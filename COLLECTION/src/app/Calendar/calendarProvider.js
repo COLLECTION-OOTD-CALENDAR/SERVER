@@ -127,7 +127,7 @@ exports.retrieveWeeklyList = async function (userIdx) {
 
 // 빈 배열의 Top, Bottom, Shoes, Etc일 경우 텍스트 "해당 항목 없음" 으로 변경
 function changeBlankClothes(ootds){
-  let blkData = {smallClass : '해당 항목 없음', color : null};
+  let blkData = {smallClass : '해당 항목 없음', color : ""};
   for(let row of ootds){
     if(!row.Top[0]){
       row["Top"].push(blkData);
