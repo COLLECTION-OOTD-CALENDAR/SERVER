@@ -2,7 +2,6 @@ module.exports = function(app){
     const ootd = require('./ootdController');
     const jwtMiddleware = require('../../../config/jwtMiddleware');
     const upload = require('../../../config/Multer');
-    const {getPreSignUrl} = require('../../../config/s3Authentication');
 
     // 1. 사용자 블럭 추가 API (JWT 검증 및 Validation )
     app.post('/app/ootd/new-block', jwtMiddleware, ootd.postNewBlock); //, jwtMiddleware, ootd.postNewBlock);
@@ -25,9 +24,6 @@ module.exports = function(app){
     });
 
     //5. s3 presignedUrl 반환 API
-    app.get('/app/ootd/s3-authentication', function (req,res){
-        const url = await getPreSignUrl();
-        res.json( { url } );
-    } );
+    app.get('/app/ootd/s3-authentication', ootd.getPreSignUrl); 
 
 };

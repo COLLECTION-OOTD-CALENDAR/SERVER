@@ -4,6 +4,8 @@ const ootdService = require("./ootdService");
 const baseResponse = require("../../../config/baseResponseStatus");
 const {response, errResponse} = require("../../../config/response");
 
+const {PreSignUrl} = require('../../../config/s3Authentication');
+
 const regexEmail = require("regex-email");
 
 var blank_pattern = /^\s+|\s+$/g;
@@ -233,4 +235,13 @@ exports.patchOotd = async function (req, res) {
 
 };
 
-
+exports.getPreSignUrl = async function (req,res) {
+    try{       
+        const url = await PreSignUrl();
+        return res.json( { url } );
+    }
+    catch(err){
+        logger.error(`App - getPreSignUrl Controller error\n: ${err.message}`);
+        return res.send(errResponse(baseResponse.S3_ERROR));
+    }
+};
