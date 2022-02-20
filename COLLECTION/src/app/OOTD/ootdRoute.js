@@ -24,6 +24,6 @@ module.exports = function(app){
     });
 
     //5. s3 presignedUrl 반환 API
-    app.get('/app/ootd/s3-authentication', ootd.getPreSignUrl); 
+    app.get('/app/ootd/s3-authentication',jwtMiddleware, ootd.getPreSignUrl); 
 
 };
