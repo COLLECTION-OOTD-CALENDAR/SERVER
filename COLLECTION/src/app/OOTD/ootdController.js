@@ -241,6 +241,7 @@ exports.getPreSignUrl = async function (req,res) {
 
     try{       
         const url = await PreSignUrl();
+        console.log('presignedURL return type :', typeof(url));
         return res.send(response(baseResponse.SUCCESS_S3_PRESIGNEDURL, {'preSignedUrl' : url}));
     }
     catch(err){
