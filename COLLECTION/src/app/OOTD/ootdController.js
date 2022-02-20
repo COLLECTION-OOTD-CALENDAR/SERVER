@@ -5,6 +5,7 @@ const baseResponse = require("../../../config/baseResponseStatus");
 const {response, errResponse} = require("../../../config/response");
 
 const {PreSignUrl} = require('../../../config/s3Authentication');
+const {logger} = require("../../../config/winston");
 
 const regexEmail = require("regex-email");
 
