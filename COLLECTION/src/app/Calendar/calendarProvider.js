@@ -127,18 +127,19 @@ exports.retrieveWeeklyList = async function (userIdx) {
 
 // 빈 배열의 Top, Bottom, Shoes, Etc일 경우 텍스트 "해당 항목 없음" 으로 변경
 function changeBlankClothes(ootds){
+  let blkData = {smallClass : '해당 항목 없음', color : null};
   for(let row of ootds){
     if(!row.Top[0]){
-      row.Top = '해당 항목 없음';
+      row["Top"].push(blkData);
     }
     if(!row.Bottom[0]){
-      row.Bottom = '해당 항목 없음';
+      row["Bottom"].push(blkData);
     }
     if(!row.Shoes[0]){
-      row.Shoes = '해당 항목 없음';
+      row["Shoes"].push(blkData);
     }
     if(!row.Etc[0]){
-      row.Etc = '해당 항목 없음';
+      row["Etc"].push(blkData);
     }
   }
 
