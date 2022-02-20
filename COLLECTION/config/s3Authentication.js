@@ -13,11 +13,11 @@ const s3 = new aws.S3();
 
 async function PreSignUrl() {
     const rawBytes = await randomBytes(16);
-    const imageName = rawBytes.toString('hex')
+    const image = rawBytes.toString('hex')
   
     const params = ({
-      Bucket: bucketName,
-      Key: imageName,
+      Bucket: collection8bucket,
+      Key: image,
       Expires: 60
     })
   
