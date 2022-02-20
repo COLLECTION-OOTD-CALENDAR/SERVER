@@ -11,7 +11,7 @@ aws.config.loadFromPath(__dirname + '/awsconfig.json');
 
 const s3 = new aws.S3(); 
 
-async function getPreSignUrl() {
+async function PreSignUrl() {
     const rawBytes = await randomBytes(16);
     const imageName = rawBytes.toString('hex')
   
@@ -26,5 +26,5 @@ async function getPreSignUrl() {
   }
   
   module.exports = {
-    getPreSignUrl,
+    PreSignUrl,
   }
