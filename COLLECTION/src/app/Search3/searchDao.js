@@ -1,34 +1,38 @@
 
 // 새롭게 추가한 함수를 아래 부분에서 export 해줘야 외부의 Provider, Service 등에서 사용가능합니다.
 
-// 모든 유저 조회
-async function selectUser(connection) {
-  const selectUserListQuery = `
-                SELECT email, nickname 
-                FROM UserInfo;
+// API 15 : [PWWC] 검색 초기화면 보여주기 - Color 탭
+async function selectColorHistory(connection, userIdx, PWWC) {
+  const selectColorHistoryQuery = `
+                SELECT History.index, content, color
+                FROM History
+                WHERE userIdx = ? AND PWWC = ? AND status = 'active'
+                ORDER BY createAt DESC;
                 `;
-  const [userRows] = await connection.query(selectUserListQuery);
-  return userRows;
+  const [historyRows] = await connection.query(selectColorHistoryQuery, {userIdx, PWWC});
+  return historyRows;
 }
 
-// 이메일로 회원 조회
-async function selectUserEmail(connection, email) {
-  const selectUserEmailQuery = `
-                SELECT email, nickname 
-                FROM UserInfo 
-                WHERE email = ?;
+// API 15 : [PWWC] 검색 초기화면 보여주기 - Place, Weather, Who 탭
+async function selectPWWHistory(connection, userIdx, PWWC) {
+  const selectPWWHistoryQuery = `
+                SELECT History.index, content
+                FROM History
+                WHERE userIdx = ? AND PWWC = ? AND status = 'active'
+                ORDER BY createAt DESC;
                 `;
-  const [emailRows] = await connection.query(selectUserEmailQuery, email);
-  return emailRows;
+  const [historyRows] = await connection.query(selectPWWHistoryQuery, {userIdx, PWWC});
+  return historyRows;
 }
 
+/*
 // userId 회원 조회
 async function selectUserId(connection, userId) {
   const selectUserIdQuery = `
-                 SELECT id, email, nickname 
-                 FROM UserInfo 
-                 WHERE id = ?;
-                 `;
+                SELECT id, email, nickname 
+                FROM UserInfo 
+                WHERE id = ?;
+                `;
   const [userRow] = await connection.query(selectUserIdQuery, userId);
   return userRow;
 }
@@ -82,14 +86,9 @@ async function updateUserInfo(connection, id, nickname) {
   const updateUserRow = await connection.query(updateUserQuery, [nickname, id]);
   return updateUserRow[0];
 }
-
+*/
 
 module.exports = {
-  selectUser,
-  selectUserEmail,
-  selectUserId,
-  insertUserInfo,
-  selectUserPassword,
-  selectUserAccount,
-  updateUserInfo,
+  selectColorHistory,
+  selectPWWHistory
 };
