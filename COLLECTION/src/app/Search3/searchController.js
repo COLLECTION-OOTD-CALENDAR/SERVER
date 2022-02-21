@@ -50,7 +50,7 @@ exports.suggestSearchKeyword = async function (req, res) {
 
     const userIdx = req.verifiedToken.userIdx;
     const PWWC = req.params.PWWC;
-    const keyword1 = req.query.keyword1;
+    var keyword1 = req.query.keyword1;
 
     // PWWC Path variable이 입력되지 않았을 때
     if(PWWC === '' || PWWC === null || PWWC === undefined || PWWC === NaN){
