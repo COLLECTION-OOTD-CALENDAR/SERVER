@@ -28,11 +28,11 @@ async function selectPWWHistory(connection, userIdx, PWWC) {
 // API 19 : [PWWC] 매칭 페이지 검색 키워드 제안 - Place
 async function selectPlaceSuggestion(connection, suggestionKeywordParams) {
   const placeSuggestionQuery = `
-                SELECT *
-                FROM (SELECT place
+                SELECT place
+                FROM (SELECT place, createAt
                   FROM FixedPlace fixed
                   UNION
-                  SELECT place
+                  SELECT place, createAt
                   FROM AddedPlace added
                   WHERE added.userIdx = ?) AS UP
                 WHERE INSTR(place, ?) > 0
@@ -45,11 +45,11 @@ async function selectPlaceSuggestion(connection, suggestionKeywordParams) {
 // API 19 : [PWWC] 매칭 페이지 검색 키워드 제안 - Weather
 async function selectWeatherSuggestion(connection, suggestionKeywordParams) {
   const weatherSuggestionQuery = `
-                SELECT *
-                FROM (SELECT weather
+                SELECT weather
+                FROM (SELECT weather, createAt
                   FROM FixedWeather fixed
                   UNION
-                  SELECT weather
+                  SELECT weather, createAt
                   FROM AddedWeather added
                   WHERE added.userIdx = ?) AS UW
                 WHERE INSTR(weather, ?) > 0
@@ -62,11 +62,11 @@ async function selectWeatherSuggestion(connection, suggestionKeywordParams) {
 // API 19 : [PWWC] 매칭 페이지 검색 키워드 제안 - Who
 async function selectWhoSuggestion(connection, suggestionKeywordParams) {
   const whoSuggestionQuery = `
-                SELECT *
-                FROM (SELECT who
+                SELECT who
+                FROM (SELECT who, createAt
                   FROM FixedWho fixed
                   UNION
-                  SELECT who
+                  SELECT who, createAt
                   FROM AddedWho added
                   WHERE added.userIdx = ?) AS UWH
                 WHERE INSTR(who, ?) > 0
@@ -79,11 +79,11 @@ async function selectWhoSuggestion(connection, suggestionKeywordParams) {
 // API 19 : [PWWC] 매칭 페이지 검색 키워드 제안 - Color
 async function selectColorSuggestion(connection, suggestionKeywordParams) {
   const colorSuggestionQuery = `
-                SELECT *
-                FROM (SELECT smallClass
+                SELECT smallClass
+                FROM (SELECT smallClass, createAt
                   FROM FixedClothes fixed
                   UNION
-                  SELECT smallClass
+                  SELECT smallClass, createAt
                   FROM AddedClothes added
                   WHERE added.userIdx = ?) AS UC
                 WHERE INSTR(smallClass, ?) > 0
