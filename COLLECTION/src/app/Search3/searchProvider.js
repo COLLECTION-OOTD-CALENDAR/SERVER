@@ -36,6 +36,53 @@ exports.retrieveSearchHistory = async function (userIdx, PWWC) {
 
 };
 
+exports.retrieveSuggestKeyword = async function (userIdx, PWWC, keyword1) {
+  
+  const suggestionKeywordParams = [userIdx, keyword1];
+  
+  try {
+    // connection 은 db와의 연결을 도와줌
+    const connection = await pool.getConnection(async (conn) => conn);
+    
+    // Place 값들 출력
+    if (PWWC == 0){
+      // Dao 쿼리문의 결과를 호출
+      const placeSuggestResult = await searchDao.selectPlaceSuggestion(connection, suggestionKeywordParams);
+      // connection 해제
+      connection.release();
+
+      return placeSuggestResult;
+
+    } else if (PWWC == 1) { // Weather 값들 출력
+
+      const weatherSuggestResult = await searchDao.selectWeatherSuggestion(connection, suggestionKeywordParams);
+      connection.release();
+
+      return weatherSuggestResult;
+
+    } else if (PWWC == 2){ // Who 값들 출력
+
+      const whoSuggestResult = await searchDao.selectWhoSuggestion(connection, suggestionKeywordParams);
+      connection.release();
+
+      return whoSuggestResult;
+
+
+    } else if (PWWC == 3){ // color도 함께 출력 (Color)
+
+      const colorSuggestResult = await searchDao.selectColorSuggestion(connection, );
+      connection.release();
+
+      return colorSuggestResult;
+    } 
+
+  } catch (err) {
+    logger.error(`App - ootdDateCheck Provider error\n: ${err.message}`);
+    return errResponse(baseResponse.DB_ERROR);
+  }
+
+};
+
 
 /*
 exports.retrieveUser = async function (userId) {

@@ -11,7 +11,7 @@ async function selectColorHistory(connection, userIdx, PWWC) {
                 `;
   const [historyRows] = await connection.query(selectColorHistoryQuery, [userIdx, PWWC]);
   return historyRows;
-}
+};
 
 // API 15 : [PWWC] 검색 초기화면 보여주기 - Place, Weather, Who 탭
 async function selectPWWHistory(connection, userIdx, PWWC) {
@@ -23,7 +23,71 @@ async function selectPWWHistory(connection, userIdx, PWWC) {
                 `;
   const [historyRows] = await connection.query(selectPWWHistoryQuery, [userIdx, PWWC]);
   return historyRows;
-}
+};
+
+// API 19 : [PWWC] 매칭 페이지 검색 키워드 제안 - Place
+async function selectPlaceSuggestion(connection, suggestionKeywordParams) {
+  const placeSuggestionQuery = `
+                SELECT *
+                FROM (SELECT place
+                  FROM FixedPlace fixed
+                  UNION
+                  SELECT place
+                  FROM AddedPlace added
+                  WHERE added.userIdx = ?) AS UP
+                WHERE INSTR(place, ?) > 0;
+                `;
+  const [suggestRows] = await connection.query(placeSuggestionQuery, suggestionKeywordParams);
+  return suggestRows;
+};
+
+// API 19 : [PWWC] 매칭 페이지 검색 키워드 제안 - Weather
+async function selectWeatherSuggestion(connection, suggestionKeywordParams) {
+  const weatherSuggestionQuery = `
+                SELECT *
+                FROM (SELECT weather
+                  FROM FixedWeather fixed
+                  UNION
+                  SELECT weather
+                  FROM AddedWeather added
+                  WHERE added.userIdx = ?) AS UW
+                WHERE INSTR(weather, ?) > 0;
+                `;
+  const [suggestRows] = await connection.query(weatherSuggestionQuery, suggestionKeywordParams);
+  return suggestRows;
+};
+
+// API 19 : [PWWC] 매칭 페이지 검색 키워드 제안 - Who
+async function selectWhoSuggestion(connection, suggestionKeywordParams) {
+  const whoSuggestionQuery = `
+                SELECT *
+                FROM (SELECT who
+                  FROM FixedWho fixed
+                  UNION
+                  SELECT who
+                  FROM AddedWho added
+                  WHERE added.userIdx = ?) AS UWH
+                WHERE INSTR(who, ?) > 0;
+                `;
+  const [suggestRows] = await connection.query(whoSuggestionQuery, suggestionKeywordParams);
+  return suggestRows;
+};
+
+// API 19 : [PWWC] 매칭 페이지 검색 키워드 제안 - Color
+async function selectColorSuggestion(connection, suggestionKeywordParams) {
+  const colorSuggestionQuery = `
+                SELECT *
+                FROM (SELECT smallClass
+                  FROM FixedClothes fixed
+                  UNION
+                  SELECT smallClass
+                  FROM AddedClothes added
+                  WHERE added.userIdx = ?) AS UW
+                WHERE INSTR(smallClass, ?) > 0;
+                `;
+  const [suggestRows] = await connection.query(colorSuggestionQuery, suggestionKeywordParams);
+  return suggestRows;
+};
 
 /*
 // userId 회원 조회
@@ -90,5 +154,9 @@ async function updateUserInfo(connection, id, nickname) {
 
 module.exports = {
   selectColorHistory,
-  selectPWWHistory
+  selectPWWHistory,
+  selectPlaceSuggestion,
+  selectWeatherSuggestion,
+  selectWhoSuggestion,
+  selectColorSuggestion
 };

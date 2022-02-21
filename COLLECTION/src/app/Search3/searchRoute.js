@@ -6,6 +6,6 @@ module.exports = function(app){
     app.get('/app/search/mainpage/:PWWC', jwtMiddleware, search.searchMain);
 
     // 2. [PWWC] 매칭 페이지 검색 키워드 제안
-    //app.get('/app/search/suggestion/:PWWC', jwtMiddleware, suggestSearchKeyword);
+    app.get('/app/search/suggestion/:PWWC', jwtMiddleware, search.suggestSearchKeyword);
 
 };
