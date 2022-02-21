@@ -5,29 +5,30 @@ const baseResponse = require("../../../config/baseResponseStatus");
 const {response, errResponse} = require("../../../config/response");
 
 const regexEmail = require("regex-email");
+var blankPattern = /^\s+|\s+$/g;
 
 /**
  * API No. 15
  * API Name : [PWWC] 검색 초기화면 보여주기 API
  * [GET] /app/search/mainpage/:PWWC
- * path variable : PWWC
+ * Path variable : PWWC
  */
 exports.searchMain = async function (req, res) {
 
     const userIdx = req.verifiedToken.userIdx;
     const PWWC = req.params.PWWC;
 
-    // PWWC Query String이 입력되지 않았을 때 (key / value)
+    // PWWC Path variable이 입력되지 않았을 때
     if(PWWC === '' || PWWC === null || PWWC === undefined || PWWC === NaN){
         return res.send(errResponse(baseResponse.PWWC_EMPTY));
     }
 
-    // PWWC Query String이 숫자가 아닌 경우(약한 검사)
+    // PWWC Path variable이 숫자가 아닌 경우(약한 검사)
     if(isNaN(PWWC)){
         return res.send(errResponse(baseResponse.PWWC_ERROR_TYPE));
     }
 
-    // PWWC Query String이 0,1,2,3 값이 아닌 경우
+    // PWWC Path variable이 0,1,2,3 값이 아닌 경우
     if(PWWC < 0 || PWWC > 3){
         return res.send(errResponse(baseResponse.PWWC_INVALID_VALUE));
     }
@@ -37,6 +38,54 @@ exports.searchMain = async function (req, res) {
 
 };
 
+
+/**
+ * API No. 19
+ * API Name : [PWWC] 매칭 페이지 검색 키워드 제안 API
+ * [GET] /app/search/suggestion/:PWWC
+ * Path variable : PWWC
+ * Query string : keyword1
+ */
+exports.suggestSearchKeyword = async function (req, res) {
+
+    const userIdx = req.verifiedToken.userIdx;
+    const PWWC = req.params.PWWC;
+    const keyword1 = req.query.keyword1;
+
+    // PWWC Path variable이 입력되지 않았을 때
+    if(PWWC === '' || PWWC === null || PWWC === undefined || PWWC === NaN){
+        return res.send(errResponse(baseResponse.PWWC_EMPTY));
+    }
+
+    // PWWC Path variable이 숫자가 아닌 경우(약한 검사)
+    if(isNaN(PWWC)){
+        return res.send(errResponse(baseResponse.PWWC_ERROR_TYPE));
+    }
+
+    // PWWC Path variable이 0,1,2,3 값이 아닌 경우
+    if(PWWC < 0 || PWWC > 3){
+        return res.send(errResponse(baseResponse.PWWC_INVALID_VALUE));
+    }
+
+    // Keyword1 Query string이 없는 경우 (key / value)
+    if(!keyword1){
+        return res.send(errResponse(baseResponse.KEYWORD1_EMPTY));
+    }
+    
+    // Keyword1 Query String에 공백만 입력된 경우
+    keyword1 = keyword1.toString();
+    if(keyword1.replace(blankPattern, '') == ""){
+        return res.send(errResponse(baseResponse.REGISTER_BLANK_ALL));
+    }
+
+    // Keyword1의 길이가 6글자를 넘을 경우
+    if(keyword1.length > 6){
+        return res.send(errResponse(baseResponse.SEARCH_KEYWORD_LENGTH));
+    }
+
+    const suggestKeywordResult = await searchProvider.retrieveSuggestKeyword(userIdx, PWWC, keyword1);
+    return res.send(response(baseResponse.SUCCESS_SEARCH_SUGGEST, suggestKeywordResult));
+};
 
 /************************************************ */
 /************************************************ */
