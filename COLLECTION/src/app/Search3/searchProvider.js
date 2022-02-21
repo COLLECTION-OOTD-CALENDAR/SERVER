@@ -30,7 +30,7 @@ exports.retrieveSearchHistory = async function (userIdx, PWWC) {
     }
 
   } catch (err){
-    logger.error(`App - ootdDateCheck Provider error\n: ${err.message}`);
+    logger.error(`App - retrieveSearchHistory Provider error\n: ${err.message}`);
     return errResponse(baseResponse.DB_ERROR);
   }
 
@@ -70,14 +70,14 @@ exports.retrieveSuggestKeyword = async function (userIdx, PWWC, keyword1) {
 
     } else if (PWWC == 3){ // color도 함께 출력 (Color)
 
-      const colorSuggestResult = await searchDao.selectColorSuggestion(connection, );
+      const colorSuggestResult = await searchDao.selectColorSuggestion(connection, suggestionKeywordParams);
       connection.release();
 
       return colorSuggestResult;
     } 
 
   } catch (err) {
-    logger.error(`App - ootdDateCheck Provider error\n: ${err.message}`);
+    logger.error(`App - retrieveSuggestKeyword Provider error\n: ${err.message}`);
     return errResponse(baseResponse.DB_ERROR);
   }
 
