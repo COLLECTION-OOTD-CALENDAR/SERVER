@@ -34,7 +34,11 @@ exports.searchMain = async function (req, res) {
     }
 
     const searchHistoryResult = await searchProvider.retrieveSearchHistory(userIdx, PWWC);
-    return res.send(response(baseResponse.SUCCESS_SEARCH_MAIN, searchHistoryResult));
+
+    const historyFinalResult = {};
+    historyFinalResult["history"] = searchHistoryResult;
+
+    return res.send(response(baseResponse.SUCCESS_SEARCH_MAIN, historyFinalResult));
 
 };
 
@@ -84,7 +88,16 @@ exports.suggestSearchKeyword = async function (req, res) {
     }
 
     const suggestKeywordResult = await searchProvider.retrieveSuggestKeyword(userIdx, PWWC, keyword1);
-    return res.send(response(baseResponse.SUCCESS_SEARCH_SUGGEST, suggestKeywordResult));
+
+    // Response error : 존재하는 검색 키워드 존재 X
+    if(!suggestKeywordResult[0]){
+        return res.send(errResponse(baseResponse.SEARCH_TAG_NOT_EXIST));
+    }
+
+    const suggestFinalResult = {};
+    suggestFinalResult["suggestion"] = suggestKeywordResult;
+
+    return res.send(response(baseResponse.SUCCESS_SEARCH_SUGGEST, suggestFinalResult));
 };
 
 /************************************************ */

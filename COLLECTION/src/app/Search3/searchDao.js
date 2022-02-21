@@ -35,7 +35,8 @@ async function selectPlaceSuggestion(connection, suggestionKeywordParams) {
                   SELECT place
                   FROM AddedPlace added
                   WHERE added.userIdx = ?) AS UP
-                WHERE INSTR(place, ?) > 0;
+                WHERE INSTR(place, ?) > 0
+                ORDER BY createAt;
                 `;
   const [suggestRows] = await connection.query(placeSuggestionQuery, suggestionKeywordParams);
   return suggestRows;
@@ -51,7 +52,8 @@ async function selectWeatherSuggestion(connection, suggestionKeywordParams) {
                   SELECT weather
                   FROM AddedWeather added
                   WHERE added.userIdx = ?) AS UW
-                WHERE INSTR(weather, ?) > 0;
+                WHERE INSTR(weather, ?) > 0
+                ORDER BY createAt;
                 `;
   const [suggestRows] = await connection.query(weatherSuggestionQuery, suggestionKeywordParams);
   return suggestRows;
@@ -67,7 +69,8 @@ async function selectWhoSuggestion(connection, suggestionKeywordParams) {
                   SELECT who
                   FROM AddedWho added
                   WHERE added.userIdx = ?) AS UWH
-                WHERE INSTR(who, ?) > 0;
+                WHERE INSTR(who, ?) > 0
+                ORDER BY createAt;
                 `;
   const [suggestRows] = await connection.query(whoSuggestionQuery, suggestionKeywordParams);
   return suggestRows;
@@ -82,8 +85,9 @@ async function selectColorSuggestion(connection, suggestionKeywordParams) {
                   UNION
                   SELECT smallClass
                   FROM AddedClothes added
-                  WHERE added.userIdx = ?) AS UW
-                WHERE INSTR(smallClass, ?) > 0;
+                  WHERE added.userIdx = ?) AS UC
+                WHERE INSTR(smallClass, ?) > 0
+                ORDER BY createAt;
                 `;
   const [suggestRows] = await connection.query(colorSuggestionQuery, suggestionKeywordParams);
   return suggestRows;
