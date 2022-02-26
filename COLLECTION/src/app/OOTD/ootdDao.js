@@ -162,12 +162,12 @@ async function insertAddedWho(connection, insertNewBlockParams) {
 
 //Clothes 존재 체크 
 async function selectClothesExist(connection, userIdx, flag, Content) {
-  const selectTagParams = [userIdx, flag, Content];// (userAdded)
+  const selectTagParams = [userIdx, flag, Content, "active"];// (userAdded)
 
   const selectClothesTagListQuery = `
         SELECT status 
         FROM AddedClothes
-        WHERE userIdx = ? AND bigClass = ? AND smallClass = ?;
+        WHERE userIdx = ? AND bigClass = ? AND smallClass = ? AND status = ?;
                 `;
   const [tagRows] = await connection.query(
         selectClothesTagListQuery, 
@@ -183,7 +183,7 @@ async function selectPwwExist(connection, userIdx, flag, Content) {
     selectPwwExistListQuery = `
         SELECT status 
         FROM AddedPlace
-        WHERE userIdx = ? AND place = ?
+        WHERE userIdx = ? AND place = ? AND status = ?
     `;
 
   }
@@ -191,18 +191,18 @@ async function selectPwwExist(connection, userIdx, flag, Content) {
     selectPwwExistListQuery = `
       SELECT status 
       FROM AddedWeather
-      WHERE userIdx = ? AND weather = ?
+      WHERE userIdx = ? AND weather = ? AND status = ?
     `; 
   }
   if(flag == "Who"){
     selectPwwExistListQuery = `
       SELECT status 
       FROM AddedWho
-      WHERE userIdx = ? AND who = ?
+      WHERE userIdx = ? AND who = ? AND status = ?
     `; 
   }
 
-  const selectTagParams = [userIdx, Content];// (userAdded)
+  const selectTagParams = [userIdx, Content, "active"];// (userAdded)
 
    const [tagRows] = await connection.query(
         selectPwwExistListQuery, 
