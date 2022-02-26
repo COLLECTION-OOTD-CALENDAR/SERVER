@@ -553,6 +553,8 @@ exports.completeOotd = async function (req, res){
         return res.send(errResponse(baseResponse.DATE_EMPTY));
     }
 
+    console.log('date 형식 : ', typeof(date));
+    
     // date 형식 체크 
     if(!datePattern.test(date)){
         return res.send(errResponse(baseResponse.DATE_ERROR_TYPE));
