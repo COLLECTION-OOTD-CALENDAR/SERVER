@@ -354,7 +354,6 @@ exports.registerOotd = async function (req, res) {
         return res.send(errResponse(baseResponse.LOOKPOTNT_EMPTY));
     }
     
-    
     if(!isInt(lookpoint)){
         return res.send(errResponse(baseResponse.LOOKPOINT_ERROR_TYPE));
     }
@@ -482,7 +481,7 @@ exports.registerOotd = async function (req, res) {
 };
 
 function isInt(lookpoint){
-    return lookpoint % 1 === 0;
+    return typeof x === "number" && isFinite(x) && Math.floor(x) === x;
 }
 
 /**
