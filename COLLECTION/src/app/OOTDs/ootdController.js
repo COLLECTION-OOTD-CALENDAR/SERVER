@@ -350,14 +350,14 @@ exports.registerOotd = async function (req, res) {
     }
 
     // LOOKPOINT key가 없는 경우 및 빈 값 체크
-    if(!n_lookpoint){
+    if(!lookpoint){
         return res.send(errResponse(baseResponse.LOOKPOTNT_EMPTY));
     }
-
-    if(!Number.isInteger(n_lookpoint)){
+    
+    
+    if(!isInt(lookpoint)){
         return res.send(errResponse(baseResponse.LOOKPOINT_ERROR_TYPE));
     }
-
     // LOOKPOINT 범위 체크
     if(!lookpointPattern.test(n_lookpoint)){
         return res.send(errResponse(baseResponse.LOOKPOINT_INVALID_VALUE));
@@ -481,6 +481,9 @@ exports.registerOotd = async function (req, res) {
 
 };
 
+function isInt(lookpoint){
+    return lookpoint % 1 === 0;
+}
 
 /**
  * API No. 10
