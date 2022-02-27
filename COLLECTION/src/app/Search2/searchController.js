@@ -18,7 +18,7 @@ exports.delHistory = async function (req, res) {
     const color = req.body.color;
 
     //삭제할 블럭이 지정되지 않았습니다.
-    if(type == 1 && content === null || content === undefined ){
+    if(type == 1 && content === null){
         return res.send(errResponse(baseResponse.HISTORY_CONTENT_UNDEFINED));
     }
     //전체삭제에 알맞지 않은 조건입니다. 
