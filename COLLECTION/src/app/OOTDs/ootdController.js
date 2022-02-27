@@ -35,6 +35,7 @@ exports.registerOotd = async function (req, res) {
 
     // request body 풀어내기
     const n_date = new Date(date);
+    const lookpoint = Math.trunc(lookpoint);
 
     // color 배열
     const colorArr = [ "#d60f0f", "#f59a9a", "#ffb203", "#fde6b1", "#71a238", "#b7de89",
