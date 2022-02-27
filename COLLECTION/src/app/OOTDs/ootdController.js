@@ -481,7 +481,7 @@ exports.registerOotd = async function (req, res) {
 };
 
 function isInt(lookpoint){
-    return typeof x === "number" && isFinite(x) && Math.floor(x) === x;
+    return typeof lookpoint === "number" && isFinite(lookpoint) && Math.floor(lookpoint) === lookpoint;
 }
 
 /**
