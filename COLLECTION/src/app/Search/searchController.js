@@ -19,10 +19,7 @@ exports.getSearchResult = async function (req, res) {
     let datePattern = /^(19|20)\d{2}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[0-1])$/;
 
     //1. jwt token검증
-    const userIdFromJWT = req.verifiedToken.userId
-    if (userIdFromJWT != userId) {
-        res.send(errResponse(baseResponse.USER_ID_NOT_MATCH));
-    }
+    const userIdx = req.verifiedToken.userIdx;
 
     
     const PWWC = req.params.PWWC;  
@@ -122,7 +119,7 @@ exports.getSearchResult = async function (req, res) {
         keyword2 = null;
     }
 
-    const userIdx = userIdFromJWT;
+
     //1. history 처리 @searchService - 개수 조회, 자동삭제, history추가
     const historyResponse = await searchService.postNewHistory(
         userIdx, PWWC, keyword1, keyword2, color1, color2, 
