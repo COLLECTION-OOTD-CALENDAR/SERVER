@@ -2,7 +2,7 @@ const { pool } = require("../../../config/database");
 const { logger } = require("../../../config/winston");
 
 const searchDao = require("./searchDao");
-const calendarProvider = require("../Calender/calendarProvider"); //
+const calendarProvider = require("../Calendar/calendarProvider"); //
 
 /* 
 getSearchResult : calendarProvider 내 retrieveWeeklyList 함수 로직 이용 및 함수 이용 (credits to 녜) 
@@ -175,7 +175,7 @@ console.log('[calendarProvider] retrieveWeeklyList start');
     for (let row of searchListResult) {
       
       // ootds 배열에 새로운 ootd row 추가 여부 결정
-      let ootd = getOotd(row.ootdIdx, ootds);
+      let ootd = calendarProvider.getOotd(row.ootdIdx, ootds);
       // img_cnt와 distinct한 imgUrl을 저장하는 배열 초기화
       if(!ootd.ootdIdx){
         img_cnt = 0;
@@ -188,27 +188,27 @@ console.log('[calendarProvider] retrieveWeeklyList start');
       ootd["lookpoint"] = row.lookpoint;
 
       // imageUrl key를 이어가거나 새로 추가하기
-      ootd["imageUrl"] = getImageUrlKey(row.ootdIdx, ootds);
+      ootd["imageUrl"] = calendarProvider.getImageUrlKey(row.ootdIdx, ootds);
       // imageUrl
       if(!ootd["imageUrl"]){
-        ootd["imageUrl"] = getImageUrl(row.imageUrl, row.thumbnail);
+        ootd["imageUrl"] = calendarProvider.getImageUrl(row.imageUrl, row.thumbnail);
       }
       
       // imageCnt key를 이어나가거나 새로 추가하기
-      ootd["imageCnt"] = getImageCntKey(row.ootdIdx, ootds);
+      ootd["imageCnt"] = calendarProvider.getImageCntKey(row.ootdIdx, ootds);
       //imageCnt
-      if(!hasImageUrl(imgUrlArr, row.imageUrl)){
-        ootd["imageCnt"] = getImageCnt(row.thumbnail, img_cnt, ootd["imageCnt"]);
+      if(!calendarProvider.hasImageUrl(imgUrlArr, row.imageUrl)){
+        ootd["imageCnt"] = calendarProvider.getImageCnt(row.thumbnail, img_cnt, ootd["imageCnt"]);
         img_cnt = ootd["imageCnt"];
       }
 
       // place, weather, who에 접근하여 같은 것이 있는지 확인하고 넣기
-      ootd["place"] = getPlaces(row, ootd["place"]);
-      ootd["weather"] = getWeathers(row, ootd["weather"]);
-      ootd["who"] = getWhos(row, ootd["who"]);
+      ootd["place"] = calendarProvider.getPlaces(row, ootd["place"]);
+      ootd["weather"] = calendarProvider.getWeathers(row, ootd["weather"]);
+      ootd["who"] = calendarProvider.getWhos(row, ootd["who"]);
       
       // bigClass 이름으로 된 key가 없을 경우 추가 및 빈 배열 value 생성
-      ootd = getBigClass(row.ootdIdx, ootds, ootd);
+      ootd = calendarProvider.getBigClass(row.ootdIdx, ootds, ootd);
 
       // fixedClothes가 있을 때
       if(row.fixedBig != null) {
@@ -216,7 +216,7 @@ console.log('[calendarProvider] retrieveWeeklyList start');
         let data = { smallClass : row.fixedSmall, color : row.color};
 
         // 만든 smallClass - color 객체가 이미 저장되었는지 확인한 후 저장 
-        if(!hasClothes(ootd[row.fixedBig], data)){
+        if(!calendarProvider.hasClothes(ootd[row.fixedBig], data)){
           ootd[row.fixedBig].push(data);
         }
       }
@@ -225,17 +225,17 @@ console.log('[calendarProvider] retrieveWeeklyList start');
         let data = {smallClass : row.addedSmall, color : row.color};
 
         // 만든 smallClass - color 객체가 이미 저장되었는지 확인한 후 저장
-        if(!hasClothes(ootd[row.addedBig], data)){
+        if(!calendarProvider.hasClothes(ootd[row.addedBig], data)){
           ootd[row.addedBig].push(data);
         }
       }
       
       // 새로 만들어진 ootd를 배열에 삽입
-      ootds = pushOotd(ootds, ootd);
+      ootds = calendarProvider.pushOotd(ootds, ootd);
     }
 
     // 빈 배열을 갖는 Top, Bottom, Shoes, Etc 값 변경 함수
-    ootds = changeBlankClothes(ootds);
+    ootds = calendarProvider.changeBlankClothes(ootds);
 
 
 
