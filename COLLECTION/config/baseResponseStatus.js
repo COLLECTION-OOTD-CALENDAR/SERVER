@@ -171,6 +171,12 @@ module.exports = {
     ENDAT_INVALID_VALUE :  {"isSuccess" : false, "code" : 3109, "message" : "유효하지 않은 endAt 값이 입력되었습니다."},
     SEARCH_KEYWORD_LENGTH :  {"isSuccess" : false, "code" : 3110, "message" : "6자 이내로 검색해야 합니다."},
     TAG_EMPTY :  {"isSuccess" : false, "code" : 3111, "message" : "태그 내용을 입력해야 합니다."},
+    COLOR1_EMPTY : {"isSuccess" : false, "code" : 3112, "message" : "color1 값이 입력되어야 합니다."},
+    COLOR2_EMPTY : {"isSuccess" : false, "code" : 3113, "message" : "keyword2에 해당하는 color2 값이 입력되어야 합니다."},
+    KEYWORD2_EMPTY : {"isSuccess" : false, "code" : 3114, "message" : "color2에 해당하는 keyword2값이 입력되어야 합니다."},
+    COLOR2_INVALID_VALUE : {"isSuccess" : false, "code" : 3115, "message" : "color2에 유효하지 않은 COLOR값이 입력되었습니다."},
+
+
 
 
 
@@ -195,15 +201,15 @@ module.exports = {
     HISTORY_DELETED : { "isSuccess": false, "code": 4017, "message": "삭제된 History입니다." },
     SEARCH_NOT_FOUND : { "isSuccess": false, "code": 4018, "message": "검색결과를 찾을 수 없습니다." },
     SEARCH_TAG_NOT_EXIST : { "isSuccess": false, "code": 4019, "message": "해당 키워드를 포함하는 태그가 존재하지 않습니다." },
-    PRINT_IMG_ERROR : { "isSuccess": false, "code": 4020, "message": "Thumbnail 사진 및 저장된 사진의 개수 출력에 문제가 있습니다." },
-
+    PRINT_IMG_ERROR : { "isSuccess": false, "code": 4020, "message": "Thumbnail 사진 및 저장된 사진의 개수 출력에 문제가 있습니다." },    
+    HISTORY_HANDLING_ERROR : { "isSuccess": false, "code": 4021, "message": "History 삭제 및 추가에 실패했습니다." },
     
     
 
-
+    
 
     //Connection Error
     DB_ERROR : { "isSuccess": false, "code": 5000, "message": "DB 접속 에러"},
     SERVER_ERROR : { "isSuccess": false, "code": 6000, "message": "SERVER 에러"},
-    S3_ERROR : {"isSuccess": false, "code": 7000, "message": "S3 에러"}
+    S3_ERROR : {"isSuccess": false, "code": 7000, "message": "S3 에러"},
 }
