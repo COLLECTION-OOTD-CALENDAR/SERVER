@@ -31,6 +31,7 @@ module.exports = function () {
     require('../src/app/Search2/searchRoute')(app);
     require('../src/app/Search/searchRoute')(app);
 
+    //require('../src/app/Search/searchRoute')(app);
 
     return app;
 };

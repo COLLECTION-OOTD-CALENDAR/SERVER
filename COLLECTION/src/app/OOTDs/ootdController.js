@@ -35,6 +35,7 @@ exports.registerOotd = async function (req, res) {
 
     // request body 풀어내기
     const n_date = new Date(date);
+    const n_lookpoint = Math.trunc(lookpoint);
 
     // color 배열
     const colorArr = [ "#d60f0f", "#f59a9a", "#ffb203", "#fde6b1", "#71a238", "#b7de89",
@@ -352,13 +353,12 @@ exports.registerOotd = async function (req, res) {
     if(!lookpoint){
         return res.send(errResponse(baseResponse.LOOKPOTNT_EMPTY));
     }
-
-    if(!Number.isInteger(lookpoint)){
+    
+    if(!isInt(lookpoint)){
         return res.send(errResponse(baseResponse.LOOKPOINT_ERROR_TYPE));
     }
-
     // LOOKPOINT 범위 체크
-    if(!lookpointPattern.test(lookpoint)){
+    if(!lookpointPattern.test(n_lookpoint)){
         return res.send(errResponse(baseResponse.LOOKPOINT_INVALID_VALUE));
     }
 
@@ -473,13 +473,16 @@ exports.registerOotd = async function (req, res) {
 
     // 최종 등록 API 
     const registerUserOotd = await ootdService.lastRegisterOotd(userIdx, date, lookname, photoIs, image, fClothes, aClothes,
-        fPlace, aPlace, fWeather, aWeather, fWho, aWho, lookpoint, comment);
+        fPlace, aPlace, fWeather, aWeather, fWho, aWho, n_lookpoint, comment);
     
     console.log('[ootdController] registerOotd finish');
     return res.send(registerUserOotd);
 
 };
 
+function isInt(lookpoint){
+    return typeof lookpoint === "number" && isFinite(lookpoint) && Math.floor(lookpoint) === lookpoint;
+}
 
 /**
  * API No. 10
@@ -553,6 +556,8 @@ exports.completeOotd = async function (req, res){
         return res.send(errResponse(baseResponse.DATE_EMPTY));
     }
 
+    console.log('date 형식 : ', typeof(date));
+    
     // date 형식 체크 
     if(!datePattern.test(date)){
         return res.send(errResponse(baseResponse.DATE_ERROR_TYPE));

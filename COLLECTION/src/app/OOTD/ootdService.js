@@ -91,7 +91,7 @@ exports.createNewBlock = async function (userIdx, Clothes, PWW, Content) {
       
             
             console.log(`추가된 블럭 : ${Content}`);
-            return response(baseResponse.SUCCESS_NEW_BLOCK, {'added Place' : Content});
+            return response(baseResponse.SUCCESS_NEW_BLOCK, {'added Who' : Content});
         }
 
 
