@@ -313,11 +313,8 @@ const pushOotd = function(list, data){
 };
 
 module.exports = {
-<<<<<<< HEAD
   retrieveMonthlyList,
   retrieveWeeklyList,
-=======
->>>>>>> 75fcf76c6b7cebaba18c2fae585f66501c30000b
   changeBlankClothes,
   getImageUrlKey,
   getImageUrl,
