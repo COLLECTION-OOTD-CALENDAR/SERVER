@@ -27,7 +27,7 @@ module.exports = {
     SUCCESS_IMAGE_URL : { "isSuccess": true, "code": 1025, "message":"이미지 url 변환 성공" },  
     SUCCESS_SEARCH_SUGGEST : { "isSuccess": true, "code": 1026, "message":"매칭 페이지 검색 키워드 제안 성공" },
     SUCCESS_S3_PRESIGNEDURL : { "isSuccess": true, "code": 1027, "message":"s3 presignedURL 발급 성공" },
-
+    SUCCESS_OOTD_DEFAULT : { "isSuccess": true, "code": 1028, "message":"추가한 블럭 불러오기 성공" },
 
     // Common
     TOKEN_VERIFICATION_SUCCESS : { "isSuccess": true, "code": 2000, "message":"JWT 토큰 검증 성공" },  
