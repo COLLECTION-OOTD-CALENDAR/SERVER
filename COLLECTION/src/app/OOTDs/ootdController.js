@@ -484,6 +484,28 @@ function isInt(lookpoint){
     return typeof lookpoint === "number" && isFinite(lookpoint) && Math.floor(lookpoint) === lookpoint;
 }
 
+
+/**
+ * API No. 8-2
+ * API Name : 추가한 블록 내역 불러오기
+ * [GET] /app/ootd/default-block
+ */
+
+exports.defaultOotd = async function (req, res){
+    
+    console.log('[ootdController] defaultOotd start');
+
+    const userIdx = req.verifiedToken.userIdx;
+
+    const callDefaultOotd = await ootdProvider.retrieveModiOotd(userIdx);
+
+    console.log('[ootdController] defaultOotd finish');
+
+    return res.send(response(baseResponse.SUCCESS_OOTD_MODI, callDefaultOotd));
+
+
+};
+
 /**
  * API No. 10
  * API Name : OOTD 수정하기 - 지난 작성 화면 보여주기
