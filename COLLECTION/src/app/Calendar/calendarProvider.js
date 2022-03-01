@@ -6,7 +6,7 @@ const calendarDao = require("./calendarDao");
 // Provider: Read 비즈니스 로직 처리
 
 // Monthly 달력 OOTD 부르기
-exports.retrieveMonthlyList = async function (userIdx) {
+const retrieveMonthlyList = async function (userIdx) {
 
   try {
     console.log('[calendarProvider] retrieveMonthlyList start');
@@ -33,7 +33,7 @@ exports.retrieveMonthlyList = async function (userIdx) {
 };
 
 // Weekly 달력 OOTD 부르기
-exports.retrieveWeeklyList = async function (userIdx) {
+const retrieveWeeklyList = async function (userIdx) {
 
   console.log('[calendarProvider] retrieveWeeklyList start');
 
@@ -313,6 +313,8 @@ const pushOotd = function(list, data){
 };
 
 module.exports = {
+  retrieveMonthlyList,
+  retrieveWeeklyList,
   changeBlankClothes,
   getImageUrlKey,
   getImageUrl,
