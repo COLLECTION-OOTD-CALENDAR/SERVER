@@ -492,16 +492,16 @@ function isInt(lookpoint){
  */
 
 exports.defaultOotd = async function (req, res){
-    
+
     console.log('[ootdController] defaultOotd start');
 
     const userIdx = req.verifiedToken.userIdx;
 
-    const callDefaultOotd = await ootdProvider.retrieveModiOotd(userIdx);
+    const callDefaultOotd = await ootdProvider.retrieveAddedOotd(userIdx);
 
     console.log('[ootdController] defaultOotd finish');
 
-    return res.send(response(baseResponse.SUCCESS_OOTD_MODI, callDefaultOotd));
+    return res.send(response(baseResponse.SUCCESS_OOTD_DEFAULT, callDefaultOotd));
 
 
 };
@@ -551,7 +551,7 @@ exports.modiOotd = async function (req, res){
     result["selected"] = callCompleteOotd;
 
     // 사용자가 지금까지 선택한 added~ 부르기
-    const callModiOotd = await ootdProvider.retrieveModiOotd(userIdx);
+    const callModiOotd = await ootdProvider.retrieveAddedOotd(userIdx);
     result["added"] = callModiOotd;
 
     console.log('[ootdController] modiOotd finish');
