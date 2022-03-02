@@ -86,7 +86,7 @@ console.log('[calendarProvider] retrieveWeeklyList start');
        
 
       //검색결과 가져오기
-      searchListResult = await calendarDao.selectSearchPlaceList(connection, userIdx, fixedPlaceIdx, addedPlaceIdx);
+      searchListResult = await searchDao.selectSearchPlaceList(connection, userIdx, fixedPlaceIdx, addedPlaceIdx);
     }
 
 
@@ -109,7 +109,7 @@ console.log('[calendarProvider] retrieveWeeklyList start');
         addedWeatherIdx = addedWeIdx.index;
       }
 
-      searchListResult = await calendarDao.selectSearchWeatherList(connection, userIdx, fixedWeatherIdx, addedWeatherIdx);
+      searchListResult = await searchDao.selectSearchWeatherList(connection, userIdx, fixedWeatherIdx, addedWeatherIdx);
     }
 
 
@@ -131,7 +131,7 @@ console.log('[calendarProvider] retrieveWeeklyList start');
         addedWhoIdx = addedWhIdx.index;
       }
 
-      searchListResult = await calendarDao.selectSearchWhoList(connection, userIdx, fixedWhoIdx, addedWhoIdx);
+      searchListResult = await searchDao.selectSearchWhoList(connection, userIdx, fixedWhoIdx, addedWhoIdx);
     }
 
 
@@ -154,7 +154,7 @@ console.log('[calendarProvider] retrieveWeeklyList start');
       }                     
 
       for(let addedCloIdx of addedClothesIdx){
-        let searchResult = await calendarDao.selectSearchColorList(connection, userIdx, fixedClothesIdx, addedCloIdx, color1);
+        let searchResult = await searchDao.selectSearchColorList(connection, userIdx, fixedClothesIdx, addedCloIdx, color1);
         searchListResult = searchListResult.concat(searchResult);
       }
 
