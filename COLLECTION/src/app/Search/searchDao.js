@@ -15,13 +15,13 @@ async function selectHistory(connection, userIdx, PWWC) {
 
 
 async function selectOldHistory(connection, userIdx, PWWC, keyword, color) {
-  const selectHistoryParams = [userIdx, PWWC, keyword, color, "active"];// (userAdded)
+  const selectHistoryParams = [userIdx, PWWC, keyword, "active"];// (userAdded) // color,
 
   const selectOldHistoryQuery = `
         SELECT index 
         FROM History
-        WHERE userIdx = ? AND PWWC = ? AND content = ? AND color = ? AND status = ?;
-                `;
+        WHERE userIdx = ? AND PWWC = ? AND content = ? AND status = ?;
+                `; // AND color = ? AND status = ?;
   const [historyRows] = await connection.query(
         selectOldHistoryQuery, 
         selectHistoryParams);

@@ -70,8 +70,11 @@ exports.postNewHistory = async function (userIdx, PWWC, keyword1, keyword2, colo
                 //keyword2 History에 추가
                 const insertNewHistoryParams2 = [userIdx, PWWC, keyword2, color2];
                 const keyword2Result = await searchDao.insertHistory(connection, insertNewHistoryParams2);
+
                 
             }
+            
+            await connection.commit();
             console.log(`searchService - postNewHistory 처리 완료`);
             return response(baseResponse.SUCCESS_SEARCH_ADDITION, {'userId': userIdx, 'keyword1': keyword1, 'keyword2' : keyword2});
             
