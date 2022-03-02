@@ -37,6 +37,7 @@ exports.historyNumCheck = async function (userIdx, PWWC) {
   const connection = await pool.getConnection(async (conn) => conn);
   const historyListResult = await searchDao.selectHistory(connection, userIdx, PWWC);
   connection.release();
+  console.log(`historyNumCheck : `, historyListResult.length);
 
   return historyListResult;
   
