@@ -251,7 +251,7 @@ console.log('[calendarProvider] retrieveWeeklyList start');
     return ootds;
 
   }catch(err){
-    logger.error(`App - getSearchResult Provider error\n: ${err.message}`);
+    logger.error(`App - getSearchResult Provider error\n: ${err.message} \n${JSON.stringify(err)}`);
     return errResponse(baseResponse.DB_ERROR);
   }
 
