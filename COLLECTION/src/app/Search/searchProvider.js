@@ -47,14 +47,6 @@ exports.historyNumCheck = async function (userIdx, PWWC) {
 
 
 exports.getSearchResult = async function (userIdx, PWWC, keyword1, keyword2, color1, color2, startAt, endAt){
-
-const connection = await pool.getConnection(async (conn) => conn);
-const historyListResult = await searchDao.selectHistory(connection, userIdx, PWWC);
-connection.release();
-
-
-console.log('[calendarProvider] retrieveWeeklyList start');
-
   try{
     // connection 은 db와의 연결을 도와줌
     const connection = await pool.getConnection(async (conn) => conn);
@@ -154,7 +146,7 @@ console.log('[calendarProvider] retrieveWeeklyList start');
       }                     
 
       for(let addedCloIdx of addedClothesIdx){
-        let searchResult = await searchDao.selectSearchColorList(connection, userIdx, fixedClothesIdx, addedCloIdx, color1);
+        let searchResult = await calendarsearchDaoDao.selectSearchColorList(connection, userIdx, fixedClothesIdx, addedCloIdx, color1);
         searchListResult = searchListResult.concat(searchResult);
       }
 
