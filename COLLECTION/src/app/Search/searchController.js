@@ -22,7 +22,7 @@ exports.getSearchResult = async function (req, res) {
     const userIdx = req.verifiedToken.userIdx;
 
     
-    const PWWC = req.params.PWWC;  
+    var PWWC = req.params.PWWC;  
     console.log(`PWWC value : `, PWWC, `PWWC type : `, typeof(PWWC) );
     // PWWC 빈값 검사
     if(!PWWC){
