@@ -23,6 +23,7 @@ exports.getSearchResult = async function (req, res) {
 
     
     const PWWC = req.params.PWWC;  
+    console.log(`PWWC value : `, PWWC, `PWWC type : `, typeof(PWWC) );
     // PWWC 빈값 검사
     if(!PWWC){
         return res.send(errResponse(baseResponse.PWWC_EMPTY));
@@ -33,7 +34,7 @@ exports.getSearchResult = async function (req, res) {
     }
     //PWWW 값 유효성 검사 - 0: place, 1: weather, 2: who, 3: color
     if(PWWC < 0 || PWWC > 3){
-        return res.send(errResponse(baseResponse.PWWC_ERROR_TYPE));
+        return res.send(errResponse(baseResponse.PWWC_INVALID_VALUE));
     }
 
 
