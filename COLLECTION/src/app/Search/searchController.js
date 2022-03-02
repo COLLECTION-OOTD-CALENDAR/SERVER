@@ -28,6 +28,9 @@ exports.getSearchResult = async function (req, res) {
     if(!PWWC){
         return res.send(errResponse(baseResponse.PWWC_EMPTY));
     }
+
+    PWWC = parseInt(PWWC);
+
     //PWWC 형식 검사
     if(isNaN(PWWC)){
         return res.send(errResponse(baseResponse.PWWC_ERROR_TYPE));
@@ -36,6 +39,7 @@ exports.getSearchResult = async function (req, res) {
     if(PWWC < 0 || PWWC > 3){
         return res.send(errResponse(baseResponse.PWWC_INVALID_VALUE));
     }
+
 
 
     /**

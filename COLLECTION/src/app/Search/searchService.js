@@ -76,7 +76,7 @@ exports.postNewHistory = async function (userIdx, PWWC, keyword1, keyword2, colo
             return response(baseResponse.SUCCESS_SEARCH_ADDITION, {'userId': userIdx, 'keyword1': keyword1, 'keyword2' : keyword2});
             
         } catch (err) {
-            logger.error(`App - redundantHistory Service error\n: ${err.message} \n${JSON.stringify(err)}`);
+            logger.error(`App - history Transaction error @ searchService\n: ${err.message} \n${JSON.stringify(err)}`);
             return errResponse(baseResponse.HISTORY_HANDLING_ERROR);
         }       
 

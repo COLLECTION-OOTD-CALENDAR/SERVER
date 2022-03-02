@@ -26,7 +26,7 @@ async function selectOldHistory(connection, userIdx, PWWC, keyword, color) {
         selectOldHistoryQuery, 
         selectHistoryParams);
 
-  return tagRows;
+  return historyRows;
 };
 
 async function deleteOneHistory(connection, userIdx, PWWC, index){
