@@ -23,7 +23,6 @@ exports.getSearchResult = async function (req, res) {
 
     
     var PWWC = req.params.PWWC;  
-    console.log(`PWWC value : `, PWWC, `PWWC type : `, typeof(PWWC) );
     // PWWC 빈값 검사
     if(!PWWC){
         return res.send(errResponse(baseResponse.PWWC_EMPTY));
@@ -40,6 +39,7 @@ exports.getSearchResult = async function (req, res) {
         return res.send(errResponse(baseResponse.PWWC_INVALID_VALUE));
     }
 
+    console.log(`PWWC value : `, PWWC, `PWWC type : `, typeof(PWWC) );
 
 
     /**
