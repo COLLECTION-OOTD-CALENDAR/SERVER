@@ -91,7 +91,7 @@ async function selectFixedPlaceCheck(connection, keyword1) {
   const selectFixedPlaceQuery = `
         SELECT FixedPlace.index
         FROM FixedPlace
-        WHERE AND place = ?;
+        WHERE place = ?;
                 `;
   const [selectFixedPlaceRows] = await connection.query(
     selectFixedPlaceQuery, 
@@ -121,7 +121,7 @@ async function selectFixedWeatherCheck(connection, keyword1) {
   const selectFixedWeatherQuery = `
         SELECT FixedWeather.index
         FROM FixedWeather
-        WHERE AND weather = ?;
+        WHERE weather = ?;
                 `;
   const [selectFixedWeatherRows] = await connection.query(
     selectFixedWeatherQuery, 
@@ -151,7 +151,7 @@ async function selectFixedWhoCheck(connection, keyword1) {
   const selectFixedWhoQuery = `
         SELECT FixedWho.index
         FROM FixedWho
-        WHERE AND who = ?;
+        WHERE who = ?;
                 `;
   const [selectFixedWhoRows] = await connection.query(
     selectFixedWhoQuery, 
@@ -180,7 +180,7 @@ async function selectFixedClothesCheck(connection, keyword1) {
   const selectFixedClothesQuery = `
         SELECT FixedClothes.index
         FROM FixedClothes
-        WHERE AND smallClass = ?;
+        WHERE smallClass = ?;
                 `;
   const [selectFixedClothesRows] = await connection.query(
     selectFixedClothesQuery, 
