@@ -2,12 +2,12 @@
 async function selectHistory(connection, userIdx, PWWC) {
 
   const selectHistoryQuery = `
-                SELECT index 
-                FROM History 
-                WHERE userIdx = ? AND PWWC = ? AND status = ?;
+                SELECT History.index 
+                FROM History
+                WHERE userIdx = ? AND PWWC = ? AND status = 'active';
                 `;
 
-  const selectHistoryParams = [userIdx, PWWC, "active"];
+  const selectHistoryParams = [userIdx, PWWC];
 
   const [historyRows] = await connection.query(selectHistoryQuery, selectHistoryParams);
   return historyRows;
@@ -20,26 +20,26 @@ async function selectOldHistory(connection, userIdx, PWWC, keyword, color) {
 
   if(PWWC != 3){
     selectOldHistoryQuery = `
-        SELECT index 
+        SELECT History.index 
         FROM History
-        WHERE userIdx = ? AND PWWC = ? AND content = ? AND color IS NULL AND status = ?;
+        WHERE userIdx = ? AND PWWC = ? AND content = ? AND color IS NULL AND status = 'active';
                 `; 
-    selectOldHistoryParams = [userIdx, PWWC, keyword, "active"];//
+    selectOldHistoryParams = [userIdx, PWWC, keyword];//
   }
   else{
     selectOldHistoryQuery = `
-        SELECT index 
+        SELECT History.index 
         FROM History
-        WHERE userIdx = ? AND PWWC = ? AND content = ? AND color = ? AND status = ?;
+        WHERE userIdx = ? AND PWWC = ? AND content = ? AND color = ? AND status = 'active';
                 `; 
-    selectOldHistoryParams = [userIdx, PWWC, keyword, color, "active"];
+    selectOldHistoryParams = [userIdx, PWWC, keyword, color];
   }
    
-  const [historyRows] = await connection.query(
+  const [oldHistoryRows] = await connection.query(
         selectOldHistoryQuery, 
         selectOldHistoryParams);
 
-  return historyRows;
+  return oldHistoryRows;
 };
 
 async function deleteOneHistory(connection, userIdx, PWWC, index){
@@ -75,7 +75,7 @@ async function insertHistory(connection, insertNewHistoryParams) {
 //키워드 존재 체크 -  Place (added, fixed) 
 async function selectAddedPlaceCheck(connection, userIdx, keyword1) {
   const selectAddedPlaceQuery = `
-        SELECT index
+        SELECT AddedPlace.index
         FROM AddedPlace
         WHERE userIdx = ? AND place = ?;
                 `;
@@ -89,7 +89,7 @@ async function selectAddedPlaceCheck(connection, userIdx, keyword1) {
 
 async function selectFixedPlaceCheck(connection, keyword1) {
   const selectFixedPlaceQuery = `
-        SELECT index
+        SELECT FixedPlace.index
         FROM FixedPlace
         WHERE AND place = ?;
                 `;
@@ -105,7 +105,7 @@ async function selectFixedPlaceCheck(connection, keyword1) {
 //키워드 존재 체크 -  Weather (added, fixed) 
 async function selectAddedWeatherCheck(connection, userIdx, keyword1) {
   const selectAddedWeatherQuery = `
-        SELECT index
+        SELECT AddedWeather.index
         FROM AddedWeather
         WHERE userIdx = ? AND weather = ?;
                 `;
@@ -119,7 +119,7 @@ async function selectAddedWeatherCheck(connection, userIdx, keyword1) {
 
 async function selectFixedWeatherCheck(connection, keyword1) {
   const selectFixedWeatherQuery = `
-        SELECT index
+        SELECT FixedWeather.index
         FROM FixedWeather
         WHERE AND weather = ?;
                 `;
@@ -135,7 +135,7 @@ async function selectFixedWeatherCheck(connection, keyword1) {
 //키워드 존재 체크 -  Who (added, fixed) 
 async function selectAddedWhoCheck(connection, userIdx, keyword1) {
   const selectAddedWhoQuery = `
-        SELECT index
+        SELECT AddedWho.index
         FROM AddedWho
         WHERE userIdx = ? AND who = ?;
                 `;
@@ -149,7 +149,7 @@ async function selectAddedWhoCheck(connection, userIdx, keyword1) {
 
 async function selectFixedWhoCheck(connection, keyword1) {
   const selectFixedWhoQuery = `
-        SELECT index
+        SELECT FixedWho.index
         FROM FixedWho
         WHERE AND who = ?;
                 `;
@@ -164,7 +164,7 @@ async function selectFixedWhoCheck(connection, keyword1) {
 //키워드 존재 체크 -  Clothes (added, fixed) 
 async function selectAddedClothesCheck(connection, userIdx, keyword1) {
   const selectAddedClothesQuery = `
-        SELECT index
+        SELECT AddedClothes.index
         FROM AddedClothes
         WHERE userIdx = ? AND smallClass = ?;
                 `;
@@ -178,7 +178,7 @@ async function selectAddedClothesCheck(connection, userIdx, keyword1) {
 
 async function selectFixedClothesCheck(connection, keyword1) {
   const selectFixedClothesQuery = `
-        SELECT index
+        SELECT FixedClothes.index
         FROM FixedClothes
         WHERE AND smallClass = ?;
                 `;
