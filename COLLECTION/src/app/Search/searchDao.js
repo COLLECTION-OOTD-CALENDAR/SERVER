@@ -46,8 +46,8 @@ async function deleteOneHistory(connection, userIdx, PWWC, index){
 
   const updateOneHistQuery = `
         UPDATE History 
-        SET status = "inactive", History.updateAt = CURRENT_TIMESTAMP
-        WHERE index = ? AND userIdx = ? AND PWWC = ?;
+        SET History.status = 'inactive', History.updateAt = CURRENT_TIMESTAMP
+        WHERE History.index = ? AND History.userIdx = ? AND History.PWWC = ?;
         `;
 
   const updateOneHistParams = [index, userIdx, PWWC];
