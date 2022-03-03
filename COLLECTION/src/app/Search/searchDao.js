@@ -39,7 +39,7 @@ async function selectOldHistory(connection, userIdx, PWWC, keyword, color) {
         selectOldHistoryQuery, 
         selectOldHistoryParams);
 
-  return oldHistoryRows;
+  return oldHistoryRows[0];
 };
 
 async function deleteOneHistory(connection, userIdx, PWWC, index){
