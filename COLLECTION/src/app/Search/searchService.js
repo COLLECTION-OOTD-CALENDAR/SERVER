@@ -27,7 +27,7 @@ exports.postNewHistory = async function (userIdx, PWWC, keyword1, keyword2, colo
             let oldHistory1 = await searchProvider.historyRedudantCheck(connection, userIdx, PWWC, keyword1, color1);
             console.log(`oldHistory1 검사 - index :`, oldHistory1);
 
-            if(typeof(oldHistory1) != 'undefined'){ //존재하는 경우
+            if(!oldHistory1){ //존재하는 경우
                 //예전 것 삭제 
                 let oldRedunHistory1 = oldHistory1.index;  
                 console.log(`oldRedunHistory1 : `, oldRedunHistory1)                                                                             
@@ -54,7 +54,7 @@ exports.postNewHistory = async function (userIdx, PWWC, keyword1, keyword2, colo
                 let oldHistory2 = await searchProvider.historyRedudantCheck(connection, userIdx, PWWC, keyword2, color2);
                 console.log(`oldHistory2 검사 - index :`, oldHistory2);
     
-                if(typeof(oldHistory2) != 'undefined'){ //존재하는 경우
+                if(!oldHistory2){ //존재하는 경우
                     //예전 것 삭제 
                     const oldRedunHistory2 = oldHistory2.index;      
                     console.log(`oldRedunHistory2 : `, oldRedunHistory2)                                                                            
