@@ -24,7 +24,10 @@ module.exports = function(app){
     app.patch('/app/user/modi-phone',jwtMiddleware, user.patchModiPhone);
 
     //8. 회원탈퇴
-    app.patch('/app/user/unregister',jwtMiddleware,user.deleteUnregister);
+    app.patch('/app/user/unregister',jwtMiddleware, user.deleteUnregister);
+
+    //9.자동로그인
+    app.get('/app/user/autologin',jwtMiddleware, user.autoLogin);
 
 };
 
