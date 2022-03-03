@@ -217,9 +217,9 @@ exports.addedWhoIdx = async function (connection, userIdx, aWho){
 
 
 // OOTD 수정하기 - 지난 작성 화면 보여주기
-exports.retrieveModiOotd = async function (userIdx){
+exports.retrieveAddedOotd = async function (userIdx){
 
-  console.log('[ootdProvider] retrieveModiOotd start');
+  console.log('[ootdProvider] retrieveAddedOotd start');
 
   try {
     // connection 은 db와의 연결을 도와줌
@@ -241,7 +241,7 @@ exports.retrieveModiOotd = async function (userIdx){
         added["aWho"] = [];
         added = getAddedBigClass(added);
       
-        console.log('[ootdProvider] retrieveModiOotd finish');
+        console.log('[ootdProvider] retrieveAddedOotd finish');
       
         return added;
     }
@@ -264,7 +264,7 @@ exports.retrieveModiOotd = async function (userIdx){
 
     }
 
-    console.log('[ootdProvider] retrieveModiOotd finish');
+    console.log('[ootdProvider] retrieveAddedOotd finish');
 
     return added;
 

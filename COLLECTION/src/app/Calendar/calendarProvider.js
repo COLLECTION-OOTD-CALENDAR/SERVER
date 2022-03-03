@@ -6,7 +6,7 @@ const calendarDao = require("./calendarDao");
 // Provider: Read 비즈니스 로직 처리
 
 // Monthly 달력 OOTD 부르기
-exports.retrieveMonthlyList = async function (userIdx) {
+const retrieveMonthlyList = async function (userIdx) {
 
   try {
     console.log('[calendarProvider] retrieveMonthlyList start');
@@ -33,7 +33,7 @@ exports.retrieveMonthlyList = async function (userIdx) {
 };
 
 // Weekly 달력 OOTD 부르기
-exports.retrieveWeeklyList = async function (userIdx) {
+const retrieveWeeklyList = async function (userIdx) {
 
   console.log('[calendarProvider] retrieveWeeklyList start');
 
@@ -127,7 +127,7 @@ exports.retrieveWeeklyList = async function (userIdx) {
 
 // 빈 배열의 Top, Bottom, Shoes, Etc일 경우 smallClass : "해당 항목 없음" 으로 변경
 // color는 ''로 변경
-function changeBlankClothes(ootds){
+const changeBlankClothes = function(ootds){
   let blkData = {smallClass : '해당 항목 없음', color : ''};
   for(let row of ootds){
     if(!row.Top[0]){
@@ -149,7 +149,7 @@ function changeBlankClothes(ootds){
 
 
 // imageUrl Key를 새로 생성 또는 이어서 진행할지 결정
-function getImageUrlKey(ootdIdx, ootds){
+const getImageUrlKey = function(ootdIdx, ootds){
   for (let each of ootds){
     if(each.ootdIdx == ootdIdx) return each.imageUrl;
   }
@@ -159,7 +159,7 @@ function getImageUrlKey(ootdIdx, ootds){
 
 
 // image 관련 imageUrl 값을 변경하는 함수
-function getImageUrl(imageUrl, thumbnail){
+const getImageUrl = function(imageUrl, thumbnail){
   if(!imageUrl){
     return null;
   }
@@ -172,7 +172,7 @@ function getImageUrl(imageUrl, thumbnail){
 }
 
 // imageCnt Key를 새로 생성 또는 이어서 진행할지 결정
-function getImageCntKey(ootdIdx, ootds){
+const getImageCntKey = function(ootdIdx, ootds){
   for (let each of ootds){
     if(each.ootdIdx == ootdIdx) return each.imageCnt;
   }
@@ -182,7 +182,7 @@ function getImageCntKey(ootdIdx, ootds){
 
 
 // imageCnt++ 하기 위한 조건
-function hasImageUrl(imgUrlArr, imageUrl){
+const hasImageUrl = function(imgUrlArr, imageUrl){
 
   if(imageUrl === undefined || imageUrl === null){
     return false;
@@ -197,7 +197,7 @@ function hasImageUrl(imgUrlArr, imageUrl){
 }
 
 // image 관련 imageCnt 값을 변경하는 함수
-function getImageCnt(thumbnail, img_cnt, tmp){
+const getImageCnt = function(thumbnail, img_cnt, tmp){
   if(!thumbnail){
     return img_cnt;
   }
@@ -211,7 +211,7 @@ function getImageCnt(thumbnail, img_cnt, tmp){
 
 
 // ootds 배열에 새로운 ootd row 추가 or 삽입 여부 결정
-function getOotd(ootdIdx, ootds) {
+const getOotd = function(ootdIdx, ootds) {
   for (let each of ootds){
     if(each.ootdIdx == ootdIdx) return each;
   }
@@ -220,7 +220,7 @@ function getOotd(ootdIdx, ootds) {
 };
 
 // bigClass명으로 된 key가 없을 때 key 및 빈 배열 value 생성
-function getBigClass(ootdIdx, ootds, ootd){
+const getBigClass = function(ootdIdx, ootds, ootd){
   for (let each of ootds){
     if(each.ootdIdx == ootdIdx) return ootd;
   }
@@ -234,7 +234,7 @@ function getBigClass(ootdIdx, ootds, ootd){
 };
 
 // 이미 place 배열이 존재하는 지 확인 -> place명 추가
-function getPlaces(row, tmp){
+const getPlaces = function(row, tmp){
   let tags;
 
   if(tmp === undefined || tmp === null) {
@@ -254,7 +254,7 @@ function getPlaces(row, tmp){
 }
 
 // 이미 weather 배열이 존재하는 지 확인 -> weather명 추가
-function getWeathers(row, tmp){
+const getWeathers = function(row, tmp){
   let tags;
 
   if(tmp === undefined || tmp === null) {
@@ -274,7 +274,7 @@ function getWeathers(row, tmp){
 }
 
 // 이미 who 배열이 존재하는 지 확인 -> who명 추가
-function getWhos(row, tmp){
+const getWhos = function(row, tmp){
   let tags;
 
   if(tmp === undefined || tmp === null) {
@@ -294,7 +294,7 @@ function getWhos(row, tmp){
 }
 
 // 주어진 list 내에 data가 존재하는 지 확인
-function hasClothes(list, data) {
+const hasClothes = function(list, data) {
   for(let each of list) {
       if(each.smallClass == data.smallClass && each.color == data.color) return true;
   }
@@ -303,7 +303,7 @@ function hasClothes(list, data) {
 };
 
 // ootdIdx가 같다면 삽입 X. 같지 않다면 삽입 O
-function pushOotd(list, data){
+const pushOotd = function(list, data){
   for (let each of list){
     if(each.ootdIdx == data.ootdIdx) return list;
   }
@@ -311,3 +311,21 @@ function pushOotd(list, data){
   list.push(data);
   return list;
 };
+
+module.exports = {
+  retrieveMonthlyList,
+  retrieveWeeklyList,
+  changeBlankClothes,
+  getImageUrlKey,
+  getImageUrl,
+  getImageCntKey,
+  hasImageUrl,
+  getImageCnt,
+  getOotd,
+  getBigClass,
+  getPlaces,
+  getWeathers,
+  getWhos,
+  hasClothes,
+  pushOotd
+}

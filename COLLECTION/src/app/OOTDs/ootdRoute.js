@@ -10,4 +10,8 @@ module.exports = function(app){
 
     // 3. OOTD 완료 페이지 불러오기
     app.get('/app/ootd/complete', jwtMiddleware, ootd.completeOotd);
+
+    // 4. 추가한 블록 내역 불러오기
+    app.get('/app/ootd/default-block', jwtMiddleware, ootd.defaultOotd);
+
 };

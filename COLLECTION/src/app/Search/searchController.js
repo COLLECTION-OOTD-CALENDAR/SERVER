@@ -1,154 +1,140 @@
 const jwtMiddleware = require("../../../config/jwtMiddleware");
-const userProvider = require("./userProvider");
-const userService = require("./userService");
+const searchProvider = require("./searchProvider");
+const searchService = require("./searchService");
 const baseResponse = require("../../../config/baseResponseStatus");
 const {response, errResponse} = require("../../../config/response");
 
-const regexEmail = require("regex-email");
-
 /**
- * API No. 0
- * API Name : 테스트 API
- * [GET] /app/test
+ * API No. 17
+ * API Name : 검색 결과 조회 API
+ * [GET] /app/search/:PWWC?keyword1=?&keyword2=?&color1=?&color2=?          //&startAt=?&endAt=?
  */
-// exports.getTest = async function (req, res) {
-//     return res.send(response(baseResponse.SUCCESS))
-// }
+exports.getSearchResult = async function (req, res) {
 
-/**
- * API No. 1
- * API Name : 유저 생성 (회원가입) API
- * [POST] /app/users
- */
-exports.postUsers = async function (req, res) {
+    // color 배열
+    const colorArr = [ "#d60f0f", "#f59a9a", "#ffb203", "#fde6b1", "#71a238", "#b7de89",
+    "#ea7831", "#273e88", "#4168e8", "#a5b9fa", "#894ac7", "#dcacff",
+    "#ffffff", "#888888", "#191919", "#e8dcd5", "#c3b5ac", "#74461f"]
+
+    let datePattern = /^(19|20)\d{2}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[0-1])$/;
+
+    //1. jwt token검증
+    const userIdx = req.verifiedToken.userIdx;
+
+    
+    var PWWC = req.params.PWWC;  
+    // PWWC 빈값 검사
+    if(!PWWC){
+        return res.send(errResponse(baseResponse.PWWC_EMPTY));
+    }
+
+    PWWC = parseInt(PWWC);
+
+    //PWWC 형식 검사
+    if(isNaN(PWWC)){
+        return res.send(errResponse(baseResponse.PWWC_ERROR_TYPE));
+    }
+    //PWWW 값 유효성 검사 - 0: place, 1: weather, 2: who, 3: color
+    if(PWWC < 0 || PWWC > 3){
+        return res.send(errResponse(baseResponse.PWWC_INVALID_VALUE));
+    }
+
+    console.log(`PWWC value : `, PWWC, `PWWC type : `, typeof(PWWC) );
+
 
     /**
-     * Body: email, password, nickname
+     * Query String: keyword1, keyword2, color1, color2             //startAt, endAt 
      */
-    const {email, password, nickname} = req.body;
+    
+    let keyword1 = req.query.keyword1;
+    let keyword2 = req.query.keyword2;
 
-    // 빈 값 체크
-    if (!email)
-        return res.send(response(baseResponse.SIGNUP_EMAIL_EMPTY));
+    var color1 = null;
+    var color2 = null;
 
-    // 길이 체크
-    if (email.length > 30)
-        return res.send(response(baseResponse.SIGNUP_EMAIL_LENGTH));
+    var startAt = req.query.startAt;
+    var endAt = req.query.endAt;
 
-    // 형식 체크 (by 정규표현식)
-    if (!regexEmail.test(email))
-        return res.send(response(baseResponse.SIGNUP_EMAIL_ERROR_TYPE));
 
-    // createUser 함수 실행을 통한 결과 값을 signUpResponse에 저장
-    const signUpResponse = await userService.createUser(
-        email,
-        password,
-        nickname
+    if (!keyword1) {
+        return res.send(errResponse(baseResponse.KEYWORD1_EMPTY));
+    }
+    
+
+    if(PWWC == 3){ // color 검색일 경우
+        color1 = req.query.color1;
+        color2 = req.query.color2;
+        //color1 빈값 검사 
+        if(!color1){    
+            return res.send(errResponse(baseResponse.COLOR1_EMPTY));
+        }
+        //color1 값 유효성 검사                         ㅌ -> color 선택안할시 다른 string으로 보내주시술?
+        else if(colorArr.indexOf(color1) == -1){        //정해진 color 값들 이외의 값이 들어온 경우
+            return res.send(errResponse(baseResponse.COLOR_INVALID_VALUE));
+        }
+        else if(keyword2){//검색어가 2개인 경우 
+            if(!color2){                                // keyword2에 해당하는 color2가 입력되지 않은 경우
+                return res.send(errResponse(baseResponse.COLOR2_EMPTY));
+            }
+            if(colorArr.indexOf(color2) == -1){          //정해진 color 값들 이외의 값이 들어온 경우
+                return res.send(errResponse(baseResponse.COLOR2_INVALID_VALUE));
+            }
+        }
+        else if(color2 && (!keyword2)){                 //검색어가 2개인 경우 - color2에 해당하는 keyword2가 입력되지 않은 경우
+            return res.send(errResponse(baseResponse.KEYWORD2_EMPTY));
+        }   
+    }
+
+
+
+
+    if(startAt && (!endAt)){ //startAt만 입력
+        return res.send(errResponse(baseResponse.ENDAT_EMPTY));
+    }
+    else if(endAt && (!startAt)){  //endAt만 입력했을 경우
+        return res.send(errResponse(baseResponse.STARTAT_EMPTY));
+    }
+    else if (startAt && endAt) {
+        startAt = new Date(startAt);
+        endAt = new Date(endAt);
+        if(datePattern.test(startAt)){     //yyyy-MM-dd 형식 검사
+            return res.send(errResponse(baseResponse.STARTAT_ERROR_TYPE));  
+        }
+        if(datePattern.test(endAt)){     //yyyy-MM-dd 형식 검사
+            return res.send(errResponse(baseResponse.ENDAT_ERROR_TYPE));  
+        }
+        
+        const dateRangeStart = new Date('2010-01-01');
+        const dateRangeEnd = new Date('2099-12-31');
+
+        if( startAt < dateRangeStart || startAt > dateRangeEnd){
+            return res.send(errResponse(baseResponse.STARTAT_INVALID_VALUE));  
+        }
+        if( endAt < dateRangeStart || endAt > dateRangeEnd){
+            return res.send(errResponse(baseResponse.ENDAT_INVALID_VALUE));
+        }
+    }
+    else{                               // ((!startAt) && (!endAt))
+        startAt = null;
+        endAt = null;
+    }
+    
+    
+    if(!keyword2){
+        keyword2 = null;
+    }
+
+
+    //1. history 처리 @searchService - 개수 조회, 자동삭제, history추가
+    const historyResponse = await searchService.postNewHistory(
+        userIdx, PWWC, keyword1, keyword2, color1, color2, 
     );
 
-    // signUpResponse 값을 json으로 전달
-    return res.send(signUpResponse);
-};
 
-/**
- * API No. 2
- * API Name : 유저 조회 API (+ 이메일로 검색 조회)
- * [GET] /app/users
- */
-exports.getUsers = async function (req, res) {
+    //2. 검색 결과 보여지기 @searchProvider - keyword1로 가져온 결과에서 keyword2가 null이 아니면 keyword2 포함하지 않는 것 제외하기
+    const searchResultResponse = await searchProvider.getSearchResult(
+        userIdx, PWWC, keyword1, keyword2, color1, color2, startAt, endAt
+    );
+    return res.send(searchResultResponse);
 
-    /**
-     * Query String: email
-     */
-    const email = req.query.email;
-
-    if (!email) {
-        // 유저 전체 조회
-        const userListResult = await userProvider.retrieveUserList();
-        // SUCCESS : { "isSuccess": true, "code": 1000, "message":"성공" }, 메세지와 함께 userListResult 호출
-        return res.send(response(baseResponse.SUCCESS, userListResult));
-    } else {
-        // 아메일을 통한 유저 검색 조회
-        const userListByEmail = await userProvider.retrieveUserList(email);
-        return res.send(response(baseResponse.SUCCESS, userListByEmail));
-    }
-};
-
-/**
- * API No. 3
- * API Name : 특정 유저 조회 API
- * [GET] /app/users/{userId}
- */
-exports.getUserById = async function (req, res) {
-
-    /**
-     * Path Variable: userId
-     */
-    const userId = req.params.userId;
-    // errResponse 전달
-    if (!userId) return res.send(errResponse(baseResponse.USER_USERID_EMPTY));
-
-    // userId를 통한 유저 검색 함수 호출 및 결과 저장
-    const userByUserId = await userProvider.retrieveUser(userId);
-    return res.send(response(baseResponse.SUCCESS, userByUserId));
-};
-
-
-// TODO: After 로그인 인증 방법 (JWT)
-/**
- * API No. 4
- * API Name : 로그인 API
- * [POST] /app/login
- * body : email, passsword
- */
-exports.login = async function (req, res) {
-
-    const {email, password} = req.body;
-
-    const signInResponse = await userService.postSignIn(email, password);
-
-    return res.send(signInResponse);
-};
-
-
-/**
- * API No. 5
- * API Name : 회원 정보 수정 API + JWT + Validation
- * [PATCH] /app/users/:userId
- * path variable : userId
- * body : nickname
- */
-exports.patchUsers = async function (req, res) {
-
-    // jwt - userId, path variable :userId
-
-    const userIdFromJWT = req.verifiedToken.userId
-
-    const userId = req.params.userId;
-    const nickname = req.body.nickname;
-
-    // JWT는 이 후 주차에 다룰 내용
-    if (userIdFromJWT != userId) {
-        res.send(errResponse(baseResponse.USER_ID_NOT_MATCH));
-    } else {
-        if (!nickname) return res.send(errResponse(baseResponse.USER_NICKNAME_EMPTY));
-
-        const editUserInfo = await userService.editUser(userId, nickname)
-        return res.send(editUserInfo);
-    }
-};
-
-
-
-
-
-
-// JWT 이 후 주차에 다룰 내용
-/** JWT 토큰 검증 API
- * [GET] /app/auto-login
- */
-exports.check = async function (req, res) {
-    const userIdResult = req.verifiedToken.userId;
-    console.log(userIdResult);
-    return res.send(response(baseResponse.TOKEN_VERIFICATION_SUCCESS));
 };
