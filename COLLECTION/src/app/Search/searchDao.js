@@ -15,7 +15,7 @@ async function selectHistory(connection, userIdx, PWWC) {
 
 
 async function selectOldHistory(connection, userIdx, PWWC, keyword, color) {
-  const selectOldHistoryParams = [];
+  var selectOldHistoryParams = [];
   var selectOldHistoryQuery =``;
 
   if(PWWC != 3){
