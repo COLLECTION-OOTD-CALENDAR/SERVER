@@ -84,7 +84,7 @@ async function selectAddedPlaceCheck(connection, userIdx, keyword1) {
       selectAddedPlaceQuery, 
       selectAddedPlaceParams);
 
-  return selectAddedPlaceRows;
+  return selectAddedPlaceRows[0];
 }
 
 async function selectFixedPlaceCheck(connection, keyword1) {
@@ -97,7 +97,7 @@ async function selectFixedPlaceCheck(connection, keyword1) {
     selectFixedPlaceQuery, 
       keyword1);
 
-  return selectFixedPlaceRows;
+  return selectFixedPlaceRows[0];
 }
 
 
@@ -114,7 +114,7 @@ async function selectAddedWeatherCheck(connection, userIdx, keyword1) {
       selectAddedWeatherQuery, 
       selectAddedWeatherParams);
 
-  return selectAddedWeatherRows;
+  return selectAddedWeatherRows[0];
 }
 
 async function selectFixedWeatherCheck(connection, keyword1) {
@@ -127,7 +127,7 @@ async function selectFixedWeatherCheck(connection, keyword1) {
     selectFixedWeatherQuery, 
       keyword1);
 
-  return selectFixedWeatherRows;
+  return selectFixedWeatherRows[0];
 }
 
 
@@ -144,7 +144,7 @@ async function selectAddedWhoCheck(connection, userIdx, keyword1) {
       selectAddedWhoQuery, 
       selectAddedWhoParams);
 
-  return selectAddedWhoRows;
+  return selectAddedWhoRows[0];
 }
 
 async function selectFixedWhoCheck(connection, keyword1) {
@@ -157,7 +157,7 @@ async function selectFixedWhoCheck(connection, keyword1) {
     selectFixedWhoQuery, 
       keyword1);
 
-  return selectFixedWhoRows;
+  return selectFixedWhoRows[0];
 }
 
 
@@ -173,7 +173,7 @@ async function selectAddedClothesCheck(connection, userIdx, keyword1) {
       selectAddedClothesQuery, 
       selectAddedClothesParams);
 
-  return selectAddedClothesRows;
+  return selectAddedClothesRows[0];
 }
 
 async function selectFixedClothesCheck(connection, keyword1) {
@@ -186,7 +186,7 @@ async function selectFixedClothesCheck(connection, keyword1) {
     selectFixedClothesQuery, 
       keyword1);
 
-  return selectFixedClothesRows;
+  return selectFixedClothesRows[0];
 }
 
 
