@@ -240,6 +240,35 @@ exports.postLogin = async function (req, res) {
 }
 
 /**
+ * API No. 9
+ * API Name : 자동로그인
+ * [DELETE] /app/user/unregister:userIdx
+ * path variable : userIdx
+ * body : password
+ */
+
+// JWT 이 후 주차에 다룰 내용
+/** JWT 토큰 검증 API
+ * [GET] /app/auto-login
+ */
+ exports.check = async function (req, res) {
+    const userIdResult = req.verifiedToken.userId;
+    console.log(userIdResult);
+    return res.send(response(baseResponse.TOKEN_VERIFICATION_SUCCESS));
+};
+
+
+
+
+
+
+
+
+
+
+
+
+/**
  * API NO.5
  * API Name : 회원정보 수정 (닉네임)
  * [PATCH] /app/user/modi-nickname/:userIdx
