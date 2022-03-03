@@ -8,7 +8,7 @@ async function updateHistoryEach(connection, userIdx, PWWC,content) {
     UPDATE History
     SET status = "inactive"
     WHERE userIdx = ? AND PWWC = ? AND content = ?;`;
-  const updateSearchRow = await connection.query(updateSearchQuery, userIdx, PWWC,content);
+  const updateSearchRow = await connection.query(updateSearchQuery, [userIdx, PWWC,content]);
   return updateSearchRow;
 }
 
@@ -19,7 +19,7 @@ async function updateHistoryColor(connection, userIdx, PWWC,content,color) {
     UPDATE History
     SET status = "inactive"
     WHERE userIdx= ? AND PWWC = ? AND content = ? AND color = ?;`;
-  const updateSearchRow = await connection.query(updateSearchQuery, userIdx, PWWC,content,color);
+  const updateSearchRow = await connection.query(updateSearchQuery, [userIdx, PWWC,content,color]);
   return updateSearchRow;
 }
 
@@ -29,7 +29,7 @@ async function updateHistoryAll(connection, userIdx, PWWC) {
     UPDATE History
     SET status = "inactive"
     WHERE userIdx = ? AND PWWC = ?;`;
-  const updateSearchRow = await connection.query(updateSearchQuery, userIdx, PWWC);
+  const updateSearchRow = await connection.query(updateSearchQuery, [userIdx, PWWC]);
   return updateSearchRow;
 }
 
@@ -39,7 +39,7 @@ async function selectHistory(connection,userIdx,PWWC,conent) {
     SELECT content
     FROM History
     WHERE userIdx = ? AND PWWC = ? AND content = ?;`;
-  const [IDRow] = await connection.query(selectHistoryQuery, userIdx,PWWC,conent);
+  const [IDRow] = await connection.query(selectHistoryQuery, [userIdx,PWWC,conent]);
   return IDRow[0];
 }
 
