@@ -76,6 +76,9 @@ exports.getSearchResult = async function (userIdx, PWWC, keyword1, keyword2, col
         addedPlaceIdx = addedpIdx.index;
       }
        
+    if(fixedPlaceIdx == -1 && addedPlaceIdx == -1){
+      return errResponse(baseResponse.SEARCH_NOT_FOUND);
+    }
 
       //검색결과 가져오기
       searchListResult = await searchDao.selectSearchPlaceList(connection, userIdx, fixedPlaceIdx, addedPlaceIdx);
@@ -102,6 +105,11 @@ exports.getSearchResult = async function (userIdx, PWWC, keyword1, keyword2, col
         addedWeatherIdx = addedWeIdx.index;
       }
 
+
+      if(fixedWeatherIdx == -1 && addedWeatherIdx == -1){
+        return errResponse(baseResponse.SEARCH_NOT_FOUND);
+      }
+
       searchListResult = await searchDao.selectSearchWeatherList(connection, userIdx, fixedWeatherIdx, addedWeatherIdx);
       console.log(`Weather searchListResult length : `, searchListResult.length);
     }
@@ -125,6 +133,11 @@ exports.getSearchResult = async function (userIdx, PWWC, keyword1, keyword2, col
         addedWhoIdx = addedWhIdx.index;
       }
 
+      if(fixedWhoIdx == -1 && addedWhoIdx == -1){
+        return errResponse(baseResponse.SEARCH_NOT_FOUND);
+      }
+
+
       searchListResult = await searchDao.selectSearchWhoList(connection, userIdx, fixedWhoIdx, addedWhoIdx);
       console.log(`Who searchListResult length : `, searchListResult.length);
     }
@@ -146,7 +159,13 @@ exports.getSearchResult = async function (userIdx, PWWC, keyword1, keyword2, col
       
       if(typeof(addedCIdx)!='undefined'){
         addedWhoIdx = addedCIdx;
-      }                     
+      }     
+      
+      
+      if(fixedClothesIdx == -1 && addedClothesIdx.length == 0){
+        return errResponse(baseResponse.SEARCH_NOT_FOUND);
+      }
+
 
       for(let addedCloIdx of addedClothesIdx){
         let searchResult = await calendarsearchDaoDao.selectSearchColorList(connection, userIdx, fixedClothesIdx, addedCloIdx, color1);
