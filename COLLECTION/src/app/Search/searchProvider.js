@@ -26,18 +26,18 @@ pushOotd
 
 
 
-exports.historyRedudantCheck = async function(userIdx, PWWC, keyword, color){
-  const connection = await pool.getConnection(async (conn) => conn);
+exports.historyRedudantCheck = async function(connection, userIdx, PWWC, keyword, color){
+ // const connection = await pool.getConnection(async (conn) => conn);
   const historyRedundantResult = await searchDao.selectOldHistory(connection, userIdx, PWWC, keyword, color);
-  connection.release();
+// connection.release();
   return historyRedundantResult;
 };
 
-exports.historyNumCheck = async function (userIdx, PWWC) {
+exports.historyNumCheck = async function (connection, userIdx, PWWC) {
 
-  const connection = await pool.getConnection(async (conn) => conn);
+ // const connection = await pool.getConnection(async (conn) => conn);
   const historyListResult = await searchDao.selectHistory(connection, userIdx, PWWC);
-  connection.release();
+ // connection.release();
   console.log(`historyNumCheck : `, historyListResult.length);
 
   return historyListResult;
