@@ -15,7 +15,7 @@ async function selectHistory(connection, userIdx, PWWC) {
 
 
 async function selectOldHistory(connection, userIdx, PWWC, keyword, color) {
-  const selectOldHistoryParams = [];
+  var selectOldHistoryParams = [];
   var selectOldHistoryQuery =``;
 
   if(PWWC != 3){
@@ -39,15 +39,15 @@ async function selectOldHistory(connection, userIdx, PWWC, keyword, color) {
         selectOldHistoryQuery, 
         selectOldHistoryParams);
 
-  return oldHistoryRows;
+  return oldHistoryRows[0];
 };
 
 async function deleteOneHistory(connection, userIdx, PWWC, index){
 
   const updateOneHistQuery = `
         UPDATE History 
-        SET status = "inactive", History.updateAt = CURRENT_TIMESTAMP
-        WHERE index = ? AND userIdx = ? AND PWWC = ?;
+        SET History.status = 'inactive', History.updateAt = CURRENT_TIMESTAMP
+        WHERE History.index = ? AND History.userIdx = ? AND History.PWWC = ?;
         `;
 
   const updateOneHistParams = [index, userIdx, PWWC];

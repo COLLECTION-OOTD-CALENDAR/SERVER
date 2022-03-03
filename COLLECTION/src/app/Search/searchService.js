@@ -27,9 +27,10 @@ exports.postNewHistory = async function (userIdx, PWWC, keyword1, keyword2, colo
             let oldHistory1 = await searchProvider.historyRedudantCheck(connection, userIdx, PWWC, keyword1, color1);
             console.log(`oldHistory1 검사 - index :`, oldHistory1);
 
-            if(typeof(oldHistory1) != 'undefined'){ //존재하는 경우
+            if(oldHistory1){ //존재하는 경우
                 //예전 것 삭제 
-                var oldRedunHistory1 = oldHistory1.index;                                                                               
+                let oldRedunHistory1 = oldHistory1.index;  
+                console.log(`oldRedunHistory1 : `, oldRedunHistory1)                                                                             
                 const deleteRedunHistoryResult = await searchDao.deleteOneHistory(connection, userIdx, PWWC, oldRedunHistory1);
                 console.log(`deleted old redundant history - historyIdx `, oldHistory1 );            
             }
@@ -37,7 +38,8 @@ exports.postNewHistory = async function (userIdx, PWWC, keyword1, keyword2, colo
                 const historyRows = await searchProvider.historyNumCheck(connection, userIdx, PWWC);  
                 if(historyRows.length >= 20){
                     //가장 오래된 것 1개 삭제
-                    var oldestIdx = historyRows[0];
+                    let oldestIdx = historyRows[0];
+                    console.log(`oldestIdx : `, oldestIdx)
                     const deleteOldHistoryResult = await searchDao.deleteOneHistory(connection, userIdx, PWWC, oldestIdx);
                     console.log(`auto-deleted old history - historyIdx `, oldestIdx );                
                 }
@@ -49,12 +51,13 @@ exports.postNewHistory = async function (userIdx, PWWC, keyword1, keyword2, colo
 
             
             if(keyword2 != null) {         //검색어 1개 일 경우 - history 20개 이상이면 1개 삭제, 미만이면 추가
-                var oldHistory2 = await searchProvider.historyRedudantCheck(connection, userIdx, PWWC, keyword2, color2);
+                let oldHistory2 = await searchProvider.historyRedudantCheck(connection, userIdx, PWWC, keyword2, color2);
                 console.log(`oldHistory2 검사 - index :`, oldHistory2);
     
-                if(typeof(oldHistory2) != 'undefined'){ //존재하는 경우
+                if(oldHistory2){ //존재하는 경우
                     //예전 것 삭제 
-                    const oldRedunHistory2 = oldHistory2.index;                                                                               
+                    const oldRedunHistory2 = oldHistory2.index;      
+                    console.log(`oldRedunHistory2 : `, oldRedunHistory2)                                                                            
                     const deleteRedunHistoryResult2 = await searchDao.deleteOneHistory(connection, userIdx, PWWC, oldRedunHistory2);
                     console.log(`deleted old redundant history 2 - historyIdx `, oldHistory2 );            
                 }
@@ -62,7 +65,8 @@ exports.postNewHistory = async function (userIdx, PWWC, keyword1, keyword2, colo
                     const historyRows2 = await searchProvider.historyNumCheck(connection, userIdx, PWWC);  
                     if(historyRows2.length >= 20){
                         //가장 오래된 것 1개 삭제
-                        var oldestIdx2 = historyRows2[0];
+                        let oldestIdx2 = historyRows2[0];
+                        console.log(`oldestIdx2 : `, oldestIdx2)
                         const deleteOldHistoryResult2 = await searchDao.deleteOneHistory(connection, userIdx, PWWC, oldestIdx2);
                         console.log(`auto-deleted old history - historyIdx `, oldestIdx2 );                
                     }
