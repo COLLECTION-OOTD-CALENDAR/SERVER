@@ -79,6 +79,7 @@ exports.getSearchResult = async function (userIdx, PWWC, keyword1, keyword2, col
 
       //검색결과 가져오기
       searchListResult = await searchDao.selectSearchPlaceList(connection, userIdx, fixedPlaceIdx, addedPlaceIdx);
+      console.log(`Place searchListResult length : `, searchListResult.length);
     }
 
 
@@ -102,6 +103,7 @@ exports.getSearchResult = async function (userIdx, PWWC, keyword1, keyword2, col
       }
 
       searchListResult = await searchDao.selectSearchWeatherList(connection, userIdx, fixedWeatherIdx, addedWeatherIdx);
+      console.log(`Weather searchListResult length : `, searchListResult.length);
     }
 
 
@@ -124,6 +126,7 @@ exports.getSearchResult = async function (userIdx, PWWC, keyword1, keyword2, col
       }
 
       searchListResult = await searchDao.selectSearchWhoList(connection, userIdx, fixedWhoIdx, addedWhoIdx);
+      console.log(`Who searchListResult length : `, searchListResult.length);
     }
 
 
@@ -148,8 +151,9 @@ exports.getSearchResult = async function (userIdx, PWWC, keyword1, keyword2, col
       for(let addedCloIdx of addedClothesIdx){
         let searchResult = await calendarsearchDaoDao.selectSearchColorList(connection, userIdx, fixedClothesIdx, addedCloIdx, color1);
         searchListResult = searchListResult.concat(searchResult);
+        
       }
-
+      console.log(`Clothes searchListResult length : `, searchListResult.length);
 
 
       
