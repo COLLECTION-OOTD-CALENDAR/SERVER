@@ -22,7 +22,7 @@ exports.delHistory = async function (req, res) {
         return res.send(errResponse(baseResponse.HISTORY_CONTENT_UNDEFINED));
     }
     //전체삭제에 알맞지 않은 조건입니다. 
-    if(type == 2 && content.length > 0){
+    if(type == 2 && content){
         return res.send(errResponse(baseResponse.UNNECESSARY_CONTENT));
     }
 
