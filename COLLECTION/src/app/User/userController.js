@@ -242,29 +242,14 @@ exports.postLogin = async function (req, res) {
 /**
  * API No. 9
  * API Name : 자동로그인
- * [DELETE] /app/user/unregister:userIdx
- * path variable : userIdx
- * body : password
+ * [GET] /app/user/autologin
  */
 
-// JWT 이 후 주차에 다룰 내용
-/** JWT 토큰 검증 API
- * [GET] /app/auto-login
- */
- exports.check = async function (req, res) {
-    const userIdResult = req.verifiedToken.userId;
-    console.log(userIdResult);
+exports.autoLogin = async function (req, res) {
+    const userIdx = req.verifiedToken.userIdx;
+    console.log(userIdx);
     return res.send(response(baseResponse.TOKEN_VERIFICATION_SUCCESS));
 };
-
-
-
-
-
-
-
-
-
 
 
 
