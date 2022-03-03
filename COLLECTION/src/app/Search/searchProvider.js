@@ -161,7 +161,9 @@ exports.getSearchResult = async function (userIdx, PWWC, keyword1, keyword2, col
     // connection 해제
     connection.release();
 
-
+    if(searchListResult.length == 0){
+      return errResponse(baseResponse.SEARCH_NOT_FOUND);
+    }
 
 
     //ootd list 처리 - credits to 녜
