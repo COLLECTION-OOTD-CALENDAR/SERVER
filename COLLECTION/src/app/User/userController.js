@@ -334,10 +334,10 @@ exports.patchModiPW = async function (req, res) {
         return res.send(response(baseResponse.REGISTER_PW_LENGTH));
     }  
     else if (newPassword.length < 6 || newPassword.length > 15){
-        return res.send(response(baseResponse.REGISTER_PW_LENGTH));
+        return res.send(response(baseResponse.REGISTER_NEW_PW_LENGTH));
     }  
     else if (checkPassword.length < 6 || checkPassword.length > 15){
-        return res.send(response(baseResponse.REGISTER_PW_LENGTH));
+        return res.send(response(baseResponse.REGISTER_CHECK_PW_LENGTH));
     }  
 
 
