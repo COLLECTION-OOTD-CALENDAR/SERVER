@@ -84,7 +84,7 @@ exports.getSearchResult = async function (userIdx, PWWC, keyword1, keyword2, col
 
     else if (PWWC == 3){    //color
     
-      let searchListResult = await calendarsearchDaoDao.selectSearchColorList(connection, userIdx, keyword1, color1);
+      let searchListResult = await searchDao.selectSearchColorList(connection, userIdx, keyword1, color1);
       console.log(`Clothes searchListResult length : `, searchListResult.length);
 
     }
@@ -163,7 +163,8 @@ exports.getSearchResult = async function (userIdx, PWWC, keyword1, keyword2, col
 
       //startAt과 endAt이 null이 아닐 경우
       if(startAt && endAt){ 
-        if( ( ootd["date"] < startAt ) || ( ootd["date"] > endAt) ){
+        let test_date = new Date ( ootd["date"] );
+        if( ( test_date < startAt ) || ( test_date > endAt) ){
           continue;
         }
       }
@@ -176,17 +177,17 @@ exports.getSearchResult = async function (userIdx, PWWC, keyword1, keyword2, col
       }
       else{                           //keyword2가 있을 때
         if(PWWC == 0){
-          if(ootd["place"].includes[keyword2]){           //place에 해당 keywrod2가 존재할 경우에만 결과에 추가
+          if(ootd["place"].includes(keyword2)){           //place에 해당 keywrod2가 존재할 경우에만 결과에 추가
             ootds = calendarProvider.pushOotd(ootds, ootd);
           }
         }
         else if(PWWC == 1){
-          if(ootd["weather"].includes[keyword2]){           //weather에 해당 keywrod2가 존재할 경우에만 결과에 추가
+          if(ootd["weather"].includes(keyword2)){           //weather에 해당 keywrod2가 존재할 경우에만 결과에 추가
             ootds = calendarProvider.pushOotd(ootds, ootd);
           }
         }
         else if(PWWC == 2){
-          if(ootd["who"].includes[keyword2]){           //who에 해당 keywrod2가 존재할 경우에만 결과에 추가
+          if(ootd["who"].includes(keyword2)){           //who에 해당 keywrod2가 존재할 경우에만 결과에 추가
             ootds = calendarProvider.pushOotd(ootds, ootd);
           }
         }
