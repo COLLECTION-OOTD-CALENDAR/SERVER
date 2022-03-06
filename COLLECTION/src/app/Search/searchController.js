@@ -167,6 +167,18 @@ exports.getSearchResult = async function (req, res) {
         userIdx, PWWC, keyword1, keyword2, color1, color2, startAt, endAt
     );
 
+    if(searchResultResponse.length == 0){
+        if(startAt && endAt){
+            return res.send(errResponse(baseResponse.SEARCH_DATE_OOTD_EMPTY));
+        }
+        else{
+            return res.send(errResponse(baseResponse.SEARCH_NOT_FOUND));
+        }
+        
+    }
+
+    console.log(`before response check : `, searchResultResponse);
+
     for(i in searchResultResponse){
         // lookpoint 값 추출 확인
         if(!lookpointPattern.test(searchResultResponse[i].lookpoint)){
@@ -181,17 +193,7 @@ exports.getSearchResult = async function (req, res) {
             return res.send(errResponse(baseResponse.PRINT_IMG_ERROR));
         }
     }
-
-
-    if(searchResultResponse.length == 0){
-        if(startAt && endAt){
-            return res.send(errResponse(baseResponse.SEARCH_DATE_OOTD_EMPTY));
-        }
-        else{
-            return res.send(errResponse(baseResponse.SEARCH_NOT_FOUND));
-        }
-        
-    }
+   
 
     const searchFinalResult = {};
     searchFinalResult["Search Result"] = searchResultResponse;
