@@ -55,8 +55,8 @@ exports.getSearchResult = async function (req, res) {
     let keyword1 = req.query.keyword1;
     let keyword2 = req.query.keyword2;
 
-    var color1 = null;
-    var color2 = null;
+    var color1 = req.query.color1;       
+    var color2 = req.query.color2;
 
     var startAt = req.query.startAt;
     var endAt = req.query.endAt;
@@ -94,11 +94,7 @@ exports.getSearchResult = async function (req, res) {
     }
 
 
-
-
     if(PWWC == 3){ // color 검색일 경우
-        color1 = req.query.color1;       
-        color2 = req.query.color2;
         //color1 빈값 검사 
         if(!color1){    
             return res.send(errResponse(baseResponse.COLOR1_EMPTY));
