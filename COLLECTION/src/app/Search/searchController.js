@@ -71,22 +71,22 @@ exports.getSearchResult = async function (req, res) {
         return res.send(errResponse(baseResponse.REGISTER_BLANK_ALL));  
     }
 
-    keyword1_test = keyword1.toString().trim();
+    keyword1 = keyword1.toString().trim();
     
-    if(keyword1_test.length > 6){            
+    if(keyword1.length > 6){            
         return res.send(errResponse(baseResponse.SEARCH_KEYWORD_LENGTH));
     }
 
-    
+
     if(keyword2){
         var keyword2_test = keyword2.toString();
         if(keyword2_test.replace(blank_pattern, '' ) == "" ){
             return res.send(errResponse(baseResponse.REGISTER_BLANK_ALL));  
         }
 
-        keyword2_test = keyword2.toString().trim();
+        keyword2 = keyword2.toString().trim();
         
-        if(keyword2_test.length > 6){            
+        if(keyword2.length > 6){            
             return res.send(errResponse(baseResponse.SEARCH_KEYWORD_LENGTH));
         }
     }else{
