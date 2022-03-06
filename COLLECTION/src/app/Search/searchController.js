@@ -4,7 +4,6 @@ const searchService = require("./searchService");
 const baseResponse = require("../../../config/baseResponseStatus");
 const {response, errResponse} = require("../../../config/response");
 
-var lookpointPattern = /^[1-5]$/;
 
 
 /**
@@ -20,6 +19,10 @@ exports.getSearchResult = async function (req, res) {
     "#ffffff", "#888888", "#191919", "#e8dcd5", "#c3b5ac", "#74461f"]
 
     let datePattern = /^(19|20)\d{2}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[0-1])$/;
+
+    var lookpointPattern = /^[1-5]$/;
+    var blank_pattern = /^\s+|\s+$/g;
+
 
     //1. jwt token검증
     const userIdx = req.verifiedToken.userIdx;
@@ -62,11 +65,39 @@ exports.getSearchResult = async function (req, res) {
     if (!keyword1) {
         return res.send(errResponse(baseResponse.KEYWORD1_EMPTY));
     }
+
+    var keyword1_test = keyword1.toString();
+    if(keyword1_test.replace(blank_pattern, '' ) == "" ){
+        return res.send(errResponse(baseResponse.REGISTER_BLANK_ALL));  
+    }
+
+    keyword1_test = keyword1.toString().trim();
     
+    if(keyword1_test.length > 6){            
+        return res.send(errResponse(baseResponse.SEARCH_KEYWORD_LENGTH));
+    }
+
+    
+    if(keyword2){
+        var keyword2_test = keyword2.toString();
+        if(keyword2_test.replace(blank_pattern, '' ) == "" ){
+            return res.send(errResponse(baseResponse.REGISTER_BLANK_ALL));  
+        }
+
+        keyword2_test = keyword2.toString().trim();
+        
+        if(keyword2_test.length > 6){            
+            return res.send(errResponse(baseResponse.SEARCH_KEYWORD_LENGTH));
+        }
+    }else{
+        keyword2 = null;
+    }
+
+
+
 
     if(PWWC == 3){ // color 검색일 경우
         color1 = req.query.color1;
-        color2 = req.query.color2;
         //color1 빈값 검사 
         if(!color1){    
             return res.send(errResponse(baseResponse.COLOR1_EMPTY));
@@ -75,7 +106,8 @@ exports.getSearchResult = async function (req, res) {
         else if(colorArr.indexOf(color1) == -1){        //정해진 color 값들 이외의 값이 들어온 경우
             return res.send(errResponse(baseResponse.COLOR_INVALID_VALUE));
         }
-        else if(keyword2){//검색어가 2개인 경우 
+        else if(keyword2){//검색어가 2개인 경우             
+            color2 = req.query.color2;
             if(!color2){                                // keyword2에 해당하는 color2가 입력되지 않은 경우
                 return res.send(errResponse(baseResponse.COLOR2_EMPTY));
             }
@@ -123,10 +155,6 @@ exports.getSearchResult = async function (req, res) {
     }
     
     
-    if(!keyword2){
-        keyword2 = null;
-    }
-
 
     //1. history 처리 @searchService - 개수 조회, 자동삭제, history추가
     const historyResponse = await searchService.postNewHistory(
