@@ -119,10 +119,9 @@ exports.getSearchResult = async function (req, res) {
             return res.send(errResponse(baseResponse.KEYWORD2_EMPTY));
         }   
     }
-    else{   //color검색이 아닌 경우 color1, color2가 존재할 경우 에러
-        if(color1 || color2 ){
-            return res.send(errResponse(baseResponse.UNNECESSARY_COLOR));
-        }
+    else if( (PWWC != 3) && (color1 || color2) ){       //color검색이 아닌 경우 color1, color2가 존재할 경우 에러
+        return res.send(errResponse(baseResponse.UNNECESSARY_COLOR));
+        
     }
 
 
