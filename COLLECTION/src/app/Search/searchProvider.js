@@ -200,7 +200,7 @@ exports.getSearchResult = async function (userIdx, PWWC, keyword1, keyword2, col
 
           for(let type of clothes){
             for(let {"smallClass": sm, "color" : colors} of type){
-              if(sm == body && colors == color){
+              if(sm == keyword2 && colors == color2){
                 ootds = calendarProvider.pushOotd(ootds, ootd);
               }
             }

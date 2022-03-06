@@ -177,8 +177,6 @@ exports.getSearchResult = async function (req, res) {
         
     }
 
-    console.log(`before response check : `, searchResultResponse);
-
     for(i in searchResultResponse){
         // lookpoint 값 추출 확인
         if(!lookpointPattern.test(searchResultResponse[i].lookpoint)){
