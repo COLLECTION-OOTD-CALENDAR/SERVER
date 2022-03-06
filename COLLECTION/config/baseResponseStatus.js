@@ -177,6 +177,7 @@ module.exports = {
     COLOR2_INVALID_VALUE : {"isSuccess" : false, "code" : 3115, "message" : "color2에 유효하지 않은 COLOR값이 입력되었습니다."},
     REGISTER_NEW_PW_LENGTH : { "isSuccess": false, "code": 3116, "message":"새비밀번호는 6~15자리를 입력해주세요" },
     REGISTER_CHECK_PW_LENGTH : { "isSuccess": false, "code": 3117, "message":"새비밀번호확인은 6~15자리를 입력해주세요" },
+    UNNECESSARY_COLOR : { "isSuccess": false, "code": 3118, "message":"color는 Place/Weather/Who 검색에 알맞지 않은 조건입니다." },
 
 
 
