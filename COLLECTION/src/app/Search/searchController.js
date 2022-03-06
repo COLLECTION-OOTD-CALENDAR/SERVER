@@ -4,6 +4,9 @@ const searchService = require("./searchService");
 const baseResponse = require("../../../config/baseResponseStatus");
 const {response, errResponse} = require("../../../config/response");
 
+var lookpointPattern = /^[1-5]$/;
+
+
 /**
  * API No. 17
  * API Name : 검색 결과 조회 API
@@ -135,6 +138,42 @@ exports.getSearchResult = async function (req, res) {
     const searchResultResponse = await searchProvider.getSearchResult(
         userIdx, PWWC, keyword1, keyword2, color1, color2, startAt, endAt
     );
-    return res.send(searchResultResponse);
+
+    for(i in searchResultResponse){
+        // lookpoint 값 추출 확인
+        if(!lookpointPattern.test(searchResultResponse[i].lookpoint)){
+            return res.send(errResponse(baseResponse.LOOKPOINT_RESPONSE_ERROR));
+        }
+        //date 값 추출 확인
+        if(!datePattern.test(searchResultResponse[i].date)){
+            return res.send(errResponse(baseResponse.DATE_RESPONSE_ERROR));
+        }
+
+        if(searchResultResponse[i].imageUrl == null && searchResultResponse[i].imageCnt > 0){
+            return res.send(errResponse(baseResponse.PRINT_IMG_ERROR));
+        }
+    }
+
+
+    if(searchResultResponse.length == 0){
+        if(startAt && endAt){
+            return res.send(errResponse(baseResponse.SEARCH_DATE_OOTD_EMPTY));
+        }
+        else{
+            return res.send(errResponse(baseResponse.SEARCH_NOT_FOUND));
+        }
+        
+    }
+
+    const searchFinalResult = {};
+    searchFinalResult["Search Result"] = searchResultResponse;
+
+
+    if(startAt && endAt){
+        return res.send(response(baseResponse.SUCCESS_MATCH_DATE, searchResultResponse));
+    }
+    else{
+        return res.send(response(baseResponse.SUCCESS_MATCH, searchResultResponse));
+    }
 
 };
