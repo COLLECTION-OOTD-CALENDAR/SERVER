@@ -191,199 +191,252 @@ async function selectFixedClothesCheck(connection, keyword1) {
 
 
 
-async function selectSearchPlaceList(connection, userIdx, fixedPlaceIdx, addedPlaceIdx){
-  const selectSearchPlaceQuery = `
-        SELECT distinct O.ootdIdx, O.date, O.lookpoint,
-        TMPH.imageUrl, TMPH.thumbnail, TMPL.fpName, TMPL.apName,
-        TMWE.fwName, TMWE.awName, TMWH.fwhName, TMWH.awhName,
-        TMCL.color, TMCL.fixedBig, TMCL.fixedSmall, TMCL.addedBig, TMCL.addedSmall
 
-        FROM Place, OOTD AS O
-        LEFT JOIN ( SELECT Ph.ootdIdx, Ph.imageUrl, Ph.thumbnail
-          FROM Photo AS Ph
-            RIGHT JOIN OOTD AS O
-              ON Ph.ootdIdx = O.ootdIdx) AS TMPH
-          ON O.ootdIdx = TMPH.ootdIdx
-        LEFT JOIN ( SELECT PL.ootdIdx, PL.fixedPlace, PL.addedPlace, FP.place AS fpName, AP.place AS apName
+async function selectSearchPlaceList(connection, userIdx, keyword1){
+  const selectSearchPlaceQuery = `
+    SELECT distinct O.ootdIdx, O.date, O.lookname, O.lookpoint, O.comment,
+    TMPH.imageUrl, TMPH.thumbnail, TMPL.fpName, TMPL.apName,
+    TMWE.fwName, TMWE.awName, TMWH.fwhName, TMWH.awhName,
+    TMCL.color, TMCL.fixedBig, TMCL.fixedSmall, TMCL.addedBig, TMCL.addedSmall
+
+    FROM OOTD AS O
+    LEFT JOIN ( SELECT Ph.ootdIdx, Ph.imageUrl, Ph.thumbnail
+      FROM Photo AS Ph
+        RIGHT JOIN OOTD AS O
+          ON Ph.ootdIdx = O.ootdIdx) AS TMPH
+      ON O.ootdIdx = TMPH.ootdIdx
+    LEFT JOIN ( SELECT PL.ootdIdx, PL.fixedPlace, PL.addedPlace, FP.place AS fpName, AP.place AS apName
+      FROM Place as PL
+        LEFT JOIN FixedPlace AS FP
+          ON PL.fixedPlace = FP.index
+        LEFT JOIN AddedPlace AS AP
+          ON PL.addedPlace = AP.index ) AS TMPL
+      ON O.ootdIdx = TMPL.ootdIdx
+    LEFT JOIN ( SELECT WE.ootdIdx, WE.fixedWeather, WE.addedWeather, FW.weather AS fwName, AW.weather AS awName
+      FROM Weather as WE
+        LEFT JOIN FixedWeather AS FW
+          ON WE.fixedWeather = FW.index
+        LEFT JOIN AddedWeather AS AW
+          ON WE.addedWeather = AW.index ) AS TMWE
+      ON O.ootdIdx = TMWE.ootdIdx
+    LEFT JOIN ( SELECT WH.ootdIdx, WH.fixedWho, WH.addedWho, FWH.who AS fwhName, AWH.who AS awhName
+      FROM Who as WH
+        LEFT JOIN FixedWho AS FWH
+            ON WH.fixedWho = FWH.index
+        LEFT JOIN AddedWho AS AWH
+            ON WH.addedWho = AWH.index ) AS TMWH
+      ON O.ootdIdx = TMWH.ootdIdx
+    LEFT JOIN ( SELECT CL.ootdIdx, CL.fixedType, CL.addedType, CL.color, FC.bigClass AS fixedBig, FC.smallClass AS fixedSmall, AC.bigClass AS addedBig, AC.smallClass AS addedSmall
+      FROM Clothes AS CL
+        LEFT JOIN FixedClothes AS FC
+          ON CL.fixedType = FC.index
+        LEFT JOIN AddedClothes AS AC
+          ON CL.addedType = AC.index ) AS TMCL
+      ON O.ootdIdx = TMCL.ootdIdx
+    WHERE O.ootdIdx IN (
+        SELECT O.ootdIdx
+        FROM OOTD O
+            INNER JOIN ( SELECT PL.ootdIdx, PL.fixedPlace, PL.addedPlace, FP.place AS fpName, AP.place AS awName
           FROM Place as PL
             LEFT JOIN FixedPlace AS FP
               ON PL.fixedPlace = FP.index
             LEFT JOIN AddedPlace AS AP
-              ON PL.addedPlace = AP.index ) AS TMPL
+              ON PL.addedPlace = AP.index
+            WHERE FP.place = ? OR AP.place = ?) AS TMPL
           ON O.ootdIdx = TMPL.ootdIdx
-        LEFT JOIN ( SELECT WE.ootdIdx, WE.fixedWeather, WE.addedWeather, FW.weather AS fwName, AW.weather AS awName
-          FROM Weather as WE
-            LEFT JOIN FixedWeather AS FW
-              ON WE.fixedWeather = FW.index
-            LEFT JOIN AddedWeather AS AW
-              ON WE.addedWeather = AW.index ) AS TMWE
-          ON O.ootdIdx = TMWE.ootdIdx
-        LEFT JOIN ( SELECT WH.ootdIdx, WH.fixedWho, WH.addedWho, FWH.who AS fwhName, AWH.who AS awhName
-          FROM Who as WH
-            LEFT JOIN FixedWho AS FWH
-                ON WH.fixedWho = FWH.index
-              LEFT JOIN AddedWho AS AWH
-                ON WH.addedWho = AWH.index ) AS TMWH
-          ON O.ootdIdx = TMWH.ootdIdx
-        LEFT JOIN ( SELECT CL.ootdIdx, CL.fixedType, CL.addedType, CL.color, FC.bigClass AS fixedBig, FC.smallClass AS fixedSmall, AC.bigClass AS addedBig, AC.smallClass AS addedSmall
-          FROM Clothes AS CL
-            LEFT JOIN FixedClothes AS FC
-              ON CL.fixedType = FC.index
-            LEFT JOIN AddedClothes AS AC
-              ON CL.addedType = AC.index ) AS TMCL
-          ON O.ootdIdx = TMCL.ootdIdx
-        WHERE  O.userIdx = ? AND Place.fixedPlace = ?  AND Place.addedPlace = ? AND O.status = ?
-        ORDER BY O.date;
+        WHERE O.userIdx = ? AND status = 'active')
+    ORDER BY O.date;
         `;
-  const selectSearchPlaceParams = [userIdx, fixedPlaceIdx, addedPlaceIdx, 'active'];
+  const selectSearchPlaceParams = [keyword1, keyword1, userIdx];
   const [searchPlaceRows] = await connection.query(selectSearchPlaceQuery, selectSearchPlaceParams);
   return searchPlaceRows;
 };
 
-async function selectSearchWeatherList(connection, userIdx, fixedWeatherIdx, addedWeatherIdx){
-  const selectSearchWeatherQuery = `
-        SELECT distinct O.ootdIdx, O.date, O.lookpoint,
-        TMPH.imageUrl, TMPH.thumbnail, TMPL.fpName, TMPL.apName,
-        TMWE.fwName, TMWE.awName, TMWH.fwhName, TMWH.awhName,
-        TMCL.color, TMCL.fixedBig, TMCL.fixedSmall, TMCL.addedBig, TMCL.addedSmall
 
-        FROM Weather, OOTD AS O
-        LEFT JOIN ( SELECT Ph.ootdIdx, Ph.imageUrl, Ph.thumbnail
-          FROM Photo AS Ph
-            RIGHT JOIN OOTD AS O
-              ON Ph.ootdIdx = O.ootdIdx) AS TMPH
-          ON O.ootdIdx = TMPH.ootdIdx
-        LEFT JOIN ( SELECT PL.ootdIdx, PL.fixedPlace, PL.addedPlace, FP.place AS fpName, AP.place AS apName
-          FROM Place as PL
-            LEFT JOIN FixedPlace AS FP
-              ON PL.fixedPlace = FP.index
-            LEFT JOIN AddedPlace AS AP
-              ON PL.addedPlace = AP.index ) AS TMPL
-          ON O.ootdIdx = TMPL.ootdIdx
-        LEFT JOIN ( SELECT WE.ootdIdx, WE.fixedWeather, WE.addedWeather, FW.weather AS fwName, AW.weather AS awName
-          FROM Weather as WE
-            LEFT JOIN FixedWeather AS FW
-              ON WE.fixedWeather = FW.index
-            LEFT JOIN AddedWeather AS AW
-              ON WE.addedWeather = AW.index ) AS TMWE
-          ON O.ootdIdx = TMWE.ootdIdx
-        LEFT JOIN ( SELECT WH.ootdIdx, WH.fixedWho, WH.addedWho, FWH.who AS fwhName, AWH.who AS awhName
-          FROM Who as WH
-            LEFT JOIN FixedWho AS FWH
-                ON WH.fixedWho = FWH.index
-              LEFT JOIN AddedWho AS AWH
-                ON WH.addedWho = AWH.index ) AS TMWH
-          ON O.ootdIdx = TMWH.ootdIdx
-        LEFT JOIN ( SELECT CL.ootdIdx, CL.fixedType, CL.addedType, CL.color, FC.bigClass AS fixedBig, FC.smallClass AS fixedSmall, AC.bigClass AS addedBig, AC.smallClass AS addedSmall
-          FROM Clothes AS CL
-            LEFT JOIN FixedClothes AS FC
-              ON CL.fixedType = FC.index
-            LEFT JOIN AddedClothes AS AC
-              ON CL.addedType = AC.index ) AS TMCL
-          ON O.ootdIdx = TMCL.ootdIdx
-        WHERE  O.userIdx = ? AND Weather.fixedWeather = ?  AND Weather.addedWeather = ? AND O.status = ?
-        ORDER BY O.date;
+
+
+
+
+
+
+async function selectSearchWeatherList(connection, userIdx, keyword1){
+  const selectSearchWeatherQuery = `
+      SELECT distinct O.ootdIdx, O.date, O.lookname, O.lookpoint, O.comment,
+      TMPH.imageUrl, TMPH.thumbnail, TMPL.fpName, TMPL.apName,
+      TMWE.fwName, TMWE.awName, TMWH.fwhName, TMWH.awhName,
+      TMCL.color, TMCL.fixedBig, TMCL.fixedSmall, TMCL.addedBig, TMCL.addedSmall
+
+      FROM OOTD AS O
+      LEFT JOIN ( SELECT Ph.ootdIdx, Ph.imageUrl, Ph.thumbnail
+        FROM Photo AS Ph
+          RIGHT JOIN OOTD AS O
+            ON Ph.ootdIdx = O.ootdIdx) AS TMPH
+        ON O.ootdIdx = TMPH.ootdIdx
+      LEFT JOIN ( SELECT PL.ootdIdx, PL.fixedPlace, PL.addedPlace, FP.place AS fpName, AP.place AS apName
+        FROM Place as PL
+          LEFT JOIN FixedPlace AS FP
+            ON PL.fixedPlace = FP.index
+          LEFT JOIN AddedPlace AS AP
+            ON PL.addedPlace = AP.index ) AS TMPL
+        ON O.ootdIdx = TMPL.ootdIdx
+      LEFT JOIN ( SELECT WE.ootdIdx, WE.fixedWeather, WE.addedWeather, FW.weather AS fwName, AW.weather AS awName
+        FROM Weather as WE
+          LEFT JOIN FixedWeather AS FW
+            ON WE.fixedWeather = FW.index
+          LEFT JOIN AddedWeather AS AW
+            ON WE.addedWeather = AW.index ) AS TMWE
+        ON O.ootdIdx = TMWE.ootdIdx
+      LEFT JOIN ( SELECT WH.ootdIdx, WH.fixedWho, WH.addedWho, FWH.who AS fwhName, AWH.who AS awhName
+        FROM Who as WH
+          LEFT JOIN FixedWho AS FWH
+              ON WH.fixedWho = FWH.index
+          LEFT JOIN AddedWho AS AWH
+              ON WH.addedWho = AWH.index ) AS TMWH
+        ON O.ootdIdx = TMWH.ootdIdx
+      LEFT JOIN ( SELECT CL.ootdIdx, CL.fixedType, CL.addedType, CL.color, FC.bigClass AS fixedBig, FC.smallClass AS fixedSmall, AC.bigClass AS addedBig, AC.smallClass AS addedSmall
+        FROM Clothes AS CL
+          LEFT JOIN FixedClothes AS FC
+            ON CL.fixedType = FC.index
+          LEFT JOIN AddedClothes AS AC
+            ON CL.addedType = AC.index ) AS TMCL
+        ON O.ootdIdx = TMCL.ootdIdx
+      WHERE O.ootdIdx IN (
+          SELECT O.ootdIdx
+          FROM OOTD O
+              INNER JOIN ( SELECT WE.ootdIdx, WE.fixedWeather, WE.addedWeather, FW.weather AS fwName, AW.weather AS awName
+            FROM Weather as WE
+              LEFT JOIN FixedWeather AS FW
+                ON WE.fixedWeather = FW.index
+              LEFT JOIN AddedWeather AS AW
+                ON WE.addedWeather = AW.index
+              WHERE FW.weather = ? OR AW.weather = ?) AS TMWE
+            ON O.ootdIdx = TMWE.ootdIdx
+          WHERE O.userIdx = ? AND status = 'active')
+      ORDER BY O.date;
         `;
-  const selectSearchWeatherParams = [userIdx, fixedWeatherIdx, addedWeatherIdx, 'active'];
+  const selectSearchWeatherParams = [keyword1, keyword1, userIdx];
   const [searchWeatherRows] = await connection.query(selectSearchWeatherQuery, selectSearchWeatherParams);
   return searchWeatherRows;
 };
 
 
-async function selectSearchWhoList(connection, userIdx, fixedWhoIdx, addedWhoIdx){
-  const selectSearchWhoQuery = `
-        SELECT distinct O.ootdIdx, O.date, O.lookpoint,
-        TMPH.imageUrl, TMPH.thumbnail, TMPL.fpName, TMPL.apName,
-        TMWE.fwName, TMWE.awName, TMWH.fwhName, TMWH.awhName,
-        TMCL.color, TMCL.fixedBig, TMCL.fixedSmall, TMCL.addedBig, TMCL.addedSmall
 
-        FROM Who, OOTD AS O
-        LEFT JOIN ( SELECT Ph.ootdIdx, Ph.imageUrl, Ph.thumbnail
-          FROM Photo AS Ph
-            RIGHT JOIN OOTD AS O
-              ON Ph.ootdIdx = O.ootdIdx) AS TMPH
-          ON O.ootdIdx = TMPH.ootdIdx
-        LEFT JOIN ( SELECT PL.ootdIdx, PL.fixedPlace, PL.addedPlace, FP.place AS fpName, AP.place AS apName
-          FROM Place as PL
-            LEFT JOIN FixedPlace AS FP
-              ON PL.fixedPlace = FP.index
-            LEFT JOIN AddedPlace AS AP
-              ON PL.addedPlace = AP.index ) AS TMPL
-          ON O.ootdIdx = TMPL.ootdIdx
-        LEFT JOIN ( SELECT WE.ootdIdx, WE.fixedWeather, WE.addedWeather, FW.weather AS fwName, AW.weather AS awName
-          FROM Weather as WE
-            LEFT JOIN FixedWeather AS FW
-              ON WE.fixedWeather = FW.index
-            LEFT JOIN AddedWeather AS AW
-              ON WE.addedWeather = AW.index ) AS TMWE
-          ON O.ootdIdx = TMWE.ootdIdx
-        LEFT JOIN ( SELECT WH.ootdIdx, WH.fixedWho, WH.addedWho, FWH.who AS fwhName, AWH.who AS awhName
-          FROM Who as WH
-            LEFT JOIN FixedWho AS FWH
+async function selectSearchWhoList(connection, userIdx, keyword1){
+  const selectSearchWhoQuery = `
+      SELECT distinct O.ootdIdx, O.date, O.lookname, O.lookpoint, O.comment,
+      TMPH.imageUrl, TMPH.thumbnail, TMPL.fpName, TMPL.apName,
+      TMWE.fwName, TMWE.awName, TMWH.fwhName, TMWH.awhName,
+      TMCL.color, TMCL.fixedBig, TMCL.fixedSmall, TMCL.addedBig, TMCL.addedSmall
+
+      FROM OOTD AS O
+      LEFT JOIN ( SELECT Ph.ootdIdx, Ph.imageUrl, Ph.thumbnail
+        FROM Photo AS Ph
+          RIGHT JOIN OOTD AS O
+            ON Ph.ootdIdx = O.ootdIdx) AS TMPH
+        ON O.ootdIdx = TMPH.ootdIdx
+      LEFT JOIN ( SELECT PL.ootdIdx, PL.fixedPlace, PL.addedPlace, FP.place AS fpName, AP.place AS apName
+        FROM Place as PL
+          LEFT JOIN FixedPlace AS FP
+            ON PL.fixedPlace = FP.index
+          LEFT JOIN AddedPlace AS AP
+            ON PL.addedPlace = AP.index ) AS TMPL
+        ON O.ootdIdx = TMPL.ootdIdx
+      LEFT JOIN ( SELECT WE.ootdIdx, WE.fixedWeather, WE.addedWeather, FW.weather AS fwName, AW.weather AS awName
+        FROM Weather as WE
+          LEFT JOIN FixedWeather AS FW
+            ON WE.fixedWeather = FW.index
+          LEFT JOIN AddedWeather AS AW
+            ON WE.addedWeather = AW.index ) AS TMWE
+        ON O.ootdIdx = TMWE.ootdIdx
+      LEFT JOIN ( SELECT WH.ootdIdx, WH.fixedWho, WH.addedWho, FWH.who AS fwhName, AWH.who AS awhName
+        FROM Who as WH
+          LEFT JOIN FixedWho AS FWH
+              ON WH.fixedWho = FWH.index
+          LEFT JOIN AddedWho AS AWH
+              ON WH.addedWho = AWH.index ) AS TMWH
+        ON O.ootdIdx = TMWH.ootdIdx
+      LEFT JOIN ( SELECT CL.ootdIdx, CL.fixedType, CL.addedType, CL.color, FC.bigClass AS fixedBig, FC.smallClass AS fixedSmall, AC.bigClass AS addedBig, AC.smallClass AS addedSmall
+        FROM Clothes AS CL
+          LEFT JOIN FixedClothes AS FC
+            ON CL.fixedType = FC.index
+          LEFT JOIN AddedClothes AS AC
+            ON CL.addedType = AC.index ) AS TMCL
+        ON O.ootdIdx = TMCL.ootdIdx
+      WHERE O.ootdIdx IN (
+          SELECT O.ootdIdx
+          FROM OOTD O
+              INNER JOIN ( SELECT WH.ootdIdx, WH.fixedWho, WH.addedWho, FWH.who AS fwhName, AWH.who AS awhName
+            FROM Who as WH
+              LEFT JOIN FixedWho AS FWH
                 ON WH.fixedWho = FWH.index
               LEFT JOIN AddedWho AS AWH
-                ON WH.addedWho = AWH.index ) AS TMWH
-          ON O.ootdIdx = TMWH.ootdIdx
-        LEFT JOIN ( SELECT CL.ootdIdx, CL.fixedType, CL.addedType, CL.color, FC.bigClass AS fixedBig, FC.smallClass AS fixedSmall, AC.bigClass AS addedBig, AC.smallClass AS addedSmall
-          FROM Clothes AS CL
-            LEFT JOIN FixedClothes AS FC
-              ON CL.fixedType = FC.index
-            LEFT JOIN AddedClothes AS AC
-              ON CL.addedType = AC.index ) AS TMCL
-          ON O.ootdIdx = TMCL.ootdIdx
-        WHERE  O.userIdx = ? AND Who.fixedWho = ?  AND Who.addedWho = ? AND O.status = ?
-        ORDER BY O.date;
+                ON WH.addedWho = AWH.index
+              WHERE FWH.who = ? OR AWH.who = ?) AS TMWH
+            ON O.ootdIdx = TMWH.ootdIdx
+          WHERE O.userIdx = ? AND status = 'active')
+      ORDER BY O.date;
         `;
-  const selectSearchWhoParams = [userIdx, fixedWhoIdx, addedWhoIdx, 'active'];
+  const selectSearchWhoParams = [keyword1, keyword1, userIdx];
   const [searchWhoRows] = await connection.query(selectSearchWhoQuery, selectSearchWhoParams);
   return searchWhoRows;
 };
 
-async function selectSearchColorList(connection, userIdx, fixedClothesIdx, addedCloIdx, color1){
+async function selectSearchColorList(connection, userIdx, keyword1, color1){
   const selectSearchColorQuery = `
-        SELECT distinct O.ootdIdx, O.date, O.lookpoint,
-        TMPH.imageUrl, TMPH.thumbnail, TMPL.fpName, TMPL.apName,
-        TMWE.fwName, TMWE.awName, TMWH.fwhName, TMWH.awhName,
-        TMCL.color, TMCL.fixedBig, TMCL.fixedSmall, TMCL.addedBig, TMCL.addedSmall
-        
-        FROM Clothes, OOTD AS O
-        LEFT JOIN ( SELECT Ph.ootdIdx, Ph.imageUrl, Ph.thumbnail
-          FROM Photo AS Ph
-            RIGHT JOIN OOTD AS O
-              ON Ph.ootdIdx = O.ootdIdx) AS TMPH
-          ON O.ootdIdx = TMPH.ootdIdx
-        LEFT JOIN ( SELECT PL.ootdIdx, PL.fixedPlace, PL.addedPlace, FP.place AS fpName, AP.place AS apName
-          FROM Place as PL
-            LEFT JOIN FixedPlace AS FP
-              ON PL.fixedPlace = FP.index
-            LEFT JOIN AddedPlace AS AP
-              ON PL.addedPlace = AP.index ) AS TMPL
-          ON O.ootdIdx = TMPL.ootdIdx
-        LEFT JOIN ( SELECT WE.ootdIdx, WE.fixedWeather, WE.addedWeather, FW.weather AS fwName, AW.weather AS awName
-          FROM Weather as WE
-            LEFT JOIN FixedWeather AS FW
-              ON WE.fixedWeather = FW.index
-            LEFT JOIN AddedWeather AS AW
-              ON WE.addedWeather = AW.index ) AS TMWE
-          ON O.ootdIdx = TMWE.ootdIdx
-        LEFT JOIN ( SELECT WH.ootdIdx, WH.fixedWho, WH.addedWho, FWH.who AS fwhName, AWH.who AS awhName
-          FROM Who as WH
-            LEFT JOIN FixedWho AS FWH
-                ON WH.fixedWho = FWH.index
-              LEFT JOIN AddedWho AS AWH
-                ON WH.addedWho = AWH.index ) AS TMWH
-          ON O.ootdIdx = TMWH.ootdIdx
-        LEFT JOIN ( SELECT CL.ootdIdx, CL.fixedType, CL.addedType, CL.color, FC.bigClass AS fixedBig, FC.smallClass AS fixedSmall, AC.bigClass AS addedBig, AC.smallClass AS addedSmall
-          FROM Clothes AS CL
-            LEFT JOIN FixedClothes AS FC
-              ON CL.fixedType = FC.index
-            LEFT JOIN AddedClothes AS AC
-              ON CL.addedType = AC.index ) AS TMCL
-          ON O.ootdIdx = TMCL.ootdIdx
-        WHERE  O.userIdx = ? AND Clothes.fixedType = ?  AND Clothes.addedType = ? AND Clothes.color = ? AND O.status = ?
-        ORDER BY O.date;
+      SELECT distinct O.ootdIdx, O.date, O.lookname, O.lookpoint, O.comment,
+      TMPH.imageUrl, TMPH.thumbnail, TMPL.fpName, TMPL.apName,
+      TMWE.fwName, TMWE.awName, TMWH.fwhName, TMWH.awhName,
+      TMCL.color, TMCL.fixedBig, TMCL.fixedSmall, TMCL.addedBig, TMCL.addedSmall
+
+      FROM OOTD AS O
+      LEFT JOIN ( SELECT Ph.ootdIdx, Ph.imageUrl, Ph.thumbnail
+        FROM Photo AS Ph
+          RIGHT JOIN OOTD AS O
+            ON Ph.ootdIdx = O.ootdIdx) AS TMPH
+        ON O.ootdIdx = TMPH.ootdIdx
+      LEFT JOIN ( SELECT PL.ootdIdx, PL.fixedPlace, PL.addedPlace, FP.place AS fpName, AP.place AS apName
+        FROM Place as PL
+          LEFT JOIN FixedPlace AS FP
+            ON PL.fixedPlace = FP.index
+          LEFT JOIN AddedPlace AS AP
+            ON PL.addedPlace = AP.index ) AS TMPL
+        ON O.ootdIdx = TMPL.ootdIdx
+      LEFT JOIN ( SELECT WE.ootdIdx, WE.fixedWeather, WE.addedWeather, FW.weather AS fwName, AW.weather AS awName
+        FROM Weather as WE
+          LEFT JOIN FixedWeather AS FW
+            ON WE.fixedWeather = FW.index
+          LEFT JOIN AddedWeather AS AW
+            ON WE.addedWeather = AW.index ) AS TMWE
+        ON O.ootdIdx = TMWE.ootdIdx
+      LEFT JOIN ( SELECT WH.ootdIdx, WH.fixedWho, WH.addedWho, FWH.who AS fwhName, AWH.who AS awhName
+        FROM Who as WH
+          LEFT JOIN FixedWho AS FWH
+              ON WH.fixedWho = FWH.index
+          LEFT JOIN AddedWho AS AWH
+              ON WH.addedWho = AWH.index ) AS TMWH
+        ON O.ootdIdx = TMWH.ootdIdx
+      LEFT JOIN ( SELECT CL.ootdIdx, CL.fixedType, CL.addedType, CL.color, FC.bigClass AS fixedBig, FC.smallClass AS fixedSmall, AC.bigClass AS addedBig, AC.smallClass AS addedSmall
+        FROM Clothes AS CL
+          LEFT JOIN FixedClothes AS FC
+            ON CL.fixedType = FC.index
+          LEFT JOIN AddedClothes AS AC
+            ON CL.addedType = AC.index ) AS TMCL
+        ON O.ootdIdx = TMCL.ootdIdx
+      WHERE O.ootdIdx IN (
+          SELECT O.ootdIdx
+          FROM OOTD O
+              INNER JOIN ( SELECT CL.ootdIdx, CL.fixedType, CL.addedType, CL.color, FC.bigClass AS fixedBig, FC.smallClass AS fixedSmall, AC.bigClass AS addedBig, AC.smallClass AS addedSmall
+                FROM Clothes AS CL
+                  LEFT JOIN FixedClothes AS FC
+                    ON CL.fixedType = FC.index
+                  LEFT JOIN AddedClothes AS AC
+                    ON CL.addedType = AC.index
+                  WHERE (FC.smallClass = ? OR AC.smallClass = ?) AND CL.color = ?) AS TMCL
+                ON O.ootdIdx = TMCL.ootdIdx
+          WHERE O.userIdx = ? AND status = 'active')
+      ORDER BY O.date;
         `;
-  const selectSearchColorParams = [userIdx, fixedClothesIdx, addedCloIdx, color1, 'active'];
+  const selectSearchColorParams = [keyword1, keyword1, color1, userIdx];
   const [searchColorRows] = await connection.query(selectSearchColorQuery, selectSearchColorParams);
   return searchColorRows;
 };
