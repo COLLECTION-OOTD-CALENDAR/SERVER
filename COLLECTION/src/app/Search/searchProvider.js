@@ -84,7 +84,7 @@ exports.getSearchResult = async function (userIdx, PWWC, keyword1, keyword2, col
 
     else if (PWWC == 3){    //color
     
-      let searchListResult = await searchDao.selectSearchColorList(connection, userIdx, keyword1, color1);
+      searchListResult = await searchDao.selectSearchColorList(connection, userIdx, keyword1, color1);
       console.log(`Clothes searchListResult length : `, searchListResult.length);
 
     }
