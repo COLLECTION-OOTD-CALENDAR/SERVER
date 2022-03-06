@@ -97,7 +97,8 @@ exports.getSearchResult = async function (req, res) {
 
 
     if(PWWC == 3){ // color 검색일 경우
-        color1 = req.query.color1;
+        color1 = req.query.color1;       
+        color2 = req.query.color2;
         //color1 빈값 검사 
         if(!color1){    
             return res.send(errResponse(baseResponse.COLOR1_EMPTY));
@@ -106,8 +107,7 @@ exports.getSearchResult = async function (req, res) {
         else if(colorArr.indexOf(color1) == -1){        //정해진 color 값들 이외의 값이 들어온 경우
             return res.send(errResponse(baseResponse.COLOR_INVALID_VALUE));
         }
-        else if(keyword2){//검색어가 2개인 경우             
-            color2 = req.query.color2;
+        else if(keyword2){//검색어가 2개인 경우      
             if(!color2){                                // keyword2에 해당하는 color2가 입력되지 않은 경우
                 return res.send(errResponse(baseResponse.COLOR2_EMPTY));
             }
