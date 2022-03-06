@@ -50,7 +50,7 @@ exports.postNewHistory = async function (userIdx, PWWC, keyword1, keyword2, colo
             console.log(`history added keword1 :`, keyword1);
 
             
-            if(keyword2 != null) {         //검색어 1개 일 경우 - history 20개 이상이면 1개 삭제, 미만이면 추가
+            if(keyword2) {         //검색어 2개 일 경우 - history 20개 이상이면 1개 삭제, 미만이면 추가
                 let oldHistory2 = await searchProvider.historyRedudantCheck(connection, userIdx, PWWC, keyword2, color2);
                 console.log(`oldHistory2 검사 - index :`, oldHistory2);
     
