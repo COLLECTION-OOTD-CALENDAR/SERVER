@@ -20,7 +20,8 @@ module.exports = function(app){
     {   
         const Img = req.file;
         console.log('uploaded iamge : ', Img.location);
-        res.send(Img.location);                    
+        
+        res.send(response(baseResponse.SUCCESS_IMAGE_URL, {'s3 imageUrl' : Img.location}));               
     });
 
     //5. s3 presignedUrl 반환 API
