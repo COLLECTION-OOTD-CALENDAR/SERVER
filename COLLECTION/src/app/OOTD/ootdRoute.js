@@ -1,6 +1,8 @@
 module.exports = function(app){
     const ootd = require('./ootdController');
     const jwtMiddleware = require('../../../config/jwtMiddleware');
+    
+    const {response, errResponse} = require("../../../config/response");    
     const upload = require('../../../config/Multer');
 
     // 1. 사용자 블럭 추가 API (JWT 검증 및 Validation )
