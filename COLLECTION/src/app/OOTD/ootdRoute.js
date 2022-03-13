@@ -3,6 +3,7 @@ module.exports = function(app){
     const jwtMiddleware = require('../../../config/jwtMiddleware');
     
     const {response, errResponse} = require("../../../config/response");    
+    const baseResponse = require("../../../config/baseResponseStatus");
     const upload = require('../../../config/Multer');
 
     // 1. 사용자 블럭 추가 API (JWT 검증 및 Validation )
