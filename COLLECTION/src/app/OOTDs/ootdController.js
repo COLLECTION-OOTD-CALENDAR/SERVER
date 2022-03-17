@@ -26,7 +26,7 @@ var lookpointPattern = /^[1-5]$/;
 exports.registerOotd = async function (req, res) {
 
     // jwt - userId, path variable :userId
-    console.log('[ootdController] registerOotd start');
+    //console.log('[ootdController] registerOotd start');
     const userIdx = req.verifiedToken.userIdx;
     const mode = req.query.mode;
 
@@ -251,7 +251,6 @@ exports.registerOotd = async function (req, res) {
             // 유효하지 않은 COLOR 값
             let addedColorStr = (aClothes[i].color).toString();
             aClothes[i].color = addedColorStr;
-            console.log()
             if(colorArr.indexOf(aClothes[i].color) == -1){
                 return res.send(errResponse(baseResponse.COLOR_INVALID_VALUE));
             }
@@ -475,7 +474,7 @@ exports.registerOotd = async function (req, res) {
     const registerUserOotd = await ootdService.lastRegisterOotd(userIdx, date, lookname, photoIs, image, fClothes, aClothes,
         fPlace, aPlace, fWeather, aWeather, fWho, aWho, n_lookpoint, comment);
     
-    console.log('[ootdController] registerOotd finish');
+    //console.log('[ootdController] registerOotd finish');
     return res.send(registerUserOotd);
 
 };
@@ -493,13 +492,13 @@ function isInt(lookpoint){
 
 exports.defaultOotd = async function (req, res){
 
-    console.log('[ootdController] defaultOotd start');
+    //console.log('[ootdController] defaultOotd start');
 
     const userIdx = req.verifiedToken.userIdx;
 
     const callDefaultOotd = await ootdProvider.retrieveAddedOotd(userIdx);
 
-    console.log('[ootdController] defaultOotd finish');
+    //console.log('[ootdController] defaultOotd finish');
 
     return res.send(response(baseResponse.SUCCESS_OOTD_DEFAULT, callDefaultOotd));
 
@@ -515,7 +514,7 @@ exports.defaultOotd = async function (req, res){
 
 exports.modiOotd = async function (req, res){
 
-    console.log('[ootdController] modiOotd start');
+    //console.log('[ootdController] modiOotd start');
 
     const userIdx = req.verifiedToken.userIdx;
     const date = req.query.date;
@@ -554,7 +553,7 @@ exports.modiOotd = async function (req, res){
     const callModiOotd = await ootdProvider.retrieveAddedOotd(userIdx);
     result["added"] = callModiOotd;
 
-    console.log('[ootdController] modiOotd finish');
+    //console.log('[ootdController] modiOotd finish');
 
     return res.send(response(baseResponse.SUCCESS_OOTD_MODI, result));
 };
@@ -568,7 +567,7 @@ exports.modiOotd = async function (req, res){
  */
 exports.completeOotd = async function (req, res){
 
-    console.log('[ootdController] completeOotd start');
+    //console.log('[ootdController] completeOotd start');
 
     const userIdx = req.verifiedToken.userIdx;
     const date = req.query.date;
@@ -600,7 +599,7 @@ exports.completeOotd = async function (req, res){
         return res.send(errResponse(baseResponse.DATE_OOTD_EMPTY));
     }
 
-    console.log('[ootdController] completeOotd finish');
+    //console.log('[ootdController] completeOotd finish');
 
     return res.send(response(baseResponse.SUCCESS_OOTD_COMPLETE, callCompleteOotd));
 
