@@ -194,14 +194,14 @@ exports.getSearchResult = async function (req, res) {
    
 
     const searchFinalResult = {};
-    searchFinalResult["Search Result"] = searchResultResponse;
+    searchFinalResult["match"] = searchResultResponse;
 
 
     if(startAt && endAt){
-        return res.send(response(baseResponse.SUCCESS_MATCH_DATE, searchResultResponse));
+        return res.send(response(baseResponse.SUCCESS_MATCH_DATE, searchFinalResult));
     }
     else{
-        return res.send(response(baseResponse.SUCCESS_MATCH, searchResultResponse));
+        return res.send(response(baseResponse.SUCCESS_MATCH, searchFinalResult));
     }
 
 };
