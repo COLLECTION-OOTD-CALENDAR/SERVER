@@ -18,7 +18,7 @@ const crypto = require("crypto");
 // 기존에 존재한 ootd의 status 를 inactive로 변경 즉, OOTD 삭제
 exports.modiOriginStatus = async function (userIdx, ootdIdx){
 
-    console.log('[ootdService] modiOriginStatus start');
+    //console.log('[ootdService] modiOriginStatus start');
     
     try {
 
@@ -32,7 +32,7 @@ exports.modiOriginStatus = async function (userIdx, ootdIdx){
 
         connection.release();
 
-        console.log('[ootdService] modiOriginStatus finish');
+        //console.log('[ootdService] modiOriginStatus finish');
 
         return ootdIdx;
 
@@ -48,7 +48,7 @@ exports.lastRegisterOotd = async function (userIdx, date, lookname, photoIs, ima
     fClothes, aClothes, fPlace, aPlace, fWeather, aWeather,
     fWho, aWho, lookpoint, comment) {
     
-    console.log('[ootdService] lastRegisterOotd start');
+    //console.log('[ootdService] lastRegisterOotd start');
     
     try {
         const connection = await pool.getConnection(async (conn) => conn);
@@ -163,7 +163,7 @@ exports.lastRegisterOotd = async function (userIdx, date, lookname, photoIs, ima
 
         connection.release();
 
-        console.log('[ootdService] lastRegisterOotd finish');
+        //console.log('[ootdService] lastRegisterOotd finish');
 
         return response(baseResponse.SUCCESS_LAST_REGISTER);
 

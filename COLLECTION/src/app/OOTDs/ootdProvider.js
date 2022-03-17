@@ -12,7 +12,7 @@ const ootdDao = require("./ootdDao");
 // 입력한 날짜에 OOTD 존재 여부 체크
 exports.ootdDateCheck = async function (userIdx, date) {
 
-  console.log('[ootdProvider] ootdDateCheck start');
+  //console.log('[ootdProvider] ootdDateCheck start');
 
   try {
 
@@ -22,7 +22,7 @@ exports.ootdDateCheck = async function (userIdx, date) {
     const ootdDateCheckResult = await ootdDao.checkDateOotd(connection, userIdx, date);
     connection.release();
 
-    console.log('[ootdProvider] ootdDateCheck finish');
+    //console.log('[ootdProvider] ootdDateCheck finish');
 
     return ootdDateCheckResult;
 
@@ -36,7 +36,7 @@ exports.ootdDateCheck = async function (userIdx, date) {
 // 등록할 수 없는 옷 (fClothes->index, aClothes->smallClass)
 exports.clothesCheck = async function (userIdx, data) {
 
-  console.log('[ootdProvider] clothesCheck start');
+  //console.log('[ootdProvider] clothesCheck start');
 
   try {
 
@@ -48,7 +48,7 @@ exports.clothesCheck = async function (userIdx, data) {
       const clothesCheckResult = await ootdDao.checkClothesIdxIs(connection, data);
       connection.release();
 
-      console.log('[ootdProvider] clothesCheck finish');
+      //console.log('[ootdProvider] clothesCheck finish');
 
       return clothesCheckResult;
     }
@@ -56,7 +56,7 @@ exports.clothesCheck = async function (userIdx, data) {
       const clothesCheckResult = await ootdDao.checkClothesIs(connection, userIdx, data);
       connection.release();
 
-      console.log('[ootdProvider] clothesCheck finish');
+      //console.log('[ootdProvider] clothesCheck finish');
 
       return clothesCheckResult;
     
@@ -72,7 +72,7 @@ exports.clothesCheck = async function (userIdx, data) {
 // 등록할 수 없는 Place (fPlace->index, aPlace->place)
 exports.placeCheck = async function (userIdx, data) {
 
-  console.log('[ootdProvider] placeCheck start');
+  //console.log('[ootdProvider] placeCheck start');
   
   try {
 
@@ -84,7 +84,7 @@ exports.placeCheck = async function (userIdx, data) {
       const placeCheckResult = await ootdDao.checkPlaceIdxIs(connection, data);
       connection.release();
 
-      console.log('[ootdProvider] placeCheck finish');
+      //console.log('[ootdProvider] placeCheck finish');
 
       return placeCheckResult;
     }
@@ -92,7 +92,7 @@ exports.placeCheck = async function (userIdx, data) {
       const placeCheckResult = await ootdDao.checkPlaceIs(connection, userIdx, data);
       connection.release();
 
-      console.log('[ootdProvider] placeCheck finish');
+      //console.log('[ootdProvider] placeCheck finish');
 
       return placeCheckResult;
     
@@ -108,7 +108,7 @@ exports.placeCheck = async function (userIdx, data) {
 // 등록할 수 없는 Weather (fWeather->index, aWeather->weather)
 exports.weatherCheck = async function (userIdx, data) {
 
-  console.log('[ootdProvider] weatherCheck start');
+  //console.log('[ootdProvider] weatherCheck start');
 
   try {
 
@@ -120,7 +120,7 @@ exports.weatherCheck = async function (userIdx, data) {
       const weatherCheckResult = await ootdDao.checkWeatherIdxIs(connection, data);
       connection.release();
 
-      console.log('[ootdProvider] weatherCheck finish');
+      //console.log('[ootdProvider] weatherCheck finish');
 
       return weatherCheckResult;
     }
@@ -128,7 +128,7 @@ exports.weatherCheck = async function (userIdx, data) {
       const weatherCheckResult = await ootdDao.checkWeatherIs(connection, userIdx, data);
       connection.release();
       
-      console.log('[ootdProvider] weatherCheck finish');
+      //console.log('[ootdProvider] weatherCheck finish');
       
       return weatherCheckResult;
     
@@ -144,7 +144,7 @@ exports.weatherCheck = async function (userIdx, data) {
 // 등록할 수 없는 Who (fWho->index, aWho->who)
 exports.whoCheck = async function (userIdx, data) {
 
-  console.log('[ootdProvider] whoCheck start');
+  //console.log('[ootdProvider] whoCheck start');
 
   try {
 
@@ -156,7 +156,7 @@ exports.whoCheck = async function (userIdx, data) {
       const whoCheckResult = await ootdDao.checkWhoIdxIs(connection, data);
       connection.release();
       
-      console.log('[ootdProvider] whoCheck finish');
+      //console.log('[ootdProvider] whoCheck finish');
       
       return whoCheckResult;
     }
@@ -164,7 +164,7 @@ exports.whoCheck = async function (userIdx, data) {
       const whoCheckResult = await ootdDao.checkWhoIs(connection, userIdx, data);
       connection.release();
       
-      console.log('[ootdProvider] whoCheck finish');
+      //console.log('[ootdProvider] whoCheck finish');
       
       return whoCheckResult;
     
@@ -219,7 +219,7 @@ exports.addedWhoIdx = async function (connection, userIdx, aWho){
 // OOTD 수정하기 - 지난 작성 화면 보여주기
 exports.retrieveAddedOotd = async function (userIdx){
 
-  console.log('[ootdProvider] retrieveAddedOotd start');
+  //console.log('[ootdProvider] retrieveAddedOotd start');
 
   try {
     // connection 은 db와의 연결을 도와줌
@@ -241,7 +241,7 @@ exports.retrieveAddedOotd = async function (userIdx){
         added["aWho"] = [];
         added = getAddedBigClass(added);
       
-        console.log('[ootdProvider] retrieveAddedOotd finish');
+        //console.log('[ootdProvider] retrieveAddedOotd finish');
       
         return added;
     }
@@ -264,7 +264,7 @@ exports.retrieveAddedOotd = async function (userIdx){
 
     }
 
-    console.log('[ootdProvider] retrieveAddedOotd finish');
+    //console.log('[ootdProvider] retrieveAddedOotd finish');
 
     return added;
 
@@ -353,7 +353,7 @@ function hasAdded(list, data){
 // OOTD 완료 페이지 불러오기
 exports.retrieveCompleteOotd = async function (userIdx, date){
 
-  console.log('[ootdProvider] retrieveCompleteOotd start');
+  //console.log('[ootdProvider] retrieveCompleteOotd start');
 
   try {
     // connection 은 db와의 연결을 도와줌
@@ -366,7 +366,7 @@ exports.retrieveCompleteOotd = async function (userIdx, date){
 
     // 입력된 날짜의 ootd가 존재하는지 체크
     if(!completeOotdListResult[0]){
-      console.log('[ootdProvider] retrieveCompleteOotd finish');
+      //console.log('[ootdProvider] retrieveCompleteOotd finish');
       return completeOotdListResult[0];
     }
 
@@ -411,7 +411,7 @@ exports.retrieveCompleteOotd = async function (userIdx, date){
       
     }
 
-    console.log('[ootdProvider] retrieveCompleteOotd finish');
+    //console.log('[ootdProvider] retrieveCompleteOotd finish');
 
     return ootd;
 
