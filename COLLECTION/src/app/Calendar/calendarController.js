@@ -17,7 +17,7 @@ var lookpointPattern = /^[1-5]$/;
  */
 exports.getMonth = async function (req, res) {
 
-    console.log('[calendarController] getMonth start');
+    //console.log('[calendarController] getMonth start');
     const userIdx = req.verifiedToken.userIdx;
 
     // userIdx를 통한 Monthly 달력 OOTD 검색 함수 및 결과 저장
@@ -37,7 +37,7 @@ exports.getMonth = async function (req, res) {
     const monthCalFinalResult = {};
     monthCalFinalResult["monthly"] = callMonthCalOotd;
 
-    console.log('[calendarController] getMonth finish')
+    //console.log('[calendarController] getMonth finish')
     return res.send(response(baseResponse.SUCCESS_MONTHLY_CALENDAR, monthCalFinalResult));
 
 }
@@ -51,7 +51,7 @@ exports.getMonth = async function (req, res) {
  */
 exports.getWeek = async function (req, res) {
 
-    console.log('[calendarController] getWeek start');
+    //console.log('[calendarController] getWeek start');
     const userIdx = req.verifiedToken.userIdx;
 
     // userId를 통한 Weekly 달력 OOTD 검색 함수 및 결과 저장
@@ -75,7 +75,7 @@ exports.getWeek = async function (req, res) {
     const weekCalFinalResult = {};
     weekCalFinalResult["weekly"] = callWeekCalOotd;
 
-    console.log('[calendarController] getWeek finish')
+    //console.log('[calendarController] getWeek finish')
     return res.send(response(baseResponse.SUCCESS_WEEKLY_CALENDAR, weekCalFinalResult));
 
 };
