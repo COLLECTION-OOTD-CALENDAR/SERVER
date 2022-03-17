@@ -240,6 +240,20 @@ exports.postLogin = async function (req, res) {
 }
 
 /**
+ * API No. 9
+ * API Name : 자동로그인
+ * [GET] /app/user/autologin
+ */
+
+exports.autoLogin = async function (req, res) {
+    const userIdx = req.verifiedToken.userIdx;
+    console.log(userIdx);
+    return res.send(response(baseResponse.TOKEN_VERIFICATION_SUCCESS));
+};
+
+
+
+/**
  * API NO.5
  * API Name : 회원정보 수정 (닉네임)
  * [PATCH] /app/user/modi-nickname/:userIdx
@@ -320,10 +334,10 @@ exports.patchModiPW = async function (req, res) {
         return res.send(response(baseResponse.REGISTER_PW_LENGTH));
     }  
     else if (newPassword.length < 6 || newPassword.length > 15){
-        return res.send(response(baseResponse.REGISTER_PW_LENGTH));
+        return res.send(response(baseResponse.REGISTER_NEW_PW_LENGTH));
     }  
     else if (checkPassword.length < 6 || checkPassword.length > 15){
-        return res.send(response(baseResponse.REGISTER_PW_LENGTH));
+        return res.send(response(baseResponse.REGISTER_CHECK_PW_LENGTH));
     }  
 
 

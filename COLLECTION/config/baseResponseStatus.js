@@ -27,7 +27,7 @@ module.exports = {
     SUCCESS_IMAGE_URL : { "isSuccess": true, "code": 1025, "message":"이미지 url 변환 성공" },  
     SUCCESS_SEARCH_SUGGEST : { "isSuccess": true, "code": 1026, "message":"매칭 페이지 검색 키워드 제안 성공" },
     SUCCESS_S3_PRESIGNEDURL : { "isSuccess": true, "code": 1027, "message":"s3 presignedURL 발급 성공" },
-
+    SUCCESS_OOTD_DEFAULT : { "isSuccess": true, "code": 1028, "message":"추가한 블럭 불러오기 성공" },
 
     // Common
     TOKEN_VERIFICATION_SUCCESS : { "isSuccess": true, "code": 2000, "message":"JWT 토큰 검증 성공" },  
@@ -175,6 +175,9 @@ module.exports = {
     COLOR2_EMPTY : {"isSuccess" : false, "code" : 3113, "message" : "keyword2에 해당하는 color2 값이 입력되어야 합니다."},
     KEYWORD2_EMPTY : {"isSuccess" : false, "code" : 3114, "message" : "color2에 해당하는 keyword2값이 입력되어야 합니다."},
     COLOR2_INVALID_VALUE : {"isSuccess" : false, "code" : 3115, "message" : "color2에 유효하지 않은 COLOR값이 입력되었습니다."},
+    REGISTER_NEW_PW_LENGTH : { "isSuccess": false, "code": 3116, "message":"새비밀번호는 6~15자리를 입력해주세요" },
+    REGISTER_CHECK_PW_LENGTH : { "isSuccess": false, "code": 3117, "message":"새비밀번호확인은 6~15자리를 입력해주세요" },
+    UNNECESSARY_COLOR : { "isSuccess": false, "code": 3118, "message":"color는 Place/Weather/Who 검색에 알맞지 않은 조건입니다." },
 
 
 

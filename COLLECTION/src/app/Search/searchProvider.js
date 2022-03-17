@@ -1,5 +1,10 @@
 const { pool } = require("../../../config/database");
 const { logger } = require("../../../config/winston");
+const {errResponse} = require("../../../config/response");
+
+
+const baseResponse = require("../../../config/baseResponseStatus");
+
 
 const searchDao = require("./searchDao");
 const calendarProvider = require("../Calendar/calendarProvider"); //
@@ -25,18 +30,19 @@ pushOotd
 
 
 
-exports.historyRedudantCheck = async function(userIdx, PWWC, keyword, color){
-  const connection = await pool.getConnection(async (conn) => conn);
+exports.historyRedudantCheck = async function(connection, userIdx, PWWC, keyword, color){
+ // const connection = await pool.getConnection(async (conn) => conn);
   const historyRedundantResult = await searchDao.selectOldHistory(connection, userIdx, PWWC, keyword, color);
-  connection.release();
+// connection.release();
   return historyRedundantResult;
 };
 
-exports.historyNumCheck = async function (userIdx, PWWC) {
+exports.historyNumCheck = async function (connection, userIdx, PWWC) {
 
-  const connection = await pool.getConnection(async (conn) => conn);
+ // const connection = await pool.getConnection(async (conn) => conn);
   const historyListResult = await searchDao.selectHistory(connection, userIdx, PWWC);
-  connection.release();
+ // connection.release();
+  console.log(`historyNumCheck : `, historyListResult.length);
 
   return historyListResult;
   
@@ -45,14 +51,6 @@ exports.historyNumCheck = async function (userIdx, PWWC) {
 
 
 exports.getSearchResult = async function (userIdx, PWWC, keyword1, keyword2, color1, color2, startAt, endAt){
-
-const connection = await pool.getConnection(async (conn) => conn);
-const historyListResult = await searchDao.selectHistory(connection, userIdx, PWWC);
-connection.release();
-
-
-console.log('[calendarProvider] retrieveWeeklyList start');
-
   try{
     // connection 은 db와의 연결을 도와줌
     const connection = await pool.getConnection(async (conn) => conn);
@@ -61,109 +59,41 @@ console.log('[calendarProvider] retrieveWeeklyList start');
 
 
     if(PWWC == 0){          //place      
-      //keyword1이 added, fixed 중에 있는지 get 후 해당 index를 search query의 인자로 넘겨줌
-      
-      var fixedPlaceIdx = -1;    
-      var addedPlaceIdx = -1;
-      
+        //검색결과 가져오기
+        searchListResult = await searchDao.selectSearchPlaceList(connection, userIdx, keyword1);
+        console.log(`Place searchListResult length : `, searchListResult.length);     
 
-      let fixedpIdx = await searchDao.selectFixedPlaceCheck(connection, keyword1); 
-      console.log(`fixedPlace exist 검사 - fixedIdx :`, fixedpIdx);
-      
-      if(typeof(fixedpIdx)!='undefined'){
-        fixedPlaceIdx = fixedpIdx.index;
-      }    
-
-
-      let addedpIdx = await searchDao.selectAddedPlaceCheck(connection, userIdx, keyword1); 
-      console.log(`addedPlace exist 검사 - addedIdx :`, addedpIdx);
-      
-      if(typeof(addedpIdx)!='undefined'){
-        addedPlaceIdx = addedpIdx.index;
-      }
-       
-
-      //검색결과 가져오기
-      searchListResult = await calendarDao.selectSearchPlaceList(connection, userIdx, fixedPlaceIdx, addedPlaceIdx);
     }
 
 
     else if(PWWC == 1){     //weather
-      var fixedWeatherIdx = -1;
-      var addedWeatherIdx = -1;
-      
 
-      let fixedWeIdx = await searchDao.selectFixedWeatherCheck(connection, keyword1); 
-      console.log(`fixedWeather exist 검사 - fixedIdx :`, fixedWeIdx);
-      
-      if(typeof(fixedWeIdx)!='undefined'){
-        fixedWeatherIdx = fixedWeIdx.index;
-      }    
-       
-      let addedWeIdx = await searchDao.selectAddedWeatherCheck(connection, userIdx, keyword1); 
-      console.log(`addedWeather exist 검사 - addedIdx :`, addedWeIdx);
-      
-      if(typeof(addedWeIdx)!='undefined'){
-        addedWeatherIdx = addedWeIdx.index;
-      }
+      searchListResult = await searchDao.selectSearchWeatherList(connection, userIdx, keyword1);
+      console.log(`Weather searchListResult length : `, searchListResult.length);
 
-      searchListResult = await calendarDao.selectSearchWeatherList(connection, userIdx, fixedWeatherIdx, addedWeatherIdx);
     }
 
 
     else if(PWWC == 2){     //who
-      var fixedWhoIdx = -1;
-      var addedWhoIdx = -1;
+      
+      searchListResult = await searchDao.selectSearchWhoList(connection, userIdx, keyword1);
+      console.log(`Who searchListResult length : `, searchListResult.length);
 
-      let fixedWhIdx = await searchDao.selectFixedWhoCheck(connection, keyword1); 
-      console.log(`fixedWho exist 검사 - fixedIdx :`, fixedWhIdx);
-      
-      if(typeof(fixedWhIdx)!='undefined'){
-        fixedWhoIdx = fixedWhIdx.index;
-      }    
-      
-      let addedWhIdx = await searchDao.selectAddedWhoCheck(connection, userIdx, keyword1); 
-      console.log(`addedWho exist 검사 - addedIdx :`, addedWhIdx);
-      
-      if(typeof(addedWhIdx)!='undefined'){
-        addedWhoIdx = addedWhIdx.index;
-      }
-
-      searchListResult = await calendarDao.selectSearchWhoList(connection, userIdx, fixedWhoIdx, addedWhoIdx);
     }
 
 
     else if (PWWC == 3){    //color
-      var addedClothesIdx = [];     //같은 smallClass를 갖는 bigClass들 존재 가능 (ex: top-나이키, shoes-나이키)
-      var fixedClothesIdx = -1;
+    
+      searchListResult = await searchDao.selectSearchColorList(connection, userIdx, keyword1, color1);
+      console.log(`Clothes searchListResult length : `, searchListResult.length);
 
-      let fixedCIdx = await searchDao.selectFixedClothesCheck(connection, keyword1); 
-      console.log(`fixedClothes exist 검사 - fixedIdx :`, fixedCIdx);
-      
-      if(typeof(fixedCIdx)!='undefined'){
-        fixedWhoIdx = fixedCIdx.index;
-      }    
-      
-      let addedCIdx = await searchDao.selectAddedClothesCheck(connection, userIdx, keyword1); 
-      console.log(`addedClothes exist 검사 - addedIdx :`, addedCIdx);
-      
-      if(typeof(addedCIdx)!='undefined'){
-        addedWhoIdx = addedCIdx;
-      }                     
-
-      for(let addedCloIdx of addedClothesIdx){
-        let searchResult = await calendarDao.selectSearchColorList(connection, userIdx, fixedClothesIdx, addedCloIdx, color1);
-        searchListResult = searchListResult.concat(searchResult);
-      }
-
-
-
-      
     }
     // connection 해제
     connection.release();
 
-
+    if(searchListResult.length == 0){
+      return errResponse(baseResponse.SEARCH_NOT_FOUND);
+    }
 
 
     //ootd list 처리 - credits to 녜
@@ -228,21 +158,84 @@ console.log('[calendarProvider] retrieveWeeklyList start');
         if(!calendarProvider.hasClothes(ootd[row.addedBig], data)){
           ootd[row.addedBig].push(data);
         }
+      }      
+
+
+      //startAt과 endAt이 null이 아닐 경우
+      if(startAt && endAt){ 
+        let test_date = new Date ( ootd["date"] );
+        if( ( test_date < startAt ) || ( test_date > endAt) ){
+          continue;
+        }
       }
+
       
-      // 새로 만들어진 ootd를 배열에 삽입
-      ootds = calendarProvider.pushOotd(ootds, ootd);
+      if(!keyword2){                  //keyword2가 없을 때
+        // 새로 만들어진 ootd를 배열에 삽입
+        ootds = calendarProvider.pushOotd(ootds, ootd);
+
+      }
+      else{                           //keyword2가 있을 때
+        if(PWWC == 0){
+          if(ootd["place"].includes(keyword2)){           //place에 해당 keywrod2가 존재할 경우에만 결과에 추가
+            ootds = calendarProvider.pushOotd(ootds, ootd);
+          }
+        }
+        else if(PWWC == 1){
+          if(ootd["weather"].includes(keyword2)){           //weather에 해당 keywrod2가 존재할 경우에만 결과에 추가
+            ootds = calendarProvider.pushOotd(ootds, ootd);
+          }
+        }
+        else if(PWWC == 2){
+          if(ootd["who"].includes(keyword2)){           //who에 해당 keywrod2가 존재할 경우에만 결과에 추가
+            ootds = calendarProvider.pushOotd(ootds, ootd);
+          }
+        }
+        else if(PWWC == 3){
+          let clothes = [];
+          clothes.push(ootd["Top"]);
+          clothes.push(ootd["Bottom"]);
+          clothes.push(ootd["Shoes"]);
+          clothes.push(ootd["Etc"]);
+
+          for(let type of clothes){
+            for(let {"smallClass": sm, "color" : colors} of type){
+              if(sm == keyword2 && colors == color2){
+                ootds = calendarProvider.pushOotd(ootds, ootd);
+              }
+            }
+          }
+
+        }
+        
+      }
+
+      
+     
     }
 
     // 빈 배열을 갖는 Top, Bottom, Shoes, Etc 값 변경 함수
     ootds = calendarProvider.changeBlankClothes(ootds);
 
+    /*
+    ootds
+    {
+      [ootdIdx]
+      [date]
+      [lookpoint]
+      [imageUrl]
+      [imageCnt]
+      [place]
+      [weather]
+      [who]
+      [Top] - {smallClass, color}
+      [Bottom] - {smallClass, color}
+      [Shoes] - {smallClass, color}
+      [Etc] - {smallClass, color}
+    }
+    */
 
-
-    //keyword2 != null일 경우 포함하지 않는 것 제외 -> 모두 제외되면 err(SEARCH_NOT_FOUND)
     //date처리 - startAt, endAt
-
-
 
 
 
@@ -250,12 +243,8 @@ console.log('[calendarProvider] retrieveWeeklyList start');
     return ootds;
 
   }catch(err){
-    logger.error(`App - getSearchResult Provider error\n: ${err.message}`);
+    logger.error(`App - getSearchResult Provider error\n: ${err.message} \n${JSON.stringify(err)}`);
     return errResponse(baseResponse.DB_ERROR);
   }
-
-
-
-
 
 };
