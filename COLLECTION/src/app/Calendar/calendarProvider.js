@@ -9,7 +9,7 @@ const calendarDao = require("./calendarDao");
 const retrieveMonthlyList = async function (userIdx) {
 
   try {
-    console.log('[calendarProvider] retrieveMonthlyList start');
+    //console.log('[calendarProvider] retrieveMonthlyList start');
 
     // connection 은 db와의 연결을 도와줌
     const connection = await pool.getConnection(async (conn) => conn);
@@ -21,7 +21,7 @@ const retrieveMonthlyList = async function (userIdx) {
     }
     // connection 해제
     connection.release();
-    console.log('[calendarProvider] retrieveMonthlyList finish');
+    //console.log('[calendarProvider] retrieveMonthlyList finish');
 
     return monthlyListResult;
 
@@ -35,7 +35,7 @@ const retrieveMonthlyList = async function (userIdx) {
 // Weekly 달력 OOTD 부르기
 const retrieveWeeklyList = async function (userIdx) {
 
-  console.log('[calendarProvider] retrieveWeeklyList start');
+  //console.log('[calendarProvider] retrieveWeeklyList start');
 
   try{
     // connection 은 db와의 연결을 도와줌
@@ -115,7 +115,7 @@ const retrieveWeeklyList = async function (userIdx) {
     // 빈 배열을 갖는 Top, Bottom, Shoes, Etc 값 변경 함수
     ootds = changeBlankClothes(ootds);
 
-    console.log('[calendarProvider] retrieveWeeklyList finish');
+    //console.log('[calendarProvider] retrieveWeeklyList finish');
     return ootds;
 
   }catch(err){
