@@ -45,7 +45,6 @@ exports.getSearchResult = async function (req, res) {
         return res.send(errResponse(baseResponse.PWWC_INVALID_VALUE));
     }
 
-    console.log(`PWWC value : `, PWWC, `PWWC type : `, typeof(PWWC) );
 
 
     /**
