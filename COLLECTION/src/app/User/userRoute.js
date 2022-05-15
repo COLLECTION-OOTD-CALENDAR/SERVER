@@ -29,6 +29,9 @@ module.exports = function(app){
     //9.자동로그인
     app.get('/app/user/autologin',jwtMiddleware, user.autoLogin);
 
+    //21.비밀번호찾기
+    app.get('/app/user/find-password',user.userFindPW);
+
 };
 
 
