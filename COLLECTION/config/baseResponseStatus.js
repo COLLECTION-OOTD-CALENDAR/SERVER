@@ -29,6 +29,8 @@ module.exports = {
     SUCCESS_S3_PRESIGNEDURL : { "isSuccess": true, "code": 1027, "message":"s3 presignedURL 발급 성공" },
     SUCCESS_OOTD_DEFAULT : { "isSuccess": true, "code": 1028, "message":"추가한 블럭 불러오기 성공" },
 
+    SUCCESS_FIND_PW : { "isSuccess": true, "code": 1030, "message":"비밀번호 찾기 성공" },
+
     // Common
     TOKEN_VERIFICATION_SUCCESS : { "isSuccess": true, "code": 2000, "message":"JWT 토큰 검증 성공" },  
     TOKEN_VERIFICATION_FAILURE : { "isSuccess": false, "code": 2001, "message":"JWT 토큰 검증 실패" },
@@ -206,7 +208,7 @@ module.exports = {
     SEARCH_TAG_NOT_EXIST : { "isSuccess": false, "code": 4019, "message": "해당 키워드를 포함하는 태그가 존재하지 않습니다." },
     PRINT_IMG_ERROR : { "isSuccess": false, "code": 4020, "message": "Thumbnail 사진 및 저장된 사진의 개수 출력에 문제가 있습니다." },    
     HISTORY_HANDLING_ERROR : { "isSuccess": false, "code": 4021, "message": "History 삭제 및 추가에 실패했습니다." },
-    
+    USER_NOT_EXIST : { "isSuccess": false, "code": 4022, "message": "존재하지 않는 사용자입니다." },
     
 
     
