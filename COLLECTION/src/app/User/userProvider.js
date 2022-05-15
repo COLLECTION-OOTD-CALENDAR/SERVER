@@ -52,3 +52,13 @@ exports.accountCheck = async function (ID) {
   return userAccountResult;
 };
 
+//21.비밀번호 찾기 - (비밀번호 찾기 함수)
+exports.checkFindPW = async function (name, ID, phoneNumber) {
+  const connection = await pool.getConnection(async (conn) => conn);
+
+  const findPWResult = await userDao.selectUserfindPW(connection, name, ID, phoneNumber);
+
+  connection.release();
+
+  return findPWResult;
+};

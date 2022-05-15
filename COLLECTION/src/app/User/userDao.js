@@ -119,6 +119,16 @@ async function unregisterUser(connection, userIdx) {
   return unregisterUserRow;
 }
 
+//21.비밀번호 찾기 - (비밀번호 찾기 함수)
+async function selectUserfindPW(connection, name, ID, phoneNumber) {
+  const selectUserfindPWQuery = `
+        SELECT password
+        FROM User 
+        WHERE name = ? and ID = ? and phoneNumber = ?`;
+  const selectUserPasswordRow = await connection.query(selectUserfindPWQuery,[name, ID, phoneNumber]);
+  return selectUserPasswordRow[0];
+}
+
 
 module.exports = {
   insertUserInfo,
@@ -130,6 +140,8 @@ module.exports = {
   selectUserID,
   selectUsernickname,
   selectUserPW,
-  unregisterUser
+  unregisterUser,
+
+  selectUserfindPW
 
 };
