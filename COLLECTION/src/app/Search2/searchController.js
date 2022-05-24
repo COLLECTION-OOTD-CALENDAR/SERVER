@@ -61,7 +61,7 @@ exports.delHistory = async function (req, res) {
         PWWC,
         content,
     );
-    if (historyRows.length < 0){
+    if (historyRows.length == 0){
         return res.send(errResponse(baseResponse.SEARCH_NOT_EXIST));
     }
 
