@@ -39,7 +39,7 @@ async function selectHistory(connection,userIdx,PWWC,content) {
     SELECT content
     FROM History
     WHERE userIdx = ? AND PWWC = ? AND content = ?;`;
-  const [IDRow] = await connection.query(selectHistoryQuery, [userIdx,PWWC,content]);
+  const IDRow = await connection.query(selectHistoryQuery, [userIdx,PWWC,content]);
   return IDRow[0];
 }
 
