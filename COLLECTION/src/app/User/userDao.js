@@ -1,13 +1,8 @@
-
-// 새롭게 추가한 함수를 아래 부분에서 export 해줘야 외부의 Provider, Service 등에서 사용가능합니다.
-
-//if가 만드는 로직~
-
-// 유저 생성
+// 0. 회원가입 - (유저 생성)
 async function insertUserInfo(connection, insertUserInfoParams) {
   const insertUserInfoQuery = `
-        INSERT INTO User(name,nickname,ID,password,phoneNumber)
-        VALUES (?, ?, ?, ?, ?);
+    INSERT INTO User(name, nickname, ID, password, birthday, gender, phoneNumber)
+    VALUES (?, ?, ?, ?, ?, ?, ?);
     `;
   const insertUserInfoRow = await connection.query(
     insertUserInfoQuery,
@@ -17,7 +12,8 @@ async function insertUserInfo(connection, insertUserInfoParams) {
   return insertUserInfoRow;
 }
 
-//ID만 가져오는 함수
+
+//1. 중복ID 확인 - (ID만 가져오는 함수)
 async function selectUserID(connection,ID) {
   const selectUserIDQuery = `
                   SELECT ID
@@ -29,7 +25,7 @@ async function selectUserID(connection,ID) {
 }
 
 
-//닉네임만 가져오는 함수
+//2. 닉네임 확인 - (닉네임만 가져오는 함수)
 async function selectUsernickname(connection,nickname) {
   const selectUsernicknameQuery = `
                   SELECT nickname
@@ -41,7 +37,7 @@ async function selectUsernickname(connection,nickname) {
 }
 
 
-//PW확인 함수(WITH ID)
+//3. 로그인 - (PW확인 함수(WITH ID))
 async function selectUserPassword(connection, selectID) {
   const selectUserPasswordQuery = `
         SELECT ID, password
@@ -52,7 +48,7 @@ async function selectUserPassword(connection, selectID) {
   
 }
 
-//PW확인 함수(WITH USERIDX)
+//4-2. 회원정보 수정(비밀번호) - (PW확인 함수(WITH USERIDX))
 async function selectUserPW(connection, userIdx) {
   const selectUserPasswordQuery = `
         SELECT userIdx, password
@@ -64,7 +60,7 @@ async function selectUserPW(connection, userIdx) {
 
 
 
-//ID로 계정의 STATUS여부 확인 함수
+//3. 로그인 - (ID로 계정의 STATUS여부 확인 함수)
 async function selectUserAccount(connection, ID) {
   const selectUserAccountQuery = `
         SELECT status, ID, userIdx, nickname, name
@@ -77,7 +73,7 @@ async function selectUserAccount(connection, ID) {
   return selectUserAccountRow[0];
 }
 
-//회원정보 수정 (닉네임) update 함수
+//4-1. 회원정보 수정 (닉네임) - (회원정보 수정 (닉네임) update 함수)
 async function updateNicknameInfo(connection, nickname, userIdx) {
   const updateUserQuery = `
     UPDATE User 
@@ -88,7 +84,7 @@ async function updateNicknameInfo(connection, nickname, userIdx) {
 }
 
 
-//회원정보 수정 (비밀번호) update 함수
+//4-2 . 회원정보 수정(비밀번호) - (회원정보 수정 (비밀번호) update 함수)
 async function updatePWInfo(connection, updatePWResultParams) {
   const updateUserQuery = `
     UPDATE User 
@@ -99,7 +95,7 @@ async function updatePWInfo(connection, updatePWResultParams) {
 }
 
 
-//회원정보 수정 (전화번호) update 함수
+//4-3. 회원정보 수정(전화번호) - (회원정보 수정 (전화번호) update 함수)
 async function updatePhoneInfo(connection, updatePhoneResultParams) {
   const updateUserQuery = `
     UPDATE User 
@@ -109,14 +105,24 @@ async function updatePhoneInfo(connection, updatePhoneResultParams) {
   return updateUserRow;
 }
 
-//회원탈퇴 함수 
-async function unregisterUser(connection, userIdx) {
+//5. 회원탈퇴 - (회원탈퇴 함수)
+async function updateUnregisterUser(connection, userIdx) {
   const updateUserQuery = `
     UPDATE User 
     SET status = "inactive"
     WHERE userIdx = ?;`;
   const unregisterUserRow = await connection.query(updateUserQuery, userIdx);
   return unregisterUserRow;
+}
+
+//20. 아이디 찾기 - (ID찾기 함수)
+async function selectUserfindID(connection, findIDResultParams) {
+  const selectUserfindIDQuery = `
+        SELECT ID
+        FROM User 
+        WHERE name = ? and phoneNumber = ?`;
+  const selectUserIDRow = await connection.query(selectUserfindIDQuery,findIDResultParams);
+  return selectUserIDRow[0];
 }
 
 //21.비밀번호 찾기 - (비밀번호 찾기 함수)
@@ -129,9 +135,21 @@ async function selectUserfindPW(connection, name, ID, phoneNumber) {
   return selectUserPasswordRow[0];
 }
 
+// 22. 비밀번호 재설정 API
+async function updatePwdReset(connection, updatePWParams) {
+  const updatePasswordQuery = `
+    UPDATE User 
+    SET password = ?, User.updateAt = CURRENT_TIMESTAMP
+    WHERE userIdx = ?;`;
+  const updatePasswordRow = await connection.query(updatePasswordQuery, updatePWParams);
+  return updatePasswordRow;
+};
+
 
 module.exports = {
+  //0.
   insertUserInfo,
+  //1-5
   selectUserPassword,
   selectUserAccount,
   updateNicknameInfo,
@@ -140,8 +158,13 @@ module.exports = {
   selectUserID,
   selectUsernickname,
   selectUserPW,
-  unregisterUser,
+  updateUnregisterUser,
 
-  selectUserfindPW
+  //20,21
+  selectUserfindID,
+  selectUserfindPW,
+
+  // 22. 비밀번호 재설정 API
+  updatePwdReset,
 
 };

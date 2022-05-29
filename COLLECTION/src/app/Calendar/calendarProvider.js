@@ -3,39 +3,35 @@ const { logger } = require("../../../config/winston");
 
 const calendarDao = require("./calendarDao");
 
-// Provider: Read 비즈니스 로직 처리
-
-// Monthly 달력 OOTD 부르기
+// 6. Monthly 달력 OOTD 부르기
 const retrieveMonthlyList = async function (userIdx) {
 
   try {
-    //console.log('[calendarProvider] retrieveMonthlyList start');
 
     // connection 은 db와의 연결을 도와줌
     const connection = await pool.getConnection(async (conn) => conn);
     // Dao 쿼리문의 결과를 호출
     const monthlyListResult = await calendarDao.selectMonthly(connection, userIdx);
+    
     for ( i in monthlyListResult ) {
       var moment = require('moment');
       monthlyListResult[i].date = moment(monthlyListResult[i].date).format('YYYY-MM-DD');
     }
+
     // connection 해제
     connection.release();
-    //console.log('[calendarProvider] retrieveMonthlyList finish');
 
     return monthlyListResult;
 
   } catch(err) {
-    logger.error(`App - getMonthly Provider error\n: ${err.message}`);
+    logger.error(`App - retrieveMonthlyList Provider error\n: ${err.message}`);
     return errResponse(baseResponse.DB_ERROR);
   }
 
 };
 
-// Weekly 달력 OOTD 부르기
+// 7. Weekly 달력 OOTD 부르기
 const retrieveWeeklyList = async function (userIdx) {
-
-  //console.log('[calendarProvider] retrieveWeeklyList start');
 
   try{
     // connection 은 db와의 연결을 도와줌
@@ -50,8 +46,8 @@ const retrieveWeeklyList = async function (userIdx) {
     let img_cnt = 0;
     let imgUrlArr = [];
 
+    // 가져온 Weekly OOTD 리스트를 하나씩 분석하여 정리
     for (let row of ootdWeeklyListResult) {
-      
       // ootds 배열에 새로운 ootd row 추가 여부 결정
       let ootd = getOotd(row.ootdIdx, ootds);
       // img_cnt와 distinct한 imgUrl을 저장하는 배열 초기화
@@ -115,16 +111,16 @@ const retrieveWeeklyList = async function (userIdx) {
     // 빈 배열을 갖는 Top, Bottom, Shoes, Etc 값 변경 함수
     ootds = changeBlankClothes(ootds);
 
-    //console.log('[calendarProvider] retrieveWeeklyList finish');
     return ootds;
 
   }catch(err){
-    logger.error(`App - getWeekly Provider error\n: ${err.message}`);
+    logger.error(`App - retrieveWeeklyList Provider error\n: ${err.message}`);
     return errResponse(baseResponse.DB_ERROR);
   }
 
 };
 
+// 7. Weekly 달력 OOTD 부르기 - 
 // 빈 배열의 Top, Bottom, Shoes, Etc일 경우 smallClass : "해당 항목 없음" 으로 변경
 // color는 ''로 변경
 const changeBlankClothes = function(ootds){
@@ -148,7 +144,7 @@ const changeBlankClothes = function(ootds){
 }
 
 
-// imageUrl Key를 새로 생성 또는 이어서 진행할지 결정
+// 7. Weekly 달력 OOTD 부르기 - imageUrl Key를 새로 생성 또는 이어서 진행할지 결정
 const getImageUrlKey = function(ootdIdx, ootds){
   for (let each of ootds){
     if(each.ootdIdx == ootdIdx) return each.imageUrl;
@@ -158,7 +154,7 @@ const getImageUrlKey = function(ootdIdx, ootds){
 }
 
 
-// image 관련 imageUrl 값을 변경하는 함수
+// 7. Weekly 달력 OOTD 부르기 - image 관련 imageUrl 값을 변경하는 함수
 const getImageUrl = function(imageUrl, thumbnail){
   if(!imageUrl){
     return null;
@@ -171,7 +167,7 @@ const getImageUrl = function(imageUrl, thumbnail){
   
 }
 
-// imageCnt Key를 새로 생성 또는 이어서 진행할지 결정
+// 7. Weekly 달력 OOTD 부르기 - imageCnt Key를 새로 생성 또는 이어서 진행할지 결정
 const getImageCntKey = function(ootdIdx, ootds){
   for (let each of ootds){
     if(each.ootdIdx == ootdIdx) return each.imageCnt;
@@ -181,7 +177,7 @@ const getImageCntKey = function(ootdIdx, ootds){
 }
 
 
-// imageCnt++ 하기 위한 조건
+// 7. Weekly 달력 OOTD 부르기 - imageCnt++ 하기 위한 조건
 const hasImageUrl = function(imgUrlArr, imageUrl){
 
   if(imageUrl === undefined || imageUrl === null){
@@ -196,7 +192,7 @@ const hasImageUrl = function(imgUrlArr, imageUrl){
   return false;
 }
 
-// image 관련 imageCnt 값을 변경하는 함수
+// 7. Weekly 달력 OOTD 부르기 - image 관련 imageCnt 값을 변경하는 함수
 const getImageCnt = function(thumbnail, img_cnt, tmp){
   if(!thumbnail){
     return img_cnt;
@@ -210,7 +206,7 @@ const getImageCnt = function(thumbnail, img_cnt, tmp){
 }
 
 
-// ootds 배열에 새로운 ootd row 추가 or 삽입 여부 결정
+// 7. Weekly 달력 OOTD 부르기 - ootds 배열에 새로운 ootd row 추가 or 삽입 여부 결정
 const getOotd = function(ootdIdx, ootds) {
   for (let each of ootds){
     if(each.ootdIdx == ootdIdx) return each;
@@ -219,7 +215,7 @@ const getOotd = function(ootdIdx, ootds) {
   return {};
 };
 
-// bigClass명으로 된 key가 없을 때 key 및 빈 배열 value 생성
+// 7. Weekly 달력 OOTD 부르기 - bigClass명으로 된 key가 없을 때 key 및 빈 배열 value 생성
 const getBigClass = function(ootdIdx, ootds, ootd){
   for (let each of ootds){
     if(each.ootdIdx == ootdIdx) return ootd;
@@ -233,7 +229,7 @@ const getBigClass = function(ootdIdx, ootds, ootd){
   return ootd;
 };
 
-// 이미 place 배열이 존재하는 지 확인 -> place명 추가
+// 7. Weekly 달력 OOTD 부르기 - 이미 place 배열이 존재하는 지 확인 -> place명 추가
 const getPlaces = function(row, tmp){
   let tags;
 
@@ -253,7 +249,7 @@ const getPlaces = function(row, tmp){
   return tags;
 }
 
-// 이미 weather 배열이 존재하는 지 확인 -> weather명 추가
+// 7. Weekly 달력 OOTD 부르기 - 이미 weather 배열이 존재하는 지 확인 -> weather명 추가
 const getWeathers = function(row, tmp){
   let tags;
 
@@ -273,7 +269,7 @@ const getWeathers = function(row, tmp){
   return tags;
 }
 
-// 이미 who 배열이 존재하는 지 확인 -> who명 추가
+// 7. Weekly 달력 OOTD 부르기 - 이미 who 배열이 존재하는 지 확인 -> who명 추가
 const getWhos = function(row, tmp){
   let tags;
 
@@ -293,7 +289,7 @@ const getWhos = function(row, tmp){
   return tags;
 }
 
-// 주어진 list 내에 data가 존재하는 지 확인
+// 7. Weekly 달력 OOTD 부르기 - 주어진 list 내에 data가 존재하는 지 확인
 const hasClothes = function(list, data) {
   for(let each of list) {
       if(each.smallClass == data.smallClass && each.color == data.color) return true;
@@ -302,7 +298,7 @@ const hasClothes = function(list, data) {
   return false;
 };
 
-// ootdIdx가 같다면 삽입 X. 같지 않다면 삽입 O
+// 7. Weekly 달력 OOTD 부르기 - ootdIdx가 같다면 삽입 X. 같지 않다면 삽입 O
 const pushOotd = function(list, data){
   for (let each of list){
     if(each.ootdIdx == data.ootdIdx) return list;

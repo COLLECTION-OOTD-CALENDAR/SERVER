@@ -1,17 +1,133 @@
-const jwtMiddleware = require("../../../config/jwtMiddleware");
 const searchProvider = require("./searchProvider");
 const searchService = require("./searchService");
 const baseResponse = require("../../../config/baseResponseStatus");
 const {response, errResponse} = require("../../../config/response");
+
+var blankPattern = /^\s+|\s+$/g;
+
+/**
+ * API No. 15
+ * API Name : [PWWC] 검색 초기화면 보여주기
+ * [GET] /app/search/mainpage/:PWWC
+ * Path Variable : PWWC
+ */
+exports.searchMain = async function (req, res) {
+
+    const userIdx = req.verifiedToken.userIdx;
+    const PWWC = req.params.PWWC;
+
+    // PWWC Path variable이 입력되지 않았을 때
+    if(PWWC === '' || PWWC === null || PWWC === undefined || PWWC === NaN){
+        return res.send(errResponse(baseResponse.PWWC_EMPTY));
+    }
+
+    // PWWC Path variable이 숫자가 아닌 경우(약한 검사)
+    if(isNaN(PWWC)){
+        return res.send(errResponse(baseResponse.PWWC_ERROR_TYPE));
+    }
+
+    // PWWC Path variable이 0,1,2,3 값이 아닌 경우
+    if(PWWC < 0 || PWWC > 3){
+        return res.send(errResponse(baseResponse.PWWC_INVALID_VALUE));
+    }
+
+    const searchHistoryResult = await searchProvider.retrieveSearchHistory(userIdx, PWWC);
+
+    // 객체 형태로 변경
+    const historyFinalResult = {};
+    historyFinalResult["history"] = searchHistoryResult;
+
+    return res.send(response(baseResponse.SUCCESS_SEARCH_MAIN, historyFinalResult));
+
+};
+
+/**
+ * API No. 16
+ * API Name : [PWWC] 검색 History 삭제하기(개별,전체) 
+ * [PATCH] /app/search/deletion/:PWWC?type=
+ * parameters : PWWC ,userIdx
+ * body : content, color
+ * query string : type
+ */
+ exports.searchDeletion = async function (req, res) {
+
+    const userIdx = req.verifiedToken.userIdx;
+    const PWWC = req.params.PWWC;
+    const content = req.body.content;
+    const type = req.query.type;
+    const color = req.body.color;
+
+    //삭제할 블럭이 지정되지 않았습니다.
+    if(type == 1 && content === null){
+        return res.send(response(baseResponse.HISTORY_CONTENT_UNDEFINED));
+    }
+    //전체삭제에 알맞지 않은 조건입니다. 
+    if(type == 2 && content){
+        return res.send(response(baseResponse.UNNECESSARY_CONTENT));
+    }
+
+    // PWWC flag 값이 입력되어야합니다.
+    if(PWWC === '' || PWWC === null || PWWC === undefined || PWWC === NaN){
+        return res.send(response(baseResponse.PWWC_EMPTY));
+    }
+
+    // 올바르지 않은 PWWC flag형식이 입력되었습니다. 
+    if(isNaN(PWWC)){
+        return res.send(response(baseResponse.PWWC_ERROR_TYPE));
+    }
+
+    // 유효하지 않은 PWWC flag(0,1,2,3) 값이 입력되었습니다.
+    if(PWWC < 0 || PWWC > 3){
+        return res.send(response(baseResponse.PWWC_INVALID_VALUE));
+    }
+
+    //Query String을 입력해야 합니다. (type이 아예 없는경우 || type이 비어있는경우)
+    if(!type){
+        return res.send(response(baseResponse.QUERY_STRING_EMPTY));
+    }
+
+    //올바르지 않은 Query String 형식입니다. (숫자가 아닌경우)
+    if(isNaN(type)){
+        return res.send(response(baseResponse.QUERY_STRING_ERROR_TYPE));
+    }
+
+    //유효하지 않은 Query String 값이 입력되었습니다. (1,2 가 아닌경우)
+    if(type < 0 || type > 3){
+        return res.send(response(baseResponse.QUERY_STRING_INVALID_VALUE));
+    }
+    //존재하지 않는 검색 내역입니다.
+    const historyRows = await searchProvider.checkHistory(
+        userIdx,
+        PWWC,
+        content,
+    );
+    if (historyRows.length == 0 && content !== undefined ){ // not null == 비워져있지 않다. == 무언가 존재한다. 
+        return res.send(response(baseResponse.SEARCH_NOT_EXIST));
+    }
+
+    const editHistory = await searchService.patchHistory(
+        userIdx,
+        PWWC,
+        content,
+        type,
+        color, 
+    );
+
+    return res.send(editHistory);
+
+
+};
 
 
 
 /**
  * API No. 17
  * API Name : 검색 결과 조회 API
- * [GET] /app/search/:PWWC?keyword1=?&keyword2=?&color1=?&color2=?          //&startAt=?&endAt=?
+ * [GET] /app/search/:PWWC
+ * path variable : PWWC
+ * query string : keyword1, keyword2, color1, color2, startAt, endAt
  */
-exports.getSearchResult = async function (req, res) {
+exports.searchPWWC = async function (req, res) {
 
     // color 배열
     const colorArr = [ "#d60f0f", "#f59a9a", "#ffb203", "#fde6b1", "#71a238", "#b7de89",
@@ -44,8 +160,6 @@ exports.getSearchResult = async function (req, res) {
     if(PWWC < 0 || PWWC > 3){
         return res.send(errResponse(baseResponse.PWWC_INVALID_VALUE));
     }
-
-
 
     /**
      * Query String: keyword1, keyword2, color1, color2             //startAt, endAt 
@@ -97,15 +211,19 @@ exports.getSearchResult = async function (req, res) {
         //color1 빈값 검사 
         if(!color1){    
             return res.send(errResponse(baseResponse.COLOR1_EMPTY));
-        }
+        }        
+        
+        color1 = color1.toString().trim();
+
         //color1 값 유효성 검사                         ㅌ -> color 선택안할시 다른 string으로 보내주시술?
-        else if(colorArr.indexOf(color1) == -1){        //정해진 color 값들 이외의 값이 들어온 경우
+        if(colorArr.indexOf(color1) == -1){        //정해진 color 값들 이외의 값이 들어온 경우
             return res.send(errResponse(baseResponse.COLOR_INVALID_VALUE));
         }
         else if(keyword2){//검색어가 2개인 경우      
             if(!color2){                                // keyword2에 해당하는 color2가 입력되지 않은 경우
                 return res.send(errResponse(baseResponse.COLOR2_EMPTY));
-            }
+            }        
+            color2 = color2.toString().trim();  
             if(colorArr.indexOf(color2) == -1){          //정해진 color 값들 이외의 값이 들어온 경우
                 return res.send(errResponse(baseResponse.COLOR2_INVALID_VALUE));
             }
@@ -119,9 +237,6 @@ exports.getSearchResult = async function (req, res) {
         
     }
 
-
-
-
     if(startAt && (!endAt)){ //startAt만 입력
         return res.send(errResponse(baseResponse.ENDAT_EMPTY));
     }
@@ -129,8 +244,9 @@ exports.getSearchResult = async function (req, res) {
         return res.send(errResponse(baseResponse.STARTAT_EMPTY));
     }
     else if (startAt && endAt) {
-        startAt = new Date(startAt);
-        endAt = new Date(endAt);
+
+        startAt = new Date(startAt.toString().trim());
+        endAt = new Date(endAt.toString().trim());
         if(datePattern.test(startAt)){     //yyyy-MM-dd 형식 검사
             return res.send(errResponse(baseResponse.STARTAT_ERROR_TYPE));  
         }
@@ -162,38 +278,24 @@ exports.getSearchResult = async function (req, res) {
 
 
     //2. 검색 결과 보여지기 @searchProvider - keyword1로 가져온 결과에서 keyword2가 null이 아니면 keyword2 포함하지 않는 것 제외하기
-    const searchResultResponse = await searchProvider.getSearchResult(
+    const searchResultResponse = await searchProvider.retrieveSearchResult(
         userIdx, PWWC, keyword1, keyword2, color1, color2, startAt, endAt
     );
 
-    if(searchResultResponse.length == 0){
+
+    if(!searchResultResponse){
         if(startAt && endAt){
             return res.send(errResponse(baseResponse.SEARCH_DATE_OOTD_EMPTY));
         }
         else{
             return res.send(errResponse(baseResponse.SEARCH_NOT_FOUND));
         }
-        
-    }
-
-    for(i in searchResultResponse){
-        // lookpoint 값 추출 확인
-        if(!lookpointPattern.test(searchResultResponse[i].lookpoint)){
-            return res.send(errResponse(baseResponse.LOOKPOINT_RESPONSE_ERROR));
-        }
-        //date 값 추출 확인
-        if(!datePattern.test(searchResultResponse[i].date)){
-            return res.send(errResponse(baseResponse.DATE_RESPONSE_ERROR));
-        }
-
-        if(searchResultResponse[i].imageUrl == null && searchResultResponse[i].imageCnt > 0){
-            return res.send(errResponse(baseResponse.PRINT_IMG_ERROR));
-        }
-    }
-   
+    }     
 
     const searchFinalResult = {};
+
     searchFinalResult["match"] = searchResultResponse;
+       
 
 
     if(startAt && endAt){
@@ -203,4 +305,63 @@ exports.getSearchResult = async function (req, res) {
         return res.send(response(baseResponse.SUCCESS_MATCH, searchFinalResult));
     }
 
+};
+
+
+/**
+ * API No. 19
+ * API Name : [PWWC] 매칭 페이지 검색 키워드 제안
+ * [GET] /app/search/suggestion/:PWWC
+ * Path Variable : PWWC
+ * Query String : keyword1
+ */
+exports.searchSuggestKeyword = async function (req, res) {
+
+    const userIdx = req.verifiedToken.userIdx;
+    const PWWC = req.params.PWWC;
+    var keyword1 = req.query.keyword1;
+
+    // PWWC Path variable이 입력되지 않았을 때
+    if(PWWC === '' || PWWC === null || PWWC === undefined || PWWC === NaN){
+        return res.send(errResponse(baseResponse.PWWC_EMPTY));
+    }
+
+    // PWWC Path variable이 숫자가 아닌 경우(약한 검사)
+    if(isNaN(PWWC)){
+        return res.send(errResponse(baseResponse.PWWC_ERROR_TYPE));
+    }
+
+    // PWWC Path variable이 0,1,2,3 값이 아닌 경우
+    if(PWWC < 0 || PWWC > 3){
+        return res.send(errResponse(baseResponse.PWWC_INVALID_VALUE));
+    }
+
+    // Keyword1 Query string이 없는 경우 (key / value)
+    if(!keyword1){
+        return res.send(errResponse(baseResponse.KEYWORD1_EMPTY));
+    }
+    
+    // Keyword1 Query String에 공백만 입력된 경우
+    keyword1 = keyword1.toString();
+    if(keyword1.replace(blankPattern, '') == ""){
+        return res.send(errResponse(baseResponse.REGISTER_BLANK_ALL));
+    }
+
+    // Keyword1의 길이가 6글자를 넘을 경우
+    if(keyword1.length > 6){
+        return res.send(errResponse(baseResponse.SEARCH_KEYWORD_LENGTH));
+    }
+
+    const suggestKeywordResult = await searchProvider.retrieveSuggestKeyword(userIdx, PWWC, keyword1);
+
+    // Response error : 존재하는 검색 키워드 존재 X
+    if(!suggestKeywordResult[0]){
+        return res.send(errResponse(baseResponse.SEARCH_TAG_NOT_EXIST));
+    }
+
+    // 객체 형태로 변경
+    const suggestFinalResult = {};
+    suggestFinalResult["suggestion"] = suggestKeywordResult;
+
+    return res.send(response(baseResponse.SUCCESS_SEARCH_SUGGEST, suggestFinalResult));
 };

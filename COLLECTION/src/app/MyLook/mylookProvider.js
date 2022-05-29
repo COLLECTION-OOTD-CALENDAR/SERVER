@@ -5,12 +5,10 @@ const baseResponse = require("../../../config/baseResponseStatus");
 const mylookDao = require("./mylookDao");
 const {errResponse} = require("../../../config/response");
 
-// Provider: Read 비즈니스 로직 처리
 
-//if가 만드는 로직 ~ 
 
-//myLook 메인페이지 API
-exports.getMyLookMain = async function (lookpoint, userIdx){
+//13. MY LOOK 메인페이지 불러오기 - (lookpoint별로 각 10장씩 불러오기)
+exports.retrieveMylookMain = async function (lookpoint, userIdx){
   const connection = await pool.getConnection(async (conn) => conn);
   try {
     const getOOTDResultParams = [lookpoint, userIdx];
@@ -34,14 +32,14 @@ exports.getMyLookMain = async function (lookpoint, userIdx){
     return response(baseResponse.SUCCESS_MYLOOK_MAIN, {'lookpoint': lookpoint, lastOOTDArr});
     
   } catch (err) {
-    logger.error(`App - getMyLookMain Service error\n: ${err.message}`);
+    logger.error(`App - retrieveMylookMain Service error\n: ${err.message}`);
     return errResponse(baseResponse.DB_ERROR);
  }
 }
 
 
-//myLook 상세페이지 API
-exports.getMyLookDetail = async function (lookpoint, userIdx){
+//14. MY LOOK 상세페이지 - (lookpoint 내에 날짜별로 ootd 불러오기)
+exports.retrieveMylookDetail = async function (lookpoint, userIdx){
   const connection = await pool.getConnection(async (conn) => conn);
   try {
     const getOOTDResultParams = [lookpoint, userIdx];
@@ -62,7 +60,7 @@ exports.getMyLookDetail = async function (lookpoint, userIdx){
     return response(baseResponse.SUCCESS_MYLOOK_DETAIL, {'lookpoint': lookpoint, lastOOTDDetailArr});
     
   } catch (err) {
-    logger.error(`App - getMyLookDetail Service error\n: ${err.message}`);
+    logger.error(`App - retrieveMylookDetail Service error\n: ${err.message}`);
     return errResponse(baseResponse.DB_ERROR);
  }
 }

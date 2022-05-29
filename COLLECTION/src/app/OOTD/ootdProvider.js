@@ -1,11 +1,12 @@
 const { pool } = require("../../../config/database");
-const { logger } = require("../../../config/winston");
 
 const ootdDao = require("./ootdDao");
 
-// Provider: Read 비즈니스 로직 처리
 
-exports.tagRedundantCheck = async function(userIdx, Clothes, PWW, Content){
+
+
+// 입력한 content와의 중복 블럭 여부 체크 (content의 idx 반환)
+exports.checkTagRedundancy = async function(userIdx, Clothes, PWW, Content){
   /*    
 
    1) Clothes일 경우 AddedClothes에서 userId와 flag (bigClass)가 일치하는 열 중
@@ -43,8 +44,8 @@ exports.tagRedundantCheck = async function(userIdx, Clothes, PWW, Content){
 
 
 
-
-exports.tagNumberCheck = async function(userIdx, Clothes, PWW){
+// 새로운 블럭 추가 전 개수 체크 (총 개수 반환)
+exports.checkTagNumber = async function(userIdx, Clothes, PWW){
   /*
    1) Clothes일 경우 AddedClothes에서 userId와 flag (bigClass)가 일치하는 열 중
       active인 것들을 배열에 저장한 후 반환
@@ -93,7 +94,10 @@ exports.tagNumberCheck = async function(userIdx, Clothes, PWW){
 
 };
 
-exports.tagExistCheck = async function(userIdx, Clothes, PWW, Content){
+
+
+// 블럭 삭제하기 전 존재하는 블럭인지 체크 (블럭의 idx반환)
+exports.checkTagExistence = async function(userIdx, Clothes, PWW, Content){
   const connection = await pool.getConnection(async (conn) => conn);
 
   if(PWW == -1){
@@ -136,7 +140,8 @@ exports.tagExistCheck = async function(userIdx, Clothes, PWW, Content){
 }
 
 
-exports.ootdExistCheck = async function(userIdx, date){
+// OOTD 삭제하기 전 존재하는 OOTD인지 체크 (ootd의 idx반환)
+exports.checkOotdExistence = async function(userIdx, date){
 
   const connection = await pool.getConnection(async (conn) => conn);      
   const selectOotdExistParams = [userIdx, date, "active"];
@@ -150,7 +155,8 @@ exports.ootdExistCheck = async function(userIdx, date){
 
 
 
-exports.fixedRedundantCheck = async function(Clothes, PWW, Content){
+// 새로운 블럭 추가 전 기본 블럭에 존재하는 블럭인지 체크 (idx 반환)
+exports.checkFixedRedundancy = async function(Clothes, PWW, Content){
   /*    
 
    1) Clothes일 경우 AddedClothes에서 userId와 flag (bigClass)가 일치하는 열 중
